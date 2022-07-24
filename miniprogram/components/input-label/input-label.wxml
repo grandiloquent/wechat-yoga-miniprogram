@@ -1,0 +1,6 @@
+<view class="wrapper {{selected?'active':''}} {{inputValue?'has':''}}">
+  <view class="text">{{title}}</view>
+  <input disabled="{{disabled}}" wx:if="{{!textarea}}" bindblur="onBlur" type="{{inputType}}" bindtap="onClick" value="{{inputValue}}" bindinput="onInput" class="input"></input>
+  <textarea maxlength="{{maxlength}}" wx:else bindblur="onBlur" type="{{inputType}}" bindtap="onClick" value="{{inputValue}}" bindinput="onInput" class="textarea"></textarea>
+
+</view>

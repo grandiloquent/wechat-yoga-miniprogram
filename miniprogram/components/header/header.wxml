@@ -1,0 +1,3 @@
+<view class="header">
+  <slot></slot>
+</view>

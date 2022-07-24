@@ -1,0 +1,42 @@
+.tabbar {
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  position: relative;
+  z-index: 0;
+  align-self: center;
+  padding: 32rpx 0;
+  min-width: 640rpx;
+}
+
+
+.tabbar-item {
+  font: 500 28rpx/40rpx "Google Sans", Roboto, Arial, sans-serif;
+  letter-spacing: 0.5rpx;
+  color: #202124;
+  display: flex;
+  flex: 0 0 33%;
+  position: relative;
+  max-width: 50%;
+  will-change: auto;
+}
+
+
+.tabbar-name-active .tabbar-name {
+  background-color: #e8f0fe;
+  color: #1967d2;
+}
+
+
+.tabbar-name {
+  -webkit-tap-highlight-color: transparent;
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  z-index: -4;
+  padding: 16rpx 48rpx;
+  text-align: center;
+  border: 2rpx solid #dadce0;
+}

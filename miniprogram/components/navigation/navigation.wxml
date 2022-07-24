@@ -1,0 +1,6 @@
+<view class="asdjfo" style="height:{{navigationHeight}}px;padding-top:{{navigationTop}}px;">
+  <view class="gakefo">
+    <view  catchtap="onLeft" class="left {{selected==0?'active':''}}">本周</view>
+    <view catchtap="onRight" class="right {{selected==1?'active':''}}">下周</view>
+  </view>
+</view>

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "教练",
+  "usingComponents": {
+    "login": "../../components/login/login",
+    "messages": "../../components/messages/messages",
+    "layout": "../../../components/layout/layout"
+  }
+}

@@ -1,0 +1,21 @@
+<wxs module="formattor">
+    module.exports = {
+        format: function (ms) {
+            if (ms === 0) return '';
+            var date = getDate(ms * 1000);
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            return date.getFullYear() + "年" + (month >= 10 ? month : '0' + month) + "月" + (day >= 10 ? day : '0' + day) + "日";
+        }
+    }
+</wxs>
+
+<view class="wrapper">
+    <view class="header">
+        <view class="title">{{announcement.title}}</view>
+        <view class="subtitle">
+            {{formattor.format(announcement.updated_time)}}
+        </view>
+    </view>
+    <wemark md="{{announcement.content}}" host="{{app.globalData.host}}" link highlight type="wemark"></wemark>
+</view>

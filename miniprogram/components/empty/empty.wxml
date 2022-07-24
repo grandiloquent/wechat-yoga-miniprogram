@@ -1,0 +1,4 @@
+  <view wx:if="{{show}}" class="full-screen-centered-container">
+    <view class="book-message">没有找到您预约的课程</view>
+    <button class="book-button" bindtap="makeAppointment">马上预约课程</button>
+  </view>

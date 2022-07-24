@@ -1,0 +1,19 @@
+<!--pages/announcements/index.wxml-->
+<wxs module="formattor">
+  module.exports = {
+    format: function (ms) {
+      var date = getDate(ms * 1000);
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      return date.getFullYear() + "-" + (month >= 10 ? month : '0' + month) + "-" + (day >= 10 ? day : '0' + day);
+    }
+  }
+</wxs>
+<view wx:for="{{announcements}}" wx:key="id" data-id="{{item.id}}" bindtap="onItemClick" style="font-size: 28rpx;display: flex;padding: 20rpx 32rpx;background: #fff;border-bottom: 2rpx solid #ebedf0;">
+  <view style="flex-grow: 1;">
+    {{item.title}}
+  </view>
+  <view style="color: #969799;flex-shrink: 0;">
+    {{formattor.format(item.updated_time)}}
+  </view>
+</view>

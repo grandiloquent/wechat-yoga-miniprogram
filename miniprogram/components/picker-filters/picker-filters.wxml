@@ -1,0 +1,9 @@
+<view class="filters">
+  <view class="filter-image">
+  </view>
+
+  <view wx:for="{{items}}" wx:key="*this" bindtap="onSelectedIndexChange" data-mode="{{index}}" class="filter-item">
+    {{item}}
+  </view>
+
+</view>

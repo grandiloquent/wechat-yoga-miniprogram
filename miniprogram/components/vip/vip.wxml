@@ -1,0 +1,29 @@
+
+<view class="card">
+  <view style="transform: perspective(300rpx) translateZ(30rpx);width:400rpx;height: 400rpx;border-radius: 50%;position: absolute;background: rgba(0, 0, 0, 0.3);left: -100rpx;top: -40rpx;bottom: 0;right: 0;">
+  </view>
+  <view style="transform: perspective(300rpx) translateZ(30rpx);width: 600rpx;height: 600rpx;border-radius: 50%;position: absolute;background: rgba(0, 0, 0, .3);left: 300rpx;top: 100rpx;bottom: 0;right: 0;">
+  </view>
+  <view style="transform: perspective(300rpx) translateZ(30rpx) rotate(-45deg);width: 800rpx;height: 20rpx;position: absolute;background: rgba(255, 255, 255, .03);left: 230rpx;top: 100rpx;bottom: 0;right: 0;">
+  </view>
+  <view style="transform: perspective(300rpx) translateZ(30rpx) rotate(-45deg);width: 800rpx;height: 100rpx;position: absolute;background: rgba(255, 255, 255, .03);left: 300rpx;top: 100rpx;bottom: 0;right: 0;">
+  </view>
+  <view style="z-index: 1;position: relative;">
+    <view class="card-title">
+      {{title}}
+  </view>
+
+  <view style="   font-size: 24rpx;font-weight: 300;color: #777;">
+    {{subtitle}}
+  </view>
+  <view style="  margin-top: 100rpx;font-weight: 300;color: #f9cbab;">
+    
+{{content}}
+  </view>
+  <view class="card-subtitle">
+    {{footer}}
+  </view>
+  
+  </view>
+  <view style="font-size: 48rpx;"></view>
+</view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "照片墙",
+  "usingComponents": {
+    "photoview": "../../components/photoview/photoview"
+  }
+}

@@ -1,0 +1,6 @@
+<view wx:if="{{intro}}" style="background: #fff;padding: 24rpx;">
+    <view style="font-size: 60rpx;margin:30rpx 0">{{intro.name}}</view>
+    <view style="background: #fff;padding: 24rpx;">
+        <wemark md="{{intro.description}}" link highlight type="wemark"></wemark>
+    </view>
+</view>

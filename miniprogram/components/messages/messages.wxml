@@ -1,0 +1,21 @@
+<view class="wrapper {{active?'active':''}}">
+  <view class="content">
+    <view class="header">
+      <view class="title">
+        {{titleModal}}
+      </view>
+      <view catchtap="onCloseModal" class="close"></view>
+    </view>
+    <view class="body">
+      {{message}}
+    </view>
+    <view class="buttons">
+      <view catchtap="onCloseModal" class="button" style="color: rgba(0, 0, 0, 0.35);">
+        取消
+      </view>
+      <view catchtap="onSubmitData" class="button" style="background-color: #df3033;color: #fff;">
+        购买会员卡
+      </view>
+    </view>
+  </view>
+</view>

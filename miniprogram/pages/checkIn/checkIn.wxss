@@ -1,0 +1,29 @@
+.full-screen-centered-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.book-message {
+  margin: 300rpx 0 40rpx;
+}
+
+.book-button {
+  background: #749b15;
+  font-size: 36rpx;
+  border-radius: 999rpx;
+  color: #fff;
+  height: 112rpx;
+  line-height: 112rpx;
+  width: 50vw;
+  border: 2rpx solid #749b15;
+}
+
+.btn {
+  color: #1558d6;
+}

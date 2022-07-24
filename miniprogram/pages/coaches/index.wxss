@@ -1,0 +1,68 @@
+.cards {
+    padding: 0 16rpx 0;
+  }
+  .card-item {
+    background-color: #fff;
+    margin: 0 0 20rpx 0;
+    box-shadow: 0 2rpx 12rpx rgba(32, 33, 36, 0.28);
+    border-radius: 16rpx;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding:0 32rpx;
+  }
+  .card-image-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 32rpx 32rpx 32rpx 0;
+  }
+  .card-image-container {
+    overflow: hidden;
+    position: relative;
+    border-radius: 16rpx;
+    background-color: #8a57a6;
+    height: 184rpx;
+    width: 184rpx;
+  }
+  .card-image {
+    border: 0;
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  .card-content {
+    flex-grow: 1;
+    width: 0;
+    position: relative;
+    padding: 32rpx 0 80rpx;
+  }
+  .card-subhhead {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, .10);
+    color: #202124;
+    font-size: 24rpx;
+    font-weight: 400;
+    line-height: 32rpx;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 16rpx;
+  }
+  .card-title {
+    color: #202124;
+    font-family: Roboto-Medium, sans-serif;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    -webkit-line-clamp: 3;
+  }
+  .card-subtitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #70757a;
+    line-height: 32rpx;
+    width: calc(100% - 64rpx);
+    font-size: 24rpx;
+    margin-top: 16rpx;
+  }

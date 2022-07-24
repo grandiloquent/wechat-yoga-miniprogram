@@ -1,0 +1,11 @@
+
+<view style="display: flex;justify-content: space-between;padding: 16rpx;">
+  <view style="width: 50%;">
+    <photoview bind:view="onPreviewImage" wx:for="{{pictruesLeft}}" wx:key="id" src="{{item.src}}" imageWidth="{{item.width}}" imageHeight="{{item.height}}" data-src="{{item.src}}">
+    </photoview>
+  </view>
+  <view style="width: 50%;">
+    <photoview bind:view="onPreviewImage" wx:for="{{pictruesRight}}" wx:key="id" src="{{item.src}}" imageWidth="{{item.width}}" imageHeight="{{item.height}}" data-src="{{item.src}}">
+    </photoview>
+  </view>
+</view>

@@ -1,0 +1,194 @@
+/* pages/user/index.wxss */
+.header-box {
+  padding: 32rpx;
+  padding-bottom: 64rpx;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.header-box .avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+}
+
+.header-box .r {
+  margin-left: 32rpx;
+  font-size: 28rpx;
+}
+
+.login-box .logo {
+  width: 200rpx;
+  margin: 64rpx 275rpx;
+}
+
+.login-box .line {
+  height: 2rpx;
+  width: 686rpx;
+  background-color: #ebedf0;
+  margin: 0 32rpx;
+}
+
+.login-box .title {
+  margin: 64rpx 0 0 32rpx;
+  color: #333;
+  font-size: 36rpx;
+}
+
+.login-box .profile {
+  margin: 32rpx 0 0 32rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.login-box .btn {
+  margin: 88rpx 32rpx;
+}
+
+
+
+.dialog-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  box-sizing: border-box;
+  padding: 32rpx;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 26rpx;
+  color: #030303;
+  background-color: #fff;
+  border: none;
+}
+
+.dialog-header {
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.h2 {
+  margin: 0 0 6rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: 2.5em;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  font-weight: 400;
+  font-size: 36rpx;
+}
+
+.dialog-body {
+  white-space: pre-wrap;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100vh;
+}
+
+.input-container {
+  margin-top: 40rpx;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #efefef;
+  background: #fff;
+  height: 100rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  font-size: 32rpx;
+  height: 100%;
+  border: 0;
+}
+
+
+.verify-code-btn {
+  border-left: 1px solid #ccc;
+  font-size: 28rpx;
+  height: 46rpx;
+  line-height: 46rpx;
+  width: 218rpx;
+  color: rgba(0, 0, 0, .4);
+  text-align: center;
+}
+
+.verify-code-btn.enable {
+  color: #848689;
+}
+
+.verify-code-btn.active {
+  color: #e2231a;
+}
+
+::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, .4)
+}
+
+.verify-btn {
+  width: 100%;
+  height: 100rpx;
+  margin: 30rpx 0 30rpx;
+  background-color: #efefef;
+  border-radius: 50rpx;
+  text-align: center;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  color: #fff;
+  background-image: linear-gradient(90deg, #fab3b3, #ffbcb3 73%, #ffcaba);
+}
+
+.verify-btn.active {
+  background-image: linear-gradient(90deg, #f10000, #ff2000 73%, #ff4f18)
+}
+
+.index-active {
+  color: #323233;
+}
+
+.c3-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.hidden-button {
+  padding: 0;
+  border: none;
+  outline: none;
+  font: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2rpx;
+  width: 2rpx;
+}

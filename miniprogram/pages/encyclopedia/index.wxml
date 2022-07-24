@@ -1,0 +1,62 @@
+
+  <wxs module="formattor">
+    module.exports = {
+      format: function (ms) {
+        if (ms === 0) return '';
+        var date = getDate(ms*1000);
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        return date.getFullYear() + "年" + (month >= 10 ? month : '0' + month) + "月" + (day >= 10 ? day : '0' + day) + "日";
+      }
+    }
+  </wxs>
+
+  <view class="wrapper">
+    <view class="header">
+      <view class="title">{{data.title}}</view>
+      <view class="subtitle">
+        发布于{{formattor.format(data.update_at)}}
+      </view>
+    </view>
+
+    <wemark md="{{data.content}}" host="{{app.global.staticHost}}" link highlight type="wemark"></wemark>
+
+
+    <view style="display:flex;font-size:24rpx;margin-top:36rpx">
+      <view wx:for="{{data.tags}}" wx:key="*this"  data-src="{{item}}" bindtap="navigate" style="border:1rpx solid #dadce0;padding:4rpx 24rpx;border-radius:32rpx">{{item}}</view>
+    </view>
+    <view class="ihflab">
+      <view class="mcrfqp">
+        <view class="bkbzcc">
+          评论（0）
+        </view>
+        <view class="zsrdff">
+          写评论
+        </view>
+
+      </view>
+
+    </view>
+
+    <view class="zohobg">
+      <view class="kxqehi">
+
+      </view>
+      <view> 暂无人发表评论</view>
+    </view>
+
+  </view>
+  <view class="zfhhqi">
+    相关文章
+  </view>
+
+  <view class="ktywqf">
+    <view class="zzrtou" bindtap="handleNavigate">
+      预约课程
+    </view>
+    <view style="width:40rpx;height:40rpx;background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJmaWxsOiMwMGE0ZmYiICBpZD0iaWNvbi1rZXlib2FyZF9hcnJvd19yaWdodCIgdmlld0JveD0iMCAwIDI0IDI0Ij4NCjxwYXRoIGQ9Ik04LjU3OCAxNi41OTRsNC41OTQtNC41OTQtNC41OTQtNC41OTQgMS40MDYtMS40MDYgNiA2LTYgNnoiPjwvcGF0aD4NCjwvc3ZnPg==);"></view>
+  </view>
+
+
+
+

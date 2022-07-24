@@ -1,0 +1,26 @@
+<view class="dialog-container" wx:if="{{showVerify}}">
+  <view class="dialog">
+    <view class="dialog-header">
+      <view class="h2">
+        验证用户身份
+      </view>
+    </view>
+    <view class="dialog-body">
+      <view class="input-container">
+        <input class="input" placeholder="{{checkPassPlaceholder}}" value="{{phoneNumber}}" type="number" maxlength="11" bindinput="inputPhone"></input>
+      </view>
+      <view class="input-container">
+        <input class="input" type="number" placeholder="请输入收到的验证码" maxlength="6" bindinput="inputCode"></input>
+        <view class="verify-code-btn {{verifyActive}}" bindtap="code">{{codeText}}</view>
+      </view>
+    </view>
+    <view class="verify-btn {{btnActive}}" bindtap="verify">验 证</view>
+  </view>
+
+  <view bindtap="closeVerify" class="c3-overlay">
+    <view class="hidden-button">
+    </view>
+
+  </view>
+
+</view>

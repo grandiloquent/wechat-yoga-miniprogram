@@ -1,0 +1,75 @@
+<wxs module="formattor">
+  module.exports = {
+    format: function (ms) {
+      var date = getDate(ms*1000);
+      var month = date.getMonth() + 1;
+      var day = date.getDate();
+      return month + "月" + day+"日";
+    },
+    formatDuration: function (ms) {
+      var minutes = ms % 3600 / 60
+      if (minutes < 10) { minutes = "0" + minutes; }
+      return Math.floor(ms / 3600) + ':' + minutes;
+    }
+  }
+</wxs>
+<header>
+  <picker-date light="{{true}}" leftDate="{{leftDate}}" rightDate="{{rightDate}}" bind:left="onLeft" bind:right="onRight"></picker-date>
+  <picker-filters bind:selectedIndexChange="onSelectedIndexChange" title="{title}"></picker-filters>
+</header>
+<view style="padding: 0 16rpx;">
+  <view style="color: #202124;display: flex;background-color: #fff;margin: 0 0 20rpx 0;border-radius: 16rpx;flex-grow: 1;box-shadow: 0 0 0 2rpx #ebedef;padding-left: 32rpx;padding-right: 32rpx;" wx:for="{{courses}}" wx:key="id" data-mode="{{item.mode}}">
+    <view style="display: flex;justify-content: center;margin: 32rpx 32rpx 32rpx 0 ;">
+      <image style="overflow: hidden;position: relative;border-radius: 16rpx;background-color: #f8f9fa;height: 184rpx;width: 184rpx;" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}">
+      </image>
+    </view>
+    <view style="flex-grow: 1;width: 0;position: relative;padding: 32rpx 0 80rpx;">
+      <view style="font-size: 24rpx;font-weight: 400;line-height: 32rpx;overflow: hidden;text-align: left;text-overflow: ellipsis;white-space: nowrap;margin-bottom: 16rpx;display: flex;justify-content: space-between;">
+        {{formattor.formatDuration(item.start_time)}}-{{formattor.formatDuration(item.end_time)}}
+        <text wx:if="{{!(item.mode & 4)}}" style="color: #70757a;">{{item.teacherName}}</text>
+      </view>
+
+      <view data-id="{{item.courseId}}" bindtap="onLesson" style="display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;white-space: normal;-webkit-line-clamp: 3;">
+        {{item.lesson_name}}
+      </view>
+      <view style="overflow: hidden;text-overflow: ellipsis;color: #70757a;line-height: 32rpx;position: absolute;width: calc(100% - 64rpx);padding: 0 32rpx;font-size: 24rpx;left: -32rpx;bottom: 32rpx;">
+        <text wx:if="{{item.mode & 4}}">{{item.teacher_name}}</text>
+        <text wx:else>{{formattor.format(item.date_time)}}</text>
+      </view>
+      <view catchtap="book" wx:if="{{item.mode&8}}" data-id="{{item.course_id}}" data-time="{{item.date_time}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;" class="btn">
+        预约
+      </view>
+
+      <view catchtap="handleDeleteAppointment" data-reservationId="{{item.id}}" wx:if="{{item.mode&2}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;" class="btn">
+        取消预约
+      </view>
+      <view wx:if="{{item.mode&16}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
+        准备上课
+      </view>
+      <view wx:if="{{item.mode&32}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
+        正在上课
+      </view>
+      <view wx:if="{{item.mode&128}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
+        已满额
+      </view>
+      <view wx:if="{{item.mode&1}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
+        已完成
+      </view>
+      <view catchtap="onSign" data-reservedid="{{item.id}}" wx:if="{{item.mode & 4}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;top: 0rpx;" class="btn">
+        签到
+      </view>
+    </view>
+
+  </view>
+</view>
+<view wx:if="{{!courses.length}}" class="full-screen-centered-container">
+  <view class="book-message">没有找到您预约的课程</view>
+  <button class="book-button" bindtap="makeAppointment">马上预约课程</button>
+</view>
+<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{openid}}" bind:success="onSuccess"></login>
+
+<layout active="{{active}}" titleModal="签到">
+  <view style="display: flex;align-items: center;justify-content: center;flex-direction: column;height: 100%;">
+    <image style="width: 300rpx;height: 300rpx;" src="{{image}}"></image>
+  </view>
+</layout>

@@ -1,0 +1,14 @@
+<view class="category-container">
+  <view class="category-box">
+    <view class="category-list" wx:for="{{items}}" wx:key="id">
+      <view class="category-column" bindtap="tabClick" data-id="{{item.id}}" wx:if="{{item.id != 8}}">
+        <image mode="aspectFill" class="category-imgbox" src="{{item.image}}"></image>
+        <view class="category-title">{{item.name}}</view>
+      </view>
+      <button class="category-column" open-type="contact" data-id="{{item.id}}" wx:if="{{item.id === 8}}" style="display: flex;flex-direction: column;align-items: center;padding: 0;">
+        <image mode="aspectFill" class="category-imgbox" src="{{item.image}}"></image>
+        <view class="category-title">{{item.name}}</view>
+      </button>
+    </view>
+  </view>
+</view>

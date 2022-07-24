@@ -1,0 +1,18 @@
+<wxs module="formattor">
+  module.exports = {
+    format: function (item) {
+      console.log(item)
+      if (item.id === 1) {
+        return '一周内课程'
+      } else if (item.id === 2) {
+        return '一月内课程'
+      } else if (item.id === 3) {
+        return '一年内课程'
+      } else {
+        return '实际约课次数'
+      }
+    }
+  }
+  // {{(item.cardType===1 && '团课卡')||(item.cardType===2 && '私教卡')||(item.cardType===3 && '小班卡')||(item.cardType===4 && '金卡')||(item.cardType===5 && '体验卡')||'团课卡'}}
+</wxs>
+<vip data-id="{{item.id}}" wx:for="{{cards}}" wx:key="*this" title="{{item.title}}" subtitle="有效期 2023年01月01日" content="" footer="{{formattor.format(item)}}"></vip>

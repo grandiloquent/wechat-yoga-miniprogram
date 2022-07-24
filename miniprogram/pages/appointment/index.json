@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "navigation": "../../../components/navigation/navigation",
+    "layout": "../../../components/layout/layout",
+    "dialog": "../../../components/dialog/dialog"
+  },
+  "navigationBarTitleText": "日课表",
+  "navigationStyle": "custom"
+}

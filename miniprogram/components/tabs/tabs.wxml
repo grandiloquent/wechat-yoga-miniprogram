@@ -1,0 +1,17 @@
+<view class="tabbar">
+  <view catchtap="onSelectedIndexChange" class="tabbar-item {{selectedTabIndex==0 && 'tabbar-name-active'}}" data-index="0" bindtap="handleTap">
+    <view class="tabbar-name" style="border-bottom-left-radius: 8rpx;border-top-left-radius: 8rpx;">
+      团课
+    </view>
+  </view>
+  <view catchtap="onSelectedIndexChange" class="tabbar-item  {{selectedTabIndex==1 && 'tabbar-name-active'}}" data-index="1" bindtap="handleTap">
+    <view class="tabbar-name" style="border-left: 0;border-right: 0;">
+      私教
+    </view>
+  </view>
+  <view catchtap="onSelectedIndexChange" class="tabbar-item  {{selectedTabIndex==2 && 'tabbar-name-active'}}" data-index="2" bindtap="handleTap">
+    <view class="tabbar-name" style="border-bottom-right-radius: 8rpx;border-top-right-radius: 8rpx;">
+      小班
+    </view>
+  </view>
+</view>

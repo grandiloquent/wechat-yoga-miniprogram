@@ -1,0 +1,13 @@
+{
+  "desc": "关于本文件的更多信息，请参考文档 https://developers.weixin.qq.com/sitemap.html",
+  "rules": [{
+    "action": "disallow",
+    "page": "pages/user/index"
+  },{
+    "action": "disallow",
+    "page": "pages/verify/index"
+  }, {
+    "action": "allow",
+    "page": "*"
+  }]
+}

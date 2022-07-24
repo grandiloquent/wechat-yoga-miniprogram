@@ -1,0 +1,322 @@
+
+.market-action {
+  width: 134rpx;
+  height: 48rpx;
+  background: #ff655d;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #fff;
+  line-height: 48rpx;
+  text-align: center;
+  margin-right: 24rpx;
+  background: linear-gradient(90deg, #ff973c 0%, #fc360c 100%);
+}
+
+.notice-box {
+  width: 100vw;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-bottom: 1rpx solid #efeff4;
+}
+
+.notice-icon {
+  width: 130rpx;
+  height: 33rpx;
+  margin-right: 10px;
+}
+
+/* 专业教练 */
+.professional-coach {
+  background: #fff;
+  /* padding-bottom: 12rpx; */
+  color: #333;
+}
+
+.professional-coach-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  padding-bottom: 56rpx;
+}
+
+.professional-coach-container::-webkit-scrollbar {
+  display: none;
+}
+
+.professional-coach-description {
+  font-size: 24rpx;
+  margin-top: 24rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: 2.5em;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+}
+
+.professional-coach-item {
+  width: 200rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-right: 1rpx solid #dadce0;
+  padding: 24rpx 36rpx;
+  flex-shrink: 0;
+}
+
+.professional-coach-thumbnail {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+}
+
+.professional-coach-title {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  margin-top: 24rpx;
+}
+
+.professional-coach-type {
+  color: #749b15;
+  flex-shrink: 0;
+}
+
+.swiper-container {
+  width: 750rpx;
+  height: 375rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.swiper-container .swiper1 {
+  width: 750rpx;
+  height: 375rpx;
+}
+
+.swiper-container .swiper1 image {
+  width: 750rpx;
+  height: 375rpx;
+  /* margin: 8rpx 15rpx; */
+  /* border-radius: 16rpx; */
+}
+
+.table-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 18rpx;
+}
+
+.weather-container {
+  width: calc(100% - 48rpx);
+  display: flex;
+  font-size: 24rpx;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  background-color: rgb(240, 240, 240);
+  color: rgb(100, 100, 100);
+}
+
+.weather-icon {
+  height: 24rpx;
+  width: 24rpx;
+  margin-left: 6rpx;
+}
+
+.weather-location {
+  color: rgb(100, 100, 100);
+  margin-right: 12rpx;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 32rpx 0;
+  color: #969799;
+  font-size: 28rpx;
+  line-height: 48rpx;
+}
+
+.divider--hairline {
+  height: 1rpx;
+  background: #ebedf0;
+  margin-right: 32rpx;
+  flex: 1;
+}
+
+/*
+  <view class="divider">
+  </view>
+  */
+/*
+category-box
+category-column
+category-container
+category-imgbox
+category-list
+category-title
+market-action
+notice-box
+notice-icon
+professional-coach
+professional-coach-container
+professional-coach-description
+professional-coach-item
+professional-coach-thumbnail
+professional-coach-title
+professional-coach-type
+sliding-container
+sliding-image
+sliding-item
+sliding-layout
+sliding-marketing-button
+sliding-right
+sliding-title
+sliding-wrapper
+space
+swiper-container
+swiper1
+table-icon
+table-text
+weather-container
+weather-icon
+weather-location
+*/
+.copyright {
+  display: flex;
+  justify-content: center;
+  font-size: 22rpx;
+  color: rgba(0, 0, 0, 0.35);
+  margin: 60rpx 0 32rpx 0;
+}
+
+.announcement-list {
+  display: flex;
+  margin: 0 32rpx;
+  flex-direction: column;
+}
+
+.announcement-item-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.announcement-item-subtitle {
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+.announcement-item {
+  font-size: 28rpx;
+  display: flex;
+  justify-content: space-between;
+  margin: 12rpx 0;
+}
+
+.market-container {
+  height: 84rpx;
+  background-size: 100%;
+  padding: 0 8rpx 0 118rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 16rpx 16rpx 0 0;
+  margin: 0 20rpx 0;
+  background-repeat: no-repeat;
+}
+
+.market-title {
+  font-size: 28rpx;
+  color: #777060;
+}
+
+.promotional-container {
+  height: 96rpx;
+  padding: 32rpx;
+  background-color: #fff;
+}
+
+.promotion-item-container {
+  display: flex;
+  align-items: center;
+}
+
+.announcement-container {
+  background: #fff;
+  padding-bottom: 32rpx;
+  color: #333;
+}
+
+/*
+*/
+.market-button {
+  flex-shrink: 0;
+  border: 2rpx solid #dadce0;
+  font-size: 28rpx;
+  line-height: 64rpx;
+  height: 64rpx;
+  border-radius: 60rpx;
+  padding: 0 32rpx;
+}
+
+.market-text {
+  -webkit-box-orient: vertical;
+  color: #202124;
+  display: -webkit-box;
+  font-size: 32rpx;
+  line-height: 40rpx;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0 16rpx 0 32rpx;
+  flex-grow: 1;
+}
+
+.market-image {
+  height: 96rpx;
+  width: 96rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.card {
+  position: absolute;
+  height: auto;
+  width: 600rpx;
+  background: linear-gradient(-45deg, #303030, #191919);
+  padding: 40rpx;
+  overflow: hidden;
+  border-radius: 24rpx;
+  top: -25%;
+  left: -25%;
+}
+
+.card-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #f9cbab;
+}
+
+.card-subtitle {
+  font-size: 68rpx;
+  color: #f9cbab;
+  font-weight: 500;
+}
+.asdjfo {
+  width: 100vw;
+  background-color: #fff;
+  /* box-sizing: border-box;padding-left: {{paddingLeft}}px; */
+}
+
+.gakefo {
+  line-height: 40rpx;
+  justify-content: center;
+  display: flex;
+  font-size: 28rpx;
+  padding-left: 16rpx;
+  flex-direction: column;
+}

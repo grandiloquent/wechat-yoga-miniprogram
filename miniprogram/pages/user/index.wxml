@@ -1,0 +1,67 @@
+<view class="wrapper" style="background-color:{{backgroundColor}}">
+  <view class="header-box">
+    <image class="avatar" src="{{ user.avatar_url }}" mode="aspectFill"></image>
+    <view class="r">
+      <view class="nick">{{ user.nick_name }}</view>
+    </view>
+  </view>
+  <view class="items">
+    <view catchtap="onGroupCourses" class="item">
+      <view class="text">
+        {{public||0}}
+      </view>
+      <view>
+        团课
+      </view>
+    </view>
+    <view catchtap="onPrivateTeacherCourse" class="item">
+      <view class="text">
+        0
+      </view>
+      <view>
+        私教
+      </view>
+    </view>
+    <view catchtap="onGroupCourses" class="item">
+      <view class="text">
+        0
+      </view>
+      <view>
+        小班
+      </view>
+    </view>
+  </view>
+</view>
+<view class="layout">
+  <view style="font-size: 32rpx;color: #333;line-height: 96rpx;">
+    我的课程
+  </view>
+  <view style="display: flex;justify-content: space-around;">
+    <view catchtap="onShowHistory" class="action action-history">
+      约课记录
+    </view>
+    <view class="action action-fav" style="display: none;">
+      收藏课程
+    </view>
+    <view catchtap="onShowVipList" class="action">
+      会员卡
+    </view>
+    <view catchtap="onMemberPhysicalExamination" class="action action-check">
+      会员体测
+    </view>
+    <view catchtap="onShowFeedback" class="action action-feedback">
+      意见反馈
+    </view>
+  </view>
+</view>
+<view style="display: none;border-radius: 12rpx;margin:40rpx 24rpx 0;padding: 0 24rpx;background: #fff;">
+  <view style="font-size: 32rpx;color: #333;line-height: 96rpx;">
+    更多服务
+  </view>
+  <view style="display: flex;justify-content: space-around;">
+  </view>
+</view>
+<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}" bind:success="onSuccess"></login>
+<layout active="{{feedbackActive}}" titleModal="添加意见反馈">
+  <input-label title="意见反馈" textarea="{{true}}"></input-label>
+</layout>

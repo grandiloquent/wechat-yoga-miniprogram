@@ -1,0 +1,26 @@
+<view class="date">
+  <view class="date-item" style="border-top-left-radius: 12rpx;border-bottom-left-radius: 12rpx;">
+    <view wx:if="{{!light}}" data-value="-1" catchtap="onLeft" class="date-arrow">
+    </view>
+    <view else class="icon" style="left:{{offset}}px">
+    </view>
+    <picker mode="date" class="date-text" bindchange="bindLeftChange">
+      <view class="text">
+        <text class="label">{{leftDateString}}</text>
+      </view>
+    </picker>
+    <view wx:if="{{!light}}" data-value="1" catchtap="onLeft" class="date-arrow" style="transform: rotate(180deg);">
+    </view>
+  </view>
+  <view class="date-item" style="border-left: 0;border-bottom-right-radius: 12rpx;border-top-right-radius: 12rpx;">
+    <view wx:if="{{!light}}" data-value="-1" catchtap="onRight" class="date-arrow">
+    </view>
+    <picker mode="date" class="date-text" bindchange="bindRightChange">
+      <view class="text">
+        {{rightDateString}}
+      </view>
+    </picker>
+    <view wx:if="{{!light}}" data-value="1" catchtap="onRight" class="date-arrow" style="transform: rotate(180deg);">
+    </view>
+  </view>
+</view>

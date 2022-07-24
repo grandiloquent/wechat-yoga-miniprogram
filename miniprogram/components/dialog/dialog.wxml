@@ -1,0 +1,43 @@
+<view wx:if="{{isShow}}" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;display: flex;-webkit-box-align: center;align-items: center;-webkit-box-pack: center;justify-content: center;z-index: 4;margin: 0 80rpx;padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);">
+  <view style="position: relative;z-index: 2;display: flex;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;max-height: 100%;box-sizing: border-box;padding: 32rpx;margin: 0 auto;overflow-x: hidden;overflow-y: auto;font-size: 26rpx;color: #030303;background-color: #f9f9f9;border: none;min-width: 500rpx;max-width: 712rpx;border-radius: 4rpx;">
+    <view style="display: flex;-webkit-box-orient: vertical;-webkit-box-direction: normal;flex-direction: column;flex-shrink: 0;">
+      {{title}}
+    </view>
+
+    <view style="font-family: Roboto,Arial,sans-serif;word-wrap: break-word;-webkit-text-size-adjust: 100%;-webkit-box-direction: normal;font-size: 26rpx;color: #030303;overflow-y: auto;overflow-x: hidden;max-height: 100vh;white-space: pre-wrap;margin: 32rpx 0 16rpx;">{{message}}</view>
+
+
+    <view style="display: flex;-webkit-box-align: center;align-items: center;-webkit-box-pack: end;justify-content: flex-end;margin-top: 24rpx;">
+
+      <view   style="display: flex;-webkit-box-pack: center;justify-content: center;box-sizing: border-box;user-select: none;min-width: 5.14em;font-size: 28rpx;text-transform: uppercase;border-radius: 6rpx;position: relative;margin: -.7em -.57em;color: #606060;">
+        <view bindtap="onNegative"  style="border: none;outline: none;font: inherit;text-transform: inherit;color: inherit;background: transparent;cursor: pointer;padding: .7em .57em;">
+          <view style="display: flex;-webkit-box-align: center;align-items: center;">
+            <view style="align-self: center;min-height: 1em;line-height: 1em;font-weight: 500;">
+              {{negative}}
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view style="display: flex;-webkit-box-pack: center;justify-content: center;box-sizing: border-box;user-select: none;min-width: 5.14em;font-size: 28rpx;text-transform: uppercase;border-radius: 6rpx;position: relative;margin: -.7em -.57em;color: #065fd4;margin-left: .7em;">
+
+        <view bindtap="onPositive" style="border: none;outline: none;font: inherit;text-transform: inherit;color: inherit;background: transparent;cursor: pointer;padding: .7em .57em;">
+          <view style="display: flex;-webkit-box-align: center;align-items: center;">
+            <view style="align-self: center;min-height: 1em;line-height: 1em;font-weight: 500;">
+              {{positive}}
+            </view>
+          </view>
+        </view>
+
+      </view>
+
+
+    </view>
+
+  </view>
+
+  <view  bindtap="close"  style="position: fixed;top: 0;bottom: 0;left: 0;right: 0;z-index: 1;cursor: pointer;background-color: rgba(0,0,0,0.8);">
+    <view style="padding: 0;border: none;outline: none;font: inherit;text-transform: inherit;color: inherit;background: transparent;cursor: pointer;position: fixed;top: 0;left: 0;height: 2rpx;width: 2rpx;">
+    </view>
+  </view>
+</view>

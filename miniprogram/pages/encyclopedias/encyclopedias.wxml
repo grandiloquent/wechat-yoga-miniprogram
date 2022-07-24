@@ -1,0 +1,26 @@
+<view class="eicukd">
+  <view class="nrtliz" wx:for="{{encyclopedias}}" data-id="{{item.id}}" wx:key="*this" bindtap="navigateToEncyclopedia">
+    <view class="zxstzx" style="position:relative">
+      <view class="ybrwls">
+        <image class="vdwgvu" src="{{ item.thumbnail }}" mode="aspectFill"></image>
+
+      </view>
+      <view class="gdadwu">
+        <view class="aycisx">
+        </view>
+        <view class="jxcayg">
+          {{item.title}}
+        </view>
+        <view class="qaakcw">
+          <view style="display:flex;font-size:24rpx;margin-top:36rpx">
+            <view wx:for="{{item.tags}}" data-src="{{item}}" catchtap="navigate"   wx:key="*this" style="border:1rpx solid #dadce0;padding:4rpx 24rpx;border-radius:32rpx">{{item}}</view>
+          </view>
+        </view>
+
+      </view>
+
+    </view>
+
+  </view>
+
+</view>

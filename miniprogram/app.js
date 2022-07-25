@@ -81,7 +81,7 @@ App({
   },
   globalData: {
     openid: null,
-    host: 'https://lucidu.cn',
+    host: 'http://localhost:8080',
     staticHost: 'https://static.lucidu.cn'
   },
 });

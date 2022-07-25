@@ -144,7 +144,7 @@ Page({
 	previewCover() {
 		wx.previewImage({
 			urls: [
-				`${app.globalData.staticHost}/images/${this.data.coach.thumbnail}`
+				`${app.globalData.staticHost}/images/${this.data.teacher.thumbnail}`
 			]
 		})
 	}

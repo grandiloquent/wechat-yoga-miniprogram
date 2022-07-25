@@ -1,5 +1,3 @@
-// pages/vipList.js
-const shared = require('../../shared');
 const app = getApp();
 
 Page({
@@ -7,16 +5,35 @@ Page({
     app
   },
   onLoad(options) {
+    if (!app.globalData.configs) {
+            app.globalData.ready = () => {
+                this.setData({
+                    app
+                })
+            }
+        }
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     });
-    shared.fetch(this, "card/2", [], "cards");
+    wx.request({
+      url:`${app.globalData.host}/api/card?mode=1`,
+      //method:'POST',
+      //data,
+      success: res => {
+        //resolve(res)
+        this.setData({
+        obj:res.data
+        })
+      },
+      fail: err => {
+        //reject(err)
+      }
+    })
   },
   onShareAppMessage() {
     return {
       title: '会员卡'
     }
   }
-
 })

@@ -1,7 +1,6 @@
 // pages/encyclopedia/index.js
 const app = getApp()
 const request = require('../../request');
-
 Page({
   data: {
     app
@@ -18,8 +17,7 @@ Page({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     });
-    const id = options.id || 1;
-
+    const id = options.id || 3;
     request.encyclopedia(app.globalData.host, id, res => {
       this.setData({
         data: res
@@ -29,11 +27,10 @@ Page({
       })
     });
   },
-
   navigate(e) {
     const src = e.currentTarget.dataset.src;
     wx.navigateTo({
-      url:`/pages/encyclopedias/encyclopedias?tag=${src}`
+      url: `/pages/encyclopedias/encyclopedias?tag=${src}`
     })
   },
   handleNavigate() {

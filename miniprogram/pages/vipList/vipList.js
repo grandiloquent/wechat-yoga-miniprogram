@@ -18,16 +18,10 @@ Page({
     });
     wx.request({
       url:`${app.globalData.host}/api/card?mode=1`,
-      //method:'POST',
-      //data,
       success: res => {
-        //resolve(res)
         this.setData({
-        obj:res.data
+        cards:res.data
         })
-      },
-      fail: err => {
-        //reject(err)
       }
     })
   },

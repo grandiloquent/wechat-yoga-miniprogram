@@ -1,91 +1,20 @@
 App({
 
     async onLaunch() {
-
-        const {
-            screenWidth,
-            // 顶部状态细条
-            statusBarHeight
-        } = wx.getSystemInfoSync();
-        // 胶囊按钮
-        const {
-            height,
-            top,
-            right
-        } = wx.getMenuButtonBoundingClientRect();
-        // 左边内边距
-        const paddingLeft = screenWidth - right;
-        // 顶部减去状态栏的高度再乘以2得到导航栏的高度
-        this.globalData.navHeight = (top - statusBarHeight) * 2 + height;
-        this.globalData.navTop = statusBarHeight;
-        this.globalData.navLeft = paddingLeft
+        getNavigationBarSize(this.globalData)
         checkUpdate();
-        wx.request({
-            url: `${this.globalData.host}/api/configs`,
-            success: res => {
-                if (res.statusCode === 200) {
-                    this.globalData.configs = res.data;
-                    this.globalData.ready && this.globalData.ready();
-                } else {
-                    wx.showToast({
-                        title: "网络不稳定",
-                        icon: "error"
-                    })
-                }
-            },
-            fail: err => {
-                wx.showToast({
-                    title: "网络不稳定",
-                    icon: "error"
-                });
-            }
-        })
-        try {
-            const res = await wx.getStorage({
-                key: 'openid'
-            });
-            if (res.data) {
-                this.globalData.openid = res.data;
-                return;
-            }
-        } catch (error) {
-        }
-        if (!wx.cloud) {
-            console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-        } else {
-            wx.cloud.init({
-                env: 'cloud1-5gwr0r4t1ffd2b12',
-                traceUser: true,
-            });
-        }
-        this.addUser();
+        loadSettings(this.globalData)
+        await tryLoadOpenId(this.globalData);
+        initializeCloud();
+        trySaveOpenId(this.globalData)
+    },
 
-    },
-    addUser() {
-        wx.cloud.callFunction({
-            name: "login",
-            success: res => {
-                this.globalData.openid = res.result.openid;
-                wx.setStorage({
-                    key: "openid",
-                    data: this.globalData.openid
-                });
-            },
-            fail(err) {
-                wx.showToast({
-                    title: '请求失败，请重试',
-                    icon: 'none'
-                })
-            }
-        });
-    },
     globalData: {
         openid: null,
         host: 'https://lucidu.cn',
         staticHost: 'https://static.lucidu.cn'
     },
 });
-
 function checkUpdate() {
     const updateManager = wx.getUpdateManager();
     updateManager.onUpdateReady(function () {
@@ -99,5 +28,81 @@ function checkUpdate() {
                 }
             }
         })
+    });
+}
+function getNavigationBarSize(obj) {
+    const {
+        screenWidth,
+        // 顶部状态细条
+        statusBarHeight
+    } = wx.getSystemInfoSync();
+    // 胶囊按钮
+    const {
+        height,
+        top,
+        right
+    } = wx.getMenuButtonBoundingClientRect();
+    // 左边内边距
+    const paddingLeft = screenWidth - right;
+    // 顶部减去状态栏的高度再乘以2得到导航栏的高度
+    obj.navHeight = (top - statusBarHeight) * 2 + height;
+    obj.navTop = statusBarHeight;
+    obj.navLeft = paddingLeft
+}
+function initializeCloud() {
+    wx.cloud && wx.cloud.init({
+        env: 'cloud1-5gwr0r4t1ffd2b12',
+        traceUser: true,
+    });
+}
+function loadSettings(obj) {
+    wx.request({
+        url: `${obj.host}/api/configs`,
+        success: res => {
+            if (res.statusCode === 200) {
+                obj.configs = res.data;
+                obj.ready && obj.ready();
+            } else {
+                wx.showToast({
+                    title: "网络不稳定",
+                    icon: "error"
+                })
+            }
+        },
+        fail: err => {
+            wx.showToast({
+                title: "网络不稳定",
+                icon: "error"
+            });
+        }
+    })
+}
+async function tryLoadOpenId(obj) {
+    try {
+        const res = await wx.getStorage({
+            key: 'openid'
+        });
+        if (res.data) {
+            obj.openid = res.data;
+        }
+    } catch (error) {
+    }
+}
+function trySaveOpenId(globalData) {
+    wx.cloud.callFunction({
+        name: "login",
+        success: res => {
+            globalData.openid = res.result.openid;
+            wx.setStorage({
+                key: "openid",
+                data: res.result.openid
+            });
+        },
+        fail(err) {
+            wx.showToast({
+                title: '请求失败，请重试',
+                icon: 'none'
+            })
+        }
     });
 }

@@ -6,3 +6,6 @@
 
 <img src="/images/扫码_搜索联合传播样式-标准色版.png">
 
+## 公众号页面在线预览
+
+http://wxyoga.cn

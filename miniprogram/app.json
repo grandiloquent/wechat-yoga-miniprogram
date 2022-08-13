@@ -20,7 +20,6 @@
     "pages/lessons/lessons",
     "pages/physicalExamination/physicalExamination",
     "pages/private/private",
-    "pages/qr/index",
     "pages/teacher/class",
     "pages/teacher/todayClass",
     "pages/ui/index",

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程管理</title>
+    <link rel="stylesheet" href="lesson.css">
+</head>
+
+<body>
+<div style="background: #fff">
+    <custom-header title="课程管理"></custom-header>
+</div>
+
+<custom-action id="field-name">
+    <svg slot="svg" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M11.016 20.016l3.984-4.031h6v4.031h-9.984zM6.188 18l8.672-8.672-1.219-1.219-8.625 8.672v1.219h1.172zM18.422 5.813q0.609 0.609 0.609 1.406t-0.609 1.406l-11.391 11.391h-4.031v-4.078q11.25-11.203 11.391-11.344 0.609-0.609 1.406-0.609t1.406 0.609z"></path>
+    </svg>
+    <span slot="text"></span>
+</custom-action>
+<custom-action id="field-description">
+    <svg slot="svg" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M11.016 20.016l3.984-4.031h6v4.031h-9.984zM6.188 18l8.672-8.672-1.219-1.219-8.625 8.672v1.219h1.172zM18.422 5.813q0.609 0.609 0.609 1.406t-0.609 1.406l-11.391 11.391h-4.031v-4.078q11.25-11.203 11.391-11.344 0.609-0.609 1.406-0.609t1.406 0.609z"></path>
+    </svg>
+    <span slot="text"
+          style="display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1; overflow: hidden;text-overflow: ellipsis;">未设置描述</span>
+</custom-action>
+<hr style="border-top: solid 1px #dadce0;border-bottom: 0;margin: 0">
+<div style="margin: 18px 16px 0;">
+    <custom-uploader max="1" uri="http://lucidu.cn/api/article/2" host="https://static.lucidu.cn/images">
+        <span slot="subtitle">添加有用的照片，如能展现课程特征的照片</span>
+    </custom-uploader>
+</div>
+<hr style="border-top: solid 1px #dadce0;border-bottom: 0;margin: 0">
+<div style="margin: 18px 16px 0;">
+    <custom-uploader id="uploader" max="20" uri="http://lucidu.cn/api/article/2" host="https://static.lucidu.cn/images">
+        <span slot="subtitle">添加有用的照片，如能展现课程风采的照片</span>
+    </custom-uploader>
+</div>
+<script src="../shared.js"></script>
+<script src="../components/uploader.js"></script>
+<script src="../components/action.js"></script>
+<script src="../components/search.js"></script>
+<script src="../components/header.js"></script>
+<script src="../components/input.js"></script>
+<script src="lesson.js"></script>
+</body>
+
+</html>

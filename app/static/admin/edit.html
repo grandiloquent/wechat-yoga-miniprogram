@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>更新课程</title>
+    <link rel="stylesheet" href="edit.css">
+</head>
+
+<body>
+    <custom-sticky-header title="更新课程"></custom-sticky-header>
+    <div style="margin-top: 48px;">
+        <custom-cell class="lesson_name" key="课程" value="阴瑜伽"></custom-cell>
+        <!-- <custom-cell class="date_time" key="开课日期" value=""></custom-cell> -->
+        <custom-cell class="start_time" key="开课时间" value=""></custom-cell>
+        <custom-cell class="end_time" key="下课时间" value=""></custom-cell>
+        <custom-cell class="teacher_name" key="老师" value=""></custom-cell>
+        <custom-cell class="peoples" key="人数" value=""></custom-cell>
+
+    </div>
+    <custom-submit-bar></custom-submit-bar>
+
+    <custom-toast id="toast"></custom-toast>
+    <div id="items"></div>
+    
+    <script src="../shared.js"></script>
+    <script src="../api.js"></script>
+    <script src="../components/options.js"></script>
+    <script src="../components/select.js"></script>
+    <script src="../components/submit-bar.js"></script>
+    <script src="../components/cell.js"></script>
+    <script src="../components/sticky-header.js"></script>
+    <script src="../components/toast.js"></script>
+    <script src="../components/search.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="edit.js"></script>
+</body>
+
+</html>

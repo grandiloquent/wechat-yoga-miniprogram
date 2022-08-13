@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瑜伽约课工具</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <custom-news></custom-news>
+    <div style="background-color: #fff;height: 48px;position:relative;display: none">
+        <div
+            style="line-height: 20px;justify-content: center;display: flex;font-size: 14px;padding-left: 8px;flex-direction: column;box-sizing: border-box;width: 100%">
+            <h1 style="padding-top: 8px">瑜伽约课工具</h1>
+            <div id="slider" style="font-size: 10px;color: #999;height: 16px;overflow: hidden;position: relative">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+    <div style="background: #fff">
+        <!--幻灯片-->
+        <div id="swipe-container" style="height: 173px;position: relative;overflow: hidden">
+            <div style="position: relative;width: 100%;height: 100%;top:0;left: 0;overflow: hidden">
+            </div>
+            <div id="indicators">
+            </div>
+        </div>
+        <!--幻灯片-->
+    </div>
+    <div class="functions-wrapper">
+        <custom-sheet></custom-sheet>
+        <div id="functions"></div>
+    </div>
+    <div class="gift">
+        <div class="gift-text">
+            体验瑜伽课程 相遇健康美丽
+        </div>
+        <div class="gift-button">
+            去看看
+        </div>
+    </div>
+    <div class="divider" style="margin-top: 10px">
+    </div>
+    <div class="teacher-wrapper">
+        <custom-section-header title="专业教练" src="https://static.lucidu.cn/images/yoga.png"></custom-section-header>
+
+        <div id="teachers" style="width: 100%;display: flex;flex-direction: row;overflow-x: auto;padding-bottom: 28px;">
+        </div>
+    </div>
+    <div class="divider">
+    </div>
+    <div id="market">
+    </div>
+    <div class="divider">
+    </div>
+    <div class="notice-wrapper">
+        <custom-section-header title="公告" src="https://static.lucidu.cn/images/announcement.png">
+        </custom-section-header>
+        <div id="notice" style="display: flex;margin: 0 16px;flex-direction: column;">
+        </div>
+    </div>
+    <div class="divider">
+    </div>
+    <div class="copyright">
+        版权归瑜伽约课工具所有
+    </div>
+    <custom-bottom selected="1"></custom-bottom>
+    <div style="height:49px"></div>
+    <script src="components/sheet.js"></script>
+    <script src="components/section-header.js"></script>
+    <script src="components/bottom.js"></script>
+    <script src="libraries/calendar.js"></script>
+    <script src="libraries/swipe.js"></script>
+    <script src="index.js"></script>
+    <script src="components/news.js"></script>
+</body>
+
+</html>

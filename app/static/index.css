@@ -1,0 +1,257 @@
+html {
+    word-wrap: break-word;
+    color: #030303;
+    background-color: #fff;
+    -webkit-text-size-adjust: 100%
+}
+
+body {
+    margin: 0;
+    padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    font-size: 1.2rem;
+    overflow-x: hidden
+}
+
+input,
+textarea {
+    background-color: transparent;
+    padding-bottom: 4px;
+    outline: none;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 1px;
+    font: inherit;
+    color: #030303
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+    color: #606060;
+    opacity: 1
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #606060;
+    opacity: 1
+}
+
+textarea {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 8.4rem;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px
+}
+
+input {
+    border-bottom: 1px solid #737373;
+    text-overflow: ellipsis
+}
+
+input:focus {
+    margin-bottom: 0;
+    border-bottom-width: 2px;
+    border-bottom-color: #030303
+}
+
+form {
+    margin: 0
+}
+
+a {
+    color: currentColor;
+    text-decoration: none
+}
+
+strong,
+b {
+    font-weight: 500
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0 0 3px
+}
+
+h1,
+h2,
+h3,
+h4,
+.subhead {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    max-height: 2.5em;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    font-weight: normal
+}
+
+h2 {
+    font-size: 1.8rem
+}
+
+h3 {
+    font-size: 1.4rem
+}
+
+h4 {
+    font-size: 1.3rem
+}
+
+.subhead {
+    opacity: .6
+}
+
+img {
+    min-width: 1px;
+    min-height: 1px;
+    -webkit-filter: none;
+    filter: none
+}
+
+.background-image {
+    -webkit-filter: none;
+    filter: none
+}
+
+.bottom-fade {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.7) 90%)
+}
+
+img:not([src]) {
+    visibility: hidden
+}
+
+:focus {
+    outline: none
+}
+
+.option {
+    background-color: #fff
+}
+
+.title {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: normal
+}
+
+p {
+    margin: 8px 0;
+    line-height: 1.25
+}
+
+#slider > div {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 16px;
+}
+
+#teachers::-webkit-scrollbar {
+    display: none;
+}
+
+#market > div {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+#market {
+    user-select: none;
+    height: 48px;
+    margin: 16px;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative
+}
+
+
+.functions-wrapper {
+    user-select: none;
+    padding: 0 0 10px;
+    margin-top: 8px;
+    position: relative;
+    background-color: white;
+}
+
+.divider {
+    height: 10px;
+    background-color: #f7f8fa;
+}
+.copyright {
+    display: flex;
+    justify-content: center;
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.35);
+    padding: 30px 0 16px;
+    background-color: #f7f8fa;
+}
+.notice-wrapper {
+    user-select: none;
+    background: #fff;
+    padding-bottom: 16px;
+    color: #333;
+}
+.teacher-wrapper {
+    background: #fff;
+    color: #333;
+    user-select: none;
+}
+
+#indicators {
+    position: absolute;
+    bottom: 16px;
+    display: flex;
+    align-items: center;
+    left: 50%;
+    transform: translateX(-50%)
+}
+
+.gift {
+    height: 45px;
+    user-select: none;
+    background-size: 100%;
+    padding: 0 4px 0 15vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+    margin: 0 10px;
+    background-repeat: no-repeat;
+    background-image: url('https://static.lucidu.cn/images/sign_3.gif');
+}
+.gift-button {
+    width: 67px;
+    height: 24px;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #fff;
+    line-height: 24px;
+    text-align: center;
+    margin-right: 12px;
+    background: linear-gradient(90deg, #ff973c 0%, #fc360c 100%);
+}
+
+.gift-text {
+    flex: 1;
+    font-size: 14px;
+    color: #777060
+}

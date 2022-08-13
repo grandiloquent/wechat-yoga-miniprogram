@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+    <div style="padding: 0 12px;position:relative">
+        <div class="header">
+          <div id="go-back-button">
+            <svg style="width: 24px; height: 24px; fill: currentColor;" viewBox="0 0 24 24">
+              <path d="M11.672 3.891l-8.109 8.109 8.109 8.109-1.781 1.781-9.891-9.891 9.891-9.891z">
+              </path>
+            </svg>
+          </div>
+          <div class="title">
+            登录
+          </div>
+        </div>
+        <div class="input-wrapper">
+          <input id="phone" class="input" placeholder="请输入手机号码" />
+          <div class="clear">
+          </div>
+        </div>
+        <div class="input-wrapper">
+          <input id="captcha" disabled class="input" placeholder="请输入验证码" />
+          <div class="clear" style="margin-right: 12px;">
+          </div>
+          <div class="verification">
+            获取验证码
+          </div>
+        </div>
+        <div id="notice" class="notice">
+        </div>
+        <div class="button">
+          登 录
+        </div>
+      </div>
+
+
+<custom-toast id="toast"></custom-toast>
+
+<script src="components/toast.js"></script>
+<script src="login.js"></script>
+</body>
+
+</html>

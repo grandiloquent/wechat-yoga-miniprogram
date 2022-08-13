@@ -1,0 +1,67 @@
+html,
+body,
+h1 {
+    font-family: Roboto, Helvetica Neue, Arial, sans-serif;
+}
+
+head,
+body,
+head *,
+body * {
+    max-height: 999999px;
+}
+
+body,
+h1 {
+    font-size: small;
+}
+
+body {
+    margin: 0;
+    background: #fff;
+    color: #4d5156;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+
+textarea {
+    outline: 0;
+    border: none;
+    resize: none;
+    width: 100%;
+    flex-grow: 1;
+    padding: 7px 10px;
+    font-size: 14px;
+    line-height: 28px;
+    box-sizing: border-box;
+    color: #333;
+    font-family: Consolas, 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
+}
+
+.buttons {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #f1f3f4;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1
+}
+
+.button > svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.button-text {
+    font-size: 12px;
+    padding: 0 4px;
+}

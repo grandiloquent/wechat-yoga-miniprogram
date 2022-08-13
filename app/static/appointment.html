@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预约课程</title>
+    <link rel="stylesheet" href="appointment.css">
+</head>
+
+<body style="display: flex;flex-direction: column;height:100vh;">
+<div
+        style="width: 100vw;background-color: #fff;display: flex;align-items: center;height: 48px;display: flex;align-items: center;padding-top:8px">
+    <custom-switcher first-name="本周" second-name="下周"></custom-switcher>
+</div>
+<custom-week-tab></custom-week-tab>
+
+<div style="height: 8px;background-color: #f1f3f4;">
+</div>
+<div id="items">
+
+</div>
+<div id="empty"
+     style="display:none;flex-direction: column;align-items: center;justify-content: center;flex-grow: 1;">
+    <img style="width: 64px;height: 64px;margin-bottom: 32px;" src="https://static.lucidu.cn/images/smile.svg">
+    <div style="color: rgba(0, 0, 0, 0.35);">
+        假日注意休息
+    </div>
+</div>
+<custom-bottom selected="2"></custom-bottom>
+<div style="height:49px"></div>
+<custom-toast id="toast"></custom-toast>
+<script src="shared.js"></script>
+<script src="api.js"></script>
+<script src="components/dialog.js"></script>
+<script src="components/toast.js"></script>
+<script src="components/week-tab.js"></script>
+<script src="components/item-header.js"></script>
+<script src="components/item.js"></script>
+<script src="components/switcher.js"></script>
+<script src="components/bottom.js"></script>
+<script src="appointment.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+html, body, h1 {
+    font-family: Roboto, Helvetica Neue, Arial, sans-serif;
+}
+
+head, body, head *, body * {
+    max-height: 999999px;
+}
+
+body, h1 {
+    font-size: small;
+}
+
+body {
+    margin: 0;
+    background: #fff;
+    color: #4d5156;
+}
+
+.items {
+    padding: 16px;
+    font-size: 12px;
+    color: #5f6368;
+}
+
+.item {
+    flex-grow: 1;
+    align-items: center;
+    border-top: 1px solid #dadce0;
+    color: rgba(0, 0, 0, .87);
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+}
+.item-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.item-subtitle {
+    flex-shrink: 0;
+    color: rgba(0, 0, 0, .35)
+}
+
+

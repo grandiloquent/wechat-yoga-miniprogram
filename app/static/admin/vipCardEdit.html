@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加会员卡</title>
+    <link rel="stylesheet" href="edit.css">
+</head>
+
+<body style="overscroll-behavior-y: contain;">
+    <custom-sticky-header title="添加会员卡"></custom-sticky-header>
+    <div style="margin-top: 48px;">
+        <custom-cell class="user_name" key="会员" value="未设置"></custom-cell>
+        <custom-cell class="lesson_name" key="会员卡" value="未设置"></custom-cell>
+        <!-- <custom-cell class="date_time" key="开课日期" value=""></custom-cell> -->
+        <custom-cell class="start_time" key="生效日期" value="未设置"></custom-cell>
+        <custom-cell class="end_time" key="失效时期" value="未设置"></custom-cell>
+         
+        <custom-cell class="peoples" key="约课次数" value="未设置"></custom-cell>
+
+    </div>
+    <custom-submit-bar></custom-submit-bar>
+    <script src="../shared.js"></script>
+ 
+    <custom-toast id="toast"></custom-toast>
+    <script src="../components/picker.js"></script>
+    <script src="../api.js"></script>
+    <script src="../components/options.js"></script>
+    <script src="../components/select.js"></script>
+    <script src="../components/submit-bar.js"></script>
+    <script src="../components/cell.js"></script>
+    <script src="../components/sticky-header.js"></script>
+    <script src="../components/toast.js"></script>
+    <script src="../components/search.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="vipCardEdit.js"></script>
+</body>
+
+</html>

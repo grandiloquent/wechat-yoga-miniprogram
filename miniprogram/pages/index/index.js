@@ -37,47 +37,14 @@ Page({
                 })
             }
         }
+        applyBasicSettings();
         const t = new Date();
         this.setData({
             date: calendar.solar2lunar(t.getFullYear(), t.getMonth() + 1, t.getDate())
         });
-        wx.showShareMenu({
-            withShareTicket: true,
-            menus: ['shareAppMessage', 'shareTimeline']
-        })
-        wx.request({
-            url: `${app.globalData.host}/api/coach?mode=1`,
-            success: res => {
-                if (res.statusCode === 200) {
-                    this.setData({
-                        coaches: res.data.sort(() => Math.random() - 0.5)
-                    })
-                }
-            }
-        });
-        wx.request({
-            url: `${app.globalData.host}/api/notice?mode=1`,
-            success: res => {
-                if (res.statusCode === 200) {
-                    this.setData({
-                        announcements: res.data
-                    })
-                }
-            }
-        });
-        wx.request({
-            url: `${app.globalData.host}/api/reservation?mode=4`,
-            //method:'POST',
-            //data,
-            success: res => {
-                this.setData({
-                    prompts: res.data
-                })
-            },
-            fail: err => {
-                //reject(err)
-            }
-        })
+        loadData(this, `${app.globalData.host}/api/teachers.query`, 'coaches');
+        loadData(this, `${app.globalData.host}/api/reservation.query.market`, 'prompts');
+        loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements');
     },
     onShareAppMessage() {
         return {
@@ -136,3 +103,30 @@ function formatWeatherInfo(obj) {
     // }[obj['wind_direction']] + obj['wind_power'] + "级" + " • 湿度" +
     // obj['humidity'] + "%"
 }
+
+function fetchData(url, action) {
+    wx.request({
+        url,
+        success: res => {
+            action(res.data)
+        },
+        fail: err => {
+        }
+    })
+}
+
+function applyBasicSettings() {
+    wx.showShareMenu({
+        withShareTicket: true,
+        menus: ['shareAppMessage', 'shareTimeline']
+    })
+}
+
+function loadData(page, url, key) {
+    fetchData(url, (data) => {
+        page.setData({
+            [key]: data
+        })
+    })
+}
+

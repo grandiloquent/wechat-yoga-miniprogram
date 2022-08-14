@@ -44,7 +44,12 @@ Page({
         });
         loadData(this, `${app.globalData.host}/api/teachers.query`, 'coaches');
         loadData(this, `${app.globalData.host}/api/reservation.query.market`, 'prompts');
-        loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements');
+        loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements', (data) => {
+            return data.map(x => {
+                x.update = formatDateTime(x.updated_time);
+                return x;
+            })
+        });
     },
     onShareAppMessage() {
         return {
@@ -80,6 +85,24 @@ Page({
     },
 });
 
+function applyBasicSettings() {
+    wx.showShareMenu({
+        withShareTicket: true,
+        menus: ['shareAppMessage', 'shareTimeline']
+    })
+}
+
+function fetchData(url, action) {
+    wx.request({
+        url,
+        success: res => {
+            action(res.data)
+        },
+        fail: err => {
+        }
+    })
+}
+
 function fetchWeatherInfo(action) {
     wx.request({
         url: "https://wis.qq.com/weather/common?source=xw&refer=h5&weather_type=observe&province=%E6%B9%96%E5%8D%97%E7%9C%81&city=%E9%95%BF%E6%B2%99%E5%B8%82",
@@ -104,29 +127,17 @@ function formatWeatherInfo(obj) {
     // obj['humidity'] + "%"
 }
 
-function fetchData(url, action) {
-    wx.request({
-        url,
-        success: res => {
-            action(res.data)
-        },
-        fail: err => {
-        }
-    })
-}
-
-function applyBasicSettings() {
-    wx.showShareMenu({
-        withShareTicket: true,
-        menus: ['shareAppMessage', 'shareTimeline']
-    })
-}
-
-function loadData(page, url, key) {
+function loadData(page, url, key, action) {
     fetchData(url, (data) => {
         page.setData({
-            [key]: data
+            [key]: action ? action(data) : data
         })
     })
 }
 
+function formatDateTime(seconds) {
+    const date = new Date(seconds * 1000);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return date.getFullYear() + "-" + (month >= 10 ? month : '0' + month) + "-" + (day >= 10 ? day : '0' + day);
+}

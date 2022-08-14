@@ -26,13 +26,13 @@
 }
 
 /* 专业教练 */
-.professional-coach {
+.teachers {
     background: #fff;
     /* padding-bottom: 12rpx; */
     color: #333;
 }
 
-.professional-coach-container {
+.teachers-container {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -40,11 +40,11 @@
     padding-bottom: 56rpx;
 }
 
-.professional-coach-container::-webkit-scrollbar {
+.teachers-container::-webkit-scrollbar {
     display: none;
 }
 
-.professional-coach-description {
+.teachers-description {
     font-size: 24rpx;
     margin-top: 24rpx;
     display: -webkit-box;
@@ -56,7 +56,7 @@
     text-overflow: ellipsis;
 }
 
-.professional-coach-item {
+.teachers-item {
     width: 200rpx;
     display: flex;
     align-items: center;
@@ -66,20 +66,20 @@
     flex-shrink: 0;
 }
 
-.professional-coach-thumbnail {
+.teachers-thumbnail {
     width: 160rpx;
     height: 160rpx;
     border-radius: 50%;
 }
 
-.professional-coach-title {
+.teachers-title {
     display: flex;
     align-items: center;
     font-size: 24rpx;
     margin-top: 24rpx;
 }
 
-.professional-coach-type {
+.teachers-type {
     color: #749b15;
     flex-shrink: 0;
 }
@@ -160,13 +160,13 @@ category-title
 market-action
 notice-box
 notice-icon
-professional-coach
-professional-coach-container
-professional-coach-description
-professional-coach-item
-professional-coach-thumbnail
-professional-coach-title
-professional-coach-type
+teachers
+teachers-container
+teachers-description
+teachers-item
+teachers-thumbnail
+teachers-title
+teachers-type
 sliding-container
 sliding-image
 sliding-item
@@ -192,25 +192,25 @@ weather-location
     margin: 60rpx 0 32rpx 0;
 }
 
-.announcement-list {
+.notices {
     display: flex;
     margin: 0 32rpx;
     flex-direction: column;
 }
 
-.announcement-item-title {
+.notice-item-title {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.announcement-item-subtitle {
+.notice-item-subtitle {
     color: #ccc;
     flex-shrink: 0;
 }
 
-.announcement-item {
+.notice-item {
     font-size: 28rpx;
     display: flex;
     justify-content: space-between;
@@ -307,17 +307,35 @@ weather-location
     font-weight: 500;
 }
 
-.asdjfo {
+.header {
     width: 100vw;
     background-color: #fff;
     /* box-sizing: border-box;padding-left: {{paddingLeft}}px; */
 }
 
-.gakefo {
+.header-container {
     line-height: 40rpx;
     justify-content: center;
     display: flex;
     font-size: 28rpx;
     padding-left: 16rpx;
     flex-direction: column;
+}
+
+.header-swiper {
+    font-size: 20rpx;
+    color: #999;
+    height: 32rpx;
+}
+
+.teacher-name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+}
+
+.divider--hairline-right {
+    margin: 0 0 0 32rpx;
 }

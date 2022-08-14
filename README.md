@@ -8,4 +8,4 @@
 
 ## 公众号页面在线预览
 
-http://wxyoga.cn
+https://lucidu.cn

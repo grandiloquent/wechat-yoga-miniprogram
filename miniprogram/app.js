@@ -11,7 +11,7 @@ App({
 
     globalData: {
         openid: null,
-        host: 'http://localhost:9000',
+        host: 'https://lucidu.cn',
         staticHost: 'https://static.lucidu.cn'
     },
 });

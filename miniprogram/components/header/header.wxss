@@ -1,12 +1,12 @@
 .header {
-  -webkit-tap-highlight-color: transparent;
-  position: relative;
-  border-radius: 0 0 32rpx 32rpx;
-  box-shadow: 0 4rpx 4rpx 0 rgba(60, 64, 67, 0.3),
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    border-radius: 0 0 32rpx 32rpx;
+    box-shadow: 0 4rpx 4rpx 0 rgba(60, 64, 67, 0.3),
     0 4rpx 12rpx -12rpx rgba(60, 64, 67, 0.15);
-  padding: 24rpx 32rpx 32rpx;
-  margin: 0 0 32rpx;
-  box-sizing: border-box;
-  background-color: #fff;
-  z-index: 1;
+    padding: 24rpx 32rpx 32rpx;
+    margin: 0 0 32rpx;
+    box-sizing: border-box;
+    background-color: #fff;
+    z-index: 1;
 }

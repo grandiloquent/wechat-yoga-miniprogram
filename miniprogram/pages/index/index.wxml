@@ -69,7 +69,7 @@
         <view class="divider--hairline"></view>
         <image class="table-icon" src="../../images/announcement.png"></image>
         <text>公告</text>
-        <view class="divider--hairline" class="divider--hairline-right"></view>
+        <view class="divider--hairline divider--hairline-right"></view>
     </view>
 
     <view class="notices">

@@ -1,8 +1,7 @@
 {
   "usingComponents": {
     "messages": "../../components/messages/messages",
-    "navigation": "../../../components/navigation/navigation",
-    "tabs": "../../components/tabs/tabs"
+    "navigation": "../../../components/navigation/navigation"
   },
   "navigationBarTitleText": "预约私教",
   "navigationStyle": "custom"

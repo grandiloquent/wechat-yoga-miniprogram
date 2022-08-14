@@ -2,7 +2,8 @@
   "usingComponents": {
     "navigation": "../../../components/navigation/navigation",
     "layout": "../../../components/layout/layout",
-    "dialog": "../../../components/dialog/dialog"
+    "dialog": "../../../components/dialog/dialog",
+    "tabs": "../../components/tabs/tabs"
   },
   "navigationBarTitleText": "日课表",
   "navigationStyle": "custom"

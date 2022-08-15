@@ -32,7 +32,7 @@ Page({
         await this.initialize();
         shared.applyBasicSettings();
         wx.request({
-            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/user/index')}`
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/user/index')}`
         })
     },
     async onLoginSuccess(res) {
@@ -50,7 +50,13 @@ Page({
             });
             return
         }
-       // await this.today();
+        await this.loadData();
+    },
+    async loadData() {
+        const obj = await fetchUser(app);
+        this.setData({
+            user: obj
+        })
     },
     onPrivateTeacherCourse(e) {
         wx.navigateTo({
@@ -91,10 +97,10 @@ Page({
 
 })
 
-function fetchUser(app, startTime) {
+function fetchUser(app) {
     return new Promise(((resolve, reject) => {
         wx.request({
-            url: `${app.globalData.host}/api/reservation.query.today?userId=${app.globalData.userInfo.id}&startTime=${startTime}&classType=4`,
+            url: `${app.globalData.host}/api/user.query?id=${app.globalData.userInfo.id}`,
             header: {
                 token: app.globalData.token
             },

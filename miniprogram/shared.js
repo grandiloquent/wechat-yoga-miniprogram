@@ -139,13 +139,13 @@ function formatLessons(lessons) {
             return x.start_time - y.start_time
         })
         for (const lesson of x[1]) {
-            if (lesson.course_id === 429) {
-                //lesson.reservation_id = 1;
-                lesson.position = 1;
-                lesson.peoples = 0;
-                lesson.start_time = 16 * 3600;
-                lesson.end_time = 17 * 3600;
-            }
+            // if (lesson.course_id === 429) {
+            //     //lesson.reservation_id = 1;
+            //     lesson.position = 1;
+            //     lesson.peoples = 0;
+            //     lesson.start_time = 16 * 3600;
+            //     lesson.end_time = 17 * 3600;
+            // }
             if (lesson.hidden === 2) {
                 lesson.mode = -1;
             } else if (lesson.date_time < seconds || (lesson.date_time === seconds &&

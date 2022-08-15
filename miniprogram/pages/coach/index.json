@@ -2,7 +2,9 @@
   "navigationBarTitleText": "教练",
   "usingComponents": {
     "login": "../../components/login/login",
-    "messages": "../../components/messages/messages",
-    "layout": "../../../components/layout/layout"
+    "item-header": "../../components/item-header/item-header",
+    "item": "../../components/item/item",
+   "copyright": "../../components/copyright/copyright"
+
   }
 }

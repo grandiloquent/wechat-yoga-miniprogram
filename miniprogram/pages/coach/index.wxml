@@ -1,137 +1,48 @@
-<wxs module="formattor">
-  module.exports = {
-    format: function (ms) {
-      var date = getDate(ms*1000);
-      var month = date.getMonth() + 1;
-      var day = date.getDate();
-      return month + "月" + day + "日";
-    }
-    ,
-    formatDuration: function (ms) {
-      var minutes = ms % 3600 / 60
-      if (minutes < 10) { minutes = "0" + minutes; }
-      return Math.floor(ms / 3600) + ':' + minutes;
-    }
-  }
-</wxs>
-<view class="cover-container">
-  <view class="cover-wrapper">
-    <image src="{{app.globalData.staticHost}}/images/{{coach.teacher.thumbnail}}" class="cover-image" bindtap="previewCover"></image>
-    <view class="cover-color-background" style="background-color:{{backgroundColor}}"></view>
-    <view class="cover-title">
-      {{coach.teacher.name}}
-    </view>
-    <view class="cover-subtitle">
-      {{coach.teacher.introduction}}
-    </view>
-  </view>
-  <view class="cover-button-group">
-    <view class="btn" bindtap="call">
-      <image src="../../images/call.svg" class="cover-icon"></image>
-      联系
-    </view>
-    <view class="btn" bindtap="jumpIntro">
-      <image src="../../images/person.svg" class="cover-icon"></image>
-      介绍
-    </view>
-  </view>
+<view class="background" style="background: {{background}}">
+    <image catchtap="onPreviewThumbnail" class="thumbnail"
+           src="{{app.globalData.staticHost}}/images/{{teacher.thumbnail}}">
+    </image>
 </view>
-<!-- <view style="height: 64rpx;display: flex;align-items: center;background: #fff;margin-top: 32rpx;padding: 32rpx 0;border-radius: 32rpx;">
-    <view style="background-color: #ddd;height: 2rpx;flex-grow: 1;"></view>
-    <view style="padding: 0 40rpx;font-size: 24rpx;color: #666;">影集</view>
-    <view style="background-color: #ddd;height: 2rpx;flex-grow: 1;"></view>
-</view> style="border-bottom: 2rpx solid #dadce0;"-->
-<view class="card" wx:if="{{coach.pictures.length}}">
-  <view class="card-title card-title-border">影集</view>
-  <view class="gallery-wrapper">
-    <view class="gallery" style="{{style}}">
-      <image wx:for="{{coach.pictures}}" style="width: 300rpx;height:300rpx;border-radius: 12rpx;flex-shrink: 0;" mode="aspectFill" data-src="{{app.globalData.staticHost}}/images/{{item}}" src="{{app.globalData.staticHost}}/images/{{item}}" bindtap="album" wx:key="id"></image>
-    </view>
-  </view>
-  <!-- <canvas style="width: 100%;height: 300rpx;"  type="2d" id="myCanvas"></canvas> -->
+
+<view class="teacher-name">
+    {{teacher.name}}
 </view>
-<view class="card">
-  <view class="card-title">
-    近 7 日课程
-  </view>
-  <view class="tabbar">
-    <view class="tabbar-item {{selectedIndex==0 && 'tabbar-name-active'}}" data-index="0" bindtap="handleTap">
-      <view class="tabbar-name" style="border-bottom-left-radius: 8rpx;border-top-left-radius: 8rpx;">
-        私教
-      </view>
-    </view>
-    <view class="tabbar-item  {{selectedIndex==1 && 'tabbar-name-active'}}" data-index="1" bindtap="handleTap">
-      <view class="tabbar-name" style="border-left: 0;border-right: 0;">
-        团课
-      </view>
-    </view>
-    <view class="tabbar-item  {{selectedIndex==2 && 'tabbar-name-active'}}" data-index="2" bindtap="handleTap">
-      <view class="tabbar-name" style="border-bottom-right-radius: 8rpx;border-top-right-radius: 8rpx;">
-        小班
-      </view>
-    </view>
-  </view>
 
-  <view style="padding: 0 16rpx;">
-    <view  class="item" wx:for="{{coach.lessons}}" wx:key="id" data-mode="{{item.mode}}">
-      <view style="display: flex;justify-content: center;margin: 32rpx 32rpx 32rpx 0 ;">
-        <image style="overflow: hidden;position: relative;border-radius: 16rpx;background-color: #f8f9fa;height: 184rpx;width: 184rpx;" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}">
-        </image>
-      </view>
-      <view style="flex-grow: 1;width: 0;position: relative;padding: 32rpx 0 80rpx;">
-        <view style="font-size: 24rpx;font-weight: 400;line-height: 32rpx;overflow: hidden;text-align: left;text-overflow: ellipsis;white-space: nowrap;margin-bottom: 16rpx;display: flex;justify-content: space-between;">
-          {{formattor.formatDuration( item.start_time)}}-{{formattor.formatDuration(item.end_time)}}
-
-        </view>
-
-        <view data-id="{{item.course_id}}" bindtap="onLesson" style="display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;white-space: normal;-webkit-line-clamp: 3;">
-          {{item.lesson_name}}
-        </view>
-
-        <view style="overflow: hidden;text-overflow: ellipsis;color: #70757a;line-height: 32rpx;position: absolute;width: calc(100% - 64rpx);padding: 0 32rpx;font-size: 24rpx;left: -32rpx;bottom: 32rpx;">
-
-          {{formattor.format(item.date_time)}}
-          <!-- <text wx:elif="{{!(item.mode&1)}}">已预约 {{item.booked}}/{{item.peoples}}</text> -->
-        </view>
-        <view catchtap="book" wx:if="{{item.mode&8}}" data-id="{{item.course_id}}" data-time="{{item.date_time}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #1558d6;">
-          预约
-        </view>
-
-        <view catchtap="handleDeleteAppointment" data-reservationId="{{item.reservation_id}}" wx:if="{{item.mode&2}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
-          取消预约
-        </view>
-        <view wx:if="{{item.mode&16}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
-          准备上课
-        </view>
-        <view wx:if="{{item.mode&32}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
-          正在上课
-        </view>
-        <view wx:if="{{item.mode&128}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
-          已满额
-        </view>
-        <view wx:if="{{item.mode&1}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;bottom: 0rpx;color: #70757a;">
-          已完成
-        </view>
-        <view catchtap="onSign" data-reservationId="{{item.reservation_id}}" wx:if="{{item.mode & 4}}" style="position: absolute;padding:32rpx 32rpx 32rpx 34rpx;font-size: 30rpx;right: -32rpx;top: 0rpx;color: #1558d6;">
-          签到
-        </view>
-      </view>
-
-    </view>
-  </view>
-
-  <view wx:if="{{!coach.lessons.length}}" style="display: flex;align-items: center;justify-content: center;height: 20vh;color:#9aa0a6;font-size: 32rpx;">
-    老师尚未排课
-  </view>
+<view class="introduction">
+    {{teacher.introduction}}
 </view>
-<view style="height: 120rpx;"></view>
-<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{openid}}" bind:success="onSuccess"></login>
-
-<messages bind:submitData="onSubmitData" active="{{messagesActive}}" message="{{message}}"></messages>
 
 
-<layout active="{{active}}" titleModal="签到">
-  <view style="display: flex;align-items: center;justify-content: center;flex-direction: column;height: 100%;">
-    <image style="width: 300rpx;height: 300rpx;" src="{{image}}"></image>
-  </view>
-</layout>
+<view class="buttons">
+    <view catchtap="onMakePhoneCall" class="button">
+        <view class="svg phone">
+        </view>
+        <div>联系</div>
+    </view>
+    <view catchtap="onIntro" class="button">
+        <view class="svg intro">
+        </view>
+        <div>简介</div>
+    </view>
+</view>
+
+<view class="divider">
+</view>
+<block wx:if="{{lessons && lessons.length}}">
+    <item-header wx:for="{{lessons}}" wx:key="*this" title="{{item[0]}}">
+        <item wx:for="{{item[1]}}" wx:key="index" bind:head="onHeadTap" mode="{{item.mode}}" id="{{item.course_id}}"
+              subhead="{{item.subhead}}"
+              head="{{item.lesson_name}}"
+              thumbnail="{{item.thumbnail}}"></item>
+    </item-header>
+</block>
+<block wx:else>
+    <view style="background: #fff;border-top: 16rpx solid #f1f3f4;display: flex;align-items: center;flex-grow: 1;justify-content: center;flex-direction: column">
+        <image style="height: 128rpx;width: 128rpx;margin-bottom: 64rpx"
+               src="https://static.lucidu.cn/images/smile.svg"></image>
+        <view style="color: rgba(0,0,0,.35)">
+            假日注意休息
+        </view>
+    </view>
+</block>
+<copyright></copyright>

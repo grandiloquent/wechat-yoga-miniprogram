@@ -1,10 +1,5 @@
 const app = getApp();
-const deleteAppointment = require('/deleteAppointment');
-const bookLesson = require('/bookLesson');
-const request = require('../../request');
-const setCourseStatus = require('/setCourseStatus');
 const shared = require('../../shared')
-const {transform} = require("../../shared");
 
 Page({
     async onTabSubmit(evt) {

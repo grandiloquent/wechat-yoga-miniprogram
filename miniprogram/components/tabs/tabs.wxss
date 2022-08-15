@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     font-size: 24rpx;
-    padding: 28rpx 24rpx 32rpx;
+    padding: 0 24rpx 0;
     background: rgb(255, 255, 255);
     position: relative;
 }
@@ -15,6 +15,7 @@
 .wrapper > view {
     width: 100%;
     text-align: center;
+    padding: 26rpx 0 32rpx;
 }
 
 .active {
@@ -35,4 +36,6 @@
     border-top-right-radius: 6rpx;
     background-color: rgb(26, 115, 232);
     transition: left 0.15s cubic-bezier(0.4, 0, 1, 1) 0s, width 0.15s cubic-bezier(0.4, 0, 1, 1) 0s;
+    padding: 0!important;
+    width: 0;
 }

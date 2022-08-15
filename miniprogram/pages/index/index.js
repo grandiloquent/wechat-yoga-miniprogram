@@ -1,5 +1,7 @@
 const app = getApp()
 const calendar = require('../../calendar');
+const shared = require('../../shared')
+
 Page({
     data: {
         app
@@ -37,14 +39,14 @@ Page({
                 })
             }
         }
-        applyBasicSettings();
+        shared.applyBasicSettings();
         const t = new Date();
         this.setData({
             date: calendar.solar2lunar(t.getFullYear(), t.getMonth() + 1, t.getDate())
         });
-        loadData(this, `${app.globalData.host}/api/teachers.query`, 'coaches');
-        loadData(this, `${app.globalData.host}/api/reservation.query.market`, 'prompts');
-        loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements', (data) => {
+        shared.loadData(this, `${app.globalData.host}/api/teachers.query`, 'coaches');
+        shared.loadData(this, `${app.globalData.host}/api/reservation.query.market`, 'prompts');
+        shared.loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements', (data) => {
             return data.map(x => {
                 x.update = formatDateTime(x.updated_time);
                 return x;
@@ -85,23 +87,6 @@ Page({
     },
 });
 
-function applyBasicSettings() {
-    wx.showShareMenu({
-        withShareTicket: true,
-        menus: ['shareAppMessage', 'shareTimeline']
-    })
-}
-
-function fetchData(url, action) {
-    wx.request({
-        url,
-        success: res => {
-            action(res.data)
-        },
-        fail: err => {
-        }
-    })
-}
 
 function fetchWeatherInfo(action) {
     wx.request({
@@ -125,14 +110,6 @@ function formatWeatherInfo(obj) {
     //     "6": "西风", "7": "西北风", "8": "北风", "9": "旋转风"
     // }[obj['wind_direction']] + obj['wind_power'] + "级" + " • 湿度" +
     // obj['humidity'] + "%"
-}
-
-function loadData(page, url, key, action) {
-    fetchData(url, (data) => {
-        page.setData({
-            [key]: action ? action(data) : data
-        })
-    })
 }
 
 function formatDateTime(seconds) {

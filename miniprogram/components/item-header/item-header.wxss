@@ -1,0 +1,21 @@
+
+.wrapper {
+    word-wrap: break-word;
+    color: #030303;
+    -webkit-text-size-adjust: 100%;
+    font-size: 1.2rem;
+    user-select: none;
+    border-top: 16rpx solid #f1f3f4;
+    background: #fff;
+}
+
+.header {
+    word-wrap: break-word;
+    -webkit-text-size-adjust: 100%;
+    user-select: none;
+    padding: 32rpx;
+    color: rgba(0, 0, 0, .87);
+    font-size: 36rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+}

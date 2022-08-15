@@ -4,7 +4,10 @@ Component({
     properties: {
         selected: {
             type: Number,
-            value: 0
+            value: 0,
+            observer() {
+                this.swipeBorder();
+            }
         }
     },
     data: {

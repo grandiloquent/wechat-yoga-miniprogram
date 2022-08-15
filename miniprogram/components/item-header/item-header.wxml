@@ -1,0 +1,7 @@
+<view class="wrapper">
+    <view class="header">
+        {{title}}
+    </view>
+    <slot></slot>
+</view>
+

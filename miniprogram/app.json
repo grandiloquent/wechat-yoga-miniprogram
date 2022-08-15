@@ -1,8 +1,8 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
-    "pages/appointment/index",
     "pages/index/index",
+    "pages/appointment/index",
     "pages/announcement/index",
     "pages/coach/index",
     "pages/checkIn/checkIn",

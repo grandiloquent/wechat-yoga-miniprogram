@@ -2,42 +2,35 @@ const app = getApp();
 const shared = require('../../shared')
 
 Page({
-    async onTabSubmit(evt) {
-        let offset;
-        let startTime = new Date();
-        if (startTime.getDay() === 0)
-            offset = 6 - evt.detail;
-        else
-            offset = startTime.getDay() - evt.detail - 1;
-        startTime.setDate(startTime.getDate() - offset)
-        const lessons = await fetchLessons(app, startTime.setHours(0, 0, 0, 0) / 1000);
-        this.setData({
-            lessons: formatLessons(lessons)
-        })
-    },
-    onSelectedIndexChanged(e) {
-        if (e.detail === 1) {
-            const dates = getDates(this, 7);
-            this.setData({
-                dates,
-                selectedDateTime: dates[0].time * 1000,
-                selected: 0
-            });
-            this.loadData();
-        } else {
-            const dates = getDates(this);
-            this.setData({
-                dates,
-                selectedDateTime: dates[this.data.todayIndex].time * 1000,
-                selected: this.data.todayIndex
-            });
-            this.loadData();
-        }
-    },
     data: {
         active: false,
         selectedDateTime: 0,
+        offsetDays: 0,
         app,
+    },
+    async initialize() {
+        await shared.fetchToken(app);
+        await this.today();
+    },
+    async today() {
+        const now = new Date();
+        this.setData({
+            tabSelected: now.getDay() === 0 ? 6 : now.getDay() - 1
+        });
+        this.data.selectedDateTime = now.setHours(0, 0, 0, 0) / 1000;
+        await this.loadLessons();
+    },
+    async loadLessons() {
+        const lessons = await fetchLessons(app, this.data.selectedDateTime);
+        this.setData({
+            lessons: shared.formatLessons(lessons)
+        })
+    },
+    onHeadTap(e) {
+        const id = e.currentTarget.dataset.id
+        wx.navigateTo({
+            url: `/pages/lesson/lesson?id=${id}`
+        })
     },
     async onLoad(options) {
         if (!app.globalData.configs) {
@@ -51,21 +44,28 @@ Page({
         }
         await this.initialize();
         shared.applyBasicSettings();
-
     },
-    async initialize() {
-        const now = new Date();
-        this.setData({
-            tabSelected: now.getDay() === 0 ? 6 : now.getDay() - 1
-        });
-        await fetchToken(app);
-        const lessons = await fetchLessons(app, new Date().setHours(0, 0, 0, 0) / 1000);
-        console.log(lessons)
-        this.setData({
-            lessons: formatLessons(lessons)
-        })
-    },
+    async onSelectedIndexChanged(e) {
+        if (e.detail === 1) {
+            this.data.offsetDays = 7;
+            this.setData({
+                tabSelected: 0
+            });
+            let offset;
+            let startTime = new Date();
+            if (startTime.getDay() === 0)
+                offset = 6;
+            else
+                offset = startTime.getDay() - 1;
+            startTime.setDate(startTime.getDate() - offset + this.data.offsetDays)
 
+            this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
+            await this.loadLessons();
+        } else {
+            this.data.offsetDays = 0;
+            await this.today();
+        }
+    },
     onShareAppMessage() {
         return {
             title: '晨蕴瑜伽日课表'
@@ -78,34 +78,20 @@ Page({
             user: res.detail
         })
     },
+    async onTabSubmit(evt) {
+        let offset;
+        let startTime = new Date();
+        if (startTime.getDay() === 0)
+            offset = 6 - evt.detail;
+        else
+            offset = startTime.getDay() - evt.detail - 1;
+        startTime.setDate(startTime.getDate() - offset + this.data.offsetDays)
 
-    onHeadTap(e) {
-        console.log(e.detail)
-        const id = e.currentTarget.dataset.id
-        wx.navigateTo({
-            url: `/pages/lesson/lesson?id=${id}`
-        })
+        this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
+        await this.loadLessons();
     }
 })
 
-function fetchToken(app) {
-    if (app.globalData.userInfo && app.globalData.token) {
-        return Promise.resolve();
-    }
-    return new Promise(((resolve, reject) => {
-        wx.request({
-            url: `${app.globalData.host}/api/login.token?openid=${app.globalData.openid}`,
-            success: res => {
-                app.globalData.userInfo = res.data;
-                app.globalData.token = res.header.Token;
-                resolve();
-            },
-            fail: err => {
-                reject(err)
-            }
-        })
-    }))
-}
 
 function fetchLessons(app, startTime) {
     return new Promise(((resolve, reject) => {
@@ -122,53 +108,4 @@ function fetchLessons(app, startTime) {
             }
         })
     }))
-}
-
-function formatLessons(lessons) {
-    if (!lessons || !lessons.length) return [];
-    const lessonGroups = shared.groupByKey(lessons, 'date_time');
-    const seconds = new Date().setHours(0, 0, 0, 0) / 1000;
-    const times = Math.floor(new Date().setSeconds(0, 0) / 1000) - seconds;
-    return Object.entries(lessonGroups).map(x => {
-        x[0] = shared.getShortDateString(x[0])
-        x[1] = x[1].sort((x, y) => {
-            return x.start_time - y.start_time
-        })
-        for (const lesson of x[1]) {
-            if (lesson.course_id === 429) {
-                //lesson.reservation_id = 1;
-                lesson.position = 1;
-                lesson.peoples = 0;
-                lesson.start_time = 16 * 3600;
-                lesson.end_time = 17 * 3600;
-            }
-            if (lesson.hidden === 2) {
-                lesson.mode = -1;
-            } else if (lesson.date_time < seconds || (lesson.date_time === seconds &&
-                lesson.end_time <= times)) {
-                lesson.mode = -2;
-            } else if (lesson.start_time > times && lesson.start_time - times <= 3600) {
-                lesson.mode = -3;
-            } else if (lesson.end_time > times && lesson.end_time - times <= 3600) {
-                lesson.mode = -4;
-            } else if (lesson.reservation_id) {
-                if (lesson.start_time > times && lesson.start_time - times > 3600 * 3) {
-                    if (lesson.position > lesson.peoples)
-                        lesson.mode = 2;
-                    else
-                        lesson.mode = 1;
-                } else {
-                    if (lesson.position > lesson.peoples)
-                        lesson.mode = -6;
-                    else
-                        lesson.mode = -5;
-                }
-            } else {
-                    lesson.mode = 9
-
-            }
-            lesson.subhead = `${shared.secondsToDuration(lesson.start_time)}-${shared.secondsToDuration(lesson.end_time)}`
-        }
-        return x;
-    })
 }

@@ -6,9 +6,16 @@ Page({
     },
     async initialize(id) {
         this.data.id = id || 1;
-        await shared.fetchToken(app);
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
+            this.setData({
+                showLogin: true
+            });
+            return
+        }
         const now = new Date().setHours(0, 0, 0, 0) / 1000;
-        const obj = await fetchData(app,  this.data.id, now, now + 86400 * 7);
+        const obj = await fetchData(app, this.data.id, now, now + 86400 * 7);
         this.setData({
             teacher: obj.teacher,
             lessons: shared.formatLessons(obj.lessons)
@@ -48,6 +55,12 @@ Page({
         wx.navigateTo({
             url: `/page/intro/intro?id=${this.data.id}`
         })
+    },
+    async onLoginSuccess(res) {
+        this.setData({
+            showLogin: false
+        });
+        await this.initialize(this.data.id)
     }
 })
 

@@ -46,3 +46,6 @@
     </view>
 </block>
 <copyright></copyright>
+
+<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
+       bind:success="onLoginSuccess"></login>

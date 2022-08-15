@@ -9,7 +9,14 @@ Page({
         app,
     },
     async initialize() {
-        await shared.fetchToken(app);
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
+            this.setData({
+                showLogin: true
+            });
+            return
+        }
         await this.today();
     },
     async today() {
@@ -71,12 +78,11 @@ Page({
             title: '晨蕴瑜伽日课表'
         }
     },
-    onSuccess(res) {
-        app.globalData.userInfo = res.detail;
+    async onLoginSuccess(res) {
         this.setData({
-            showLogin: false,
-            user: res.detail
-        })
+            showLogin: false
+        });
+        await this.initialize(this.data.id)
     },
     async onTabSubmit(evt) {
         let offset;

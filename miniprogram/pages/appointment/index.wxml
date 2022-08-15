@@ -19,7 +19,6 @@
 </block>
 
 <login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
-       bind:success="onSuccess"></login>
+       bind:success="onLoginSuccess"></login>
 
-
-<dialog bind:onPositive="onPositive" message="{{message}}" isShow="{{isShow}}" title="信息" positive="联系我们"></dialog>
+<view style="flex-grow: 1"></view>

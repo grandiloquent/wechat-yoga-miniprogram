@@ -8,17 +8,7 @@ Page({
         offsetDays: 0,
         app,
     },
-    async initialize() {
-        try {
-            await shared.fetchToken(app);
-        } catch (e) {
-            this.setData({
-                showLogin: true
-            });
-            return
-        }
-        await this.today();
-    },
+
     async today() {
         const now = new Date();
         this.setData({
@@ -39,19 +29,7 @@ Page({
             url: `/pages/lesson/lesson?id=${id}`
         })
     },
-    async onLoad(options) {
-        if (!app.globalData.configs) {
-            app.globalData.ready = () => {
-                this.setData({
-                    app
-                })
-                this.initialize();
-            }
-            return
-        }
-        await this.initialize();
-        shared.applyBasicSettings();
-    },
+
     async onSelectedIndexChanged(e) {
         if (e.detail === 1) {
             this.data.offsetDays = 7;
@@ -78,11 +56,38 @@ Page({
             title: '晨蕴瑜伽日课表'
         }
     },
+    async onLoad(options) {
+        if (!app.globalData.configs) {
+            app.globalData.ready = () => {
+                this.setData({
+                    app
+                })
+                this.initialize();
+            }
+            return
+        }
+        await this.initialize();
+        shared.applyBasicSettings();
+        wx.request({
+            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
+        })
+    },
     async onLoginSuccess(res) {
         this.setData({
             showLogin: false
         });
         await this.initialize(this.data.id)
+    },
+    async initialize() {
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
+            this.setData({
+                showLogin: true
+            });
+            return
+        }
+        await this.today();
     },
     async onTabSubmit(evt) {
         let offset;

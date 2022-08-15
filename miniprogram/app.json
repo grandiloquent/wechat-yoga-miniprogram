@@ -1,12 +1,12 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
+    "pages/index/index",
+    "pages/user/index",
     "pages/appointment/index",
     "pages/coach/index",
-    "pages/index/index",
     "pages/announcement/index",
     "pages/checkIn/checkIn",
-    "pages/user/index",
     "pages/photoWall/index",
     "pages/encyclopedia/index",
     "pages/encyclopedias/encyclopedias",

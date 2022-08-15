@@ -33,6 +33,9 @@ Page({
         }
         await this.initialize(options.id);
         shared.applyBasicSettings();
+        wx.request({
+            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
+        })
     },
     onMakePhoneCall() {
         wx.makePhoneCall({

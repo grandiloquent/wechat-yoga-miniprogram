@@ -1,9 +1,6 @@
 {
   "navigationBarTitleText": "会员中心",
   "usingComponents": {
-    "login": "../../components/login/login",
-    "vip": "../../components/vip/vip",
-    "input-label": "../../components/input-label/input-label",
-    "layout": "../../components/layout/layout"
+    "login": "../../components/login/login"
   }
 }

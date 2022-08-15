@@ -52,6 +52,9 @@ Page({
                 return x;
             })
         });
+        wx.request({
+            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/index/index')}`
+        })
     },
     onShareAppMessage() {
         return {

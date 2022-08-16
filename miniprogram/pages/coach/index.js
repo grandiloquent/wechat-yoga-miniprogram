@@ -24,6 +24,17 @@ Page({
             lessons: shared.formatLessons(obj.lessons)
         })
     },
+    async onBook(evt) {
+        const id = evt.currentTarget.dataset.id;
+        await shared.book(app, id, async () => {
+            await this.loadData();
+        })
+    },
+    onIntro() {
+        wx.navigateTo({
+            url: `/page/intro/intro?id=${this.data.id}`
+        })
+    },
     async onLoad(options) {
         if (!app.globalData.configs) {
             app.globalData.ready = () => {
@@ -40,6 +51,12 @@ Page({
             url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
         })
     },
+    async onLoginSuccess(res) {
+        this.setData({
+            showLogin: false
+        });
+        await this.initialize(this.data.id)
+    },
     onMakePhoneCall() {
         wx.makePhoneCall({
             phoneNumber: this.data.teacher.phoneNumber
@@ -50,59 +67,22 @@ Page({
             urls: [`${app.globalData.staticHost}/images/${this.data.teacher.thumbnail}`],
             current: `${app.globalData.staticHost}/images/${this.data.teacher.thumbnail}`
         })
-
     },
     onShow() {
         this.setData({
             background: shared.getRandomColor()
         })
     },
-    onIntro() {
-        wx.navigateTo({
-            url: `/page/intro/intro?id=${this.data.id}`
-        })
-    },
-    async onLoginSuccess(res) {
-        this.setData({
-            showLogin: false
-        });
-        await this.initialize(this.data.id)
-    },
-    async onBook(evt) {
-        const id = evt.currentTarget.dataset.id;
-        let res;
-        try {
-            res = await shared.insertBook(app, id);
-            if (res === -101) {
-                wx.showToast({
-                    title: '请购买会员卡',
-                    icon: "error"
-                })
-                return
-            }
-            await this.loadData();
-        } catch (e) {
-            console.error(e);
-
-        }
-    },
     async onUnBook(evt) {
         const id = evt.currentTarget.dataset.reservedid;
-        let res;
-        try {
-            res = await shared.deleteBook(app, id)
+        await shared.unBook(app, id, async () => {
             await this.loadData();
-        } catch (e) {
-            console.error(e)
-        }
+        });
     },
-    onUnWait(evt) {
-        const id = evt.currentTarget.dataset.id;
-        console.log(evt);
+    async onUnWait(evt) {
+        await this.onUnBook(evt)
     }
 })
-
-// /api/reservation?mode=10&id=1&userId=502&startTime=1660492800&endTime=1661097600&classType=4
 
 function fetchData(app, id, startTime, endTime) {
     return new Promise(((resolve, reject) => {

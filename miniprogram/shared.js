@@ -1,12 +1,31 @@
 // const shared = require('../../shared');
 
 const colors = ["rgb(244, 67, 54)", "rgb(233, 30, 99)", "rgb(156, 39, 176)", "rgb(103, 58, 183)", "rgb(63, 81, 181)", "rgb(33, 150, 243)", "rgb(3, 169, 244)", "rgb(0, 188, 212)", "rgb(0, 150, 136)", "rgb(76, 175, 80)", "rgb(139, 195, 74)", "rgb(205, 220, 57)", "rgb(255, 235, 59)", "rgb(255, 193, 7)", "rgb(255, 152, 0)", "rgb(255, 87, 34)", "rgb(121, 85, 72)", "rgb(158, 158, 158)", "rgb(96, 125, 139)"];
+
 function applyBasicSettings() {
     wx.showShareMenu({
         withShareTicket: true,
         menus: ['shareAppMessage', 'shareTimeline']
     })
 }
+
+async function book(app, id, action) {
+    let res;
+    try {
+        res = await insertBook(app, id);
+        if (res === -101) {
+            wx.showToast({
+                title: '请购买会员卡',
+                icon: "error"
+            })
+            return
+        }
+        action()
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function deleteBook(app, id) {
     return new Promise(((resolve, reject) => {
         wx.request({
@@ -23,6 +42,7 @@ function deleteBook(app, id) {
         })
     }))
 }
+
 function execute(page, path, query, fn) {
     let p = '';
     if (query && query.length) {
@@ -54,6 +74,7 @@ function execute(page, path, query, fn) {
         }
     })
 }
+
 function fetch(page, path, query, key) {
     let p = '';
     if (query && query.length) {
@@ -89,6 +110,7 @@ function fetch(page, path, query, key) {
         }
     })
 }
+
 function fetchAsync(page, path, query) {
     let p = '';
     if (query && query.length) {
@@ -116,6 +138,7 @@ function fetchAsync(page, path, query) {
         })
     })
 }
+
 function fetchData(url, action) {
     wx.request({
         url,
@@ -126,6 +149,7 @@ function fetchData(url, action) {
         }
     })
 }
+
 function fetchToken(app) {
     if (app.globalData.userInfo && app.globalData.token) {
         return Promise.resolve();
@@ -148,6 +172,7 @@ function fetchToken(app) {
         })
     }))
 }
+
 function formatLessons(lessons) {
     if (!lessons || !lessons.length) return [];
     const lessonGroups = groupByKey(lessons, 'date_time');
@@ -195,6 +220,7 @@ function formatLessons(lessons) {
         return x;
     })
 }
+
 function fuzzysearch(needle, haystack) {
     var hlen = haystack.length;
     var nlen = needle.length;
@@ -215,22 +241,28 @@ function fuzzysearch(needle, haystack) {
     }
     return true;
 }
+
 function getAsync() {
 }
+
 function getRandomColor() {
     return colors[getRandomInt(0, colors.length)];
 }
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
 }
+
 function getShortDateString(seconds) {
     const t = new Date(seconds * 1000);
     return `${t.getMonth() + 1}月${t.getDate()}日周${'日一二三四五六'[t.getDay()]}`;
 }
+
 function getStringAsync() {
 }
+
 async function getUserInfo(app) {
     if (app.globalData.userInfo) {
         return;
@@ -258,6 +290,7 @@ async function getUserInfo(app) {
         })
     }
 }
+
 function groupBy(data, keyFn) {
     let m = new Map();
     for (let x of data) {
@@ -268,6 +301,7 @@ function groupBy(data, keyFn) {
     }
     return m;
 }
+
 function groupByKey(array, key) {
     return array
         .reduce((hash, obj) => {
@@ -275,6 +309,7 @@ function groupByKey(array, key) {
             return Object.assign(hash, {[obj[key]]: (hash[obj[key]] || []).concat(obj)})
         }, {})
 }
+
 function insertBook(app, id) {
     return new Promise(((resolve, reject) => {
         wx.request({
@@ -291,6 +326,7 @@ function insertBook(app, id) {
         })
     }))
 }
+
 function loadData(page, url, key, action) {
     fetchData(url, (data) => {
         page.setData({
@@ -298,18 +334,22 @@ function loadData(page, url, key, action) {
         })
     })
 }
+
 function parseDate(string) {
     const match = /(\d{4})[年-](\d{1,2})[月-](\d{1,2})/.exec(string);
     const now = new Date(match[1], parseInt(match[2]) - 1, match[3]);
     return now;
 }
+
 function parseTime(s) {
     const match = /(\d+):(\d+)/.exec(s);
     if (!match) return 0;
     return parseInt(match[1]) * 60 + parseInt(match[2]);
 }
+
 function patchAsync() {
 }
+
 function post(page, path, obj, fn) {
     wx.request({
         url: `${page.data.app.globalData.host}/api/${path}?openId=${page.data.app.globalData.openid}`,
@@ -335,6 +375,7 @@ function post(page, path, obj, fn) {
         }
     })
 }
+
 async function request(url, ...arg) {
     return await new Promise((resolve, reject) => {
         wx.request(Object.assign({}, {
@@ -353,9 +394,11 @@ async function request(url, ...arg) {
         ));
     });
 }
+
 function secondsToDuration(seconds) {
     return `${(seconds / 3600) | 0}:${(seconds % 3600 / 60).toString().padStart(2, '0')}`
 }
+
 function send(page, path, obj, fn) {
     wx.request({
         url: `${page.data.app.globalData.host}/api/${path}`,
@@ -382,6 +425,7 @@ function send(page, path, obj, fn) {
         }
     })
 }
+
 function signIn(app, reservedId) {
     return new Promise((resolve, reject) => {
         wx.scanCode({
@@ -404,6 +448,7 @@ function signIn(app, reservedId) {
         });
     })
 }
+
 function transform(input) {
     Object.values(input)[0]
         .map((_, i) => Object.keys(input)
@@ -413,8 +458,18 @@ function transform(input) {
             }, {}))
 }
 
+async function unBook(app, id, success) {
+    let res;
+    try {
+        res = await shared.deleteBook(app, id)
+        success();
+    } catch (e) {
+        console.error(e)
+    }
+}
 module.exports = {
     applyBasicSettings,
+    book,
     deleteBook,
     execute,
     fetch,
@@ -441,7 +496,8 @@ module.exports = {
     secondsToDuration,
     send,
     signIn,
-    transform
+    transform,
+    unBook
 };
 
 /*

@@ -25,6 +25,12 @@ Page({
             lessons: shared.formatLessons(lessons)
         })
     },
+    async onBook(evt) {
+        const id = evt.currentTarget.dataset.id;
+        await shared.book(app, id, async () => {
+            await this.loadLessons();
+        })
+    },
     onHeadTap(e) {
         const id = e.currentTarget.dataset.id
         wx.navigateTo({
@@ -89,7 +95,15 @@ Page({
         this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
         await this.loadLessons();
     },
-
+    async onUnBook(evt) {
+        const id = evt.currentTarget.dataset.reservedid;
+        await shared.unBook(app, id, async () => {
+            await this.loadLessons();
+        });
+    },
+    async onUnWait(evt) {
+        await this.onUnBook(evt)
+    },
     async today() {
         const now = new Date();
         this.setData({
@@ -97,39 +111,8 @@ Page({
         });
         this.data.selectedDateTime = now.setHours(0, 0, 0, 0) / 1000;
         await this.loadLessons();
-    },
-    async onBook(evt) {
-        const id = evt.currentTarget.dataset.id;
-        let res;
-        try {
-            res = await shared.insertBook(app, id);
-            if (res === -101) {
-                wx.showToast({
-                    title: '请购买会员卡',
-                    icon: "error"
-                })
-                return
-            }
-            await this.loadLessons();
-        } catch (e) {
-            console.error(e);
-
-        }
-    },
-    async onUnBook(evt) {
-        const id = evt.currentTarget.dataset.reservedid;
-        let res;
-        try {
-            res = await shared.deleteBook(app, id)
-            await this.loadLessons();
-        } catch (e) {
-            console.error(e)
-        }
-    },
-    onUnWait(evt) {
-        const id = evt.currentTarget.dataset.id;
-        console.log(evt);
     }
+
 })
 
 function fetchLessons(app, startTime) {

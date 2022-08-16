@@ -11,10 +11,11 @@ App({
 
     globalData: {
         openid: null,
-        host: 'https://lucidu.cn',
+        host: 'http://localhost:8080',
         staticHost: 'https://static.lucidu.cn'
     },
 });
+
 function checkUpdate() {
     const updateManager = wx.getUpdateManager();
     updateManager.onUpdateReady(function () {
@@ -30,6 +31,7 @@ function checkUpdate() {
         })
     });
 }
+
 function getNavigationBarSize(obj) {
     const {
         screenWidth,
@@ -49,12 +51,14 @@ function getNavigationBarSize(obj) {
     obj.navTop = statusBarHeight;
     obj.navLeft = paddingLeft
 }
+
 function initializeCloud() {
     wx.cloud && wx.cloud.init({
         env: 'cloud1-5gwr0r4t1ffd2b12',
         traceUser: true,
     });
 }
+
 function loadSettings(obj) {
     wx.request({
         url: `${obj.host}/api/configs`,
@@ -77,6 +81,7 @@ function loadSettings(obj) {
         }
     })
 }
+
 async function tryLoadOpenId(obj) {
     try {
         const res = await wx.getStorage({
@@ -88,6 +93,7 @@ async function tryLoadOpenId(obj) {
     } catch (error) {
     }
 }
+
 function trySaveOpenId(globalData) {
     wx.cloud.callFunction({
         name: "login",

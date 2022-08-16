@@ -44,16 +44,35 @@ Page({
         this.setData({
             date: calendar.solar2lunar(t.getFullYear(), t.getMonth() + 1, t.getDate())
         });
-        shared.loadData(this, `${app.globalData.host}/api/teachers.query`, 'coaches');
-        shared.loadData(this, `${app.globalData.host}/api/reservation.query.market`, 'prompts');
-        shared.loadData(this, `${app.globalData.host}/api/notices.query`, 'announcements', (data) => {
-            return data.map(x => {
-                x.update = formatDateTime(x.updated_time);
-                return x;
-            })
+        wx.request({
+            url: `${app.globalData.host}/api/teachers.query`,
+            success: res => {
+                this.setData({
+                    coaches: res.data
+                })
+            }
         });
         wx.request({
-            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/index/index')}`
+            url: `${app.globalData.host}/api/reservation.query.market`,
+            success: res => {
+                this.setData({
+                    prompts: res.data
+                })
+            }
+        });
+        wx.request({
+            url: `${app.globalData.host}/api/notices.query`,
+            success: res => {
+                this.setData({
+                    announcements: res.data.map(x => {
+                        x.update = formatDateTime(x.updated_time);
+                        return x;
+                    })
+                })
+            }
+        });
+        wx.request({
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/index/index')}`
         })
     },
     onShareAppMessage() {

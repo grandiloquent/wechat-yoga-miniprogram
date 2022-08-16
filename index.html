@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <textarea style="height:300px">
+
+    </textarea>
+    <script>
+        
+        
+        function camel(string) {
+            return string.replaceAll(/[ _-]([a-zA-Z])/g, m => m[1].toUpperCase());
+        }
+        function snake(string) {
+            return string.replaceAll(/(?<=[a-z])[A-Z]/g, m => `_${m}`).toLowerCase()
+                .replaceAll(/[ -]([a-z])/g, m => `_${m[1]}`)
+        }
+        function kebab(string) {
+            return string.replaceAll(/(?<=[a-z])[A-Z]/g, m => `_${m}`).toLowerCase()
+                .replaceAll(/[ -]([a-z])/g, m => `-${m[1]}`)
+        }
+        function upperCamel(string) {
+            string = camel(string);
+            return string.slice(0, 1).toUpperCase() + string.slice(1);
+        }
+        function substringAfter(string, delimiter, missingDelimiterValue) {
+            const index = string.indexOf(delimiter);
+            if (index === -1) {
+                return missingDelimiterValue || string;
+            } else {
+                return string.substring(index + delimiter.length);
+            }
+        }
+        function substringAfterLast(string, delimiter, missingDelimiterValue) {
+            const index = string.lastIndexOf(delimiter);
+            if (index === -1) {
+                return missingDelimiterValue || string;
+            } else {
+                return string.substring(index + delimiter.length);
+            }
+        }
+        function substringBefore(string, delimiter, missingDelimiterValue) {
+            const index = string.indexOf(delimiter);
+            if (index === -1) {
+                return missingDelimiterValue || string;
+            } else {
+                return string.substring(0, index);
+            }
+        }
+        function substringBeforeLast(string, delimiter, missingDelimiterValue) {
+            const index = string.lastIndexOf(delimiter);
+            if (index === -1) {
+                return missingDelimiterValue || string;
+            } else {
+                return string.substring(0, index);
+            }
+        }
+        const textarea = document.querySelector('textarea');
+
+        const string = `id, userId
+    `;
+        function format(string) {
+            //const tableName = substringAfterLast(substringBefore(string, '(').trim(), ' ');
+           /*
+           return [...string.matchAll(/[a-zA-Z]+(?=.setAttribute)/g)]
+                .map(x => {
+                    return `const ${snake(x[0])} = ${x[0]}.value;`;
+                }).join('\n');
+
+                 return [...string.matchAll(/(?<=const )[a-zA-Z_]+(?= =)/g)]
+                .map(x => {
+                    return `${x}=coalesce(nullif(v_${x}, 0), ${x}),`;
+                    //return `v_${x} = nullif(obj ->> '${x}'::int, 0);`;
+                }).join('\n');
+                return [...string.matchAll(/(?<=const )[a-zA-Z_]+(?= =)/g)]
+                .map(x => {
+                    // return `${x}=coalesce(nullif(v_${x}, 0), ${x}),`;
+                   return `v_${x} = (obj ->> '${x}')::int;`;
+                }).join('\n');
+                 return [...string.matchAll(/[a-zA-Z_]+(?=\(e\) \{)/g)]
+                .map(x => {
+                    // return `${x}=coalesce(nullif(v_${x}, 0), ${x}),`;
+                   return `bind:${x[0].slice(2).toLowerCase()}="${x}"`;
+                }).join(' ');
+                 return [...string.matchAll(/[a-zA-Z_]+(?=\(e\) \{)/g)]
+                .map(x => {
+                    // return `${x}=coalesce(nullif(v_${x}, 0), ${x}),`;
+                   return `${x}(evt){
+                    const id=evt.currentTarget.dataset.id;
+                    console.log(evt);
+                   }`;
+                }).join(',\n');
+          
+           */
+           return [...string.matchAll(/[a-zA-Z]+/g)]
+                .map(x => {
+                    // return `${x}=coalesce(nullif(v_${x}, 0), ${x}),`;
+                   return `${x}=\${${x}}`;
+                }).join('&');
+        }
+        textarea.value = format(string);
+    </script>
+</body>
+
+</html>

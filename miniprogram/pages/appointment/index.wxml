@@ -2,10 +2,14 @@
 <tabs bind:submit="onTabSubmit" selected="{{tabSelected}}"></tabs>
 <block wx:if="{{lessons && lessons.length}}">
     <item-header wx:for="{{lessons}}" wx:key="*this" title="{{item[0]}}">
-        <item wx:for="{{item[1]}}" wx:key="index" bind:head="onHeadTap" mode="{{item.mode}}" id="{{item.course_id}}"
+        <item wx:for="{{item[1]}}" wx:key="index" bind:head="onHeadTap" mode="{{item.mode}}"
+              data-id="{{item.course_id}}"
+              data-reservedid="{{item.reservation_id||0}}"
               subhead="{{item.subhead}}"
               head="{{item.lesson_name}}"
-              thumbnail="{{item.thumbnail}}"></item>
+              thumbnail="{{item.thumbnail}}"
+              bind:book="onBook" bind:unbook="onUnBook" bind:unwait="onUnWait"
+        ></item>
     </item-header>
 </block>
 <block wx:else>

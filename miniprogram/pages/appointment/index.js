@@ -8,14 +8,16 @@ Page({
         offsetDays: 0,
         app,
     },
-
-    async today() {
-        const now = new Date();
-        this.setData({
-            tabSelected: now.getDay() === 0 ? 6 : now.getDay() - 1
-        });
-        this.data.selectedDateTime = now.setHours(0, 0, 0, 0) / 1000;
-        await this.loadLessons();
+    async initialize() {
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
+            this.setData({
+                showLogin: true
+            });
+            return
+        }
+        await this.today();
     },
     async loadLessons() {
         const lessons = await fetchLessons(app, this.data.selectedDateTime);
@@ -28,33 +30,6 @@ Page({
         wx.navigateTo({
             url: `/pages/lesson/lesson?id=${id}`
         })
-    },
-
-    async onSelectedIndexChanged(e) {
-        if (e.detail === 1) {
-            this.data.offsetDays = 7;
-            this.setData({
-                tabSelected: 0
-            });
-            let offset;
-            let startTime = new Date();
-            if (startTime.getDay() === 0)
-                offset = 6;
-            else
-                offset = startTime.getDay() - 1;
-            startTime.setDate(startTime.getDate() - offset + this.data.offsetDays)
-
-            this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
-            await this.loadLessons();
-        } else {
-            this.data.offsetDays = 0;
-            await this.today();
-        }
-    },
-    onShareAppMessage() {
-        return {
-            title: '晨蕴瑜伽日课表'
-        }
     },
     async onLoad(options) {
         if (!app.globalData.configs) {
@@ -69,7 +44,7 @@ Page({
         await this.initialize();
         shared.applyBasicSettings();
         wx.request({
-            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
         })
     },
     async onLoginSuccess(res) {
@@ -78,16 +53,30 @@ Page({
         });
         await this.initialize(this.data.id)
     },
-    async initialize() {
-        try {
-            await shared.fetchToken(app);
-        } catch (e) {
+    async onSelectedIndexChanged(e) {
+        if (e.detail === 1) {
+            this.data.offsetDays = 7;
             this.setData({
-                showLogin: true
+                tabSelected: 0
             });
-            return
+            let offset;
+            let startTime = new Date();
+            if (startTime.getDay() === 0)
+                offset = 6;
+            else
+                offset = startTime.getDay() - 1;
+            startTime.setDate(startTime.getDate() - offset + this.data.offsetDays)
+            this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
+            await this.loadLessons();
+        } else {
+            this.data.offsetDays = 0;
+            await this.today();
         }
-        await this.today();
+    },
+    onShareAppMessage() {
+        return {
+            title: '晨蕴瑜伽日课表'
+        }
     },
     async onTabSubmit(evt) {
         let offset;
@@ -97,12 +86,51 @@ Page({
         else
             offset = startTime.getDay() - evt.detail - 1;
         startTime.setDate(startTime.getDate() - offset + this.data.offsetDays)
-
         this.data.selectedDateTime = startTime.setHours(0, 0, 0, 0) / 1000
         await this.loadLessons();
+    },
+
+    async today() {
+        const now = new Date();
+        this.setData({
+            tabSelected: now.getDay() === 0 ? 6 : now.getDay() - 1
+        });
+        this.data.selectedDateTime = now.setHours(0, 0, 0, 0) / 1000;
+        await this.loadLessons();
+    },
+    async onBook(evt) {
+        const id = evt.currentTarget.dataset.id;
+        let res;
+        try {
+            res = await shared.insertBook(app, id);
+            if (res === -101) {
+                wx.showToast({
+                    title: '请购买会员卡',
+                    icon: "error"
+                })
+                return
+            }
+            await this.loadLessons();
+        } catch (e) {
+            console.error(e);
+
+        }
+    },
+    async onUnBook(evt) {
+        const id = evt.currentTarget.dataset.reservedid;
+        let res;
+        try {
+            res = await shared.deleteBook(app, id)
+            await this.loadLessons();
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    onUnWait(evt) {
+        const id = evt.currentTarget.dataset.id;
+        console.log(evt);
     }
 })
-
 
 function fetchLessons(app, startTime) {
     return new Promise(((resolve, reject) => {
@@ -120,3 +148,5 @@ function fetchLessons(app, startTime) {
         })
     }))
 }
+
+

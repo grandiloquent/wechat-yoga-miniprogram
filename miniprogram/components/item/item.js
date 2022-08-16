@@ -5,7 +5,6 @@ Component({
         thumbnail: String,
         subhead: String,
         head: String,
-        id: Number,
         mode: Number
     },
     data: {
@@ -17,16 +16,16 @@ Component({
     },
     methods: {
         onHeadTap(e) {
-            this.triggerEvent('head', e.currentTarget.dataset.id)
+            this.triggerEvent('head')
         },
         onBook(e) {
-            this.triggerEvent('book', e.currentTarget.dataset.id)
+            this.triggerEvent('book')
         },
         onUnBook(e) {
-            this.triggerEvent('unbook', e.currentTarget.dataset.id)
+            this.triggerEvent('unbook')
         },
         onUnWait(e) {
-            this.triggerEvent('unwait', e.currentTarget.dataset.id)
+            this.triggerEvent('unwait')
         }
     }
 })

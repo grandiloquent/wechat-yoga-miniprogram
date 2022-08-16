@@ -1,8 +1,6 @@
-
 {
   "navigationBarTitleText": "会员卡",
   "usingComponents": {
-    "vip": "../../components/vip/vip"
   }
 }
                 

@@ -1,42 +1,46 @@
-<wxs module="formattor">
-  module.exports = {
-    format: function (item) {
-      console.log(item)
-      if (item.id === 1) {
-        return '一周内课程'
-      } else if (item.id === 2) {
-        return '一月内课程'
-      } else if (item.id === 3) {
-        return '一年内课程'
-      } else {
-        return '实际约课次数'
-      }
-    }
-  }
-  // {{(item.cardType===1 && '团课卡')||(item.cardType===2 && '私教卡')||(item.cardType===3 && '小班卡')||(item.cardType===4 && '金卡')||(item.cardType===5 && '体验卡')||'团课卡'}}
-</wxs>
-<view style="color: #1558d6;-webkit-tap-highlight-color: rgba(0,0,0,.10);display: flex;flex-direction: column;flex-grow: 1;text-decoration: none;outline: 0;background-color: #fff;" wx:for="{{cards}}">
+<view style="padding: 16rpx">
 
-  <div style="display: flex;flex-direction: row-reverse;justify-content: space-between;padding-left: 32rpx;padding-right: 32rpx;">
+    <view class="item">
 
-<view style="display: flex;justify-content: center;margin: 32rpx 0 32rpx 32rpx;">
+        <view class="link">
+        </view>
 
-<view style="overflow: hidden;position: relative;border-radius: 16rpx;background-color: #f8f9fa;height: 184rpx;width: 184rpx;">
-</view>
-</view>
+        <view class="table">
 
-    <div style="flex-grow: 1;width: 0;position: relative;padding: 32rpx 0 80rpx;">
+            <view class="left">
 
-      <view style="color: #202124;font-size: 24rpx;font-weight: 400;line-height: 32rpx;overflow: hidden;text-align: left;text-overflow: ellipsis;white-space: nowrap;margin-bottom: 16rpx;">
-        {{item.title}}
-      </view>
+                <view class="thumbnail">
 
-      <view style="-webkit-tap-highlight-color: rgba(0,0,0,.10);max-height: 1999998rpx;font-size: 32rpx;font-weight: 400;line-height: 40rpx;color: #1558d6;display: -webkit-box;overflow: hidden;-webkit-box-orient: vertical;white-space: normal;-webkit-line-clamp: 3;">
-        {{item.description}}
-      </view>
+                    <view class="image">
+                    </view>
+                </view>
+            </view>
 
-      <view style="color: #70757a;line-height: 32rpx;position: absolute;width: calc(100% - 64rpx);padding: 0 32rpx;font-size: 24rpx;overflow: hidden;text-overflow: ellipsis;left: -32rpx;bottom: 32rpx;">售价 {{item.price}} 元</view>
-    </div>
-  </div>
+            <view class="right">
 
+                <view class="top">
+                    <view class="h3">
+                        <view class="title">
+                            年卡
+                        </view>
+                    </view>
+                </view>
+
+                <view class="bottom">
+
+                    <view class="secondary-container">
+
+                        <view class="bottom-content">
+
+                            <view class="head">
+                                有效期 365 天
+                            </view>
+                            <view class="subhead">
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
 </view>

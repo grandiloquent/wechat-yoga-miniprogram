@@ -1,33 +1,36 @@
 const app = getApp();
+const shared = require('../../shared')
 
 Page({
-  data: {
-    app
-  },
-  onLoad(options) {
-    if (!app.globalData.configs) {
+    data: {
+        app
+    },
+    async onLoad(options) {
+        if (!app.globalData.configs) {
             app.globalData.ready = () => {
                 this.setData({
                     app
                 })
+                this.initialize();
             }
+            return
         }
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    });
-    wx.request({
-      url:`${app.globalData.host}/api/card?mode=1`,
-      success: res => {
-        this.setData({
-        cards:res.data
+        await this.initialize();
+        shared.applyBasicSettings();
+        wx.request({
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/vipList/vipList')}`
         })
-      }
-    })
-  },
-  onShareAppMessage() {
-    return {
-      title: '会员卡'
+    },
+
+    async initialize() {
+        await this.loadData();
+    },
+    async loadData() {
+
+    },
+    onShareAppMessage() {
+        return {
+            title: '会员卡'
+        }
     }
-  }
 })

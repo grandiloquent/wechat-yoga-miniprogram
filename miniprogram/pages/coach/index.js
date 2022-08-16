@@ -14,6 +14,9 @@ Page({
             });
             return
         }
+        await this.loadData();
+    },
+    async loadData() {
         const now = new Date().setHours(0, 0, 0, 0) / 1000;
         const obj = await fetchData(app, this.data.id, now, now + 86400 * 7);
         this.setData({
@@ -34,7 +37,7 @@ Page({
         await this.initialize(options.id);
         shared.applyBasicSettings();
         wx.request({
-            url:`${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
         })
     },
     onMakePhoneCall() {
@@ -64,6 +67,38 @@ Page({
             showLogin: false
         });
         await this.initialize(this.data.id)
+    },
+    async onBook(evt) {
+        const id = evt.currentTarget.dataset.id;
+        let res;
+        try {
+            res = await shared.insertBook(app, id);
+            if (res === -101) {
+                wx.showToast({
+                    title: '请购买会员卡',
+                    icon: "error"
+                })
+                return
+            }
+            await this.loadData();
+        } catch (e) {
+            console.error(e);
+
+        }
+    },
+    async onUnBook(evt) {
+        const id = evt.currentTarget.dataset.reservedid;
+        let res;
+        try {
+            res = await shared.deleteBook(app, id)
+            await this.loadData();
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    onUnWait(evt) {
+        const id = evt.currentTarget.dataset.id;
+        console.log(evt);
     }
 })
 
@@ -85,3 +120,5 @@ function fetchData(app, id, startTime, endTime) {
         })
     }))
 }
+
+

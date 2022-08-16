@@ -1,8 +1,8 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
-    "pages/userVipList/userVipList",
     "pages/index/index",
+    "pages/userVipList/userVipList",
     "pages/lessons/lessons",
     "pages/user/index",
     "pages/coach/index",
@@ -19,9 +19,7 @@
     "pages/discount/index",
     "pages/intro/intro",
     "pages/physicalExamination/physicalExamination",
-    "pages/private/private",
-    "pages/teacher/class",
-    "pages/teacher/todayClass",
+    "pages/private/private"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

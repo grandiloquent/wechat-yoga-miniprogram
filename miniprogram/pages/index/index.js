@@ -127,11 +127,6 @@ function formatWeatherInfo(obj) {
         "6": "西风", "7": "西北风", "8": "北风", "9": "旋转风"
     }
     return `${obj['weather']}${obj['degree']}°${windDirections [obj['wind_direction']]}${obj['wind_power']}级`;
-    // obj['weather'] + obj['degree'] + '° • ' + {
-    //     "0": "微风", "1": "东北风", "2": "东风", "3": "东南风", "4": "南风", "5": "西南风",
-    //     "6": "西风", "7": "西北风", "8": "北风", "9": "旋转风"
-    // }[obj['wind_direction']] + obj['wind_power'] + "级" + " • 湿度" +
-    // obj['humidity'] + "%"
 }
 
 function formatDateTime(seconds) {

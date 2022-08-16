@@ -1,2 +1,14 @@
-<!--pages/lessons/lessons.wxml-->
-<text>pages/lessons/lessons.wxml</text>
+<view style="padding: 16rpx">
+    <list-item
+            wx:for="{{lessons}}"
+            wx:key="index"
+            thumbnail="{{item.thumbnail}}"
+            subhead="{{item.subhead}}"
+            classType="{{(item.class_type===4||'团课')}}"
+            head="{{item.lesson_name}}"
+            second="{{item.name}}"
+            three="{{item.time}}"
+    ></list-item>
+</view>
+<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
+       bind:success="onLoginSuccess"></login>

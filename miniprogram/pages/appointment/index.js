@@ -8,7 +8,11 @@ Page({
         offsetDays: 0,
         app,
     },
+    // 开始加载数据和渲染页面
     async initialize() {
+        wx.request({
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
+        })
         try {
             await shared.fetchToken(app);
         } catch (e) {
@@ -37,7 +41,9 @@ Page({
             url: `/pages/lesson/lesson?id=${id}`
         })
     },
+    // 加载程序配置、应用基础页面配置、启动数据渲染
     async onLoad(options) {
+        shared.applyBasicSettings();
         if (!app.globalData.configs) {
             app.globalData.ready = () => {
                 this.setData({
@@ -48,10 +54,6 @@ Page({
             return
         }
         await this.initialize();
-        shared.applyBasicSettings();
-        wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
-        })
     },
     async onLoginSuccess(res) {
         this.setData({

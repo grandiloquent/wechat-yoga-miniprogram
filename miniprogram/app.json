@@ -1,11 +1,12 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
+    "pages/index/index",
+    "pages/lessons/lessons",
+    "pages/user/index",
     "pages/coach/index",
     "pages/appointment/index",
-    "pages/index/index",
     "pages/vipList/vipList",
-    "pages/user/index",
     "pages/announcement/index",
     "pages/checkIn/checkIn",
     "pages/photoWall/index",
@@ -17,7 +18,6 @@
     "pages/userVipList/userVipList",
     "pages/discount/index",
     "pages/intro/intro",
-    "pages/lessons/lessons",
     "pages/physicalExamination/physicalExamination",
     "pages/private/private",
     "pages/teacher/class",

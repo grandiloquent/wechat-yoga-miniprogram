@@ -1,0 +1,37 @@
+<view class="wrapper">
+
+    <view class="item">
+        <view class="image">
+            <image src="{{app.globalData.staticHost}}/images/{{thumbnail}}"></image>
+        </view>
+        <view class="body">
+
+            <view class="top">
+                {{head}}
+            </view>
+
+            <view class="middle">
+                <view class="left">
+                    {{second}}
+                </view>
+                <view class="right">
+                    {{three}}
+                </view>
+            </view>
+
+            <view class="bottom">
+
+                <view class="left">
+                    {{subhead}}
+                </view>
+
+                <view class="right">
+                    {{classType}}
+                </view>
+            </view>
+
+        </view>
+
+    </view>
+</view>
+

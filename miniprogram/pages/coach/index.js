@@ -5,6 +5,9 @@ Page({
         app
     },
     async initialize(id) {
+        wx.request({
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
+        })
         this.data.id = id || 1;
         try {
             await shared.fetchToken(app);
@@ -36,6 +39,7 @@ Page({
         })
     },
     async onLoad(options) {
+        shared.applyBasicSettings();
         if (!app.globalData.configs) {
             app.globalData.ready = () => {
                 this.setData({
@@ -46,10 +50,6 @@ Page({
             return
         }
         await this.initialize(options.id);
-        shared.applyBasicSettings();
-        wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/coach/index')}`
-        })
     },
     async onLoginSuccess(res) {
         this.setData({

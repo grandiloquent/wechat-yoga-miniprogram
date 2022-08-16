@@ -1,29 +1,15 @@
-<wxs module="formattor">
-  module.exports = {
-    formatEndDate: function (endDate) {
-      if (!endDate) {
-        return '未开启';
-      }
-    }
-  }
-</wxs>
-<view style="padding: 16rpx;">
-  <view wx:for="{{vipCards}}" wx:key="id" style="border-radius: 16rpx;box-shadow: 0 2rpx 12rpx 0 rgba(0,0,0,.16);display: inline-block;flex: 0 0 auto;width: 100%;background-color: #fff;">
-    <view style="background-color:  #dadce0;border: 2rpx solid  #dadce0;border-radius: 16rpx;display: flex;overflow: hidden;height: 260rpx;">
-      <view style="display: inline-block;border-radius: 16rpx 0 0 16rpx;flex: 0 0 auto;height: 260rpx;width: 200rpx;">
-      </view>
-      <view style="background-color:  #fff;display: flex;flex-direction: column;padding: 24rpx 32rpx 20rpx;width: calc(100% - 200rpx - 32rpx*2);">
-        <view style="text-size-adjust: 100%;-webkit-font-smoothing: auto;visibility: visible;-webkit-tap-highlight-color: transparent;font-weight:400;font-size:32rpx;line-height:40rpx;letter-spacing: .2rpx;color:  #202124;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
-          晨蕴瑜伽周卡
-        </view>
-        <view style="align-items: center;display: flex;gap: 8rpx;margin-top: auto;">
-        </view>
-        <view style="font-weight:400;font-size:24rpx;line-height:32rpx;letter-spacing: .6rpx;color:  #70757a;">
-          {{formattor.formatEndDate(item.endDate)}}
-        </view>
+<view style="padding: 16rpx">
+    <list-item
+            wx:for="{{items}}"
+            wx:key="index"
+            thumbnail="{{item.thumbnail}}"
+            subhead="{{item.subhead}}"
 
-      </view>
-
-    </view>
-  </view>
+            head="{{item.title}}"
+            second="{{item.second}}"
+            three="{{item.three}}"
+    >
+    </list-item>
 </view>
+<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
+       bind:success="onLoginSuccess"></login>

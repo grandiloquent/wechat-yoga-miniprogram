@@ -1,153 +1,78 @@
-const app = getApp()
-const deleteAppointment = require('../appointment/deleteAppointment');
-const login = require('../appointment/login');
-const setCourseStatus = require('../appointment/setCourseStatus');
+const app = getApp();
+const shared = require('../../shared')
 
 Page({
-
     data: {
         active: false,
+        selectedDateTime: 0,
+        offsetDays: 0,
         app,
     },
-
-    async loadData() {
-        const startTime = this.data.leftDate / 1000;
-        const now = new Date(this.data.rightDate);
-        now.setDate(now.getDate() + 1);
-        const endTime = now.getTime() / 1000;
+    // 开始加载数据和渲染页面
+    async initialize() {
         wx.request({
-            url: `${app.globalData.host}/api/reservation?mode=2&startTime=${startTime}&endTime=${endTime}&classType=4&userId=${app.globalData.userInfo.id}`,
-            //method:'POST',
-            //data,
-            success: res => {
-                const data = res.data;
-                if (!data) {
-                    this.setData({
-                        courses: []
-                    });
-                    return;
-                }
-
-                setCourseStatus(app, data);
-                this.setData({
-                    courses: data.sort((x, y) => {
-                        const dif = x.dateTime - y.dateTime;
-                        if (dif != 0) {
-                            return dif;
-                        } else {
-                            return x.startTime - y.startTime
-                        }
-                    })
-                });
-            },
-            fail: err => {
-                //reject(err)
-            }
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
         })
-        /*shared.execute(this, 'reservation/8', [
-          'startTime', startTime / 1000,
-          'classType', 5,
-          'endTime', endTime / 1000
-        ], data => {
-          if (!data) {
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
             this.setData({
-              courses: []
+                showLogin: true
             });
-            return;
-          }
-          const courses = data;
-          setLessonStatus(courses,
-            (app.security && app.security.closeBooked) || 3,
-            (app.security && app.security.closeBook) || 60)
-          this.setData({
-            //loading: false,
-            courses: courses.sort((x, y) => {
-              const dif = x.dateTime - y.dateTime;
-              if (dif != 0) {
-                return dif;
-              } else {
-                return x.startTime - y.startTime
-              }
-            })
-          });
-        });*/
-    },
-    makeAppointment() {
-        wx.switchTab({
-            url: '/pages/appointment/index',
-        })
-    },
-    onFinish(e) {
-    },
-    async onLeft(e) {
-        this.data.leftDate = e.detail;
+            return
+        }
         await this.loadData();
     },
-    onLesson(e) {
-        const id = e.currentTarget.dataset.id
-        wx.navigateTo({
-            url: `/pages/lesson/lesson?id=${id}`
-        })
-    },
-    async onLoad(options) {
-        const date = new Date();
-        date.setHours(0, 0, 0, 0)
-        this.data.leftDate = date.getTime();
-        this.data.rightDate = this.data.leftDate;
-
-    },
-    async onRight(e) {
-        this.data.rightDate = e.detail;
-        await this.loadData();
-    },
-    async onSelectedIndexChange(e) {
-        this.setData({
-            ...e.detail
-        });
-        this.loadData();
-    },
-    onSelectIndexChanged(e) {
-        if (e.detail == 0 || e.detail == 2) {
-            wx.switchTab({
-                url: `/pages/appointment/index`
-            })
+    async loadData() {
+        let res;
+        try {
+            res = await fetch(app)
+        } catch (e) {
+            console.error(e)
         }
     },
-    async onShow() {
+    // 加载程序配置、应用基础页面配置、启动数据渲染
+    async onLoad(options) {
+        shared.applyBasicSettings();
         if (!app.globalData.configs) {
             app.globalData.ready = () => {
                 this.setData({
                     app
                 })
+                this.initialize();
             }
-        }
-        if (!(await login(app, this))) {
             return
         }
-        this.loadData();
+        await this.initialize();
     },
-    onSign(e) {
-        const sha256 = require('../../sha256');
-        const qr = require('../../weapp-qrcode');
+    async onLoginSuccess(res) {
         this.setData({
-            active: true,
-            image: qr.drawImg(`token=${sha256(JSON.stringify({
-                userOpenId: app.globalData.openid,
-                reservedId: e.currentTarget.dataset.reservedid
-            }))}&reservedId=${e.currentTarget.dataset.reservedid}`, {
-                typeNumber: 4,
-                errorCorrectLevel: 'M',
-                size: 500
-            })
-        })
+            showLogin: false
+        });
+        await this.initialize(this.data.id)
     },
-    handleDeleteAppointment(e) {
-        deleteAppointment(this, e);
+    onShareAppMessage() {
+        return {
+            title: '晨蕴瑜伽日课表'
+        }
     },
-    onSuccess(res) {
-        app.globalData.userInfo = res.detail;
-        this.setData({
-            showLogin: false,
-        })
-    }
 })
+
+function fetch(app) {
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/?userId=${app.globalData.userInfo.id}`,
+            header: {
+                token: app.globalData.token
+            },
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+
+

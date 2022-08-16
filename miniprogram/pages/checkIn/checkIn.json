@@ -1,11 +1,7 @@
 {
-  "navigationBarTitleText": "已预约课程",
   "usingComponents": {
-    "picker-date": "../../components/picker-date/picker-date",
-    "picker-filters": "../../../components/picker-filters/picker-filters",
-    "layout": "../../../components/layout/layout",
-    "input-label": "../../../components/input-label/input-label",
-    "header": "../../components/header/header"
+    "login": "../../components/login/login"
   },
-  "navigationBarBackgroundColor": "#fff"
+  "navigationBarTitleText": "日课表",
+  "navigationStyle": "custom"
 }

@@ -22,8 +22,6 @@
     "pages/private/private",
     "pages/teacher/class",
     "pages/teacher/todayClass",
-    "pages/ui/index",
-    "pages/verify/index"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

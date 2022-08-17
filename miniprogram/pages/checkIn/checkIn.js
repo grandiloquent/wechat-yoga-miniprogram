@@ -61,12 +61,39 @@ Page({
     },
     async onUnBook(evt) {
         const id = evt.currentTarget.dataset.reservedid;
-        await shared.unBook(app, id, async () => {
-            await this.loadData()
-        });
+        wx.showModal({
+            title: '您确定要取消预约吗？',
+            success: async res => {
+                if (res.confirm) {
+                    await shared.unBook(app, id, async () => {
+                        await this.loadData()
+                    });
+                }
+            }
+        })
     },
     async onUnWait(evt) {
         await this.onUnBook(evt)
+    },
+    async onActionsSubmit(evt) {
+        if (evt.detail === 0) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
+            await this.loadData()
+        } else if (evt.detail === 1) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 2 * 3600 * 24;
+            await this.loadData()
+        } else if (evt.detail === 2) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 7 * 3600 * 24;
+            await this.loadData()
+        }
+    },
+    onEmptyViewerSubmit() {
+        wx.switchTab({
+            url: `/pages/appointment/index`
+        })
     }
 })
 

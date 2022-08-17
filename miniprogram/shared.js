@@ -461,12 +461,13 @@ function transform(input) {
 async function unBook(app, id, success) {
     let res;
     try {
-        res = await shared.deleteBook(app, id)
+        res = await deleteBook(app, id)
         success();
     } catch (e) {
         console.error(e)
     }
 }
+
 module.exports = {
     applyBasicSettings,
     book,

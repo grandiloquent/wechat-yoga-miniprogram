@@ -1,4 +1,4 @@
-<actions></actions>
+<actions bind:submit="onActionsSubmit" ></actions>
 
 <view class="divider">
 </view>
@@ -15,7 +15,7 @@
     </item-header>
 </block>
 <block wx:else>
-    <empty-viewer></empty-viewer>
+    <empty-viewer bind:submit="onEmptyViewerSubmit"></empty-viewer>
 </block>
 
 <login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"

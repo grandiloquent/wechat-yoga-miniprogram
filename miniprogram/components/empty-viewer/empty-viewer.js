@@ -2,10 +2,6 @@
 // <empty-viewer></empty-viewer>
 Component({
     properties: {
-        selected: {
-            type: Number,
-            value: 0
-        }
     },
     data: {
         app: getApp()
@@ -16,9 +12,6 @@ Component({
     },
     methods: {
         onTap(evt) {
-            this.setData({
-                selected: parseInt(evt.currentTarget.dataset.index)
-            })
             this.triggerEvent('submit', evt.currentTarget.dataset.index)
         },
 

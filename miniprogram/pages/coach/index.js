@@ -75,9 +75,16 @@ Page({
     },
     async onUnBook(evt) {
         const id = evt.currentTarget.dataset.reservedid;
-        await shared.unBook(app, id, async () => {
-            await this.loadData();
-        });
+        wx.showModal({
+            title: '您确定要取消预约吗？',
+            success: async res => {
+                if (res.confirm) {
+                    await shared.unBook(app, id, async () => {
+                        await this.loadData()
+                    });
+                }
+            }
+        })
     },
     async onUnWait(evt) {
         await this.onUnBook(evt)

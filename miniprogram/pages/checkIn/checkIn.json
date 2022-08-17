@@ -1,7 +1,10 @@
 {
   "usingComponents": {
     "login": "../../components/login/login",
-    "actions": "../../components/actions/actions"
+    "actions": "../../components/actions/actions",
+    "item-header": "../../components/item-header/item-header",
+    "item": "../../components/item/item",
+    "empty-viewer": "../../components/empty-viewer/empty-viewer"
   },
   "navigationBarTitleText": "已约课程",
   "navigationBarBackgroundColor": "#FFFFFF"

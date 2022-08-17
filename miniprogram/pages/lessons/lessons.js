@@ -21,7 +21,7 @@ Page({
             });
             return
         }
-        await this.loadData();
+        this.loadData();
     },
     async loadData() {
         let res;

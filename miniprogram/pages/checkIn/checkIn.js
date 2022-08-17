@@ -4,14 +4,14 @@ const shared = require('../../shared')
 Page({
     data: {
         active: false,
-        selectedDateTime: 0,
-        offsetDays: 0,
+        startTime: new Date().setHours(0, 0, 0, 0) / 1000,
+        endTime: new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24,
         app,
     },
     // 开始加载数据和渲染页面
     async initialize() {
         wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/checkIn/checkIn')}`
         })
         try {
             await shared.fetchToken(app);
@@ -21,12 +21,15 @@ Page({
             });
             return
         }
-        await this.loadData();
+        this.loadData();
     },
     async loadData() {
-        let res;
+        let lessons;
         try {
-            res = await fetch(app)
+            lessons = await fetch(app, this.data.startTime, this.data.endTime)
+            this.setData({
+                lessons: shared.formatLessons(lessons)
+            })
         } catch (e) {
             console.error(e)
         }
@@ -53,15 +56,24 @@ Page({
     },
     onShareAppMessage() {
         return {
-            title: '晨蕴瑜伽日课表'
+            title: '已约课程'
         }
     },
+    async onUnBook(evt) {
+        const id = evt.currentTarget.dataset.reservedid;
+        await shared.unBook(app, id, async () => {
+            await this.loadData()
+        });
+    },
+    async onUnWait(evt) {
+        await this.onUnBook(evt)
+    }
 })
 
-function fetch(app) {
+function fetch(app, startTime, endTime) {
     return new Promise(((resolve, reject) => {
         wx.request({
-            url: `${app.globalData.host}/api/?userId=${app.globalData.userInfo.id}`,
+            url: `${app.globalData.host}/api/reservation.query.user?startTime=${startTime}&endTime=${endTime}&classType=4&userId=${app.globalData.userInfo.id}`,
             header: {
                 token: app.globalData.token
             },

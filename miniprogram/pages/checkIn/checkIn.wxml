@@ -2,6 +2,21 @@
 
 <view class="divider">
 </view>
+<block wx:if="{{lessons && lessons.length}}">
+    <item-header wx:for="{{lessons}}" wx:key="*this" title="{{item[0]}}">
+        <item wx:for="{{item[1]}}" wx:key="index" bind:head="onHeadTap" mode="{{item.mode}}"
+              data-id="{{item.course_id}}"
+              data-reservedid="{{item.reservation_id||0}}"
+              subhead="{{item.subhead}}"
+              head="{{item.lesson_name}}"
+              thumbnail="{{item.thumbnail}}"
+              bind:unbook="onUnBook" bind:unwait="onUnWait"
+        ></item>
+    </item-header>
+</block>
+<block wx:else>
+    <empty-viewer></empty-viewer>
+</block>
 
 <login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
        bind:success="onLoginSuccess"></login>

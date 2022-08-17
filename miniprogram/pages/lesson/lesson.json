@@ -1,10 +1,7 @@
 {
   "usingComponents": {
     "wemark": "../../wemark/wemark",
-    "modal":"../../components/modal/modal",
-    
-    "messages": "../../components/messages/messages"
-
+    "modal":"../../components/modal/modal"
   },
   "navigationBarTitleText": "课程"
 }

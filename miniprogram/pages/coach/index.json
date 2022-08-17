@@ -4,6 +4,6 @@
     "login": "../../components/login/login",
     "item-header": "../../components/item-header/item-header",
     "item": "../../components/item/item",
-   "copyright": "../../components/copyright/copyright"
+    "copyright": "../../components/copyright/copyright"
   }
 }

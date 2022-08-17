@@ -1,2 +1,7 @@
+<actions></actions>
+
+<view class="divider">
+</view>
+
 <login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{app.globalData.openid}}"
        bind:success="onLoginSuccess"></login>

@@ -1,7 +1,8 @@
 {
   "usingComponents": {
-    "login": "../../components/login/login"
+    "login": "../../components/login/login",
+    "actions": "../../components/actions/actions"
   },
-  "navigationBarTitleText": "日课表",
-  "navigationStyle": "custom"
+  "navigationBarTitleText": "已约课程",
+  "navigationBarBackgroundColor": "#FFFFFF"
 }

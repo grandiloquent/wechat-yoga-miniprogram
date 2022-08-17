@@ -1,6 +1,7 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
+    "pages/checkIn/checkIn",
     "pages/index/index",
     "pages/userVipList/userVipList",
     "pages/lessons/lessons",
@@ -9,7 +10,6 @@
     "pages/appointment/index",
     "pages/vipList/vipList",
     "pages/announcement/index",
-    "pages/checkIn/checkIn",
     "pages/photoWall/index",
     "pages/encyclopedia/index",
     "pages/encyclopedias/encyclopedias",

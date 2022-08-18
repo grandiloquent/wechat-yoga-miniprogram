@@ -19,3 +19,4 @@ miniprogram_npm
 /app/app
 /app/templates
 /app/*.*
+/app/static

@@ -1,10 +1,10 @@
-let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:9000' : '';
+let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8080' : '';
 ;
 const id = new URL(window.location).searchParams.get('id');
 const section = document.querySelector('.section');
 
 async function loadData() {
-    const response = await fetch(`${baseUri}/api/lessons.query`);
+    const response = await fetch(`${baseUri}/api/admin.lessons.query`);
     return response.json();
 }
 function createLessonItem(x) {
@@ -29,7 +29,6 @@ async function render() {
     let obj;
     try {
         obj = await loadData();
-        console.log(obj)
         obj.forEach(x => {
             section.insertAdjacentHTML('afterbegin', createLessonItem(x));
         });

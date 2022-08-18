@@ -1,4 +1,4 @@
-let baseUri = window.location.hostname === 'localhost' ? 'http://localhost:8080' : '';
+let baseUri = window.location.hostname === '127.0.0.1' ? 'http://localhost:8080' : '';
 
 const section = document.querySelector('.section');
 const customMenu = document.querySelector('custom-menu');
@@ -20,32 +20,29 @@ loadData();
 
 
 //-------------------------------------------------------------------
-async function fetchUsers() {
-    const obj = await fetch(`${baseUri}/api/admin.users.query`);
+async function fetchTeachers() {
+    const obj = await fetch(`${baseUri}/api/admin.teachers.query`);
     return await obj.json();
 }
 
 async function loadData() {
-    const users = await fetchUsers();
-    _users = users;
-    render(users);
+    const teachers = await fetchTeachers();
+    _users = teachers;
+    render(teachers);
 }
 
-function render(users) {
+function render(teachers) {
     section.innerHTML = '';
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < users.length; i++) {
-        const t = new Date(users[i].creation_time * 1000)
+    for (let i = 0; i < teachers.length; i++) {
+        const t = new Date(teachers[i].updated_time * 1000)
         let subtitle = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
-        if (users[i].booked) {
-            subtitle += ` • 已约 ${users[i].booked} 次`;
-        }
         const template = `
-    <div class="item" data-id="${users[i].id}">
-      <img src="${users[i].avatar_url}"  class="item-avatar" />
+    <div class="item" data-id="${teachers[i].id}">
+      <img src="https://static.lucidu.cn/images/${teachers[i].thumbnail}"  class="item-avatar" />
       <div class="item-main">
         <div class="item-title">
-          ${users[i].nick_name}
+          ${teachers[i].name}
         </div>
         <div style="line-height: 20px; font-size: 14px; color: #3c4043; margin-top: 2px;">
           ${subtitle}
@@ -70,7 +67,7 @@ function render(users) {
                 console.log(customMenu.getBoundingClientRect())
                 customMenu.style.display = 'block';
                 customMenu.style.right = '16px';
-                customMenu.dataset.id = users[i].id;
+                customMenu.dataset.id = teachers[i].id;
                 if (rect.top + 135 < window.innerHeight)
                     customMenu.style.top = rect.top + 'px';
                 else
@@ -115,7 +112,7 @@ function askDeleteUser() {
 }
 
 async function executeDeleteUser(id) {
-    const response = await fetch(`${baseUri}/api/user?id=${id}`, {method: 'DELETE'});
+    const response = await fetch(`${baseUri}/api/user?id=${id}`, { method: 'DELETE' });
     await response.text();
     loadData();
 }

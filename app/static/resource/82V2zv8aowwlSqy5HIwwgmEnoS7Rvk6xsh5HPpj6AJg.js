@@ -120,223 +120,6 @@ customElements.define('custom-toast', CustomToast);
 document.getElementById('toast').setAttribute('message','成功');
 -->
 */
-class CustomSearch extends HTMLElement {
-
-    constructor() {
-        super();
-
-        this.root = this.attachShadow({mode: 'open'});
-        this.container = document.createElement('div');
-        this.root.appendChild(this.container);
-
-        this.container.innerHTML = CustomSearch.template();
-
-
-    }
-
-
-    static get observedAttributes() {
-        return ['text'];
-    }
-
-
-    connectedCallback() {
-        // this.dispatchEvent(new CustomEvent());
-        const closeButton = this.root.querySelector('.close-button');
-        closeButton.style.display = 'none';
-        closeButton.addEventListener('click', evt => {
-            input.value = '';
-            closeButton.style.display = 'none';
-        });
-        const input = this.root.querySelector('input');
-        input.addEventListener('input', evt => {
-            if (input.value.length) {
-                closeButton.style.display = 'block';
-            }
-        });
-        input.addEventListener('keydown', evt => {
-            if (evt.key === 'Enter') {
-                this.dispatchEvent(new CustomEvent('submit', {
-                    detail: input.value
-                }));
-            }
-        })
-
-        const searchButton = this.root.querySelector('.search-button');
-        searchButton.addEventListener('click', evt => {
-            this.dispatchEvent(new CustomEvent('submit', {
-                detail: input.value
-            }));
-        });
-    }
-
-    disconnectedCallback() {
-
-    }
-
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'show') {
-            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
-        }
-    }
-
-    static template() {
-        return `
-        ${CustomSearch.style()}
-
-    <div class="wrapper">
-      <div class="layout">
-        <div class="box">
-          <button class="search-button">
-            <div class="search-button-wrapper">
-              <span>
-                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                  </path>
-                </svg>
-              </span>
-            </div>
-          </button>
-          <div class="search-main">
-            <div class="search-main-wrapper">
-              <input type="text" maxlength="2048" name="q" aria-autocomplete="list" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" tabindex="0" title="搜索" aria-label="搜索" />
-            </div>
-          </div>
-          <div class="right">
-            <button class="close-button">
-              <span>
-                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                  </path>
-                </svg>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-   `;
-    }
-
-    static style() {
-        return `
-        <style>
-.wrapper
-{
-    position: relative;
-    overflow: visible;
-    box-shadow: none;
-    border-radius: 25px;
-    background: none;
-    margin: -1px 16px 0;
-}
-.layout
-{
-    background: none;
-    border-radius: 25px;
-    padding-bottom: 4px;
-}
-.box
-{
-    display: flex;
-    height: 44px;
-    margin-top: 0;
-    z-index: 3;
-    box-shadow: 0 2px 5px 0 rgba(60,64,67,.16);
-    border-radius: 25px;
-    background: #fff;
-}
-.search-button
-{
-    display: flex;
-    border-radius: 0 25px 25px 0;
-    background: transparent;
-    border: none;
-    margin: 0 -1px 0 0;
-    padding: 0 0 0 12px;
-    flex: 0 0 auto;
-    outline: 0;
-}
-.search-button-wrapper
-{
-    background: none;
-    color: #9aa0a6;
-    height: 24px;
-    width: 24px;
-    margin: auto;
-}
-button span
-{
-    display: inline-block;
-    fill: currentColor;
-    height: 24px;
-    line-height: 24px;
-    position: relative;
-    width: 24px;
-}
-.search-main
-{
-    flex: 1;
-    display: flex;
-    padding: 7px 0;
-}
-.search-main-wrapper
-{
-    display: flex;
-    flex: 1;
-}
-input[type=text]
-{
-    line-height: 25px;
-    background-color: transparent;
-    border: none;
-    margin: 0;
-    padding: 0 0 0 16px;
-    font-size: 16px;
-    font-family: Roboto,Helvetica Neue,Arial,sans-serif;
-    color: rgba(0,0,0,.87);
-    word-wrap: break-word;
-    display: flex;
-    flex: 1;
-    -webkit-tap-highlight-color: transparent;
-    width: 100%;
-    outline: 0;
-}
-.right
-{
-    display: flex;
-    flex: 0 0 auto;
-    align-items: stretch;
-    margin-right: -3px;
-}
-.close-button
-{
-    display: flex;
-    flex: 1;
-    color: #70757a;
-    cursor: pointer;
-    align-items: center;
-    padding: 0 12px;
-    margin: 0 0;
-    border: 0;
-    background: transparent;
-    outline: 0;
-}
-        </style>`;
-    }
-
-
-}
-
-customElements.define('custom-search', CustomSearch);
-/*
-<!--
-<script src="search.js"></script>
-<custom-search></custom-search>
-const customCustomSearch = document.querySelector('custom-search');
--->
-*/
 class CustomHeader extends HTMLElement {
 
     constructor() {
@@ -353,6 +136,7 @@ class CustomHeader extends HTMLElement {
         this.insertDivider();
         this.insertItem();
         this.insertItem("/admin.users", "会员", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
+        this.insertItem("/admin.teachers", "老师", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
         this.insertItem("/admin.notices", "公告", "M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z");
         this.insertDivider();
         this.insertItem("/admin.help", "帮助", "M15.047 11.25q0.938-0.938 0.938-2.25 0-1.641-1.172-2.813t-2.813-1.172-2.813 1.172-1.172 2.813h1.969q0-0.797 0.609-1.406t1.406-0.609 1.406 0.609 0.609 1.406-0.609 1.406l-1.219 1.266q-1.172 1.266-1.172 2.813v0.516h1.969q0-1.547 1.172-2.813zM12.984 18.984v-1.969h-1.969v1.969h1.969zM12 2.016q4.125 0 7.055 2.93t2.93 7.055-2.93 7.055-7.055 2.93-7.055-2.93-2.93-7.055 2.93-7.055 7.055-2.93z");
@@ -540,46 +324,243 @@ customElements.define('custom-header', CustomHeader);
  */
 
 let baseUri = window.location.hostname === 'localhost' ? 'http://localhost:9000' : '';
+const id = new URL(window.location).searchParams.get('id');
+const textarea = document.querySelector('textarea');
+let translate = 'http://kingpunch.cn';
 
 async function loadData() {
-    const response = await fetch(`${baseUri}/api/notice?mode=1`);
+    const response = await fetch(`${baseUri}/api/help`);
     return response.json();
 }
 
 async function render() {
+    textarea.value = localStorage.getItem('content') || '';
     let obj;
     try {
         obj = await loadData();
-        console.log(obj);
-        const fragment = document.createDocumentFragment();
-        obj.forEach(x => {
-            const item = createNoticeItem(x);
-            item.addEventListener('click', evt => {
-                evt.stopPropagation();
-                window.location = `./admin.notice?id=${x.id}`;
-            });
-            fragment.appendChild(item);
-        });
-        document.querySelector('.items').appendChild(fragment);
+
+        document.querySelector('textarea').value = `# ${obj.title}
+        
+${obj.content}`;
+        document.title = `${obj.title} - 编辑公告`
+        //document.getElementById('items').appendChild(fragment);
     } catch (e) {
-        document.getElementById('toast').setAttribute('message', e.message);
+
+        document.getElementById('toast').setAttribute('message', '成功');
     }
 }
 
-render();
+document.getElementById('trans-auto')
+    .addEventListener('click', evt => {
+        trans(textarea, 1);
+    })
+document.getElementById('trans-eng')
+    .addEventListener('click', evt => {
+        trans(textarea, 0);
+    })
+document.getElementById('upload-img')
+    .addEventListener('click', evt => {
+        if (id)
+            uploadHanlder(textarea);
+    })
+document.addEventListener('visibilitychange', async ev => {
+    localStorage.setItem('content', textarea.value);
+});
 
-function createNoticeItem(x) {
-    const item = document.createElement('div');
-    item.dataset.id = x.id;
-    item.setAttribute("class", "item");
-    const itemText = document.createElement('span');
-    itemText.setAttribute("class", "item-text");
-    item.appendChild(itemText);
-    itemText.textContent = x.title;
-    const itemSubtitle = document.createElement('div');
-    itemSubtitle.setAttribute("class", "item-subtitle");
-    item.appendChild(itemSubtitle);
-    const t = new Date(x.updated_time * 1000);
-    itemSubtitle.textContent = `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, '0')}-${(t.getDate()).toString().padStart(2, '0')}`;
-    return item;
+
+render();
+textarea.addEventListener('keydown', function (e) {
+    if (e.keyCode === 9) {
+        const p = findExtendPosition(textarea);
+        textarea.setRangeText(
+            textarea.value.substring(p[0], p[1])
+                .split('\n')
+                .map(i => {
+                    return '\t' + i;
+                })
+                .join('\n'), p[0], p[1]);
+        //this.selectionStart = this.selectionEnd = start + 1;
+        // prevent the focus lose
+        e.preventDefault();
+    }
+}, false);
+
+//--------------------------------------
+function findExtendPosition(editor) {
+    console.log("findExtendPosition, ");
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    let string = editor.value;
+    let offsetStart = start;
+    while (offsetStart > 0) {
+        if (!/\s/.test(string[offsetStart - 1]))
+            offsetStart--;
+        else {
+            let os = offsetStart;
+            while (os > 0 && /\s/.test(string[os - 1])) {
+                os--;
+            }
+            if ([...string.substring(offsetStart, os).matchAll(/\n/g)].length > 1) {
+                break;
+            }
+            offsetStart = os;
+        }
+    }
+    let offsetEnd = end;
+    while (offsetEnd < string.length) {
+        if (!/\s/.test(string[offsetEnd + 1]))
+            offsetEnd++;
+        else {
+            let oe = offsetEnd;
+            while (oe < string.length && /\s/.test(string[oe + 1])) {
+                oe++;
+            }
+            if ([...string.substring(offsetEnd, oe + 1).matchAll(/\n/g)].length > 1) {
+                offsetEnd++;
+                break;
+            }
+            offsetEnd = oe;
+        }
+    }
+    return [offsetStart, offsetEnd];
 }
+
+
+document.getElementById('save').addEventListener('click', async evt => {
+    const sss = textarea.value.trim();
+    const index = sss.indexOf('\n');
+    const title = sss.substring(0, index).trim().replace(/^#\s+/, '');
+    const content = sss.substring(index).trim();
+    console.log(title, content);
+    const response = await fetch(`${baseUri}/api/help`, {
+        method: 'POST',
+        body: JSON.stringify({
+            title,
+            content
+        })
+    })
+})
+
+async function google(value, english) {
+    // https://service-mayeka3y-1258705152.hk.apigw.tencentcs.com/release/
+    // https://service-ehkp0lyi-1301282710.hk.apigw.tencentcs.com/release/
+    const response = await fetch(`${translate}/translate?q=${encodeURIComponent(value.trim())}&to=${english ? "zh" : "en"}`);
+    const obj = await response.text();
+    const lines1 = [];
+    const lines2 = [];
+    const translated = JSON.parse(obj.replaceAll(/您/g, '你').replaceAll(/ - /g, "——"));
+    if (translated.sentences) {
+        const sentences = translated.sentences;
+        for (let index = 0; index < sentences.length; index++) {
+            const element = sentences[index];
+            lines1.push(element.orig);
+            lines2.push(element.trans);
+        }
+    } else {
+        const trans = translated.trans_result;
+        for (let index = 0; index < trans.length; index++) {
+            const element = trans[index];
+            lines1.push(element.src);
+            lines2.push(element.dst);
+        }
+    }
+    return [lines1, lines2];
+}
+
+async function trans(editor, english) {
+    // let start = editor.selectionStart;
+    // let end = editor.selectionEnd;
+    // const string = editor.value;
+    // while (start > 0 && string[start - 1] !== '\n') {
+    //     start--;
+    // }
+    // while (end < string.length) {
+    //     end++;
+    //     if (string[end] === '\n') break;
+    // }
+    // const value = string.substring(start, end);
+    // if (!value.trim()) return;
+    // const lines = await google(value, english);
+    // editor.setRangeText(`${lines[0].join(' ')}\n\n${lines[1].join(' ')}`, start, end);
+    const points = findExtendPosition(editor);
+    const string = editor.value.substring(points[0], points[1]);
+    const value = string.replaceAll(/\n/g, ' ');
+    if (!value.trim()) return;
+    const lines = await google(value, english);
+    let results = lines[1].join(' ');
+    const pattern = localStorage.getItem('string');
+    if (pattern && pattern.trim().length) {
+        const values = pattern.split('\n').filter(i => i.trim().length).map(i => i.trim());
+        console.log(values);
+        for (let i = 0; i < values.length; i += 2) {
+            if (i + 1 < values.length) {
+                console.log(values[i], values[i + 1])
+                results = results.replaceAll(values[i], values[i + 1]);
+            }
+        }
+    }
+    editor.setRangeText(`${english ? '' : (lines[0].join(' ') + "\n\n")}${results}`, points[0], points[1]);
+}
+
+async function uploadImage(image, name) {
+    const form = new FormData();
+    form.append('images', image, name)
+    const response = await fetch(`http://lucidu.cn/api/article/2`, {
+        method: 'POST',
+        body: form
+    });
+    return await response.text();
+}
+
+function uploadHandler(editor) {
+    tryUploadImageFromClipboard((ok) => {
+        const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
+        editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+    }, () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.addEventListener('change', async ev => {
+            const file = input.files[0];
+            const imageFile = await uploadImage(file, file.name);
+            const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
+            editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+        });
+        input.click();
+    });
+}
+
+function tryUploadImageFromClipboard(success, error) {
+    navigator.permissions.query({
+        name: "clipboard-read"
+    }).then(result => {
+        if (result.state === "granted" || result.state === "prompt") {
+            navigator.clipboard.read().then(data => {
+                console.log(data[0].types);
+                const blob = data[0].getType("image/png");
+                console.log(blob.then(res => {
+                    const formData = new FormData();
+                    formData.append("images", res, "1.png");
+                    fetch(`http://lucidu.cn/api/article/2`, {
+                        method: "POST",
+                        body: formData
+                    }).then(res => {
+                        return res.text();
+                    }).then(obj => {
+                        success(obj);
+                    })
+                }).catch(err => {
+                    console.log(err)
+                    error(err);
+                }))
+            })
+                .catch(err => {
+                    error(err);
+                });
+        } else {
+            error(new Error());
+        }
+    });
+}
+
+fetch(`${baseUri}/api/accessRecords?path=${encodeURIComponent(window.location.pathname)}&query=${encodeURIComponent(window.location.search)}`, { method: 'DELETE' });
+

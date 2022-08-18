@@ -212,142 +212,6 @@ function reportError(err) {
     console.log(err)
 }
 // https://docs.rs/convert_case/latest/convert_case/
-async function unBooking(id) {
-    const response = await fetch(`${baseUri}/api/reservation.delete?id=${id}`);
-    return response.text();
-}
-async function booking(id,userId) {
-    const response = await fetch(`${baseUri}/api/reservation.insert?id=${id}&userId=${userId}`);
-    return response.text();
-}
-
-async function queryBooking(id,userId) {
-    const response = await fetch(`${baseUri}/api/reservation.query?id=${id}&userId=${userId}`);
-    return response.text();
-}
-
-class CustomToast extends HTMLElement {
-    static get observedAttributes() {
-        return ['message'];
-    }
-    // Fires when an instance of the element is created or updated
-    constructor() {
-        super();
-        this.root = this.attachShadow({
-            mode: 'open'
-        });
-        const style = document.createElement('style');
-        style.textContent = CustomToast.getStyle();
-        this.root.appendChild(style);
-        const c3Toast = document.createElement('DIV');
-        c3Toast.setAttribute('class', 'c3-toast');
-
-        const notificationActionRenderer = document.createElement('DIV');
-        notificationActionRenderer.setAttribute('class', 'notification-action-renderer');
-        const notificationActionResponseText = document.createElement('DIV');
-        notificationActionResponseText.setAttribute('class', 'notification-action-response-text');
-        notificationActionRenderer.appendChild(notificationActionResponseText);
-        c3Toast.appendChild(notificationActionRenderer);
-        this.root.appendChild(c3Toast);
-
-        this.c3Toast = c3Toast;
-        this.notificationActionResponseText = notificationActionResponseText;
-        this.messages = [];
-        this.timer = 0;
-    }
-
-    // Fires when an instance was inserted into the document
-    connectedCallback() {}
-
-    // Fires when an instance was removed from the document
-    disconnectedCallback() {}
-
-    showMessage() {
-        if (this.messages.length && !this.showing) {
-            const message = this.messages.shift();
-            this.notificationActionResponseText.textContent = message;
-            this.c3Toast.setAttribute('dir', 'in');
-            this.showing = true;
-            if (this.timer) {
-                clearTimeout(this.timer);
-            }
-            this.timer = setTimeout(() => {
-                this.c3Toast.setAttribute('dir', 'out');
-                setTimeout(() => {
-                    this.showing = false;
-                    this.showMessage();
-                }, 195);
-            }, 3000);
-        }
-    }
-    // Fires when an attribute was added, removed, or updated
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'message') {
-            this.messages.push(newVal);
-            this.showMessage();
-        }
-    }
-
-    // Fires when an element is moved to a new document
-    adoptedCallback() {}
-    static getTemplate(value) {
-        return `
-        ${CustomToast.getStyle()}
-        <div>
-            ${value}
-        </div>
-        `;
-    }
-    static getStyle() {
-        return `
-        .c3-toast[dir="in"] {
-            transition: margin 225ms cubic-bezier(0.0, 0.0, 0.2, 1);
-            margin-bottom: 0;
-        }
-        
-        .c3-toast[dir="out"] {
-            transition: margin 195ms cubic-bezier(0.4, 0.0, 1, 1);
-        }
-        
-        .c3-toast {
-            display: block;
-            position: fixed;
-            z-index: 4;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            box-sizing: border-box;
-            padding: 14px 24px;
-            font-size: 1.4rem;
-            color: #ffffff;
-            background: hsl(0, 0%, 20%);
-            will-change: transform;
-            margin-bottom: -100%;
-        }
-        
-        .notification-action-renderer {
-            display: flex;
-            align-items: center;
-        }
-        
-        .notification-action-response-text {
-            flex-grow: 1;
-            padding-right: 1rem;
-            font-size:14px;
-        }
-        
-        `;
-    }
-}
-customElements.define('custom-toast', CustomToast);
-
-/*
-<!--
-<custom-toast id="toast"></custom-toast>
-<script src="components/toast.js"></script>
-document.getElementById('toast').setAttribute('message','成功');
--->
-*/
 class CustomSearch extends HTMLElement {
 
     constructor() {
@@ -581,6 +445,7 @@ class CustomHeader extends HTMLElement {
         this.insertDivider();
         this.insertItem();
         this.insertItem("/admin.users", "会员", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
+        this.insertItem("/admin.teachers", "老师", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
         this.insertItem("/admin.notices", "公告", "M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z");
         this.insertDivider();
         this.insertItem("/admin.help", "帮助", "M15.047 11.25q0.938-0.938 0.938-2.25 0-1.641-1.172-2.813t-2.813-1.172-2.813 1.172-1.172 2.813h1.969q0-0.797 0.609-1.406t1.406-0.609 1.406 0.609 0.609 1.406-0.609 1.406l-1.219 1.266q-1.172 1.266-1.172 2.813v0.516h1.969q0-1.547 1.172-2.813zM12.984 18.984v-1.969h-1.969v1.969h1.969zM12 2.016q4.125 0 7.055 2.93t2.93 7.055-2.93 7.055-7.055 2.93-7.055-2.93-2.93-7.055 2.93-7.055 7.055-2.93z");
@@ -767,56 +632,528 @@ customElements.define('custom-header', CustomHeader);
 -->
  */
 
-let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:9000' : '';
-;
-const id = new URL(window.location).searchParams.get('id');
-const section = document.querySelector('.section');
+class CustomMenu extends HTMLElement {
+    constructor() {
+        super();
+        this.root = this.attachShadow({mode: 'open'});
+        this.container = document.createElement('div');
+        this.root.appendChild(this.container);
+        this.container.innerHTML = CustomMenu.template();
+    }
 
-async function loadData() {
-    const response = await fetch(`${baseUri}/api/lessons.query`);
-    return response.json();
-}
-function createLessonItem(x) {
-    const image = x.image ? `https://static.lucidu.cn/images/${x.image}` : x.image;
+    static get observedAttributes() {
+        return ['text'];
+    }
 
-    return `<div data-id=${x.id} style="border-bottom: 1px solid #e5e5e5; padding: 12px 0; display: flex; flex-direction: row;">
-            <img src="${image}" style="width: 48px; height: 48px; border-radius: 8px; margin-right: 12px;" />
-            <div style="font-size: 14px; flex-grow: 1;">
-                ${x.name}
+    connectedCallback() {
+        // this.dispatchEvent(new CustomEvent());
+        const close = this.root.querySelector('.close');
+        close.addEventListener('click', evt => {
+            evt.stopPropagation();
+            this.style.display = 'none'
+        });
+    }
+
+    insertItem(svg, title, callback) {
+        const divider = this.root.querySelector('.divider');
+        const div = document.createElement('div');
+        div.innerHTML = `<div class="item">
+          <div class="wrapper">
+            <div class="item-container">
+              <div class="img">
+                ${svg}
+              </div>
+              <div class="text">
+                ${title}
+              </div>
             </div>
-            <div class="more_vert" data-id=${x.id} 
-                style="display: inline-block; flex-shrink: 0; width: 48px; height: 48px; fill: currentColor; stroke: none; padding: 12px; box-sizing: border-box; color: #030303;">
-                <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
-                    <path
-                        d="M12 15.984q0.797 0 1.406 0.609t0.609 1.406-0.609 1.406-1.406 0.609-1.406-0.609-0.609-1.406 0.609-1.406 1.406-0.609zM12 9.984q0.797 0 1.406 0.609t0.609 1.406-0.609 1.406-1.406 0.609-1.406-0.609-0.609-1.406 0.609-1.406 1.406-0.609zM12 8.016q-0.797 0-1.406-0.609t-0.609-1.406 0.609-1.406 1.406-0.609 1.406 0.609 0.609 1.406-0.609 1.406-1.406 0.609z">
-                    </path>
-                </svg>
-            </div>
+          </div>
         </div>`;
+        div.addEventListener('click', callback);
+        divider.insertAdjacentElement('beforebegin', div);
+    }
+
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        if (attrName === 'show') {
+            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
+        }
+    }
+
+    static template() {
+        return `
+        ${CustomMenu.style()}
+    <div class="container">
+      <div class="menu">
+<!--        <div class="item">-->
+<!--          <div class="wrapper">-->
+<!--            <div class="item-container">-->
+<!--              <div class="img">-->
+<!--                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">-->
+<!--                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z">-->
+<!--                  </path>-->
+<!--                </svg>-->
+<!--              </div>-->
+<!--              <div class="text">-->
+<!--                分享-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+        <div class="divider">
+        </div>
+        <div class="close">
+          <div class="close-wrapper">
+            <div style="color: #3c4043; cursor: pointer; display: block; position: relative; left: -8px;">
+              <div class="text">
+                关闭菜单
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   `;
+    }
+
+    static style() {
+        return `
+        <style>
+.item-container
+{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    color: #3c4043;
+    cursor: pointer;
+    display: block;
+    position: relative;
+    left: -8px;
+    outline: 0;
 }
-async function render() {
-    let obj;
-    try {
-        obj = await loadData();
-        console.log(obj)
-        obj.forEach(x => {
-            section.insertAdjacentHTML('afterbegin', createLessonItem(x));
-        });
-        const items = section.querySelectorAll('[data-id]');
-        items.forEach((item, index) => {
-            item.addEventListener('click', evt => {
-                evt.stopPropagation();
-                window.location = `./admin.lesson?id=${evt.currentTarget.dataset.id}`
-            });
-        });
+.item
+{
+    display: block;
+    position: relative;
 
-
-    } catch (e) {
-        console.log(e)
-        document.getElementById('toast').setAttribute('message', '成功');
+}
+.disable{
+    background-color: rgba(0,0,0,.1);
+}
+.wrapper
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 16px;
+    vertical-align: middle;
+    line-height: 48px;
+}
+.img
+{
+    display: inline-block;
+    fill: currentColor;
+    line-height: 24px;
+    position: relative;
+    padding: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+    height: 20px;
+    width: 20px;
+}
+.text
+{
+    display: inline-block;
+    font-size: 14px;
+    min-width: 62px;
+    vertical-align: middle;
+    width: 100%;
+}
+.divider
+{
+    display: block;
+    position: relative;
+    border-top: 1px solid;
+    height: 0;
+    margin: 5px 0;
+    border-top-color: #dadce0;
+    pointer-events: none;
+    cursor: default;
+    color: rgba(0,0,0,.26) !important;
+}
+:host
+{
+    position: fixed;
+}
+.container
+{
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
+    z-index: 1;/*left: 235px;*//*top: 1253px;*/
+}
+.menu
+{
+    border: none;
+    display: block;
+    white-space: nowrap;
+    background-color: #fff;
+    border-radius: 0;
+    padding: 1px 0;
+    outline: 0;
+}
+.close
+{
+    display: block;
+    position: relative;
+    outline: 0;
+}
+.close-wrapper
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 16px;
+    vertical-align: middle;
+    line-height: 48px;
+}
+        </style>`;
     }
 }
 
-render();
+customElements.define('custom-menu', CustomMenu);
+/*
+<!--
+<script src="menu.js"></script>
+<custom-menu></custom-menu>
+const customCustomMenu = document.querySelector('custom-menu');
+-->
+*/
+class CustomDialog extends HTMLElement {
+
+    constructor() {
+        super();
+
+        this.root = this.attachShadow({mode: 'open'});
+        this.container = document.createElement('div');
+        this.root.appendChild(this.container);
+
+        this.container.innerHTML = CustomDialog.template();
+
+
+    }
+
+
+    static get observedAttributes() {
+        return ['text'];
+    }
+
+
+    connectedCallback() {
+        this.root.querySelector('#close')
+            .addEventListener('click', ev => {
+                this.remove();
+                this.dispatchEvent(new CustomEvent('close'));
+            });
+        this.root.querySelector('.wrapper')
+            .addEventListener('click', ev => {
+                this.remove();
+                this.dispatchEvent(new CustomEvent('close'));
+            });
+        this.root.querySelector('.layout')
+            .addEventListener('click', ev => {
+                ev.stopPropagation();
+                this.dispatchEvent(new CustomEvent('close'));
+            });
+        this.root.querySelector('#submit')
+            .addEventListener('click', ev => {
+                this.remove();
+                this.dispatchEvent(new CustomEvent('submit'));
+            });
+    }
+
+    disconnectedCallback() {
+
+    }
+
+    attributeChangedCallback(attrName, oldVal, newVal) {
+
+    }
+
+    static template() {
+        return `
+        ${CustomDialog.style()}
+
+    <div class="overlay">
+    </div>
+    <div class="wrapper">
+      <div class="layout">
+        <div class="content">
+          <div class="top">
+          <slot></slot>
+          </div>
+          <div class="buttons">
+            <div id="close" class="button">
+              取消
+            </div>
+            <div id="submit" class="button">
+              确定
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   `;
+    }
+
+    static style() {
+        return `
+        <style>
+.button
+{
+    margin-bottom: -1px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    margin-right: 8px;
+    min-width: 48px;
+    padding: 0 8px;
+    line-height: 36px !important;
+    text-align: center;
+    font-family: Roboto-Medium,HelveticaNeue-Medium,Helvetica Neue,sans-serif-medium,Arial,sans-serif !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #4285f4;
+}
+.buttons
+{
+    cursor: pointer;
+    font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+    font-size: small;
+    color: #4d5156;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    white-space: normal;
+    text-align: left;
+    visibility: inherit;
+    -webkit-user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0 8px 0;
+}
+.top
+{
+    padding: 24px;
+    font-size: 16px;
+    overflow-wrap: break-word;
+}
+.content
+{
+    max-width: 300px;
+    -webkit-user-select: none;
+}
+.layout
+{
+    border-radius: 8px;
+    position: relative;
+    display: inline-block;
+    z-index: 1060;
+    background-color: #fff;
+    vertical-align: middle;
+    white-space: normal;
+    overflow: hidden;
+    transform: translateZ(0);
+    box-shadow: 0 5px 26px 0 rgba(0,0,0,.22),0 20px 28px 0 rgba(0,0,0,.3);
+    text-align: left;
+    opacity: 1;
+    visibility: inherit;
+    outline: 0;
+}
+.overlay
+{
+    position: fixed;
+    z-index: 1001;
+    right: 0;
+    bottom: -200px;
+    top: 0;
+    left: 0;
+    -webkit-transition: opacity .25s;
+    background-color: #000;
+    opacity: .4;
+    visibility: inherit;
+}
+.wrapper
+{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    z-index: 1002;
+    vertical-align: middle;
+    white-space: nowrap;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+    transform: translateZ(0);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    text-align: center;
+    opacity: 1;
+    visibility: inherit;
+}
+.wrapper::after
+{
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+        </style>`;
+    }
+
+
+}
+
+customElements.define('custom-dialog', CustomDialog);
+
+/*
+<!--
+<custom-dialog></custom-dialog>
+<script src="components/dialog.js"></script>
+const customDialog = document.createElement('custom-dialog');
+    const input = document.createElement('input');
+    customDialog.appendChild(input);
+    customDialog.addEventListener('submit', ev => {
+        input.value;
+    })
+    document.body.appendChild(customDialog);
+
+        const customDialog = document.createElement('custom-dialog');
+    const div = document.createElement('div');
+    div.textContent = '您确定要停课吗？';
+    customDialog.appendChild(div);
+    customDialog.addEventListener('submit', ev => {
+       
+    })
+    document.body.appendChild(customDialog);
+-->
+ */
+let baseUri = window.location.hostname === '127.0.0.1' ? 'http://localhost:8080' : '';
+
+const section = document.querySelector('.section');
+const customMenu = document.querySelector('custom-menu');
+
+const customSearch = document.querySelector('custom-search');
+
+customSearch.addEventListener('submit', evt => {
+    evt.stopPropagation();
+    render(_users.filter(x => fuzzysearch(evt.detail, x.nick_name)))
+});
+
+
+let _users = [];
+
+
+initializeContextMenu();
+
+loadData();
+
+
+//-------------------------------------------------------------------
+async function fetchTeachers() {
+    const obj = await fetch(`${baseUri}/api/admin.teachers.query`);
+    console.log(`${baseUri}/api/admin.teachers.query`)
+    return await obj.json();
+}
+
+async function loadData() {
+    const teachers = await fetchTeachers();
+    _users = teachers;
+    render(teachers);
+}
+
+function render(teachers) {
+    section.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < teachers.length; i++) {
+        const t = new Date(teachers[i].updated_time * 1000)
+        let subtitle = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
+        if (teachers[i].booked) {
+            subtitle += ` • 已约 ${teachers[i].booked} 次`;
+        }
+        const template = `
+    <div class="item" data-id="${teachers[i].id}">
+      <img src="https://static.lucidu.cn/images/${teachers[i].thumbnail}"  class="item-avatar" />
+      <div class="item-main">
+        <div class="item-title">
+          ${teachers[i].name}
+        </div>
+        <div style="line-height: 20px; font-size: 14px; color: #3c4043; margin-top: 2px;">
+          ${subtitle}
+        </div>
+      </div>
+      <div class="item-right">
+        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+          </path>
+        </svg>
+      </div>
+    </div>
+  <hr class="separator">
+  `;
+        const div = document.createElement('div');
+        div.innerHTML = template;
+        fragment.appendChild(div);
+        div.querySelector('.item-right')
+            .addEventListener('click', evt => {
+                evt.stopPropagation();
+                const rect = evt.currentTarget.getBoundingClientRect();
+                console.log(customMenu.getBoundingClientRect())
+                customMenu.style.display = 'block';
+                customMenu.style.right = '16px';
+                customMenu.dataset.id = teachers[i].id;
+                if (rect.top + 135 < window.innerHeight)
+                    customMenu.style.top = rect.top + 'px';
+                else
+                    customMenu.style.top = rect.top + 'px';
+            })
+    }
+    section.appendChild(fragment);
+    [...document.querySelectorAll('.item')].forEach(x => {
+        x.addEventListener('click', evt => {
+            window.location.href = `./admin.user?id=${evt.currentTarget.dataset.id}`
+        })
+    })
+}
+
+function initializeContextMenu() {
+    window.addEventListener('scroll', evt => {
+        customMenu.style.display = 'none';
+    })
+    document.addEventListener('click', evt => {
+        customMenu.style.display = 'none';
+    });
+    customMenu.addEventListener('click', evt => {
+        evt.stopPropagation();
+    });
+    customMenu.insertItem(`<svg viewBox="0 0 24 24">
+        <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>
+    </svg>`, '删除', evt => {
+        customMenu.style.display = 'none';
+        askDeleteUser();
+    })
+}
+
+function askDeleteUser() {
+    const customDialog = document.createElement('custom-dialog');
+    const div = document.createElement('div');
+    div.textContent = `您确定要删除该用户吗？`;
+    customDialog.appendChild(div);
+    customDialog.addEventListener('submit', ev => {
+        executeDeleteUser(customMenu.dataset.id);
+    })
+    document.body.appendChild(customDialog);
+}
+
+async function executeDeleteUser(id) {
+    const response = await fetch(`${baseUri}/api/user?id=${id}`, { method: 'DELETE' });
+    await response.text();
+    loadData();
+}
 
 

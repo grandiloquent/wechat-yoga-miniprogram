@@ -212,6 +212,261 @@ function reportError(err) {
     console.log(err)
 }
 // https://docs.rs/convert_case/latest/convert_case/
+class CustomPicker extends HTMLElement {
+
+    constructor() {
+        super();
+
+        this.root = this.attachShadow({ mode: 'open' });
+
+        this.root.innerHTML = `
+<style>
+.{
+
+}.picker__frame
+{
+    position: absolute;
+    top: 50%;
+    right:0;
+    left: 0;
+    z-index: 2;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border:1px  solid #ebedf0;
+    border-left:0;
+    border-right:0
+}
+.picker__mask
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg,hsla(0,0%,100%,.9),hsla(0,0%,100%,.4)),linear-gradient(0deg,hsla(0,0%,100%,.9),hsla(0,0%,100%,.4));
+    background-repeat: no-repeat;
+    background-position: top,bottom;
+    transform: translateZ(0);
+    pointer-events: none;
+    background-size: 100% 62px;
+}
+.picker-column__item
+{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0 4px;
+    color: #000;
+}
+.picker-column__wrapper
+{
+    transition-timing-function: cubic-bezier(.23,1,.68,1);
+    transition-duration: 200ms;
+    transition-property: none;
+    transform :translate3d(0px, 48px, 0px);
+    transform-origin: 0 0;
+}
+.picker-column
+{
+    -webkit-box-flex: 1;
+    flex: 1;
+    overflow: hidden;
+    font-size: 16px;
+}
+.picker__columns
+{
+    position: relative;
+    display: flex;
+    cursor: grab;
+     
+}</style>
+    <div class="picker__columns">
+      <div class="picker-column">
+        <div class="picker-column__wrapper">
+          
+        </div>
+        <div class="picker__mask">
+        </div>
+        <div class="picker__frame">
+        </div>
+      </div>
+    </div>
+		`;
+    }
+
+
+    static get observedAttributes() {
+        return ['mode', 'start', 'month'];
+    }
+    get mode() {
+        return this.getAttribute('mode')
+    }
+    get start() {
+        return this.getAttribute('start')
+    }
+    get month() {
+        return this.getAttribute('month')
+    }
+    connectedCallback() {
+        this.offset = 0;
+        if (this.mode === '1') {
+            this.count = 10;
+        } else if (this.mode === '2') {
+            this.count = 12;
+        } else if (this.mode === '3') {
+            const month = parseInt(this.month);
+            this.count = new Date(new Date().getFullYear(), month - 1, 0).getDate();
+        }
+        this.min = -1;
+        this.max = this.min + this.count - 1;
+        this.root.host.style.userSelect = 'none';
+        this.pickerColumnWrapper = this.root.querySelector('.picker-column__wrapper');
+        this.pickerColumns = this.root.querySelector('.picker__columns');
+        this.pickerColumns.addEventListener('touchstart', event => {
+            event.stopPropagation();
+            this.startY = event.touches[0].clientY;
+            this.startOffset = this.offset;
+            // duration: 0,
+        });
+        this.pickerColumns.addEventListener('touchmove', event => {
+            event.stopPropagation();
+            const deltaY = event.touches[0].clientY - this.startY;
+            this.offset = range(
+                this.startOffset + deltaY,
+                -(this.count * this.itemHeight),
+                (this.count * this.itemHeight)
+            );
+            this.pickerColumnWrapper.style.transform = `translate3d(0px, ${this.offset}px, 0px)`
+        });
+        this.pickerColumns.addEventListener('touchend', event => {
+            event.stopPropagation();
+            const index = Math.round(-this.offset / this.itemHeight);
+            this.setIndex(index, true);
+        });
+        const items = [];
+        const y = new Date().getFullYear();
+        for (let i = 0; i < this.count; i++) {
+            const pickerColumnItem = document.createElement('div');
+            pickerColumnItem.setAttribute("class", "picker-column__item");
+            if (this.mode === '1')
+                pickerColumnItem.textContent = `${y + i}年`;
+            else if (this.mode === '2')
+                pickerColumnItem.textContent = `${i + 1}月`;
+            else if (this.mode === '3')
+                pickerColumnItem.textContent = `${i + 1}日`;
+            pickerColumnItem.style.height = '48px';
+            pickerColumnItem.style.color = '#000'
+            this.pickerColumnWrapper.appendChild(pickerColumnItem);
+            items.push(pickerColumnItem);
+        }
+        this.pickerFrame = this.root.querySelector('.picker__frame');
+        this.pickerFrame.addEventListener('click', evt => {
+
+        })
+        this.itemHeight = items[0].getBoundingClientRect().height;
+
+        this.pickerColumns.style.height = `${this.itemHeight * 3}px`; //(this.itemHeight * (this.count +(this.count % 2 === 0 ? 1 : 0))) + 'px';
+
+        this.pickerFrame.style.height = `${this.itemHeight}px`;
+        if (this.mode === '1') {
+            if (this.start) {
+                this.setIndex(parseInt(this.start)-((new Date()).getFullYear()) - 1);
+            } else {
+                this.setIndex(- 1);
+            }
+        }
+        else if (this.mode === '2') {
+            if (this.start) {
+                this.setIndex(parseInt(this.start) - 2);
+            } else {
+                this.setIndex(new Date().getMonth() - 1);
+            }
+        }
+        else if (this.mode === '3') {
+            if (this.start) {
+                this.setIndex(parseInt(this.start) - 2);
+            } else {
+                this.setIndex(new Date().getDate() - 2)
+            }
+
+        }
+
+        // this.dispatchEvent(new CustomEvent());
+        /*
+        this.dispatchEvent(new CustomEvent('submit', {
+                  detail: 0
+              }));
+              */
+    }
+    get value() {
+
+        if (this.mode === '1')
+            return new Date().getFullYear() + this.currentIndex + 1;
+        else if (this.mode === '2')
+            return this.currentIndex + 2;
+        else if (this.mode === '3')
+            return this.currentIndex + 2;
+    }
+    adjustIndex(index) {
+        const count = this.count;
+
+        index = range(index, this.min, this.max);
+        // for (let i = index; i < count; i++) {
+        //     return i;
+        // }
+        // for (let i = index - 1; i >= 0; i--) {
+        //     return i;
+        // }
+        return index;
+    }
+    setIndex(index) {
+        // const { data } = this;
+        index = this.adjustIndex(index) || 0;
+
+        this.offset = -index * this.itemHeight;
+        if (index !== this.currentIndex) {
+            this.currentIndex = index;
+
+        }
+
+        this.pickerColumnWrapper.style.transform = `translate3d(0px, ${this.offset}px, 0px)`
+    }
+    disconnectedCallback() {
+
+    }
+    getCount() {
+        return 5;
+    }
+
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        if (attrName === 'start') {
+            if (this.mode === '1') {
+                this.setIndex(parseInt(newVal)-((new Date()).getFullYear()) - 1);
+            }
+            else if (this.mode === '2') {
+                this.setIndex(parseInt(newVal) - 2);
+            }
+            else if (this.mode === '3') {
+                this.setIndex(parseInt(newVal) - 2);
+            }
+        }
+    }
+
+}
+customElements.define('custom-picker', CustomPicker);
+/*
+<!--\
+<custom-picker></custom-picker>
+<script src="components/picker.js"></script>
+const customPicker = document.querySelector('custom-picker');
+const customPicker = document.createElement('custom-picker');
+customPicker.setAttribute('data',JSON.stringify(obj));
+document.body.appendChild(customPicker);
+-->
+*/
 async function unBooking(id) {
     const response = await fetch(`${baseUri}/api/reservation.delete?id=${id}`);
     return response.text();
@@ -1313,6 +1568,7 @@ class CustomHeader extends HTMLElement {
         this.insertDivider();
         this.insertItem();
         this.insertItem("/admin.users", "会员", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
+        this.insertItem("/admin.teachers", "老师", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
         this.insertItem("/admin.notices", "公告", "M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z");
         this.insertDivider();
         this.insertItem("/admin.help", "帮助", "M15.047 11.25q0.938-0.938 0.938-2.25 0-1.641-1.172-2.813t-2.813-1.172-2.813 1.172-1.172 2.813h1.969q0-0.797 0.609-1.406t1.406-0.609 1.406 0.609 0.609 1.406-0.609 1.406l-1.219 1.266q-1.172 1.266-1.172 2.813v0.516h1.969q0-1.547 1.172-2.813zM12.984 18.984v-1.969h-1.969v1.969h1.969zM12 2.016q4.125 0 7.055 2.93t2.93 7.055-2.93 7.055-7.055 2.93-7.055-2.93-2.93-7.055 2.93-7.055 7.055-2.93z");
@@ -1518,10 +1774,6 @@ const id = new URL(window.location).searchParams.get('id');
 let obj, teachers, lessons;
 const customSubmitBar = document.querySelector('custom-submit-bar');
 
-async function loadData() {
-    const response = await fetch(`${baseUri}/api/lesson.query?id=${id}`);
-    return response.json();
-}
 const lessonName = document.querySelector('.lesson_name');
 lessonName.addEventListener('click', evt => {
     initializeLesson();
@@ -1530,10 +1782,6 @@ lessonName.addEventListener('click', evt => {
 // dateTime.addEventListener('click', evt => {
 //     initializeDate()
 // })
-const teacherName = document.querySelector('.teacher_name');
-teacherName.addEventListener('click', evt => {
-    initializeTeacher()
-})
 
 const peoples = document.querySelector('.peoples');
 peoples.addEventListener('click', evt => {
@@ -1549,123 +1797,100 @@ endTime.addEventListener('click', evt => {
     initializeEndTime();
 })
 
-async function render() {
-
-    try {
-        obj = await loadData();
-        lessonName.setAttribute('value', obj.name);
-        //dateTime.setAttribute('value', getShortDateString(obj.date_time));
-        startTime.setAttribute('value', secondsToDuration(obj.start_time));
-        endTime.setAttribute('value', secondsToDuration(obj.end_time));
-        teacherName.setAttribute('value', obj.teacher_name);
-        peoples.setAttribute('value', obj.peoples);
-
-    } catch (e) {
-        document.getElementById('toast').setAttribute('message', '成功');
-    }
-}
-
-
-
 async function getLessons() {
-    const response = await fetch(`${baseUri}/api/lesson.query.names`)
+    const response = await fetch(`${baseUri}/api/cards.query`)
     return response.json();
 }
-async function getTeachers() {
-    const response = await fetch(`${baseUri}/api/teacher.query.names`)
-    return response.json();
-}
+
 async function initializeLesson() {
 
     if (!lessons) {
         lessons = await getLessons();
     }
-    // #e8f0fe
-    // #1967d2options
+    console.log(lessons)
     const customSelect = document.createElement('custom-select');
     document.body.appendChild(customSelect);
 
     const customOptions = document.createElement('custom-options');
     customOptions.addEventListener('submit', evt => {
         lessonName.setAttribute('value', evt.detail);
+        const t = new Date();
+        const dateString = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
+        startTime.setAttribute('value', dateString)
         customSelect.remove();
     })
     customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择课程')
-    const names = lessons.map(x => x.name);
+    customSelect.setAttribute('title', '选择会员卡')
+    const names = lessons.map(x => x.title);
     customOptions.populateData(names, lessonName.value);
 }
 
-async function initializeDate() {
-
-    const customSelect = document.createElement('custom-select');
-    document.body.appendChild(customSelect);
-
-    const customOptions = document.createElement('custom-options');
-    customOptions.addEventListener('submit', evt => {
-        dateTime.setAttribute('value', evt.detail);
-        customSelect.remove();
-    })
-    customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择开课日期')
-    const s = new Date().setHours(0, 0, 0, 0) / 1000;
-    const names = [...new Array(14).keys()].map(x => getShortDateString(s + 86400 * (x + 1))).reverse();
-    customOptions.populateData(names, dateTime.value);
-}
 async function initializeStartTime() {
 
     const customSelect = document.createElement('custom-select');
     document.body.appendChild(customSelect);
+    customSelect.innerHTML = `<div style="display: grid;grid-template-columns: repeat(3,1fr);">
+    <custom-picker mode="1"></custom-picker>
+    <custom-picker mode="2"></custom-picker>
+    <custom-picker mode="3" month="8"></custom-picker>
+</div>
+<div style="display:flex;align-items: center;justify-content: center;">
+    <div style="flex-grow: 1;"></div>
+    <button style="font-size: 14px;padding: 0 24px;height: 32px;border-radius: 16px;border: none;background-color: rgb(26, 115, 232);margin: 16px 16px;color: #fff;">确认</button>
+</div>`
+    customSelect.setAttribute('title', '选择生效日期')
+    const customPicker1 = customSelect.querySelector('[mode="1"]');
+    const customPicker2 = customSelect.querySelector('[mode="2"]');
+    const customPicker3 = customSelect.querySelector('[mode="3"]');
+    const m = /(\d{4})年(\d{1,2})月(\d{1,2})日/.exec(startTime.value);
+    if (m) {
+        customPicker1.setAttribute('start', parseInt(m[1]));
+        customPicker2.setAttribute('start', parseInt(m[2]))
+        customPicker3.setAttribute('start', parseInt(m[3]))
 
-    const customOptions = document.createElement('custom-options');
-    customOptions.addEventListener('submit', evt => {
-        startTime.setAttribute('value', evt.detail);
+    }
+    const button = customSelect.querySelector('button');
+    button.addEventListener('click', evt => {
+        startTime.setAttribute('value', `${customPicker1.value}年${customPicker2.value}月${customPicker3.value}日`);
         customSelect.remove();
     })
-    customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择开课时间')
 
-    const names = ["9:00", "10:00", "19:30", "20:30"].reverse();
-    customOptions.populateData(names, startTime.value);
+
+
+
 }
 async function initializeEndTime() {
 
     const customSelect = document.createElement('custom-select');
     document.body.appendChild(customSelect);
+    customSelect.innerHTML = `<div style="display: grid;grid-template-columns: repeat(3,1fr);">
+    <custom-picker mode="1"></custom-picker>
+    <custom-picker mode="2"></custom-picker>
+    <custom-picker mode="3" month="8"></custom-picker>
+</div>
+<div style="display:flex;align-items: center;justify-content: center;">
+    <div style="flex-grow: 1;"></div>
+    <button style="font-size: 14px;padding: 0 24px;height: 32px;border-radius: 16px;border: none;background-color: rgb(26, 115, 232);margin: 16px 16px;color: #fff;">确认</button>
+</div>`
+    customSelect.setAttribute('title', '选择生效日期')
+    const customPicker1 = customSelect.querySelector('[mode="1"]');
+    const customPicker2 = customSelect.querySelector('[mode="2"]');
+    const customPicker3 = customSelect.querySelector('[mode="3"]');
+    const m = /(\d{4})年(\d{1,2})月(\d{1,2})日/.exec(startTime.value);
+    if (m) {
+        customPicker1.setAttribute('start', parseInt(m[1]));
+        customPicker2.setAttribute('start', parseInt(m[2]))
+        customPicker3.setAttribute('start', parseInt(m[3]))
 
-    const customOptions = document.createElement('custom-options');
-    customOptions.addEventListener('submit', evt => {
-        endTime.setAttribute('value', evt.detail);
-        customSelect.remove();
-    })
-    customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择开课时间')
-
-    const names = ["9:00", "10:00", "19:30", "20:30"].reverse();
-    customOptions.populateData(names, endTime.value);
-
-}
-
-async function initializeTeacher() {
-
-    if (!teachers) {
-        teachers = await getTeachers();
     }
-    // #e8f0fe
-    // #1967d2options
-    const customSelect = document.createElement('custom-select');
-    document.body.appendChild(customSelect);
-
-    const customOptions = document.createElement('custom-options');
-    customOptions.addEventListener('submit', evt => {
-        teacherName.setAttribute('value', evt.detail);
+    const button = customSelect.querySelector('button');
+    button.addEventListener('click', evt => {
+        endTime.setAttribute('value', `${customPicker1.value}年${customPicker2.value}月${customPicker3.value}日`);
         customSelect.remove();
     })
-    customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择老师')
-    const names = teachers.map(x => x.name);
-    customOptions.populateData(names, teacherName.value);
+
 }
+
 async function initializePeoples() {
 
     const customSelect = document.createElement('custom-select');
@@ -1677,43 +1902,32 @@ async function initializePeoples() {
         customSelect.remove();
     })
     customSelect.appendChild(customOptions);
-    customSelect.setAttribute('title', '选择开课时间')
+    customSelect.setAttribute('title', '选择可约课次数')
 
-    const names = [...new Array(18).keys()].map(x => (x + 8)).reverse();
+    const names = [...new Array(26).keys()].map(x => (x + 7)).reverse();
     customOptions.populateData(names, peoples.value);
 }
-render();
 
 customSubmitBar.addEventListener('close', evt => {
     history.back();
 });
-function dateToSeconds(string) {
-    const match = /(\d+)月(\d+)日/.exec(string);
-    const t = new Date();
-    t.setMonth(parseInt(match[1]) - 1);
-    t.setDate(parseInt(match[2]));
-    t.setHours(0, 0, 0, 0)
-    return t / 1000;
-}
+
 customSubmitBar.addEventListener('submit', async evt => {
-    const lesson_id = (lessons && lessons.filter(x => x.name === lessonName.value)[0].id) || 0;
+    const card_id = (lessons && lessons.filter(x => x.title === lessonName.value)[0].id) || 0;
     //const date_time = dateToSeconds(dateTime.value);
-    const start_time = durationToSeconds(startTime.value) * 60;
-    const end_time = durationToSeconds(endTime.value) * 60;
-    const teacher_id = (teachers && teachers.filter(x => x.name === teacherName.value)[0].id) || 0;
-    const ps = parseInt(peoples.value);
+    const start_date = dateToSeconds(startTime.value);
+    const end_date = dateToSeconds(endTime.value);
+    const times = parseInt(peoples.value) || 0;
 
     try {
-        const response = await fetch(`${baseUri}/api/lesson.update`, {
+        const response = await fetch(`${baseUri}/api/card.insert`, {
             method: 'POST',
             body: JSON.stringify({
-                lesson_id,
-                //date_time,
-                start_time,
-                end_time,
-                teacher_id,
-                peoples: ps,
-                id: parseInt(id)
+                card_id,
+                start_date,
+                end_date,
+                times,
+                user_id: parseInt(id)
             })
         })
         await response.text();
@@ -1723,3 +1937,16 @@ customSubmitBar.addEventListener('submit', async evt => {
     }
 
 });
+
+
+async function getJson() {
+    const response = await fetch(`${baseUri}/api/user.query?id=${id}`);
+    return response.json();
+}
+
+async function renderUserName() {
+    const obj = await getJson();
+    const userName = document.querySelector('.user_name');
+    userName.setAttribute('value', obj.name || obj.nick_name);
+}
+renderUserName();

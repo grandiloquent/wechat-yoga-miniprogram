@@ -1,67 +1,123 @@
-class CustomAction extends HTMLElement {
-
+class CustomToast extends HTMLElement {
+    static get observedAttributes() {
+        return ['message'];
+    }
+    // Fires when an instance of the element is created or updated
     constructor() {
         super();
+        this.root = this.attachShadow({
+            mode: 'open'
+        });
+        const style = document.createElement('style');
+        style.textContent = CustomToast.getStyle();
+        this.root.appendChild(style);
+        const c3Toast = document.createElement('DIV');
+        c3Toast.setAttribute('class', 'c3-toast');
 
-        this.root = this.attachShadow({mode: 'open'});
-        this.container = document.createElement('div');
-        this.root.appendChild(this.container);
+        const notificationActionRenderer = document.createElement('DIV');
+        notificationActionRenderer.setAttribute('class', 'notification-action-renderer');
+        const notificationActionResponseText = document.createElement('DIV');
+        notificationActionResponseText.setAttribute('class', 'notification-action-response-text');
+        notificationActionRenderer.appendChild(notificationActionResponseText);
+        c3Toast.appendChild(notificationActionRenderer);
+        this.root.appendChild(c3Toast);
 
-        this.container.innerHTML = CustomAction.template();
-
-
+        this.c3Toast = c3Toast;
+        this.notificationActionResponseText = notificationActionResponseText;
+        this.messages = [];
+        this.timer = 0;
     }
 
+    // Fires when an instance was inserted into the document
+    connectedCallback() {}
 
-    static get observedAttributes() {
-        return ['text'];
+    // Fires when an instance was removed from the document
+    disconnectedCallback() {}
+
+    showMessage() {
+        if (this.messages.length && !this.showing) {
+            const message = this.messages.shift();
+            this.notificationActionResponseText.textContent = message;
+            this.c3Toast.setAttribute('dir', 'in');
+            this.showing = true;
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+            this.timer = setTimeout(() => {
+                this.c3Toast.setAttribute('dir', 'out');
+                setTimeout(() => {
+                    this.showing = false;
+                    this.showMessage();
+                }, 195);
+            }, 3000);
+        }
     }
-
-
-    connectedCallback() {
-        // this.dispatchEvent(new CustomEvent());
-    }
-
-    disconnectedCallback() {
-
-    }
-
+    // Fires when an attribute was added, removed, or updated
     attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'show') {
-            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
+        if (attrName === 'message') {
+            this.messages.push(newVal);
+            this.showMessage();
         }
     }
 
-    static template() {
+    // Fires when an element is moved to a new document
+    adoptedCallback() {}
+    static getTemplate(value) {
         return `
-        ${CustomAction.style()}
-    <div style="border-top: solid 1px #dadce0; padding: 0 16px; height: 48px; align-items: center; color: #202124; display: flex; font-size: 14px; line-height: 20px;">
-      <div style="flex-shrink: 0;width: 24px; height: 24px; margin-right: 24px; color: #1a73e8; fill: currentColor;">
-        <slot name="svg">
-        </slot>
-      </div>
-      <slot name="text">
-      </slot>
-    </div>
-   `;
+        ${CustomToast.getStyle()}
+        <div>
+            ${value}
+        </div>
+        `;
     }
-
-    static style() {
+    static getStyle() {
         return `
-        <style>
-       
-        </style>`;
+        .c3-toast[dir="in"] {
+            transition: margin 225ms cubic-bezier(0.0, 0.0, 0.2, 1);
+            margin-bottom: 0;
+        }
+        
+        .c3-toast[dir="out"] {
+            transition: margin 195ms cubic-bezier(0.4, 0.0, 1, 1);
+        }
+        
+        .c3-toast {
+            display: block;
+            position: fixed;
+            z-index: 4;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            box-sizing: border-box;
+            padding: 14px 24px;
+            font-size: 1.4rem;
+            color: #ffffff;
+            background: hsl(0, 0%, 20%);
+            will-change: transform;
+            margin-bottom: -100%;
+        }
+        
+        .notification-action-renderer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-action-response-text {
+            flex-grow: 1;
+            padding-right: 1rem;
+            font-size:14px;
+        }
+        
+        `;
     }
-
-
 }
+customElements.define('custom-toast', CustomToast);
 
-customElements.define('custom-action', CustomAction);
 /*
 <!--
-<script src="action.js"></script>
-<custom-action></custom-action>
-const customCustomAction = document.querySelector('custom-action');
+<custom-toast id="toast"></custom-toast>
+<script src="components/toast.js"></script>
+document.getElementById('toast').setAttribute('message','成功');
 -->
 */
 class CustomSearch extends HTMLElement {
@@ -297,6 +353,7 @@ class CustomHeader extends HTMLElement {
         this.insertDivider();
         this.insertItem();
         this.insertItem("/admin.users", "会员", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
+        this.insertItem("/admin.teachers", "老师", "M9 12.984q1.5 0 3.281 0.422t3.258 1.406 1.477 2.203v3h-16.031v-3q0-1.219 1.477-2.203t3.258-1.406 3.281-0.422zM15 12q-0.609 0-1.313-0.234 1.313-1.547 1.313-3.75 0-0.891-0.375-2.016t-0.938-1.781q0.703-0.234 1.313-0.234 1.641 0 2.813 1.195t1.172 2.836-1.172 2.813-2.813 1.172zM5.016 8.016q0-1.641 1.172-2.836t2.813-1.195 2.813 1.195 1.172 2.836-1.172 2.813-2.813 1.172-2.813-1.172-1.172-2.813zM16.688 13.125q2.484 0.375 4.406 1.383t1.922 2.508v3h-4.031v-3q0-2.297-2.297-3.891z");
         this.insertItem("/admin.notices", "公告", "M14.016 3.234q3.047 0.656 5.016 3.117t1.969 5.648-1.969 5.648-5.016 3.117v-2.063q2.203-0.656 3.586-2.484t1.383-4.219-1.383-4.219-3.586-2.484v-2.063zM16.5 12q0 2.813-2.484 4.031v-8.063q1.031 0.516 1.758 1.688t0.727 2.344zM3 9h3.984l5.016-5.016v16.031l-5.016-5.016h-3.984v-6z");
         this.insertDivider();
         this.insertItem("/admin.help", "帮助", "M15.047 11.25q0.938-0.938 0.938-2.25 0-1.641-1.172-2.813t-2.813-1.172-2.813 1.172-1.172 2.813h1.969q0-0.797 0.609-1.406t1.406-0.609 1.406 0.609 0.609 1.406-0.609 1.406l-1.219 1.266q-1.172 1.266-1.172 2.813v0.516h1.969q0-1.547 1.172-2.813zM12.984 18.984v-1.969h-1.969v1.969h1.969zM12 2.016q4.125 0 7.055 2.93t2.93 7.055-2.93 7.055-7.055 2.93-7.055-2.93-2.93-7.055 2.93-7.055 7.055-2.93z");
@@ -483,190 +540,47 @@ customElements.define('custom-header', CustomHeader);
 -->
  */
 
-class CustomInput extends HTMLElement {
+let baseUri = window.location.hostname === 'localhost' ? 'http://localhost:9000' : '';
 
-    constructor() {
-        super();
-
-        this.root = this.attachShadow({mode: 'open'});
-        this.container = document.createElement('div');
-        this.root.appendChild(this.container);
-
-        this.container.innerHTML = CustomInput.template();
-
-
-    }
-
-
-    static get observedAttributes() {
-        return ['text'];
-    }
-
-
-    connectedCallback() {
-        // this.dispatchEvent(new CustomEvent());
-
-        // const textarea = this.root.querySelector('textarea');
-        // textarea.focus();
-        // textarea.addEventListener('click', evt => {
-        //     evt.stopPropagation();
-        // });
-
-        this.close = this.root.querySelector('#close');
-        this.close.addEventListener('click', evt => {
-            evt.stopPropagation();
-            this.remove();
-        });
-
-        this.closeButton = this.root.querySelector('#close-button');
-        this.closeButton.addEventListener('click', evt => {
-            evt.stopPropagation();
-            this.remove();
-        });
-
-        this.ok = this.root.querySelector('#ok');
-        this.ok.addEventListener('click', evt => {
-            evt.stopPropagation();
-            this.remove();
-            this.dispatchEvent(new CustomEvent('submit',
-            //     {
-            //     detail: textarea.value
-            // }
-            ));
-        });
-
-
-    }
-
-    disconnectedCallback() {
-
-    }
-
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'text') {
-            this.root.querySelector('textarea').value = newVal;
-        }
-    }
-
-    static template() {
-        return `
-        ${CustomInput.style()}
-
-    <div style="position: fixed; left: 0; top: 0; right: 0; bottom: 0; display: flex; background: #fff; flex-direction: column;">
-      <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-        <div style="height: 48px; border-bottom: 1px solid #dadce0; width: 100%; display: flex;">
-          <div style="flex-grow: 1;">
-          </div>
-          <div id="close-button" style="width: 48px; height: 48px;">
-            <svg style="width: 24px; height: 24px; margin-top: 12px; margin-left: 12px;" viewBox="0 0 24 24">
-              <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z">
-              </path>
-            </svg>
-          </div>
-        </div>
-        <div style="flex-grow: 1;width: 100%">
-          <slot>
-          </slot>
-        </div>
-      </div>
-      <div class="buttons">
-        <div id="close" class="button" style="border-right: 1px solid #dadce0;">
-          取消
-        </div>
-        <div id="ok" class="button">
-          确定
-        </div>
-      </div>
-    </div>
-  
-   `;
-    }
-
-    static style() {
-        return `
-        <style>
-             .buttons{
-border-top: 1px solid #dadce0; width: 100%; height: 56px; flex-shrink: 0; display: flex; align-items: center;
-}
-.button
-{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 400;
-    background-color: #fff;
-    color: #1a73e8;
-    height: 100%;
-    width: 50%;
+async function loadData() {
+    const response = await fetch(`${baseUri}/api/notice?mode=1`);
+    return response.json();
 }
 
-        </style>`;
-    }
-
-
-}
-
-customElements.define('custom-input', CustomInput);
-/*
-<!--
-<script src="input.js"></script>
-<custom-input></custom-input>
-const customCustomInput = document.querySelector('custom-input');
--->
-
-
-*/
-let _obj = {};
-let baseUri = 'http://localhost:8080';
-let id = new URL(window.location).searchParams.get('id');
-
-async function fetchData() {
-    const res = await fetch(`${baseUri}/api/card?mode=2&id=${id}`)
-    const obj = await res.json();
-    return obj;
-}
-
-if (id)
-    fetchData().then(res => {
-        _obj = res;
-        fieldTitle.querySelector('span').textContent = res.title;
-        fieldDescription.querySelector('span').textContent = res.description;
-        fieldPrice.querySelector('span').textContent = res.price;
-    });
-
-const fieldTitle = document.querySelector('#field-title');
-fieldTitle.addEventListener('click', evt => {
-    evt.stopPropagation();
-    updateValue('title');
-});
-const fieldPrice = document.querySelector('#field-price');
-fieldPrice.addEventListener('click', evt => {
-    evt.stopPropagation();
-    updateValue('price', true);
-});
-const fieldDescription = document.querySelector('#field-description');
-fieldDescription.addEventListener('click', evt => {
-    evt.stopPropagation();
-    updateValue('description');
-});
-
-function updateValue(key, isNumber) {
-    const customInput = document.createElement('custom-input');
-    const textarea = document.createElement('textarea');
-    customInput.appendChild(textarea);
-    document.body.appendChild(customInput);
-    textarea.value = _obj[key] || '';
-    textarea.focus();
-    customInput.addEventListener('submit', async evt => {
-        const res = await fetch(`${baseUri}/api/card`, {
-            method: 'POST',
-            body: JSON.stringify({
-                id: _obj.id || 0,
-                [key]: isNumber ? parseInt(textarea.value) : textarea.value
-            })
-        });
-        const obj = await res.text();
+async function render() {
+    let obj;
+    try {
+        obj = await loadData();
         console.log(obj);
-    })
+        const fragment = document.createDocumentFragment();
+        obj.forEach(x => {
+            const item = createNoticeItem(x);
+            item.addEventListener('click', evt => {
+                evt.stopPropagation();
+                window.location = `./admin.notice?id=${x.id}`;
+            });
+            fragment.appendChild(item);
+        });
+        document.querySelector('.items').appendChild(fragment);
+    } catch (e) {
+        document.getElementById('toast').setAttribute('message', e.message);
+    }
+}
+
+render();
+
+function createNoticeItem(x) {
+    const item = document.createElement('div');
+    item.dataset.id = x.id;
+    item.setAttribute("class", "item");
+    const itemText = document.createElement('span');
+    itemText.setAttribute("class", "item-text");
+    item.appendChild(itemText);
+    itemText.textContent = x.title;
+    const itemSubtitle = document.createElement('div');
+    itemSubtitle.setAttribute("class", "item-subtitle");
+    item.appendChild(itemSubtitle);
+    const t = new Date(x.updated_time * 1000);
+    itemSubtitle.textContent = `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, '0')}-${(t.getDate()).toString().padStart(2, '0')}`;
+    return item;
 }

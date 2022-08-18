@@ -212,6 +212,261 @@ function reportError(err) {
     console.log(err)
 }
 // https://docs.rs/convert_case/latest/convert_case/
+(function () {
+    class CustomUploader extends HTMLElement {
+        constructor() {
+            super();
+            this.root = this.attachShadow({ mode: 'open' });
+            this.container = document.createElement('div');
+            this.root.appendChild(this.container);
+            this.container.innerHTML = CustomUploader.template();
+        }
+
+        static get observedAttributes() {
+            return ['uri', 'host', 'max', 'images', 'title'];
+        }
+
+        connectedCallback() {
+            // this.dispatchEvent(new CustomEvent());
+            const button = this.root.querySelector('#button');
+            const items = this.root.querySelector('#items');
+            items.addEventListener('click', evt => {
+                evt.stopPropagation();
+            });
+            this.items = items;
+            this.button = button;
+
+            button.addEventListener('click', evt => {
+                evt.stopPropagation();
+                this.uploadImage();
+            });
+            this.root.querySelector('#images .button').addEventListener('click', evt => {
+                evt.stopPropagation();
+                this.uploadImage();
+            });
+        }
+
+        disconnectedCallback() {
+        }
+
+        attributeChangedCallback(attrName, oldVal, newVal) {
+            if (attrName === 'uri') {
+                this.uri = newVal;
+            } else if (attrName === 'host') {
+                this.host = newVal;
+            } else if (attrName === 'max') {
+                this.max = newVal;
+            } else if (attrName === 'images') {
+                this.button.parentNode.style.display = 'none';
+                this.items.style.display = 'block';
+                JSON.parse(newVal).forEach(x => this.appendImagePreview(x))
+            } else if (attrName === 'title') {
+                this.root.querySelector('#title').textContent = newVal;
+            }
+        }
+
+        static template() {
+            return `
+        ${CustomUploader.style()}
+
+    <div id="title" style="color: #202124; font-size: 16px; font-weight: 500; line-height: 24px; padding-bottom: 2px;">
+      课程照片
+    </div>
+    <div style="color: #70757a; font-size: 16px; font-weight: 400; line-height: 24px;">
+      <slot name="subtitle">
+      </slot>
+    </div>
+    <div style="color: rgba(0,0,0,.87); margin-bottom: 12px; margin-top: 12px;">
+      <div id="button" style="align-items: center; background: transparent; border-radius: 9999px; border: 1px solid #dadce0; box-shadow: none; box-sizing: border-box; color: #3c4043; display: inline-flex; font-size: 14px; height: 36px; justify-content: center; margin-bottom: 6px; margin-top: 6px; min-width: 64px; padding: 0 16px 0 12px;">
+        <div style="color: #1a73e8; height: 18px; margin-right: 8px; width: 18px; fill: currentColor;">
+          <svg style="width: 100%; height: 100%;" viewBox="0 0 24 24" focusable="false" class="NMm5M">
+            <path d="M20 10h-2V7h-3V5h3V2h2v3h3v2h-3v3zm-4 3c0 2.21-1.79 4-4 4s-4-1.79-4-4 1.79-4 4-4 4 1.79 4 4zm4-1v7H4V7h9V3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-7h-2z">
+            </path>
+          </svg>
+        </div><span>添加照片
+        </span>
+      </div>
+    </div>
+    <!--display: none-->
+    <div id="items" style="height: 96px; width: 100%; margin: 12px 0;display: none">
+<!--      <div style="height: 100%; overflow-y: hidden; overflow-x: auto; white-space: nowrap;">-->
+        <div id="images" style="display: flex;flex-wrap: wrap;gap: 8px;">
+          <div class="button" style="padding: 0 23px 0 23px; border: 1px solid #dadce0; border-radius: 16px; margin:0 0 8px 0; width: 112px; height: 96px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; fill: currentColor; color: #1a73e8; background: rgba(26,115,232,.04);">
+            <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24">
+              <path d="M9.797 14.016q0-1.359 0.938-2.297t2.25-0.938q1.359 0 2.297 0.938t0.938 2.297q0 1.313-0.938 2.25t-2.297 0.938-2.273-0.914-0.914-2.273zM12.984 18.984q2.063 0 3.539-1.453t1.477-3.516-1.477-3.539-3.539-1.477-3.516 1.477-1.453 3.539 1.453 3.516 3.516 1.453zM6 9.984v-3h3v-3h6.984l1.828 2.016h3.188q0.797 0 1.406 0.609t0.609 1.406v12q0 0.797-0.609 1.383t-1.406 0.586h-15.984q-0.797 0-1.406-0.586t-0.609-1.383v-10.031h3zM3 3.984v-3h2.016v3h3v2.016h-3v3h-2.016v-3h-3v-2.016h3z">
+              </path>
+            </svg>
+          </div>
+          
+          
+          
+        </div>
+<!--      </div>-->
+    </div>
+  
+   `;
+        }
+
+        static style() {
+            return `
+        <style>
+        </style>`;
+        }
+
+        createInput() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = false;
+            input.accept = 'image/*';
+            input.style.position = 'fixed';
+            input.style.left = '-100%';
+            document.body.appendChild(input);
+            return input;
+        }
+
+        appendImagePreview(src) {
+            if (!src.startsWith('https://')) {
+                src = `${this.host}/${src}`
+            }
+            const template = `<div style="position: relative; overflow: hidden; border: 1px solid #dadce0; border-radius: 16px; margin:0 0 8px 0; width: 112px; height: 96px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; fill: currentColor; color: #1a73e8; background: rgba(26,115,232,.04);">
+            <div id="close" style="position: absolute; right: 8px; top: 8px; height: 32px; width: 32px; background: rgba(32,33,36,.6); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              <svg style="width: 24px; height: 24px; fill: #fff;" viewBox="0 0 24 24">
+                <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z">
+                </path>
+              </svg>
+            </div>
+            <img style="max-width: 100%; object-fit: contain;" src="${src}" />
+          </div>`;
+            const div = document.createElement('div');
+            div.className = 'image'
+            div.innerHTML = template;
+            div.dataset.src = src;
+            div.querySelector('#close').addEventListener('click', evt => {
+                div.remove();
+                this.dispatchEvent(new CustomEvent('remove', {
+                    detail: src
+                }));
+            });
+            if (parseInt(this.max) === 1) {
+                this.root.querySelectorAll('.image')
+                    .forEach(x => x.remove())
+            }
+            this.items.querySelector('#images').appendChild(div);
+        }
+
+        uploadImage() {
+            const input = this.createInput();
+            input.addEventListener('change', async evt => {
+                const formData = createUploadData(input)
+                const text = await uploadData(this.uri, formData);
+                this.button.parentNode.style.display = 'none';
+                this.items.style.display = 'block';
+                this.appendImagePreview(text);
+                this.dispatchEvent(new CustomEvent('upload', {
+                    detail: [...this.root.querySelectorAll('.image')]
+                        .map(x => x.dataset.src)
+                }));
+            })
+            input.click();
+        }
+    }
+
+    async function uploadData(uri, formData) {
+        const res = await fetch(uri, {
+            method: 'POST',
+            body: formData
+        });
+        return await res.text();
+    }
+
+    function createUploadData(input) {
+        const formData = new FormData();
+        formData.append("images", input.files[0], input.files[0].name)
+        return formData;
+    }
+
+    customElements.define('custom-uploader', CustomUploader);
+    /*
+    <!--
+    <script src="uploader.js"></script>
+    <custom-uploader></custom-uploader>
+    const customCustomUploader = document.querySelector('custom-uploader');
+    -->
+    */
+})()
+class CustomAction extends HTMLElement {
+
+    constructor() {
+        super();
+
+        this.root = this.attachShadow({ mode: 'open' });
+        this.container = document.createElement('div');
+        this.root.appendChild(this.container);
+
+        this.container.innerHTML = CustomAction.template();
+
+
+    }
+
+
+    static get observedAttributes() {
+        return ['head', 'subhead'];
+    }
+
+
+    connectedCallback() {
+        // this.dispatchEvent(new CustomEvent());
+    }
+
+    disconnectedCallback() {
+
+    }
+
+    attributeChangedCallback(attrName, oldVal, newVal) {
+        if (attrName === 'head') {
+            this.root.querySelector('#head').textContent = newVal;
+        }
+        if (attrName === 'subhead') {
+            this.root.querySelector('#subhead').textContent = newVal;
+        }
+    }
+
+    static template() {
+        return `
+        ${CustomAction.style()}
+    <div style="border-top: solid 1px #dadce0; padding: 0 16px; height: 48px; align-items: center; color: #202124; display: flex; font-size: 14px; line-height: 20px;">
+    <span id="head" style="flex-grow:1">
+    </span>  
+      <span id="subhead" style="color:#969799;margin-right:4px" >
+      </span> 
+    <div style="flex-shrink: 0;width: 20px; height: 20px;  color: #969799; fill: currentColor;">
+    <svg style="width:100%;height:100%" viewBox="0 0 24 24">
+    <path d="M5.859 4.125l2.156-2.109 9.984 9.984-9.984 9.984-2.156-2.109 7.922-7.875z"></path>
+    </svg>
+      </div>
+      
+    </div>
+   `;
+    }
+
+    static style() {
+        return `
+        <style>
+       
+        </style>`;
+    }
+
+
+}
+
+customElements.define('custom-action', CustomAction);
+/*
+<!--
+<script src="action.js"></script>
+<custom-action></custom-action>
+const customCustomAction = document.querySelector('custom-action');
+-->
+*/
 class CustomSearch extends HTMLElement {
 
     constructor() {
@@ -632,239 +887,59 @@ customElements.define('custom-header', CustomHeader);
 -->
  */
 
-class CustomMenu extends HTMLElement {
+class CustomInput extends HTMLElement {
+
     constructor() {
         super();
+
         this.root = this.attachShadow({mode: 'open'});
         this.container = document.createElement('div');
         this.root.appendChild(this.container);
-        this.container.innerHTML = CustomMenu.template();
+
+        this.container.innerHTML = CustomInput.template();
+
+
     }
+
 
     static get observedAttributes() {
         return ['text'];
     }
+
 
     connectedCallback() {
         // this.dispatchEvent(new CustomEvent());
-        const close = this.root.querySelector('.close');
-        close.addEventListener('click', evt => {
+
+        // const textarea = this.root.querySelector('textarea');
+        // textarea.focus();
+        // textarea.addEventListener('click', evt => {
+        //     evt.stopPropagation();
+        // });
+
+        this.close = this.root.querySelector('#close');
+        this.close.addEventListener('click', evt => {
             evt.stopPropagation();
-            this.style.display = 'none'
+            this.remove();
         });
-    }
 
-    insertItem(svg, title, callback) {
-        const divider = this.root.querySelector('.divider');
-        const div = document.createElement('div');
-        div.innerHTML = `<div class="item">
-          <div class="wrapper">
-            <div class="item-container">
-              <div class="img">
-                ${svg}
-              </div>
-              <div class="text">
-                ${title}
-              </div>
-            </div>
-          </div>
-        </div>`;
-        div.addEventListener('click', callback);
-        divider.insertAdjacentElement('beforebegin', div);
-    }
+        this.closeButton = this.root.querySelector('#close-button');
+        this.closeButton.addEventListener('click', evt => {
+            evt.stopPropagation();
+            this.remove();
+        });
 
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'show') {
-            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
-        }
-    }
-
-    static template() {
-        return `
-        ${CustomMenu.style()}
-    <div class="container">
-      <div class="menu">
-<!--        <div class="item">-->
-<!--          <div class="wrapper">-->
-<!--            <div class="item-container">-->
-<!--              <div class="img">-->
-<!--                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">-->
-<!--                  <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z">-->
-<!--                  </path>-->
-<!--                </svg>-->
-<!--              </div>-->
-<!--              <div class="text">-->
-<!--                分享-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <div class="divider">
-        </div>
-        <div class="close">
-          <div class="close-wrapper">
-            <div style="color: #3c4043; cursor: pointer; display: block; position: relative; left: -8px;">
-              <div class="text">
-                关闭菜单
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-   `;
-    }
-
-    static style() {
-        return `
-        <style>
-.item-container
-{
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    color: #3c4043;
-    cursor: pointer;
-    display: block;
-    position: relative;
-    left: -8px;
-    outline: 0;
-}
-.item
-{
-    display: block;
-    position: relative;
-
-}
-.disable{
-    background-color: rgba(0,0,0,.1);
-}
-.wrapper
-{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 16px;
-    vertical-align: middle;
-    line-height: 48px;
-}
-.img
-{
-    display: inline-block;
-    fill: currentColor;
-    line-height: 24px;
-    position: relative;
-    padding: 8px;
-    cursor: pointer;
-    vertical-align: middle;
-    height: 20px;
-    width: 20px;
-}
-.text
-{
-    display: inline-block;
-    font-size: 14px;
-    min-width: 62px;
-    vertical-align: middle;
-    width: 100%;
-}
-.divider
-{
-    display: block;
-    position: relative;
-    border-top: 1px solid;
-    height: 0;
-    margin: 5px 0;
-    border-top-color: #dadce0;
-    pointer-events: none;
-    cursor: default;
-    color: rgba(0,0,0,.26) !important;
-}
-:host
-{
-    position: fixed;
-}
-.container
-{
-    display: block;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
-    z-index: 1;/*left: 235px;*//*top: 1253px;*/
-}
-.menu
-{
-    border: none;
-    display: block;
-    white-space: nowrap;
-    background-color: #fff;
-    border-radius: 0;
-    padding: 1px 0;
-    outline: 0;
-}
-.close
-{
-    display: block;
-    position: relative;
-    outline: 0;
-}
-.close-wrapper
-{
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 0 16px;
-    vertical-align: middle;
-    line-height: 48px;
-}
-        </style>`;
-    }
-}
-
-customElements.define('custom-menu', CustomMenu);
-/*
-<!--
-<script src="menu.js"></script>
-<custom-menu></custom-menu>
-const customCustomMenu = document.querySelector('custom-menu');
--->
-*/
-class CustomDialog extends HTMLElement {
-
-    constructor() {
-        super();
-
-        this.root = this.attachShadow({mode: 'open'});
-        this.container = document.createElement('div');
-        this.root.appendChild(this.container);
-
-        this.container.innerHTML = CustomDialog.template();
+        this.ok = this.root.querySelector('#ok');
+        this.ok.addEventListener('click', evt => {
+            evt.stopPropagation();
+            this.remove();
+            this.dispatchEvent(new CustomEvent('submit',
+            //     {
+            //     detail: textarea.value
+            // }
+            ));
+        });
 
 
-    }
-
-
-    static get observedAttributes() {
-        return ['text'];
-    }
-
-
-    connectedCallback() {
-        this.root.querySelector('#close')
-            .addEventListener('click', ev => {
-                this.remove();
-                this.dispatchEvent(new CustomEvent('close'));
-            });
-        this.root.querySelector('.wrapper')
-            .addEventListener('click', ev => {
-                this.remove();
-                this.dispatchEvent(new CustomEvent('close'));
-            });
-        this.root.querySelector('.layout')
-            .addEventListener('click', ev => {
-                ev.stopPropagation();
-                this.dispatchEvent(new CustomEvent('close'));
-            });
-        this.root.querySelector('#submit')
-            .addEventListener('click', ev => {
-                this.remove();
-                this.dispatchEvent(new CustomEvent('submit'));
-            });
     }
 
     disconnectedCallback() {
@@ -872,288 +947,207 @@ class CustomDialog extends HTMLElement {
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
-
+        if (attrName === 'text') {
+            this.root.querySelector('textarea').value = newVal;
+        }
     }
 
     static template() {
         return `
-        ${CustomDialog.style()}
+        ${CustomInput.style()}
 
-    <div class="overlay">
-    </div>
-    <div class="wrapper">
-      <div class="layout">
-        <div class="content">
-          <div class="top">
-          <slot></slot>
+    <div style="position: fixed; left: 0; top: 0; right: 0; bottom: 0; display: flex; background: #fff; flex-direction: column;">
+      <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+        <div style="height: 48px; border-bottom: 1px solid #dadce0; width: 100%; display: flex;">
+          <div style="flex-grow: 1;">
           </div>
-          <div class="buttons">
-            <div id="close" class="button">
-              取消
-            </div>
-            <div id="submit" class="button">
-              确定
-            </div>
+          <div id="close-button" style="width: 48px; height: 48px;">
+            <svg style="width: 24px; height: 24px; margin-top: 12px; margin-left: 12px;" viewBox="0 0 24 24">
+              <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z">
+              </path>
+            </svg>
           </div>
+        </div>
+        <div style="flex-grow: 1;width: 100%">
+          <slot>
+          </slot>
+        </div>
+      </div>
+      <div class="buttons">
+        <div id="close" class="button" style="border-right: 1px solid #dadce0;">
+          取消
+        </div>
+        <div id="ok" class="button">
+          确定
         </div>
       </div>
     </div>
-
+  
    `;
     }
 
     static style() {
         return `
         <style>
+             .buttons{
+border-top: 1px solid #dadce0; width: 100%; height: 56px; flex-shrink: 0; display: flex; align-items: center;
+}
 .button
 {
-    margin-bottom: -1px;
-    white-space: nowrap;
-    flex: 0 0 auto;
-    margin-right: 8px;
-    min-width: 48px;
-    padding: 0 8px;
-    line-height: 36px !important;
-    text-align: center;
-    font-family: Roboto-Medium,HelveticaNeue-Medium,Helvetica Neue,sans-serif-medium,Arial,sans-serif !important;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #4285f4;
-}
-.buttons
-{
-    cursor: pointer;
-    font-family: Roboto,Helvetica Neue,Arial,sans-serif;
-    font-size: small;
-    color: #4d5156;
-    -webkit-text-size-adjust: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    white-space: normal;
-    text-align: left;
-    visibility: inherit;
-    -webkit-user-select: none;
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 0 8px 0;
-}
-.top
-{
-    padding: 24px;
-    font-size: 16px;
-    overflow-wrap: break-word;
-}
-.content
-{
-    max-width: 300px;
-    -webkit-user-select: none;
-}
-.layout
-{
-    border-radius: 8px;
-    position: relative;
-    display: inline-block;
-    z-index: 1060;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 400;
     background-color: #fff;
-    vertical-align: middle;
-    white-space: normal;
-    overflow: hidden;
-    transform: translateZ(0);
-    box-shadow: 0 5px 26px 0 rgba(0,0,0,.22),0 20px 28px 0 rgba(0,0,0,.3);
-    text-align: left;
-    opacity: 1;
-    visibility: inherit;
-    outline: 0;
-}
-.overlay
-{
-    position: fixed;
-    z-index: 1001;
-    right: 0;
-    bottom: -200px;
-    top: 0;
-    left: 0;
-    -webkit-transition: opacity .25s;
-    background-color: #000;
-    opacity: .4;
-    visibility: inherit;
-}
-.wrapper
-{
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    left: 0;
-    z-index: 1002;
-    vertical-align: middle;
-    white-space: nowrap;
-    max-height: 100%;
-    max-width: 100%;
-    overflow: auto;
-    transform: translateZ(0);
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    text-align: center;
-    opacity: 1;
-    visibility: inherit;
-}
-.wrapper::after
-{
-    content: '';
-    display: inline-block;
+    color: #1a73e8;
     height: 100%;
-    vertical-align: middle;
+    width: 50%;
 }
+
         </style>`;
     }
 
 
 }
 
-customElements.define('custom-dialog', CustomDialog);
-
+customElements.define('custom-input', CustomInput);
 /*
 <!--
-<custom-dialog></custom-dialog>
-<script src="components/dialog.js"></script>
-const customDialog = document.createElement('custom-dialog');
-    const input = document.createElement('input');
-    customDialog.appendChild(input);
-    customDialog.addEventListener('submit', ev => {
-        input.value;
-    })
-    document.body.appendChild(customDialog);
-
-        const customDialog = document.createElement('custom-dialog');
-    const div = document.createElement('div');
-    div.textContent = '您确定要停课吗？';
-    customDialog.appendChild(div);
-    customDialog.addEventListener('submit', ev => {
-       
-    })
-    document.body.appendChild(customDialog);
+<script src="input.js"></script>
+<custom-input></custom-input>
+const customCustomInput = document.querySelector('custom-input');
 -->
- */
-let baseUri = window.location.hostname === '127.0.0.1' ? 'http://localhost:8080' : '';
 
-const section = document.querySelector('.section');
-const customMenu = document.querySelector('custom-menu');
 
-const customSearch = document.querySelector('custom-search');
+*/
+let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8080' : '';
+;
+let id = new URL(window.location).searchParams.get('id') || 1;
+let _obj;
 
-customSearch.addEventListener('submit', evt => {
+const customUploader = document.querySelector('custom-uploader');
+customUploader.addEventListener('upload', async evt => {
     evt.stopPropagation();
-    render(_users.filter(x => fuzzysearch(evt.detail, x.nick_name)))
-});
-
-
-let _users = [];
-
-
-initializeContextMenu();
-
-loadData();
-
-
-//-------------------------------------------------------------------
-async function fetchTeachers() {
-    const obj = await fetch(`${baseUri}/api/admin.teachers.query`);
-    console.log(`${baseUri}/api/admin.teachers.query`)
-    return await obj.json();
-}
-
-async function loadData() {
-    const teachers = await fetchTeachers();
-    _users = teachers;
-    render(teachers);
-}
-
-function render(teachers) {
-    section.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < teachers.length; i++) {
-        const t = new Date(teachers[i].updated_time * 1000)
-        let subtitle = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
-        if (teachers[i].booked) {
-            subtitle += ` • 已约 ${teachers[i].booked} 次`;
-        }
-        const template = `
-    <div class="item" data-id="${teachers[i].id}">
-      <img src="https://static.lucidu.cn/images/${teachers[i].thumbnail}"  class="item-avatar" />
-      <div class="item-main">
-        <div class="item-title">
-          ${teachers[i].name}
-        </div>
-        <div style="line-height: 20px; font-size: 14px; color: #3c4043; margin-top: 2px;">
-          ${subtitle}
-        </div>
-      </div>
-      <div class="item-right">
-        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
-          </path>
-        </svg>
-      </div>
-    </div>
-  <hr class="separator">
-  `;
-        const div = document.createElement('div');
-        div.innerHTML = template;
-        fragment.appendChild(div);
-        div.querySelector('.item-right')
-            .addEventListener('click', evt => {
-                evt.stopPropagation();
-                const rect = evt.currentTarget.getBoundingClientRect();
-                console.log(customMenu.getBoundingClientRect())
-                customMenu.style.display = 'block';
-                customMenu.style.right = '16px';
-                customMenu.dataset.id = teachers[i].id;
-                if (rect.top + 135 < window.innerHeight)
-                    customMenu.style.top = rect.top + 'px';
-                else
-                    customMenu.style.top = rect.top + 'px';
-            })
-    }
-    section.appendChild(fragment);
-    [...document.querySelectorAll('.item')].forEach(x => {
-        x.addEventListener('click', evt => {
-            window.location.href = `./admin.user?id=${evt.currentTarget.dataset.id}`
+    const res = await fetch(`${baseUri}/api/admin.teacher.insert`, {
+        method: 'POST',
+        body: JSON.stringify({
+            id,
+            thumbnail: substringAfterLast(evt.detail[0], '/')
         })
-    })
-}
-
-function initializeContextMenu() {
-    window.addEventListener('scroll', evt => {
-        customMenu.style.display = 'none';
-    })
-    document.addEventListener('click', evt => {
-        customMenu.style.display = 'none';
     });
-    customMenu.addEventListener('click', evt => {
-        evt.stopPropagation();
+    const obj = await res.text();
+});
+customUploader.addEventListener('remove', evt => {
+    console.log(evt);
+})
+
+async function fetchAdminTeacherQuery() {
+    const res = await fetch(`${baseUri}/api/admin.teacher.query?id=${id}`)
+    const obj = await res.json();
+    return obj;
+}
+const fieldName = document.querySelector('#field-name');
+const fieldIntroduction = document.querySelector('#field-introduction');
+const fieldDescription = document.querySelector('#field-description');
+const fieldPhoneNumber = document.querySelector('#field-phone_number');
+
+if (id)
+    fetchAdminTeacherQuery().then(res => {
+        console.log(res)
+        _obj = res;
+        fieldName.setAttribute('head', '姓名');
+        fieldName.setAttribute('subhead', res.name);
+        fieldIntroduction.setAttribute('head', '简介');
+        fieldIntroduction.setAttribute('subhead', res.introduction.substring(0, 10));
+        fieldDescription.setAttribute('head', '描述');
+        fieldDescription.setAttribute('subhead', res.description.substring(0, 10));
+        fieldPhoneNumber.setAttribute('head', '手机号码');
+        fieldPhoneNumber.setAttribute('subhead', res.phone_number);
+
+        if (res.thumbnail)
+            customUploader.setAttribute('images', JSON.stringify([res.thumbnail]));
     });
-    customMenu.insertItem(`<svg viewBox="0 0 24 24">
-        <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>
-    </svg>`, '删除', evt => {
-        customMenu.style.display = 'none';
-        askDeleteUser();
+
+
+
+fieldDescription.addEventListener('click', evt => {
+    evt.stopPropagation();
+    const customInput = document.createElement('custom-input');
+    const textarea = document.createElement('textarea');
+    customInput.appendChild(textarea);
+    document.body.appendChild(customInput);
+    textarea.value = _obj.description;
+    textarea.focus();
+    customInput.addEventListener('submit', async evt => {
+        const res = await fetch(`${baseUri}/api/admin.teacher.insert`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+                description: textarea.value
+            })
+        });
+        const obj = await res.text();
+        console.log(obj);
     })
-}
-
-function askDeleteUser() {
-    const customDialog = document.createElement('custom-dialog');
-    const div = document.createElement('div');
-    div.textContent = `您确定要删除该用户吗？`;
-    customDialog.appendChild(div);
-    customDialog.addEventListener('submit', ev => {
-        executeDeleteUser(customMenu.dataset.id);
+});
+fieldName.addEventListener('click', evt => {
+    evt.stopPropagation();
+    const customInput = document.createElement('custom-input');
+    const textarea = document.createElement('textarea');
+    customInput.appendChild(textarea);
+    document.body.appendChild(customInput);
+    textarea.value = _obj.name;
+    textarea.focus();
+    customInput.addEventListener('submit', async evt => {
+        const res = await fetch(`${baseUri}/api/admin.teacher.insert`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+                name: textarea.value
+            })
+        });
+        const obj = await res.text();
+        console.log(obj);
     })
-    document.body.appendChild(customDialog);
-}
-
-async function executeDeleteUser(id) {
-    const response = await fetch(`${baseUri}/api/user?id=${id}`, { method: 'DELETE' });
-    await response.text();
-    loadData();
-}
-
-
+});
+fieldPhoneNumber.addEventListener('click', evt => {
+    evt.stopPropagation();
+    const customInput = document.createElement('custom-input');
+    const textarea = document.createElement('textarea');
+    customInput.appendChild(textarea);
+    document.body.appendChild(customInput);
+    textarea.value = _obj.phone_number;
+    textarea.focus();
+    customInput.addEventListener('submit', async evt => {
+        const res = await fetch(`${baseUri}/api/admin.teacher.insert`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+                phone_number: textarea.value
+            })
+        });
+        const obj = await res.text();
+        console.log(obj);
+    })
+});
+fieldIntroduction.addEventListener('click', evt => {
+    evt.stopPropagation();
+    const customInput = document.createElement('custom-input');
+    const textarea = document.createElement('textarea');
+    customInput.appendChild(textarea);
+    document.body.appendChild(customInput);
+    textarea.value = _obj.introduction;
+    textarea.focus();
+    customInput.addEventListener('submit', async evt => {
+        const res = await fetch(`${baseUri}/api/admin.teacher.insert`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+                introduction: textarea.value
+            })
+        });
+        const obj = await res.text();
+        console.log(obj);
+    })
+});

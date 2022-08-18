@@ -1,9 +1,10 @@
+const shared = require('shared');
+
 App({
 
     async onLaunch() {
         getNavigationBarSize(this.globalData)
         checkUpdate();
-        loadSettings(this.globalData)
         await tryLoadOpenId(this.globalData);
         initializeCloud();
         trySaveOpenId(this.globalData)
@@ -12,7 +13,8 @@ App({
     globalData: {
         openid: null,
         host: 'https://lucidu.cn',
-        staticHost: 'https://static.lucidu.cn'
+        staticHost: 'https://static.lucidu.cn',
+        configs: null
     },
 });
 
@@ -59,28 +61,6 @@ function initializeCloud() {
     });
 }
 
-function loadSettings(obj) {
-    wx.request({
-        url: `${obj.host}/api/configs`,
-        success: res => {
-            if (res.statusCode === 200) {
-                obj.configs = res.data;
-                obj.ready && obj.ready();
-            } else {
-                wx.showToast({
-                    title: "网络不稳定",
-                    icon: "error"
-                })
-            }
-        },
-        fail: err => {
-            wx.showToast({
-                title: "网络不稳定",
-                icon: "error"
-            });
-        }
-    })
-}
 
 async function tryLoadOpenId(obj) {
     try {

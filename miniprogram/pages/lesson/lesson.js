@@ -1,5 +1,4 @@
 const app = getApp();
-const login = require('../appointment/login');
 
 const SECONDS_IN_TIME = [
 	1, // 1 second

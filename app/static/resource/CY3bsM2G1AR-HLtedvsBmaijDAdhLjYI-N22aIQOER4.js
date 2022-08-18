@@ -1,217 +1,3 @@
-async function addJS(jsCode) {
-    const s = document.createElement('script');
-    s.type = 'text/javascript';
-    s.src = jsCode;
-    document.getElementsByTagName('head')[0].appendChild(s);
-    return new Promise(((resolve, reject) => {
-        s.onload = () => {
-            resolve()
-        }
-        s.onerror = () => {
-            reject()
-        }
-    }))
-}
-function calculateLoadedPercent(video) {
-    if (!video.buffered.length) {
-        return '0';
-    }
-    return (video.buffered.end(0) / video.duration) * 100 + '%';
-}
-function calculateProgressPercent(video) {
-    return ((video.currentTime / video.duration) * 100).toFixed(2) + '%';
-}
-function camel(string) {
-    return string.replaceAll(/[ _-]([a-zA-Z])/g, m => m[1].toUpperCase());
-}
-function clamp(x, min, max) {
-    if (x > max) return max;
-    if (x < min) return min;
-    return x;
-}
-function dateToSeconds(string) {
-    let match = /(\d+)年(\d+)月(\d+)日/.exec(string);
-    if (!match) {
-        match = /(\d+)月(\d+)日/.exec(string);
-        const t = new Date();
-        t.setMonth(parseInt(match[1]) - 1);
-        t.setDate(parseInt(match[2]));
-        t.setHours(0, 0, 0, 0)
-        return t / 1000;
-    } else {
-        const t = new Date();
-        t.setFullYear(parseInt(match[1]))
-        t.setMonth(parseInt(match[2]) - 1);
-        t.setDate(parseInt(match[3]));
-        t.setHours(0, 0, 0, 0)
-        return t / 1000;
-    }
-
-}
-function decodeHtml(html) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-}
-function durationToSeconds(duration) {
-    let result = 0;
-    if (/(\d{1,2}:){1,2}\d{1,2}/.test(duration)) {
-        const pieces = duration.split(':');
-        for (let i = pieces.length - 1; i > -1; i--) {
-            result += Math.pow(60, i) * parseInt(pieces[pieces.length - i - 1]);
-        } console.log(result)
-        return result;
-    }
-    result = parseInt(duration);
-    if (isNaN(result)) {
-        result = 0;
-    }
-    return result;
-}
-function formatDuration(ms) {
-    if (isNaN(ms)) return '0:00';
-    if (ms < 0) ms = -ms;
-    const time = {
-        hour: Math.floor(ms / 3600) % 24,
-        minute: Math.floor(ms / 60) % 60,
-        second: Math.floor(ms) % 60,
-    };
-    return Object.entries(time)
-        .filter((val, index) => index || val[1])
-        .map(val => (val[1] + '').padStart(2, '0'))
-        .join(':');
-}
-function fuzzysearch(needle, haystack) {
-    var hlen = haystack.length;
-    var nlen = needle.length;
-    if (nlen > hlen) {
-        return false;
-    }
-    if (nlen === hlen) {
-        return needle === haystack;
-    }
-    outer: for (var i = 0, j = 0; i < nlen; i++) {
-        var nch = needle.charCodeAt(i);
-        while (j < hlen) {
-            if (haystack.charCodeAt(j++) === nch) {
-                continue outer;
-            }
-        }
-        return false;
-    }
-    return true;
-}
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-function getShortDateString(seconds) {
-    const t = new Date(seconds * 1000);
-    return `${t.getMonth() + 1}月${t.getDate()}日周${'日一二三四五六'[t.getDay()]}`;
-}
-async function getStringAsync(uri, options) {
-    const response = await fetch(uri, {
-        method: 'GET',
-        ...options
-    });
-    if (!response.ok) {
-        throw new Error();
-    }
-    return await response.text();
-}
-function groupByKey(array, key) {
-    return array
-        .reduce((hash, obj) => {
-            if (obj[key] === undefined) return hash;
-            return Object.assign(hash, { [obj[key]]: (hash[obj[key]] || []).concat(obj) })
-        }, {})
-}
-function kebab(string) {
-    return string.replaceAll(/(?<=[a-z])[A-Z]/g, m => `_${m}`).toLowerCase()
-        .replaceAll(/[ -]([a-z])/g, m => `-${m[1]}`)
-}
-function range(num, min, max) {
-    return Math.min(Math.max(num, min), max);
-}
-async function readText() {
-    const string = await navigator.clipboard.readText();
-    return string;
-}
-function secondsToDuration(seconds) {
-    return `${(seconds / 3600) | 0}:${(seconds % 3600 / 60).toString().padStart(2, '0')}`
-}
-function snake(string) {
-    return string.replaceAll(/(?<=[a-z])[A-Z]/g, m => `_${m}`).toLowerCase()
-        .replaceAll(/[ -]([a-z])/g, m => `_${m[1]}`)
-}
-function sortObject(obj) {
-    return Object.keys(obj).sort().reduce(function (result, key) {
-        result[key] = obj[key];
-        return result;
-    }, {});
-}
-function substringAfter(string, delimiter, missingDelimiterValue) {
-    const index = string.indexOf(delimiter);
-    if (index === -1) {
-        return missingDelimiterValue || string;
-    } else {
-        return string.substring(index + delimiter.length);
-    }
-}
-function substringAfterLast(string, delimiter, missingDelimiterValue) {
-    const index = string.lastIndexOf(delimiter);
-    if (index === -1) {
-        return missingDelimiterValue || string;
-    } else {
-        return string.substring(index + delimiter.length);
-    }
-}
-function substringBefore(string, delimiter, missingDelimiterValue) {
-    const index = string.indexOf(delimiter);
-    if (index === -1) {
-        return missingDelimiterValue || string;
-    } else {
-        return string.substring(0, index);
-    }
-}
-function substringBeforeLast(string, delimiter, missingDelimiterValue) {
-    const index = string.lastIndexOf(delimiter);
-    if (index === -1) {
-        return missingDelimiterValue || string;
-    } else {
-        return string.substring(0, index);
-    }
-}
-function touchMove(progressBar, ev) {
-    const rect = progressBar.getBoundingClientRect();
-    let precent = (ev.touches[0].clientX - rect.x) / (rect.width - 28) * 100;
-    precent = clamp(precent, 0, 100);
-    return precent;
-}
-function upperCamel(string) {
-    string = camel(string);
-    return string.slice(0, 1).toUpperCase() + string.slice(1);
-}
-function writeText(message) {
-    const textarea = document.createElement("textarea");
-    textarea.style.position = 'fixed';
-    textarea.style.right = '100%';
-    document.body.appendChild(textarea);
-    textarea.value = message;
-    textarea.select();
-    document.execCommand('copy');
-    textarea.remove();
-}
-
-function secondsToDateString(seconds) {
-    const t = new Date(seconds * 1000);
-    return `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
-}
-function reportError(err) {
-    console.log(err)
-}
-// https://docs.rs/convert_case/latest/convert_case/
 (function () {
     class CustomUploader extends HTMLElement {
         constructor() {
@@ -399,7 +185,7 @@ class CustomAction extends HTMLElement {
     constructor() {
         super();
 
-        this.root = this.attachShadow({mode: 'open'});
+        this.root = this.attachShadow({ mode: 'open' });
         this.container = document.createElement('div');
         this.root.appendChild(this.container);
 
@@ -410,7 +196,7 @@ class CustomAction extends HTMLElement {
 
 
     static get observedAttributes() {
-        return ['text'];
+        return ['head', 'subhead'];
     }
 
 
@@ -423,8 +209,11 @@ class CustomAction extends HTMLElement {
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'show') {
-            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
+        if (attrName === 'head') {
+            this.root.querySelector('#head').textContent = newVal;
+        }
+        if (attrName === 'subhead') {
+            this.root.querySelector('#subhead').textContent = newVal;
         }
     }
 
@@ -432,12 +221,16 @@ class CustomAction extends HTMLElement {
         return `
         ${CustomAction.style()}
     <div style="border-top: solid 1px #dadce0; padding: 0 16px; height: 48px; align-items: center; color: #202124; display: flex; font-size: 14px; line-height: 20px;">
-      <div style="flex-shrink: 0;width: 24px; height: 24px; margin-right: 24px; color: #1a73e8; fill: currentColor;">
-        <slot name="svg">
-        </slot>
+    <span id="head" style="flex-grow:1">
+    </span>  
+      <span id="subhead" style="color:#969799;margin-right:4px" >
+      </span> 
+    <div style="flex-shrink: 0;width: 20px; height: 20px;  color: #969799; fill: currentColor;">
+    <svg style="width:100%;height:100%" viewBox="0 0 24 24">
+    <path d="M5.859 4.125l2.156-2.109 9.984 9.984-9.984 9.984-2.156-2.109 7.922-7.875z"></path>
+    </svg>
       </div>
-      <slot name="text">
-      </slot>
+      
     </div>
    `;
     }
@@ -1014,81 +807,54 @@ const customCustomInput = document.querySelector('custom-input');
 
 
 */
-let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:9000' : '';
-;
-let id = new URL(window.location).searchParams.get('id') || 30;
-let _obj;
-
+let baseUri = '';
 const customUploader = document.querySelector('custom-uploader');
 customUploader.addEventListener('upload', async evt => {
-    evt.stopPropagation();
-    const res = await fetch(`${baseUri}/api/lesson`, {
-        method: 'POST',
-        body: JSON.stringify({
-            id,
-            image: substringAfterLast(evt.detail[0],'/')
-        })
-    });
-    const obj = await res.text();
+	evt.stopPropagation();
+	console.log(evt.detail)
+	try {
+		await submitPicture({
+			url: evt.detail[evt.detail.length-1]
+		})
+	} catch (e) {
+		console.log(e);
+	}
 });
-customUploader.addEventListener('remove', evt => {
-    console.log(evt);
-})
-const uploader = document.querySelector('#uploader');
-
-
-
-uploader.addEventListener('upload', async evt => {
-    evt.stopPropagation();
-    const res = await fetch(`${baseUri}/api/lesson`, {
-        method: 'POST',
-        body: JSON.stringify({
-            id,
-            photos: evt.detail.map(x=>substringAfterLast(x,'/'))
-        })
-    });
-    const obj = await res.text();
+customUploader.addEventListener('remove', async evt => {
+	evt.stopPropagation();
+	try {
+		await deletePicture(evt.detail);
+	} catch (e) {
+		console.log(e);
+	}
 });
-
-async function fetchData() {
-    const res = await fetch(`${baseUri}/api/lesson.query.detail?id=${id}`)
-    const obj = await res.json();
-    return obj;
+async function deletePicture(src) {
+	const res = await fetch(`${baseUri}/api/picture?url=${src}`, {
+		method: 'DELETE'
+	});
+	return res.text();
 }
-
-if (id)
-    fetchData().then(res => {
-        _obj = res;
-        document.querySelector('#field-name span')
-            .textContent = res.name;
-        fieldDescription.querySelector('span').textContent = res.description;
-        if (res.image)
-            customUploader.setAttribute('images', JSON.stringify([res.image]));
-        uploader.setAttribute('images', JSON.stringify(res.photos));
-    });
-
-
-const fieldDescription = document.querySelector('#field-description');
-
-fieldDescription.addEventListener('click', evt => {
-    evt.stopPropagation();
-
-    const customInput = document.createElement('custom-input');
-    const textarea = document.createElement('textarea');
-    customInput.appendChild(textarea);
-    document.body.appendChild(customInput);
-    textarea.value = _obj.description;
-    textarea.focus();
-    customInput.addEventListener('submit', async evt => {
-        const res = await fetch(`${baseUri}/api/lesson`, {
-            method: 'POST',
-            body: JSON.stringify({
-                id,
-                description: textarea.value
-            })
-        });
-        const obj = await res.text();
-        console.log(obj);
-    })
-});
-
+async function submitPicture(obj) {
+	const response = await fetch(`${baseUri}/api/picture`, {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(obj)
+	});
+	return response.text();
+}
+async function fetchPictures() {
+	const response = await fetch(`${baseUri}/api/picture?mode=1&limit=100`);
+	return response.json();
+}
+async function loadData() {
+	try {
+		const obj = await fetchPictures();
+		console.log(obj);
+      customUploader.setAttribute('images',JSON.stringify(obj.map(x=>x.url)));
+	} catch (e) {
+		console.log(e);
+	}
+}
+loadData();

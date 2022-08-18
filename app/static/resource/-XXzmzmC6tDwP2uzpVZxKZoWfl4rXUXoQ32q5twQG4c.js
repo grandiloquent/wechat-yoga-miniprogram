@@ -413,7 +413,7 @@ class CustomAction extends HTMLElement {
     constructor() {
         super();
 
-        this.root = this.attachShadow({mode: 'open'});
+        this.root = this.attachShadow({ mode: 'open' });
         this.container = document.createElement('div');
         this.root.appendChild(this.container);
 
@@ -424,7 +424,7 @@ class CustomAction extends HTMLElement {
 
 
     static get observedAttributes() {
-        return ['text'];
+        return ['head', 'subhead'];
     }
 
 
@@ -437,8 +437,11 @@ class CustomAction extends HTMLElement {
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'show') {
-            this.root.querySelector('.wrapper').style.transform = 'translateX(250px)';
+        if (attrName === 'head') {
+            this.root.querySelector('#head').textContent = newVal;
+        }
+        if (attrName === 'subhead') {
+            this.root.querySelector('#subhead').textContent = newVal;
         }
     }
 
@@ -446,12 +449,16 @@ class CustomAction extends HTMLElement {
         return `
         ${CustomAction.style()}
     <div style="border-top: solid 1px #dadce0; padding: 0 16px; height: 48px; align-items: center; color: #202124; display: flex; font-size: 14px; line-height: 20px;">
-      <div style="flex-shrink: 0;width: 24px; height: 24px; margin-right: 24px; color: #1a73e8; fill: currentColor;">
-        <slot name="svg">
-        </slot>
+    <span id="head" style="flex-grow:1">
+    </span>  
+      <span id="subhead" style="color:#969799;margin-right:4px" >
+      </span> 
+    <div style="flex-shrink: 0;width: 20px; height: 20px;  color: #969799; fill: currentColor;">
+    <svg style="width:100%;height:100%" viewBox="0 0 24 24">
+    <path d="M5.859 4.125l2.156-2.109 9.984 9.984-9.984 9.984-2.156-2.109 7.922-7.875z"></path>
+    </svg>
       </div>
-      <slot name="text">
-      </slot>
+      
     </div>
    `;
     }

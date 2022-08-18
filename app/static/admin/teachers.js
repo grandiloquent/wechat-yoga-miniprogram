@@ -35,6 +35,7 @@ function render(teachers) {
     section.innerHTML = '';
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < teachers.length; i++) {
+        console.log(teachers[i])
         const t = new Date(teachers[i].updated_time * 1000)
         let subtitle = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`;
         const template = `
@@ -77,7 +78,7 @@ function render(teachers) {
     section.appendChild(fragment);
     [...document.querySelectorAll('.item')].forEach(x => {
         x.addEventListener('click', evt => {
-            window.location.href = `./admin.user?id=${evt.currentTarget.dataset.id}`
+            window.location.href = `./admin.teacher?id=${evt.currentTarget.dataset.id}`
         })
     })
 }

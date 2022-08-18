@@ -33,11 +33,16 @@ Page({
     },
     onLoad() {
         if (!app.globalData.configs) {
-            app.globalData.ready = () => {
+            shared.loadSettings(app.globalData.host, (data) => {
+                app.globalData.configs = data;
                 this.setData({
                     app
                 })
-            }
+            })
+        } else {
+            this.setData({
+                app
+            })
         }
         shared.applyBasicSettings();
         const t = new Date();

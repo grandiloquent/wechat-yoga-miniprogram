@@ -468,6 +468,28 @@ async function unBook(app, id, success) {
     }
 }
 
+function loadSettings(host,success) {
+    wx.request({
+        url: `${host}/api/configs`,
+        success: res => {
+            if (res.statusCode === 200) {
+                success(res.data)
+            } else {
+                wx.showToast({
+                    title: "网络不稳定",
+                    icon: "error"
+                })
+            }
+        },
+        fail: err => {
+            wx.showToast({
+                title: "网络不稳定",
+                icon: "error"
+            });
+        }
+    })
+}
+
 module.exports = {
     applyBasicSettings,
     book,
@@ -498,7 +520,8 @@ module.exports = {
     send,
     signIn,
     transform,
-    unBook
+    unBook,
+    loadSettings
 };
 
 /*

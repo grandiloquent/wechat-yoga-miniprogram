@@ -1,194 +1,189 @@
 const app = getApp();
+const shared = require('../../shared');
 
 const SECONDS_IN_TIME = [
-	1, // 1 second
-	60, // 1 minute
-	3600, // 1 hour
-	86400, // 1 day
-	604800, // 1 week
-	2419200, // 1 month
-	29030400 // 1 year
+    1, // 1 second
+    60, // 1 minute
+    3600, // 1 hour
+    86400, // 1 day
+    604800, // 1 week
+    2419200, // 1 month
+    29030400 // 1 year
 ];
 
 /*
  * The language array to which <convert> defaults.
  */
 const en_US = [
-	"刚刚", "秒之前",
-	"1分钟之前", "分钟之前",
-	"1小时之前", "小时之前",
-	"1天之前", "天之前",
-	"1周之前", "周之前",
-	"1月之前", "月之前",
-	"1年之前", "年之前"
+    "刚刚", "秒之前",
+    "1分钟之前", "分钟之前",
+    "1小时之前", "小时之前",
+    "1天之前", "天之前",
+    "1周之前", "周之前",
+    "1月之前", "月之前",
+    "1年之前", "年之前"
 ]
 
 
 function convert(el, timestamp, lang) {
 
-	let now = Math.floor(new Date / 1000);
-	let diff = (now - timestamp) || 1; // prevent undefined val when diff == 0
+    let now = Math.floor(new Date / 1000);
+    let diff = (now - timestamp) || 1; // prevent undefined val when diff == 0
 
-	for (let i = 6; i >= 0; i--) {
+    for (let i = 6; i >= 0; i--) {
 
-		if (diff >= SECONDS_IN_TIME[i]) {
+        if (diff >= SECONDS_IN_TIME[i]) {
 
-			let time_elapsed = Math.floor(diff / SECONDS_IN_TIME[i]);
-			let adverbs = en_US;
-			let sentence = adverbs.map((el, idx) => idx % 2 == 0 ? el : time_elapsed + " " + el);
+            let time_elapsed = Math.floor(diff / SECONDS_IN_TIME[i]);
+            let adverbs = en_US;
+            let sentence = adverbs.map((el, idx) => idx % 2 == 0 ? el : time_elapsed + " " + el);
 
-			return time_elapsed >= 2 ? sentence[i * 2 + 1] : sentence[i * 2];
+            return time_elapsed >= 2 ? sentence[i * 2 + 1] : sentence[i * 2];
 
-		}
+        }
 
-	}
+    }
 
 }
 
 Page({
+    data: {
+        app,
+        show: false,
+        expand: false
+    },
+    async initialize() {
+        wx.request({
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/lesson/lesson')}`
+        })
+        try {
+            await shared.fetchToken(app);
+        } catch (e) {
+            this.setData({
+                showLogin: true
+            });
+            return
+        }
+        await this.loadData()
+    },
+    async loadData() {
+        let res;
+        try {
+            res = await fetch(app, this.data.id);
+            this.setData({
+                lesson: makeSubhead(res)
+            })
+            console.log(res)
+        } catch (e) {
+            console.error(e)
+        }
+    },
+    async onBook(evt) {
 
-	onPreviewPhoto(e) {
-		wx.previewImage({
-			current: `${app.globalData.staticHost}/images/${e.currentTarget.dataset.src}`,
-			urls: this.data.lesson.photos.map(x => `${app.globalData.staticHost}/images/${x}`)
-		})
-	},
-	onTextareaInput(e) {
-		this.data.content = e.detail;
-	},
-	onExpandDescription(e) {
-		this.setData({
-			expand: !this.data.expand
-		});
-	},
-	data: {
-		app,
-		showModal: false,
-		expand: false
-	},
+        await shared.book(app, this.data.id, async () => {
+            await this.loadData()
+        })
+    },
+    onExpand() {
+        this.setData({
+            expanded: !this.data.expanded
+        })
+    },
+    async onLoad(options) {
+        this.data.id = options.id || 397;
+        shared.applyBasicSettings();
+        if (!app.globalData.configs) {
+            shared.loadSettings(app.globalData.host, (data) => {
+                app.globalData.configs = data;
+                this.setData({
+                    app
+                })
+                this.initialize();
+            })
+            return
+        }
+        this.initialize();
+    },
+    async onLoginSuccess(res) {
+        this.setData({
+            showLogin: false
+        });
+        await this.initialize(this.data.id)
+    },
+    onPreviewPhotos(e) {
+        const item = `${app.globalData.staticHost}/images/${e.currentTarget.dataset.src}`;
+        const items = this.data.lesson.photos.map(x => `${app.globalData.staticHost}/images/${x}`);
+        if (items.indexOf(item) === -1) {
+            items.unshift(item)
+        }
+        wx.previewImage({
+            current: item,
+            urls: items
+        })
+    },
+    onShareAppMessage() {
+        return {
+            title: this.data.title
+        }
+    },
+    async onUnBook(evt) {
+        const id = evt.currentTarget.dataset.id;
+        wx.showModal({
+            title: '您确定要取消预约吗？',
+            success: async res => {
+                if (res.confirm) {
+                    await shared.unBook(app, id, async () => {
+                        await this.loadData()
+                    });
+                }
+            }
+        })
+    },
+    onInsertComment(evt) {
+        const id = evt.currentTarget.dataset.id;
 
-	onHideModal() {
-		this.setData({
-			showModal: false
-		});
-	},
-	onInput(e) {
-		this.data.content = e.detail.value;
-	},
-	async onSubmitData() {
-		const obj = {};
+        this.setData({
+            show: true
+        })
+    }
 
-		obj.course_id = this.data.id;
-		obj.user_id = app.globalData.userInfo.id;
-		obj.content = this.data.content;
-
-      console.log(obj);
-		try {
-			const res = await new Promise((resolve, reject) => {
-				wx.request({
-					url: `${app.globalData.host}/api/comments`,
-					method: 'POST',
-					data: obj,
-					success: res => {
-						if (res.statusCode === 200)
-							resolve(res.data);
-						else
-							reject(res.statusCode)
-					},
-					fail: err => {
-						reject(err);
-					}
-				});
-			});
-			this.setData({
-				showModal: false
-			});
-			this.loadComments();
-		} catch (error) {
-			wx.showToast({
-				title: "无法加载数据",
-				icon: 'error'
-			})
-		}
-	},
-	onShowModal() {
-		this.setData({
-			showModal: true
-		});
-	},
-	onSuccess(res) {
-		app.globalData.userInfo = res.detail;
-		this.setData({
-			showLogin: false,
-			user: res.detail
-		})
-	},
-	async onLoad(options) {
-		this.data.id = options.id || 360;
-		if (!(await login(app, this))) {
-			return
-		}
-		this.initialize();
-		
-		wx.request({
-			url: `${app.globalData.host}/api/reservation?mode=5&id=${this.data.id}`,
-
-			success: res => {
-				this.setData({
-					lesson: res.data
-				});
-			}
-		});
-      this.loadComments();
-	},
-
-	loadComments() {
-		wx.request({
-			url: `${app.globalData.host}/api/comments?mode=1`,
-			//method:'POST',
-			//data,
-			success: res => {
-				//resolve(res)
-              if(!res.data)return;
-				this.setData({
-					comments: res.data.map(x => {
-						x.ago = convert(null, x.update_at )
-
-						return x;
-					})
-				})
-			}
-		})
-
-	},
-	initialize() {
-		this.data.title = '课程';
-
-		wx.setNavigationBarTitle({
-			title: this.data.title
-		});
-		wx.showShareMenu({
-			withShareTicket: true,
-			menus: ['shareAppMessage', 'shareTimeline']
-		});
-	},
-	onShareAppMessage() {
-		return {
-			title: this.data.title
-		}
-	},
-	onBookLesson(e) {
-		shared.execute(this, 'reservation/1', [
-			'id', this.data.id
-		], data => {
-			this.loadData();
-		});
-	}
 });
 
 function isLessonExpired(lesson) {
-	let now = new Date();
-	const timeInMinutes = now.getHours() * 60 * 60 + now.getMinutes() * 60;
-	now.setHours(0, 0, 0, 0);
-	return now.getTime() / 1000 > lesson.dateTime || ((now.getTime() / 1000 === lesson.dateTime) && timeInMinutes >= startTime)
+    let now = new Date();
+    const timeInMinutes = now.getHours() * 60 * 60 + now.getMinutes() * 60;
+    now.setHours(0, 0, 0, 0);
+    return now.getTime() / 1000 > lesson.date_time || ((now.getTime() / 1000 === lesson.date_time) && timeInMinutes >= lesson.start_time)
+}
+
+function fetch(app, id) {
+    /*
+    let res;
+            try {
+                res =await insertBook(app)
+            } catch (e) {
+                console.error(e)
+            }
+            */
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/admin.lesson.teacher.query?userId=${app.globalData.userInfo.id}&id=${id}`,
+            header: {
+                token: app.globalData.token
+            },
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+
+function makeSubhead(lesson) {
+    const t = new Date(lesson.date_time * 1000);
+    lesson.expired = isLessonExpired(lesson);
+    lesson.subhead = `${t.getMonth() + 1}月${t.getDate()}周${'日一二三四五六'[t.getDay()]} ${shared.secondsToDuration(lesson.start_time)}-${shared.secondsToDuration(lesson.end_time)}`;
+    return lesson;
 }

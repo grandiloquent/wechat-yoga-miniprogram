@@ -34,6 +34,32 @@ Page({
             console.error(e)
         }
     },
+    async onActionsSubmit(evt) {
+        if (evt.detail === 0) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
+            await this.loadData()
+        } else if (evt.detail === 1) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 2 * 3600 * 24;
+            await this.loadData()
+        } else if (evt.detail === 2) {
+            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
+            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 7 * 3600 * 24;
+            await this.loadData()
+        }
+    },
+    onEmptyViewerSubmit() {
+        wx.switchTab({
+            url: `/pages/appointment/index`
+        })
+    },
+    onHeadTap(e) {
+        const id = e.currentTarget.dataset.id
+        wx.navigateTo({
+            url: `/pages/lesson/lesson?id=${id}`
+        })
+    },
     // 加载程序配置、应用基础页面配置、启动数据渲染
     async onLoad(options) {
         shared.applyBasicSettings();
@@ -74,26 +100,6 @@ Page({
     },
     async onUnWait(evt) {
         await this.onUnBook(evt)
-    },
-    async onActionsSubmit(evt) {
-        if (evt.detail === 0) {
-            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
-            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
-            await this.loadData()
-        } else if (evt.detail === 1) {
-            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000 + 3600 * 24;
-            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 2 * 3600 * 24;
-            await this.loadData()
-        } else if (evt.detail === 2) {
-            this.data.startTime = new Date().setHours(0, 0, 0, 0) / 1000;
-            this.data.endTime = new Date().setHours(0, 0, 0, 0) / 1000 + 7 * 3600 * 24;
-            await this.loadData()
-        }
-    },
-    onEmptyViewerSubmit() {
-        wx.switchTab({
-            url: `/pages/appointment/index`
-        })
     }
 })
 

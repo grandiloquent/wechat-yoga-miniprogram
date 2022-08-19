@@ -297,7 +297,7 @@ console.log(obj.sort((x, y) => {
       fetch(`/api/accessRecords?path=${encodeURIComponent(window.location.pathname)}&query=${encodeURIComponent(window.location.search)}`, {method: 'HEAD'});
 */
 
-let baseUri = window.location.hostname === 'localhost' ? 'http://localhost:9000' : '';
+let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8080' : '';
 
 // http://localhost:9000
 let userId = new URL(window.location).searchParams.get('userId') || getCookie("UserId");
@@ -306,7 +306,7 @@ let id = new URL(window.location).searchParams.get('id');
 let items = document.getElementById('items');
 const empty = document.getElementById('empty');
 let startTime = new Date().setHours(0, 0, 0, 0) / 1000;
-let offset = 7;
+let offset = 0;
 
 render();
 
@@ -315,6 +315,7 @@ const select = new Date().getDay() - 1;
 customWeekTab.setAttribute('select', select === -1 ? 6 : select)
 customWeekTab.addEventListener('touch', async evt => {
     const now = new Date();
+    console.log(offset, select)
     now.setDate(now.getDate() + evt.detail + offset - (select === -1 ? 6 : select));
     startTime = now.setHours(0, 0, 0, 0) / 1000;
     await render()
@@ -330,7 +331,8 @@ customSwitcher.addEventListener('touch', async evt => {
 
     } else {
         const now = new Date();
-        now.setDate(now.getDate() + 7);
+        const week = now.getDay();
+        now.setDate(now.getDate() + (week === 0 ? 1 : (7 - week + 1)));
         startTime = now.setHours(0, 0, 0, 0) / 1000;
         offset = 7;
         await render()

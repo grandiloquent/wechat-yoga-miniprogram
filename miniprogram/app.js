@@ -76,11 +76,11 @@ async function tryLoadOpenId(obj) {
 /*
 通过云函数免鉴权获取用户标识，
 并缓存到本地，
-避免重复调用云函数的性能损耗。
+避免重复调用云函数的延迟和性能损耗。
 此用户标识并非通用标识，
 同一微信的不同小程序的标识都不相同。
 此标识不宜作为区别用户身份的唯一标识，
-它会影响数数据交换。
+因为如果未来如需迁移数据会十分困难。
 */
 function trySaveOpenId(globalData) {
     wx.cloud.callFunction({

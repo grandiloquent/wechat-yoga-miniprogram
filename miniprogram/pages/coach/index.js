@@ -88,7 +88,12 @@ Page({
     },
     async onUnWait(evt) {
         await this.onUnBook(evt)
-    }
+    }, onHeadTap(e) {
+        const id = e.currentTarget.dataset.id
+        wx.navigateTo({
+            url: `/pages/lesson/lesson?id=${id}`
+        })
+    },
 })
 
 function fetchData(app, id, startTime, endTime) {

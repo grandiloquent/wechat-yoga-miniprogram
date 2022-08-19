@@ -32,7 +32,7 @@ textarea {
     resize: none;
     width: 100%;
     flex-grow: 1;
-    padding: 7px 10px;
+    padding: 7px 10px 49px;
     font-size: 14px;
     line-height: 28px;
     box-sizing: border-box;
@@ -45,6 +45,11 @@ textarea {
     display: flex;
     align-items: center;
     border-top: 1px solid #f1f3f4;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
 }
 
 .button {
@@ -63,5 +68,8 @@ textarea {
 
 .button-text {
     font-size: 12px;
+    padding: 0 4px;
+}
+
     padding: 0 4px;
 }

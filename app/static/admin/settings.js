@@ -3,27 +3,11 @@ let baseUri = (window.location.hostname === 'localhost' || window.location.hostn
 
 const fieldCloseBook = document.querySelector('#field-close_book');
 const fieldCloseBooked = document.querySelector('#field-close_booked');
+const fieldMarketSlogan = document.querySelector('#field-market_slogan');
+const fieldMarketContent = document.querySelector('#field-market_content');
+
 
 render();
-
-//
-// if (id)
-//     fetchSettings().then(res => {
-//         console.log(res)
-//         _obj = res;
-//         fieldName.setAttribute('head', '姓名');
-//         fieldName.setAttribute('subhead', res.name);
-//         fieldIntroduction.setAttribute('head', '简介');
-//         fieldIntroduction.setAttribute('subhead', res.introduction.substring(0, 10));
-//         fieldDescription.setAttribute('head', '描述');
-//         fieldDescription.setAttribute('subhead', res.description.substring(0, 10));
-//         fieldPhoneNumber.setAttribute('head', '手机号码');
-//         fieldPhoneNumber.setAttribute('subhead', res.phone_number);
-//
-//         if (res.thumbnail)
-//             customUploader.setAttribute('images', JSON.stringify([res.thumbnail]));
-//     });
-
 
 async function fetchSettings() {
     const res = await fetch(`${baseUri}/api/configs`)
@@ -39,10 +23,12 @@ async function launchEditor(key, value, uri) {
     textarea.value = value;
     textarea.focus();
     customInput.addEventListener('submit', async evt => {
+        console.log(JSON.stringify({
+            [key]: textarea.value
+        }));
         const res = await fetch(`${baseUri}${uri}`, {
             method: 'POST',
             body: JSON.stringify({
-                id,
                 [key]: textarea.value
             })
         });
@@ -58,13 +44,19 @@ async function render() {
     fieldCloseBook.setAttribute('subhead', `${response.close_book}分钟`);
 
     fieldCloseBook.addEventListener('click', evt => {
-        launchEditor('close_book', response.close_book, `${baseUri}/api/admin.configs.insert`)
+        launchEditor('close_book', response.close_book, `/api/admin.config.insert`)
     });
 
     fieldCloseBooked.setAttribute('subhead', `${response.close_booked}分钟`);
     fieldCloseBooked.addEventListener('click', evt => {
-        launchEditor('close_booked', response.close_booked, `${baseUri}/api/admin.configs.insert`)
+        launchEditor('close_booked', response.close_booked, `/api/admin.config.insert`)
     });
-
+    fieldMarketSlogan.setAttribute('subhead', `${response.market.slogan}`);
+    fieldMarketSlogan.addEventListener('click', evt => {
+        launchEditor('market_slogan', response.market.slogan, `/api/admin.config.insert`)
+    });
+    fieldMarketContent.addEventListener('click', evt => {
+        window.location='/admin.market'
+    }); 
 
 }

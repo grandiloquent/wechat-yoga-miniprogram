@@ -1,5 +1,5 @@
 let _obj = {};
-let baseUri = 'http://localhost:8080';
+let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8080' : '';
 let id = new URL(window.location).searchParams.get('id');
 
 async function fetchData() {
@@ -21,11 +21,6 @@ fieldTitle.addEventListener('click', evt => {
     evt.stopPropagation();
     updateValue('title');
 });
-const fieldPrice = document.querySelector('#field-price');
-fieldPrice.addEventListener('click', evt => {
-    evt.stopPropagation();
-    updateValue('price', true);
-});
 const fieldDescription = document.querySelector('#field-description');
 fieldDescription.addEventListener('click', evt => {
     evt.stopPropagation();
@@ -40,7 +35,7 @@ function updateValue(key, isNumber) {
     textarea.value = _obj[key] || '';
     textarea.focus();
     customInput.addEventListener('submit', async evt => {
-        const res = await fetch(`${baseUri}/api/card`, {
+        const res = await fetch(`${baseUri}/api/admin.cards.insert`, {
             method: 'POST',
             body: JSON.stringify({
                 id: _obj.id || 0,

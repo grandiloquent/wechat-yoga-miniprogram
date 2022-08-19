@@ -1,98 +1,75 @@
-<view class="cover">
-  <image class="cover-image" mode="aspectFill" src="{{app.globalData.staticHost}}/images/{{lesson.image}}"></image>
-</view>
-<view class="top-header">
-  <view class="top-title">
-    {{lesson.name}}
-  </view>
-  <view class="top-subtitle">
-    <view class="top-subtitle-container">
-      <view style="margin-right: 10rpx;">5.0</view>
-      <view class="top-subtitle-star"></view>
-      <view class="top-subtitle-star"></view>
-      <view class="top-subtitle-star"></view>
-      <view class="top-subtitle-star"></view>
-      <view class="top-subtitle-star"></view>
-      <block wx:if="{{peoples}}">
-        <view style="margin:0 10rpx">·</view>
-        <view style="margin-left: 8rpx;">已有 100 人约课</view>
-      </block>
+<view class="wrapper">
+    <view class="teacher-name">
+        {{lesson.teacher_name}}
     </view>
-  </view>
-</view>
-<view class="ajphuy">
-  <block wx:if="{{!lesson.expired}}">
-    <view class="fkaebx" wx:if="{{lesson.bookedId<=0}}" bindtap="onBookLesson">
-      预约课程
+    <view class="thumbnail">
+        <image catchtap="onPreviewPhotos" data-src="{{lesson.image}}" class="img" mode="aspectFill"
+               src="{{app.globalData.staticHost}}/images/{{lesson.image}}">
+        </image>
     </view>
-    <view wx:else class="fkaebx">
-      已预约
-    </view>
-  </block>
-  <block wx:else>
-    <view class="fkaebx">
-      已完成
-    </view>
-  </block>
-</view>
-<view class="divider"></view>
-<view class="header">
-  <view>简介</view>
-</view>
-<view class="description" style="{{expand?'':'display: -webkit-box;-webkit-box-orient: vertical;overflow: hidden;-webkit-line-clamp: 3;'}}">
-  <wemark md="{{lesson.description}}" host="{{app.globalData.host}}" link highlight type="wemark"></wemark>
 </view>
 
-<view catchtap="onExpandDescription" class="expand">
-  <!--  -->
-  <view class="arrow" style="{{expand?'transform: rotate(180deg);':''}}"></view>
-  <view>{{expand?'收起':'展开'}}</view>
+<view class="details">
+
+    <view class="title">
+        {{lesson.lesson_name}}
+    </view>
+
+    <view class="subtitle">
+        {{lesson.subhead}}
+    </view>
+
+    <view class="description {{expanded?'':'lines'}}">
+        <wemark md="{{lesson.description}}" host="{{app.globalData.host}}" link highlight type="wemark"></wemark>
+    </view>
+
+    <view class="expand-button" catchtap="onExpand">
+        <view class="{{expanded?'rotate':''}}"></view>
+        <text>展开</text>
+    </view>
+
+    <view wx:if="{{lesson.expired}}" class="submit-button disabled">
+        已完成
+    </view>
+    <view catchtap="onUnBook" data-id="{{lesson.reservation_id}}" wx:elif="{{lesson.reservation_id}}"
+          class="submit-button">
+        取消预约
+    </view>
+    <view catchtap="onBook" wx:else class="submit-button">
+        预约
+    </view>
 </view>
 
-<view class="divider"></view>
-<view class="header">
-  <view>照片</view>
-</view>
 <view class="photos">
-  <view catchtap="onPreviewPhoto" class="photo" wx:for="{{lesson.photos}}" wx:key="*this" data-src="{{item}}">
-    <image class="cover-image" mode="aspectFill" src="{{app.globalData.staticHost}}/images/{{item}}"></image>
-  </view>
-</view>
 
-<view class="divider"></view>
-<view class="header">
-  <view>评价</view>
-  <view class="comment-add-wrapper" bindtap="onShowModal">
-    <view class="comment-add"></view>
-    <view class="comment-add-text">写评价</view>
-  </view>
-</view>
-<view class="comments">
-  <view class="comment-item" wx:for="{{comments}}" wx:key="id" data-id="{{item.id}}">
-    <view class="comment-wrapper">
-      <view class="comment-left">
-        <image style="width: 100%;height: 100%;" src="{{item.avatar_url}}"></image>
-      </view>
-      <view class="comment-right">
-        <view>{{item.nick_name}}</view>
-        <view class="comments-subtitle">{{item.ago}}</view>
-        <view>{{item.content}}</view>
-         
-      </view>
+    <view class="photos-header">
+        照片
     </view>
-  </view>
-  <view wx:if="{{!comments.length}}" class="wztfuh">
-    此课程尚未获得任何评价
-  </view>
+
+    <view class="photo-items">
+
+        <view class="photo-item" wx:for="{{lesson.photos}}" wx:key="{{index}}"
+              style="background-image: url({{app.globalData.staticHost}}/images/{{item}}) "
+              catchtap="onPreviewPhotos"
+              data-src="{{item}}">
+        </view>
+    </view>
 </view>
 
-<login wx:if="{{showLogin}}" host="{{app.globalData.host}}" openid="{{openid}}" bind:success="onSuccess"></login>
 
-<!-- <modal title="评论" hidden="{{showModal}}" bindconfirm="onSubmitComment" bindcancel="onHideModal">
-  <textarea maxlength="200" placeholder="添加评论..." bindinput="onInput"></textarea>
-</modal> -->
+<view class="comments">
 
-<modal bind:submitData="onSubmitData" bind:textareaInput="onTextareaInput" active="{{showModal}}" textarea="{{true}}" textareaPlaceholder="添加评论..." title="评论" type="{{type}}" value="{{value}}"></modal>
+    <view class="comments-title">
+        评价
+    </view>
 
-
-<messages bind:submitData="onSubmitData" active="{{messagesActive}}" message="{{message}}"></messages>
+    <view catchtap="onInsertComment"
+          class="comment-button">
+        <view></view>
+        <text>写评价</text>
+    </view>
+</view>
+<view class="comments-empty">
+    此课程尚未获得任何评价
+</view>
+<custom-textarea show="{{show}}" title="评论" placeholder="添加评论..."></custom-textarea>

@@ -64,7 +64,18 @@ Page({
             });
             return
         }
-        await this.loadData()
+        await this.loadData();
+        this.loadComments();
+    },
+    async loadComments() {
+        const obj = await fetchComments(app, this.data.lesson.lesson_id);
+        if (!obj) return;
+        this.setData({
+            comments: obj.map(x => {
+                x.published_time = convert('', x.create_at)
+                return x;
+            })
+        })
     },
     async loadData() {
         let res;
@@ -73,20 +84,37 @@ Page({
             this.setData({
                 lesson: makeSubhead(res)
             })
-            console.log(res)
+            wx.setNavigationBarTitle({
+                title: `${this.data.lesson.teacher_name} • 瑜伽课程`
+            })
         } catch (e) {
             console.error(e)
         }
     },
     async onBook(evt) {
-
         await shared.book(app, this.data.id, async () => {
             await this.loadData()
         })
     },
+    async onCommentSubmit(evt) {
+        const data = {
+            content: evt.detail,
+            user_id: app.globalData.userInfo.id,
+            lesson_id: this.data.lesson.lesson_id,
+            parent_id: this.data.parentId || 0
+        }
+        await insertComment(app, data);
+        this.loadComments();
+    },
     onExpand() {
         this.setData({
             expanded: !this.data.expanded
+        })
+    },
+    onInsertComment(evt) {
+        this.data.parentId = 0;
+        this.setData({
+            show: true
         })
     },
     async onLoad(options) {
@@ -103,6 +131,22 @@ Page({
             return
         }
         this.initialize();
+    },
+    async onLoadReplied(evt) {
+        const id = evt.currentTarget.dataset.id;
+        const obj = await fetchChildrenComments(app, id, this.data.lesson.lesson_id);
+        const comment = this.data.comments.filter(
+            x => x.id === id
+        )[0];
+        comment.published_time = convert('', comment.create_at)
+        comment.children = obj.map(x => {
+            x.published_time = convert('', x.create_at)
+            return x;
+        });
+        comment.loaded = true;
+        this.setData({
+            comments: this.data.comments
+        });
     },
     async onLoginSuccess(res) {
         this.setData({
@@ -121,9 +165,16 @@ Page({
             urls: items
         })
     },
+    async onRelyComment(evt) {
+        const id = evt.currentTarget.dataset.id;
+        this.data.parentId = id || 0;
+        this.setData({
+            show: true
+        })
+    },
     onShareAppMessage() {
         return {
-            title: this.data.title
+            title: `${this.data.lesson.teacher_name} • 瑜伽课程`
         }
     },
     async onUnBook(evt) {
@@ -138,23 +189,8 @@ Page({
                 }
             }
         })
-    },
-    onInsertComment(evt) {
-        const id = evt.currentTarget.dataset.id;
-
-        this.setData({
-            show: true
-        })
     }
-
 });
-
-function isLessonExpired(lesson) {
-    let now = new Date();
-    const timeInMinutes = now.getHours() * 60 * 60 + now.getMinutes() * 60;
-    now.setHours(0, 0, 0, 0);
-    return now.getTime() / 1000 > lesson.date_time || ((now.getTime() / 1000 === lesson.date_time) && timeInMinutes >= lesson.start_time)
-}
 
 function fetch(app, id) {
     /*
@@ -181,9 +217,94 @@ function fetch(app, id) {
     }))
 }
 
+function fetchChildrenComments(app, id, lessonId) {
+    /*
+    let res;
+            try {
+                res =await insertBook(app)
+            } catch (e) {
+                console.error(e)
+            }
+            */
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/lesson.comments.query.children?id=${id}&lessonId=${lessonId}`,
+            header: {
+                token: app.globalData.token
+            },
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+
+function fetchComments(app, lessonId) {
+    /*
+    let res;
+            try {
+                res =await insertBook(app)
+            } catch (e) {
+                console.error(e)
+            }
+            */
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/lesson.comments.query?lessonId=${lessonId}`,
+            header: {
+                token: app.globalData.token
+            },
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+
+function insertComment(app, data) {
+    /*
+    let res;
+            try {
+                res =await insertBook(app)
+            } catch (e) {
+                console.error(e)
+            }
+            */
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/lesson.comments.insert`,
+            header: {
+                token: app.globalData.token
+            },
+            method: 'POST',
+            data,
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+
+function isLessonExpired(lesson) {
+    let now = new Date();
+    const timeInMinutes = now.getHours() * 60 * 60 + now.getMinutes() * 60;
+    now.setHours(0, 0, 0, 0);
+    return now.getTime() / 1000 > lesson.date_time || ((now.getTime() / 1000 === lesson.date_time) && timeInMinutes >= lesson.start_time)
+}
+
 function makeSubhead(lesson) {
     const t = new Date(lesson.date_time * 1000);
     lesson.expired = isLessonExpired(lesson);
     lesson.subhead = `${t.getMonth() + 1}月${t.getDate()}周${'日一二三四五六'[t.getDay()]} ${shared.secondsToDuration(lesson.start_time)}-${shared.secondsToDuration(lesson.end_time)}`;
     return lesson;
 }
+

@@ -7,6 +7,7 @@ async function loadData() {
     const response = await fetch(`${baseUri}/api/admin.lessons.query`);
     return response.json();
 }
+
 function createLessonItem(x) {
     const image = x.image ? `https://static.lucidu.cn/images/${x.image}` : x.image;
 
@@ -25,6 +26,7 @@ function createLessonItem(x) {
             </div>
         </div>`;
 }
+
 async function render() {
     let obj;
     try {
@@ -49,3 +51,7 @@ async function render() {
 
 render();
 
+document.querySelector('custom-fab-actions')
+    .addEventListener('click', evt => {
+        window.location = '/admin.lesson'
+    })

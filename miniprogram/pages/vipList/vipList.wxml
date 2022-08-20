@@ -1,46 +1,13 @@
 <view style="padding: 16rpx">
+    <list-item
+            wx:for="{{items}}"
+            wx:key="index"
+            thumbnail="{{item.thumbnail}}"
+            subhead="{{item.subhead}}"
 
-    <view class="item">
-
-        <view class="link">
-        </view>
-
-        <view class="table">
-
-            <view class="left">
-
-                <view class="thumbnail">
-
-                    <view class="image">
-                    </view>
-                </view>
-            </view>
-
-            <view class="right">
-
-                <view class="top">
-                    <view class="h3">
-                        <view class="title">
-                            年卡
-                        </view>
-                    </view>
-                </view>
-
-                <view class="bottom">
-
-                    <view class="secondary-container">
-
-                        <view class="bottom-content">
-
-                            <view class="head">
-                                有效期 365 天
-                            </view>
-                            <view class="subhead">
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-        </view>
-    </view>
+            head="{{item.title}}"
+            second="{{item.second}}"
+            three="{{item.three}}"
+    >
+    </list-item>
 </view>

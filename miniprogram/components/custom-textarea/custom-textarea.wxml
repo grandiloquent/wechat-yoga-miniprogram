@@ -9,7 +9,9 @@
 
     <view class="dialog__content">
             <textarea placeholder="{{placeholder}}" maxlength="{{maxlength}}"
-                      auto-focus="true"
+                      auto-focus
+                      value="{{value}}"
+                      bindinput="onInput"
             ></textarea>
     </view>
 

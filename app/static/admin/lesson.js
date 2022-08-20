@@ -1,16 +1,15 @@
-let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:9000' : '';
-;
-let id = new URL(window.location).searchParams.get('id') || 30;
-let _obj;
+let baseUri = getBaseUri();
+
+let id = new URL(window.location).searchParams.get('id');
 
 const customUploader = document.querySelector('custom-uploader');
 customUploader.addEventListener('upload', async evt => {
     evt.stopPropagation();
-    const res = await fetch(`${baseUri}/api/lesson`, {
+    const res = await fetch(`${baseUri}/api/admin.lesson.insert`, {
         method: 'POST',
         body: JSON.stringify({
             id,
-            image: substringAfterLast(evt.detail[0],'/')
+            image: substringAfterLast(evt.detail[0], '/')
         })
     });
     const obj = await res.text();
@@ -21,57 +20,86 @@ customUploader.addEventListener('remove', evt => {
 const uploader = document.querySelector('#uploader');
 
 
-
 uploader.addEventListener('upload', async evt => {
     evt.stopPropagation();
-    const res = await fetch(`${baseUri}/api/lesson`, {
+    const res = await fetch(`${baseUri}/api/admin.lesson.insert`, {
         method: 'POST',
         body: JSON.stringify({
             id,
-            photos: evt.detail.map(x=>substringAfterLast(x,'/'))
+            photos: evt.detail.map(x => substringAfterLast(x, '/'))
         })
     });
     const obj = await res.text();
 });
 
-async function fetchData() {
-    const res = await fetch(`${baseUri}/api/lesson.query.detail?id=${id}`)
-    const obj = await res.json();
-    return obj;
-}
 
-if (id)
+if (id) {
     fetchData().then(res => {
-        _obj = res;
-        document.querySelector('#field-name span')
-            .textContent = res.name;
-        fieldDescription.querySelector('span').textContent = res.description;
+        updateTitle(res);
+        renderLessonName(res);
+        renderDescription(res);
         if (res.image)
             customUploader.setAttribute('images', JSON.stringify([res.image]));
         uploader.setAttribute('images', JSON.stringify(res.photos));
     });
+} else {
+    bindLessonName()
+    bindDescription();
+}
 
 
-const fieldDescription = document.querySelector('#field-description');
+function updateTitle(res) {
+    document.title = `${res.name} - 更新课程`
+}
 
-fieldDescription.addEventListener('click', evt => {
-    evt.stopPropagation();
+function renderLessonName(res) {
+    document.querySelector('#field-name')
+        .setAttribute('subhead', res.name);
+    bindLessonName(res);
+}
 
-    const customInput = document.createElement('custom-input');
-    const textarea = document.createElement('textarea');
-    customInput.appendChild(textarea);
-    document.body.appendChild(customInput);
-    textarea.value = _obj.description;
-    textarea.focus();
-    customInput.addEventListener('submit', async evt => {
-        const res = await fetch(`${baseUri}/api/lesson`, {
-            method: 'POST',
-            body: JSON.stringify({
+function bindLessonName(res) {
+    document.querySelector('#field-name').addEventListener('click', evt => {
+        launchTextarea(res ? res.name : '', `${baseUri}/api/admin.lesson.insert`, data => {
+            return {
                 id,
-                description: textarea.value
-            })
-        });
-        const obj = await res.text();
-        console.log(obj);
+                name: data
+            }
+        }, (v) => {
+            if (id)
+                window.location.reload();
+            else if (v) {
+                window.location = `${window.location.origin}${window.location.pathname}?id=${v}`
+            }
+        })
     })
-});
+}
+
+function renderDescription(res) {
+    document.querySelector('#field-description')
+        .setAttribute('subhead', res.description.length > 10
+            ? res.description.substring(0, 10) : res.description);
+    bindDescription(res);
+}
+
+function bindDescription(res) {
+    document.querySelector('#field-description').addEventListener('click', evt => {
+        launchTextarea(res ? res.description : '', `${baseUri}/api/admin.lesson.insert`, data => {
+            return {
+                id,
+                description: data
+            }
+        }, (v) => {
+            if (id)
+                window.location.reload();
+            else if (v) {
+                window.location = `${window.location.origin}${window.location.pathname}?id=${v}`
+            }
+        })
+    })
+}
+
+async function fetchData() {
+    const res = await fetch(`${baseUri}/api/lesson.query.detail?id=${id}`)
+    return await res.json();
+}

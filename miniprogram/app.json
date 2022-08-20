@@ -1,15 +1,15 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
-    "pages/lesson/lesson",
     "pages/index/index",
+    "pages/vipList/vipList",
+    "pages/lesson/lesson",
     "pages/checkIn/checkIn",
     "pages/userVipList/userVipList",
     "pages/lessons/lessons",
     "pages/user/index",
     "pages/coach/index",
     "pages/appointment/index",
-    "pages/vipList/vipList",
     "pages/announcement/index",
     "pages/photoWall/index",
     "pages/encyclopedia/index",

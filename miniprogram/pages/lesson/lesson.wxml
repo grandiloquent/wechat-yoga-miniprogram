@@ -69,7 +69,88 @@
         <text>写评价</text>
     </view>
 </view>
-<view class="comments-empty">
+
+
+<view wx:for="{{comments}}" wx:key="id" class="comment-thread-renderer">
+
+    <view class="comment-renderer">
+
+        <view class="profile-icon">
+            <image class="comment-img" src="{{item.avatar_url}}">
+            </image>
+        </view>
+
+        <view class="comment-content" data-id="{{item.id}}" catchtap="onRelyComment">
+            <view class="comment-header">
+                <view class="comment-title">
+                    {{item.nick_name}}
+                </view>
+                <view class="comment-published-time">
+                    {{item.published_time}}
+                </view>
+            </view>
+            <view class="comment-text">{{item.content}}</view>
+            <view class="comment-details">
+                <view class="comment-icons">
+                    <view class="comment-action-icon comment"></view>
+                    <text>{{item.count||''}}</text>
+                </view>
+                <view catchtap="onMenu" class="comment-menu">
+                    <view class="c3-icon menu">
+                    </view>
+                </view>
+            </view>
+
+        </view>
+    </view>
+    <view class="comment-replies-renderer">
+        <view wx:if="{{item.count && !item.loaded}}" data-id="{{item.id}}" class="c3-material-button"
+              catchtap="onLoadReplied">
+            <view class="c3-material-button-button">
+                <view class="cbox">
+                    <view class="button-renderer-text">显示更多回复</view>
+                </view>
+            </view>
+        </view>
+        <block wx:if="{{item.loaded}}">
+            <view class="mini-comment-renderer" wx:for="{{item.children}}"
+                  wx:key="id">
+                <view class="mini-profile-icon">
+                    <image class="comment-img" src="{{item.avatar_url}}">
+                    </image>
+                </view>
+                <view class="mini-comment-content">
+                    <view class="mini-comment-header">
+
+                        <view class="min-comment-title">
+                            {{item.nick_name}}
+                        </view>
+                        <view class="mini-comment-published-time">
+                            {{item.published_time}}
+                        </view>
+                    </view>
+
+                    <view class="mini-comment-text">{{item.content}}</view>
+
+                    <view class="mini-comment-details">
+                        <view class="comment-icons">
+                            <view class="comment-action-icon comment">
+                            </view>
+                        </view>
+                        <view catchtap="onMenu" class="comment-menu">
+                            <view class="c3-icon menu">
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </block>
+
+    </view>
+
+</view>
+
+<view wx:if="{{!comments}}" class="comments-empty">
     此课程尚未获得任何评价
 </view>
-<custom-textarea show="{{show}}" title="评论" placeholder="添加评论..."></custom-textarea>
+<custom-textarea bind:submit="onCommentSubmit" show="{{show}}" title="评论" placeholder="添加评论..."></custom-textarea>

@@ -4,6 +4,7 @@ Component({
     properties: {
         title: String,
         placeholder: String,
+        value: String,
         maxlength: {
             type: Number,
             value: -1
@@ -45,13 +46,19 @@ Component({
             this.setData({
                 show: false
             })
-            this.triggerEvent('submit');
+            this.triggerEvent('submit', this.data.value);
+            this.setData({
+                value: ''
+            })
         },
         onClose(evt) {
             this.setData({
                 show: false
             })
             this.triggerEvent('close');
+        },
+        onInput(evt) {
+            this.data.value = evt.detail.value;
         }
     }
 })

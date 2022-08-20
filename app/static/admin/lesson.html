@@ -11,16 +11,12 @@
 
 <body>
 <div style="background: #fff">
-    <custom-header title="课程管理"></custom-header>
+    <custom-header></custom-header>
 </div>
 
-<custom-action id="field-name">
-    <span slot="text"></span>
-</custom-action>
-<custom-action id="field-description">
-    <span slot="text"
-          style="flex-grow: 1;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 1; overflow: hidden;text-overflow: ellipsis;">未设置描述</span>
-</custom-action>
+<custom-action id="field-name" head="课程名称" subhead="未配置"></custom-action>
+<custom-action id="field-description" head="课程描述" subhead="未配置"></custom-action>
+
 <hr style="border-top: solid 1px #dadce0;border-bottom: 0;margin: 0">
 <div style="margin: 18px 16px 0;">
     <custom-uploader max="1" uri="http://lucidu.cn/api/article/2" host="https://static.lucidu.cn/images">

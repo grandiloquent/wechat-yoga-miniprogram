@@ -14,29 +14,6 @@ async function fetchSettings() {
     return res.json();
 }
 
-// /api/admin.teacher.insert
-async function launchEditor(key, value, uri) {
-    const customInput = document.createElement('custom-input');
-    const textarea = document.createElement('textarea');
-    customInput.appendChild(textarea);
-    document.body.appendChild(customInput);
-    textarea.value = value;
-    textarea.focus();
-    customInput.addEventListener('submit', async evt => {
-        console.log(JSON.stringify({
-            [key]: textarea.value
-        }));
-        const res = await fetch(`${baseUri}${uri}`, {
-            method: 'POST',
-            body: JSON.stringify({
-                [key]: textarea.value
-            })
-        });
-        const obj = await res.text();
-        console.log(obj);
-    })
-}
-
 
 async function render() {
     const response = await fetchSettings();

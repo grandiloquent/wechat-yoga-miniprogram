@@ -1,10 +1,10 @@
-let baseUri = window.location.hostname === 'localhost' ? 'http://localhost:9000' : '';
+let baseUri = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8080' : '';
 const id = new URL(window.location).searchParams.get('id');
 const textarea = document.querySelector('textarea');
 let translate = 'http://kingpunch.cn';
 
 async function loadData() {
-    const response = await fetch(`${baseUri}/api/help`);
+    const response = await fetch(`${baseUri}/api/admin.helps.query`);
     return response.json();
 }
 
@@ -107,7 +107,7 @@ document.getElementById('save').addEventListener('click', async evt => {
     const title = sss.substring(0, index).trim().replace(/^#\s+/, '');
     const content = sss.substring(index).trim();
     console.log(title, content);
-    const response = await fetch(`${baseUri}/api/help`, {
+    const response = await fetch(`${baseUri}/api/admin.helps.insert`, {
         method: 'POST',
         body: JSON.stringify({
             title,
@@ -237,4 +237,4 @@ function tryUploadImageFromClipboard(success, error) {
     });
 }
 
-fetch(`${baseUri}/api/accessRecords?path=${encodeURIComponent(window.location.pathname)}&query=${encodeURIComponent(window.location.search)}`, { method: 'DELETE' });
+fetch(`${baseUri}/api/accessRecords?path=${encodeURIComponent(window.location.pathname)}&query=${encodeURIComponent(window.location.search)}`, {method: 'DELETE'});

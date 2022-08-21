@@ -1,17 +1,13 @@
 const app = getApp();
 const shared = require('../../shared')
-
 Page({
     data: {
-        active: false,
-        selectedDateTime: 0,
-        offsetDays: 0,
         app,
     },
     // 开始加载数据和渲染页面
     async initialize() {
         wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/appointment/index')}`
+            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/lessons/lessons')}`
         })
         try {
             await shared.fetchToken(app);
@@ -21,6 +17,9 @@ Page({
             });
             return
         }
+        // If we wait for the data to load from the server, 
+        // it may affect the page loading speed 
+        // and affect the user experience
         this.loadData();
     },
     async loadData() {
@@ -28,14 +27,8 @@ Page({
         try {
             res = await fetch(app)
             this.setData({
-                lessons: res.sort((x, y) => {
-                    if (x.date_time === y.date_time) {
-                        return y.start_time - x.start_time;
-                    }
-                    return y.date_time - x.date_time;
-                }).map(x => {
-                    const t = new Date(x.date_time * 1000)
-                    x.subhead = `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`
+                lessons: shared.sortLessons(res).map(x => {
+                    x.subhead = shared.secondsToDateString(x.date_time);
                     x.time = `${shared.secondsToDuration(x.start_time)}-${shared.secondsToDuration(x.end_time)}`
                     return x;
                 })
@@ -46,8 +39,6 @@ Page({
     },
     // 加载程序配置、应用基础页面配置、启动数据渲染
     async onLoad(options) {
-
-        shared.applyBasicSettings();
         if (!app.globalData.configs) {
             app.globalData.ready = () => {
                 this.setData({
@@ -64,14 +55,8 @@ Page({
             showLogin: false
         });
         await this.initialize(this.data.id)
-    },
-    onShareAppMessage() {
-        return {
-            title: '晨蕴瑜伽日课表'
-        }
-    },
+    }
 })
-
 function fetch(app) {
     return new Promise(((resolve, reject) => {
         wx.request({
@@ -88,5 +73,3 @@ function fetch(app) {
         })
     }))
 }
-
-

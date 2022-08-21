@@ -1,6 +1,5 @@
 const shared = require('../../shared');
 const app = getApp();
-
 Page({
     data: {
         app
@@ -17,6 +16,7 @@ Page({
             });
             return
         }
+        
         await this.loadData();
     },
     async loadData() {
@@ -40,12 +40,13 @@ Page({
     async onLoad(options) {
         shared.applyBasicSettings();
         if (!app.globalData.configs) {
-            app.globalData.ready = () => {
+            shared.loadSettings(app.globalData.host, async (data) => {
+                app.globalData.configs = data;
                 this.setData({
                     app
                 })
-                this.initialize();
-            }
+                await this.initialize();
+            })
             return
         }
         await this.initialize();
@@ -92,9 +93,26 @@ Page({
             showLogin: false,
             user: res.detail
         })
+    },
+    async onChangAvatar() {
+        const res = await chooseImage();
+        const tempFilePath = res.tempFiles[0].tempFilePath;
+        const imageName = await uploadFile(app,tempFilePath);
+        wx.request({
+            url: `${app.globalData.host}/api/user`,
+            method: 'POST',
+            data: {
+                avatar_url: `${app.globalData.staticHost}/images/${imageName}`,
+                open_id: app.globalData.openid
+            },
+            success: async res => {
+                await this.loadData();
+            },
+            fail: err => {
+            }
+        })
     }
 })
-
 function fetchUser(app) {
     return new Promise(((resolve, reject) => {
         wx.request({
@@ -110,4 +128,35 @@ function fetchUser(app) {
             }
         })
     }))
+}
+async function chooseImage() {
+    return new Promise((reslove, reject) => {
+        wx.chooseMedia({
+            count: 1,
+            mediaType: ['image'],
+            sourceType: ['album', 'camera'],
+            camera: 'back',
+            success: function (res) {
+                reslove(res);
+            },
+            fail: function () {
+                reject(res);
+            }
+        })
+    })
+}
+async function uploadFile(app,tempFilePath) {
+    return new Promise((reslove, reject) => {
+        wx.uploadFile({
+            url: `${app.globalData.host}/api/article/2`,
+            filePath: tempFilePath,
+            name: "images",
+            success: function (res) {
+                reslove(res.data)
+            },
+            fail: function () {
+                reject();
+            }
+        })
+    })
 }

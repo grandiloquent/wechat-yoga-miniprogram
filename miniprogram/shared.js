@@ -489,8 +489,21 @@ function loadSettings(host,success) {
         }
     })
 }
+function sortLessons(lessons){
+    return lessons.sort((x, y) => {
+        if (x.date_time === y.date_time) {
+            return y.start_time - x.start_time;
+        }
+        return y.date_time - x.date_time;
+    })
+}
 
+function secondsToDateString(seconds){
+    const t = new Date(seconds*1000)
+    return  `${t.getFullYear()}年${t.getMonth() + 1}月${t.getDate()}日`
+}
 module.exports = {
+    secondsToDateString,
     applyBasicSettings,
     book,
     deleteBook,
@@ -521,7 +534,8 @@ module.exports = {
     signIn,
     transform,
     unBook,
-    loadSettings
+    loadSettings,
+    sortLessons
 };
 
 /*

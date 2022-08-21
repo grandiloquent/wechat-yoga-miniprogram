@@ -1,13 +1,13 @@
 {
   "lazyCodeLoading": "requiredComponents",
   "pages": [
+    "pages/user/index",
     "pages/index/index",
     "pages/vipList/vipList",
     "pages/lesson/lesson",
     "pages/checkIn/checkIn",
     "pages/userVipList/userVipList",
     "pages/lessons/lessons",
-    "pages/user/index",
     "pages/coach/index",
     "pages/appointment/index",
     "pages/announcement/index",

@@ -19,7 +19,7 @@ Page({
         }
         // If we wait for the data to load from the server, 
         // it may affect the page loading speed 
-        // and affect the user experience
+        // and can greatly affect the user experience
         this.loadData();
     },
     async loadData() {

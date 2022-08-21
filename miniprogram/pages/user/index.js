@@ -5,9 +5,7 @@ Page({
         app
     },
     async initialize() {
-        wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/user/index')}`
-        })
+        shared.accessRecords(app, '/pages/user/index');
         try {
             await shared.fetchToken(app);
         } catch (e) {
@@ -16,7 +14,6 @@ Page({
             });
             return
         }
-        
         await this.loadData();
     },
     async loadData() {
@@ -31,6 +28,19 @@ Page({
         wx.navigateTo({
             url: e.currentTarget.dataset.src
         })
+    },
+    async onChangAvatar() {
+        try {
+            const res = await chooseImage();
+            const tempFilePath = res.tempFiles[0].tempFilePath;
+            const imageName = await uploadFile(app, tempFilePath);
+            await insertUser(app, {
+                avatar_url: `${app.globalData.staticHost}/images/${imageName}`,
+                open_id: app.globalData.openid
+            });
+            await this.loadData();
+        } catch (error) {
+        }
     },
     onGroupCourses(e) {
         wx.switchTab({
@@ -93,42 +103,8 @@ Page({
             showLogin: false,
             user: res.detail
         })
-    },
-    async onChangAvatar() {
-        const res = await chooseImage();
-        const tempFilePath = res.tempFiles[0].tempFilePath;
-        const imageName = await uploadFile(app,tempFilePath);
-        wx.request({
-            url: `${app.globalData.host}/api/user`,
-            method: 'POST',
-            data: {
-                avatar_url: `${app.globalData.staticHost}/images/${imageName}`,
-                open_id: app.globalData.openid
-            },
-            success: async res => {
-                await this.loadData();
-            },
-            fail: err => {
-            }
-        })
     }
 })
-function fetchUser(app) {
-    return new Promise(((resolve, reject) => {
-        wx.request({
-            url: `${app.globalData.host}/api/user.query.book.info?id=${app.globalData.userInfo.id}`,
-            header: {
-                token: app.globalData.token
-            },
-            success: res => {
-                resolve(res.data);
-            },
-            fail: err => {
-                reject(err)
-            }
-        })
-    }))
-}
 async function chooseImage() {
     return new Promise((reslove, reject) => {
         wx.chooseMedia({
@@ -145,7 +121,38 @@ async function chooseImage() {
         })
     })
 }
-async function uploadFile(app,tempFilePath) {
+function fetchUser(app) {
+    return new Promise(((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/user.query.book.info?id=${app.globalData.userInfo.id}`,
+            header: {
+                token: app.globalData.token
+            },
+            success: res => {
+                resolve(res.data);
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    }))
+}
+async function insertUser(app, data) {
+    return new Promise((resolve, reject) => {
+        wx.request({
+            url: `${app.globalData.host}/api/user`,
+            method: 'POST',
+            data,
+            success: res => {
+                resolve(res)
+            },
+            fail: err => {
+                reject(err)
+            }
+        })
+    })
+}
+async function uploadFile(app, tempFilePath) {
     return new Promise((reslove, reject) => {
         wx.uploadFile({
             url: `${app.globalData.host}/api/article/2`,

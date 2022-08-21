@@ -99,7 +99,7 @@ Page({
 function fetchData(app, id, startTime, endTime) {
     return new Promise(((resolve, reject) => {
         wx.request({
-            url: `${app.globalData.host}/api/reservation?id=${id}&mode=10&userId=${app.globalData.userInfo.id}&startTime=${startTime}&endTime=${endTime}&classType=4`,
+            url: `${app.globalData.host}/api/reservations.query.teacher?id=${id}&userId=${app.globalData.userInfo.id}&startTime=${startTime}&endTime=${endTime}&classType=4`,
             header: {
                 token: app.globalData.token
             },

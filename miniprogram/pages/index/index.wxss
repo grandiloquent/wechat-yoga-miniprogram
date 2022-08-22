@@ -234,7 +234,7 @@ weather-location
     color: #777060;
 }
 
-.promotional-container {
+.market {
     height: 96rpx;
     padding: 32rpx;
     background-color: #fff;
@@ -245,7 +245,7 @@ weather-location
     align-items: center;
 }
 
-.announcement-container {
+.notice {
     background: #fff;
     padding-bottom: 32rpx;
     color: #333;

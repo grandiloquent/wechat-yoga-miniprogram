@@ -1,6 +1,5 @@
 const app = getApp();
 const shared = require('../../shared');
-
 const SECONDS_IN_TIME = [
     1, // 1 second
     60, // 1 minute
@@ -10,7 +9,6 @@ const SECONDS_IN_TIME = [
     2419200, // 1 month
     29030400 // 1 year
 ];
-
 /*
  * The language array to which <convert> defaults.
  */
@@ -23,29 +21,18 @@ const en_US = [
     "1月之前", "月之前",
     "1年之前", "年之前"
 ]
-
-
 function convert(el, timestamp, lang) {
-
     let now = Math.floor(new Date / 1000);
     let diff = (now - timestamp) || 1; // prevent undefined val when diff == 0
-
     for (let i = 6; i >= 0; i--) {
-
         if (diff >= SECONDS_IN_TIME[i]) {
-
             let time_elapsed = Math.floor(diff / SECONDS_IN_TIME[i]);
             let adverbs = en_US;
             let sentence = adverbs.map((el, idx) => idx % 2 == 0 ? el : time_elapsed + " " + el);
-
             return time_elapsed >= 2 ? sentence[i * 2 + 1] : sentence[i * 2];
-
         }
-
     }
-
 }
-
 Page({
     data: {
         app,
@@ -53,9 +40,7 @@ Page({
         expand: false
     },
     async initialize() {
-        wx.request({
-            url: `${app.globalData.host}/api/accessRecords?path=${encodeURIComponent('/pages/lesson/lesson')}`
-        })
+        shared.accessRecords(app, '/pages/lesson/lesson');
         try {
             await shared.fetchToken(app);
         } catch (e) {
@@ -191,7 +176,6 @@ Page({
         })
     }
 });
-
 function fetch(app, id) {
     /*
     let res;
@@ -216,7 +200,6 @@ function fetch(app, id) {
         })
     }))
 }
-
 function fetchChildrenComments(app, id, lessonId) {
     /*
     let res;
@@ -241,7 +224,6 @@ function fetchChildrenComments(app, id, lessonId) {
         })
     }))
 }
-
 function fetchComments(app, lessonId) {
     /*
     let res;
@@ -266,7 +248,6 @@ function fetchComments(app, lessonId) {
         })
     }))
 }
-
 function insertComment(app, data) {
     /*
     let res;
@@ -293,18 +274,15 @@ function insertComment(app, data) {
         })
     }))
 }
-
 function isLessonExpired(lesson) {
     let now = new Date();
     const timeInMinutes = now.getHours() * 60 * 60 + now.getMinutes() * 60;
     now.setHours(0, 0, 0, 0);
     return now.getTime() / 1000 > lesson.date_time || ((now.getTime() / 1000 === lesson.date_time) && timeInMinutes >= lesson.start_time)
 }
-
 function makeSubhead(lesson) {
     const t = new Date(lesson.date_time * 1000);
     lesson.expired = isLessonExpired(lesson);
     lesson.subhead = `${t.getMonth() + 1}月${t.getDate()}周${'日一二三四五六'[t.getDay()]} ${shared.secondsToDuration(lesson.start_time)}-${shared.secondsToDuration(lesson.end_time)}`;
     return lesson;
 }
-

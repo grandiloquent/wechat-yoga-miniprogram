@@ -116,7 +116,7 @@ async function chooseImage() {
                 reslove(res);
             },
             fail: function () {
-                reject(res);
+                reject();
             }
         })
     })

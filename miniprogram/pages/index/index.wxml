@@ -51,8 +51,7 @@
 </view>
 <view class="space"></view>
 
-
-<swiper class="promotional-container" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
+<swiper class="market" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
     <swiper-item wx:for="{{prompts}}" wx:key="index">
         <view class="promotion-item-container" bindtap="handleNavigateToBook">
             <image class="market-image" src="{{item.avatar_url}}"></image>
@@ -63,8 +62,7 @@
 </swiper>
 
 <view class="space"></view>
-
-<view class="announcement-container">
+<view class="notice">
     <view class="divider" custom-class="table-text" contentPosition="center">
         <view class="divider--hairline"></view>
         <image class="table-icon" src="../../images/announcement.png"></image>

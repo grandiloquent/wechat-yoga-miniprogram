@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const obj = [{
+            "command": "extension.generateGetterAndSetters",
+            "title": "Generate get and set methods"
+        },
+        {
+            "command": "extension.generateCode",
+            "title": "Generate codes"
+        },
+        {
+            "command": "extension.generateTranslate",
+            "title": "Generate translate"
+        },
+        {
+            "command": "extension.generateAcccessRecords",
+            "title": "Generate acccess records"
+        },
+        {
+            "command": "extension.generateHandler",
+            "title": "Generate handler"
+        },
+        {
+            "command": "extension.generateNew",
+            "title": "Generate new"
+        },
+        {
+            "command": "extension.generateStyle",
+            "title": "Generate style"
+        },
+        {
+            "command": "extension.generateReplace",
+            "title": "Generate replace"
+        },
+        {
+            "command": "extension.generateNewFile",
+            "title": "Generate new file"
+        },
+        {
+            "command": "extension.generateTemplate",
+            "title": "Generate template"
+        },
+        {
+            "command": "extension.generateSQL",
+            "title": "执行 SQL"
+        },
+        {
+            "command": "extension.generateSort",
+            "title": "排序函数"
+        }];
+
+        const buf = [];
+        for (const iterator of obj) {
+            buf.push({
+                "command": iterator.command,
+                "when": "editorTextFocus",
+                "group": "uncommon"
+            })
+        }
+        console.log(JSON.stringify(buf, '', '\t'))
+    </script>
+</body>
+
+</html>

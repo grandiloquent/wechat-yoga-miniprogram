@@ -10,6 +10,23 @@
 
 <body>
     <script>
+        (() => {
+            function getWeeks() {
+                const d = new Date();
+                d.setHours(0, 0, 0, 0);
+                const week = d.getDay();
+                if (week === 0) {
+                    return [d / 1000 + 86400, d / 1000 + 86400 * 8];
+                } else if (week === 6) {
+                    return [d / 1000 + 86400 * 2, d / 1000 + 86400 * 9];
+                } else {
+                    return [d / 1000 - 86400 * (week - 1), d / 1000 - 86400 * (week + 8)];
+                }
+            }
+            console.log(getWeeks())
+        })();
+    </script>
+    <script>
         const obj = [{
             "command": "extension.generateGetterAndSetters",
             "title": "Generate get and set methods"

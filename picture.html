@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Open Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB, Microsoft Yahei, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            color: #323233;
+        }
+
+        body {
+            background-color: #f7f8fa;
+            font-family: Open Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB, Microsoft Yahei, sans-serif;
+            font-size: 16px;
+            min-width: 1100px;
+            overflow-x: auto;
+        }
+
+        .title {
+            font-size: 18px;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="my-node" style="background: #fff;padding: 16px;">
+        <div style="color: #5f6368;font-size: 24px;height: 64px;line-height: 64px;text-align: center;">瑜伽约课工具课表</div>
+        <div class="grid" style="display: grid;grid-template-columns: repeat(7,1fr); gap: 16px;">
+            <div class="title">上课时间</div>
+            <div class="title">周一</div>
+            <div class="title">周二</div>
+            <div class="title">周三</div>
+            <div class="title">周四</div>
+            <div class="title">周五</div>
+            <div class="title">周六</div>
+
+
+        </div>
+        <div class="grid" style="display: grid;grid-template-columns: repeat(7,1fr); gap: 16px;">
+            <div></div>
+            <div style="padding: 16px;grid-column: 2 / 7;">
+                <ol style="padding: 0">
+                    <li>请提前 15 分钟进馆备课。</li>
+                    <li>上课时请关闭手机和其他电子设备。</li>
+                    <li>请赤脚上课。</li>
+                </ol>
+            </div>
+            <div
+                style="padding: 10px 0;display:flex;align-items: center;justify-content: center;flex-direction: column;">
+                <img style="width: 100px;height: 100px;"
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAE20lEQVR42u3dwW7bMBBF0arQ//+yu+kqhdsSmeEbyuesA1tRckEBA1LX6/X6AeT8dAtAhCBCQIQgQkCEIEJAhCBCQIQgQkCEIEJAhCBCQIQgQkCEIEJAhCBCQIQgQkCEIEJAhCBCQIQgQkCEIEJAhCBC4HvuPV9zXdcRt2P1vcXvfq93n1N1H1Y/v/vnq67z9P8HKyF4HAVECCIERAgiBEQIx7izX79nDvOn1TlV1c9XzSFPmU8+9f/BSggeRwERgggBEYIIARHC8e6Zl3XK3Knq86t+3+55V2qedvoc0koIHkcBEYIIARGCCAERwji3W/AdqblZ9zmiVfshsRKCCAERgggBEYIIARHCUOaELVJzvHdS55RiJQQRAiIEEQIiBBECIoShhs4JT9m3lrrOqvle93mnVffn2fsYrYQgQhAhIEIQISBCECEQEJ4TPnXfWtX+vWk/7//BSggiBEQIIgRECCIERAgPcXnj3LduX9Fcq/uvsHqdq9fjfYZWQhAhIEIQISBCECEgQjjM0Dlh1dzJe/b+ft9S+wyn7WPMVmAlBI+jIEJAhCBCQIQgQiBg05ywaj9b9761aXOzqutM/X1Tc92qv9ee+2klBI+jIEJAhCBCQIQgQiBg0/sJu+dF097X92lzy6rr7/7/mbaP0UoIHkcBEYIIQYSACEGEQEx4P+G0eVRqX1zq81Pz0lPe62glBI+jgAhBhIAIQYSACOGxwu8nnLZPr+p7U+eCTjtXc9p9nnZeq5UQPI4CIgQRgggBEYIIgZhN545Om5utzpGm7d979/PTzuecec7nnP9PKyF4HAVECCIEEQIiBBECMXf261PnT6bOQe2+D6lzU7s/p/s+eD8heBwFRAgiBEQIIgRECB8nPCdMnQ/ZvU8sNY9K3Z9p552ufr5zR8HjKCBCECEgQhAhIEL4OJveT5jar5WaQ6b2Sa5eT/f9OWUu6txR8DgKiBBECIgQRAiIED7Opv2Eqf1a086frPreqvcWpuZjqXlsdt+glRA8jgIiBBECIgQRAiKEQTbNCU/ZT1j1Od1zudTvtfo5qfdGzpwHWglBhIAIQYSACEGEgAhhkOusicrbX+Oh52Sm9vudcj9X73P2fFErIXgcBUQIIgRECCIERAiDDH0/4enngp7y+afM/VL32fsJweMoIEIQISBCECEgQnish+wnbL9NzXO8adc/bd/j6ddvJQSPo4AIQYSACEGEgAhhnIe/n3BV93vwZp57uV9qrjjzPlsJQYQgQkCEIEJAhCBCIODOfv0p++u6P391rjXtvYXT/u7eTwiIEEQIiBBECIgQRAj8wz3zsqbNo7rfd1f1+1bNG7uvp8oz9mFaCUGEIEJAhCBCQIQgQiDgdgs6TDs/s2p+2H0fTjmf1koIIgRECCIERAgiBEQIxzMn/C/d54h27/dLncPZfR+6/7579itaCcHjKIgQECGIEBAhiBAIuPZMQqa9F657n16VU+Z7Vfene5+klRAQIYgQECGIEBAhiBD4Lbyf8KnnTFbN97r3Mabu/7TrsZ8QPI4CIgQRAiIEEQIihI9znbXzCqyEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhIAIQYSACEGEgAhBhMAXvwD3sTCFqF/67AAAAABJRU5ErkJggg==">
+                <div>扫码上课</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script src="html-to-image.js"></script>
+
+    <script>
+        const data =
+            [{ "start_time": 70200, "end_time": 73800, "date_time": 1661270400, "lesson_name": "艾扬格瑜伽", "name": "周琼老师" },
+            { "start_time": 32400, "end_time": 36000, "date_time": 1661356800, "lesson_name": "艾扬格瑜伽", "name": "周琼老师" },
+            { "start_time": 70200, "end_time": 73800, "date_time": 1661529600, "lesson_name": "阴瑜伽", "name": "汐子老师" },
+            { "start_time": 32400, "end_time": 36000, "date_time": 1661529600, "lesson_name": "腰腹塑形", "name": "倩倩老师" },
+            { "start_time": 32400, "end_time": 36000, "date_time": 1661184000, "lesson_name": "空中瑜伽", "name": "细雨老师" },
+            { "start_time": 70200, "end_time": 73800, "date_time": 1661356800, "lesson_name": "空中瑜伽", "name": "细雨老师" },
+            { "start_time": 70200, "end_time": 73800, "date_time": 1661184000, "lesson_name": "尊巴", "name": "阿MAY老师" },
+            { "start_time": 70200, "end_time": 73800, "date_time": 1661443200, "lesson_name": "普拉提", "name": "欧阳老师" },
+            { "start_time": 10800, "end_time": 36000, "date_time": 1661270400, "lesson_name": "普拉提", "name": "欧阳老师" },
+            { "start_time": 70200, "end_time": 73800, "date_time": 1661097600, "lesson_name": "纤体瑜伽", "name": "欧阳老师" },
+            { "start_time": 32400, "end_time": 36000, "date_time": 1661443200, "lesson_name": "纤体瑜伽", "name": "欧阳老师" },
+            { "start_time": 46800, "end_time": 50400, "date_time": 1661097600, "lesson_name": "艾扬格瑜伽", "name": "欧阳老师" },
+            { "start_time": 32400, "end_time": 36000, "date_time": 1661097600, "lesson_name": "艾扬格瑜伽", "name": "欧阳老师" }];
+
+        function groupByKey(array, key) {
+            return array
+                .reduce((hash, obj) => {
+                    if (obj[key] === undefined) return hash;
+                    return Object.assign(hash, { [obj[key]]: (hash[obj[key]] || []).concat(obj) })
+                }, {})
+        }
+        const grid = document.querySelector('.grid');
+
+        const obj = groupByKey(data.map(x => {
+            var t = new Date(x.date_time * 1000);
+            x.date_time = t;
+            x.week = t.getDay();
+            return x;
+        }), "start_time");
+        console.log(obj)
+        for (const key in obj) {
+            for (let index = 0; index < 7; index++) {
+                const div = document.createElement('div');
+                if (index > 0) {
+                    div.style.padding = '12px 8px 12px 12px';
+                    const o = obj[key].filter(x => x.week === index);
+                    console.log(o)
+                    if (o.length) {
+
+                        div.style.boxShadow = '0 1px 6px 0 rgba(0,0,0,.16)';
+                        div.innerHTML = `
+                <div style="font-size:12px;color:rgba(0,0,0,.35)">
+                    ${o[0].date_time.getMonth() + 1}月${o[0].date_time.getDate()}日周${'日一二三四五六'[o[0].date_time.getDay()]}
+                    </div>
+                <div>${o[0].lesson_name}</div>
+                <div style="height:34px"></div>
+                <div style="font-size:14px;text-align:right;color:rgba(0,0,0,.35)">${o[0].name}</div>
+                    `
+                        //div.textContent = new Date(obj[key][index].date_time * 1000)
+                    }
+                } else {
+                    div.innerText = `${key / 3600 | 0}:${(key % 3600 / 60).toString().padStart(2, '0')}`
+                }
+                grid.appendChild(div);
+
+            }
+        }
+        var node = document.getElementById('my-node');
+
+        htmlToImage.toPng(node)
+            .then(function (dataUrl) {
+                var img = new Image();
+                img.src = dataUrl;
+                document.body.appendChild(img);
+            })
+            .catch(function (error) {
+                console.error('oops, something went wrong!', error);
+            });
+    </script>
+</body>
+
+</html>

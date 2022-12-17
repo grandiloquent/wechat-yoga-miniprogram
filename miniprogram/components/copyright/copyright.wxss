@@ -1,8 +1,0 @@
-.wrapper{
-    display: flex;
-    justify-content: center;
-    font-size: 22rpx;
-    color: rgba(0, 0, 0, 0.35);
-    padding: 60rpx 0 32rpx;
-    background-color: #f7f8fa;
-}

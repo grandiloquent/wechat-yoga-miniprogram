@@ -1,8 +1,0 @@
-{
-  "usingComponents": {
-    "wemark": "../../wemark/wemark",
-    "login": "../../components/login/login",
-    "custom-textarea": "../../components/custom-textarea/custom-textarea"
-  },
-  "navigationBarTitleText": "课程"
-}

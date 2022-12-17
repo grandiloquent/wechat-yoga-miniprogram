@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "会员卡",
-  "usingComponents": {
-    "list-item": "../../components/list-item/list-item"
-  }
-}
-                

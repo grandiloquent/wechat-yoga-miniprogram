@@ -1,7 +1,0 @@
-<view class="image" style="width:{{imageWidth}}px;height:{{imageHeight}}px;" data-src="{{src}}" bindtap="onTap">
-  <view wx:if="{{!loaded}}" style="position: absolute;">
-    <spinner></spinner>
-    <view style="color: #ccc;margin-top: 8rpx;">晨蕴瑜伽</view>
-  </view>
-  <image lazy-load="true" bindload="onImageLoaded" style="opacity: {{loaded?'1':'0'}};width: 100%;height: 100%;" src="{{src}}" ></image>
-</view>

@@ -1,7 +1,0 @@
-<view class="wrapper">
-    <view class="item-container">
-        <view catchtap="onTap" data-index="{{index}}" wx:for="{{items}}" wx:key="index" class="item {{index==selected?'active':''}}">
-            {{item}}
-        </view>
-    </view>
-</view>

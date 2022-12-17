@@ -1,6 +1,0 @@
-<view class="wrapper">
-  <view class="header">
-    <view class="title">{{market.title}}</view>
-  </view>
-  <wemark md="{{market.content}}" host="{{app.globalData.host}}" link highlight type="wemark"></wemark>
-</view>

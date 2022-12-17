@@ -1,7 +1,0 @@
-<view class="wrapper">
-    <view data-index="{{index}}" catchtap="onTap" class="item" wx:for="{{weeks}}" wx:key="*this">
-        <viev class=" {{index===selected?'active':''}}">{{item}}</viev>
-    </view>
-    <view class="border" style="{{width}}{{left}}">
-    </view>
-</view>

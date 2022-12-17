@@ -1,0 +1,19 @@
+.wrapper {
+    width: 100vw;
+    background-color: #fff;
+}
+
+.wrapper>view {
+    line-height: 40rpx;
+    justify-content: center;
+    display: flex;
+    font-size: 28rpx;
+    padding-left: 16rpx;
+    flex-direction: column;
+}
+
+.swiper {
+    font-size: 20rpx;
+    color: #999;
+    height: 32rpx;
+}

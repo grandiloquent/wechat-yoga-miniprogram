@@ -2,24 +2,7 @@
   "lazyCodeLoading": "requiredComponents",
   "pages": [
     "pages/index/index",
-    "pages/user/index",
-    "pages/vipList/vipList",
-    "pages/lesson/lesson",
-    "pages/checkIn/checkIn",
-    "pages/userVipList/userVipList",
-    "pages/lessons/lessons",
-    "pages/coach/index",
-    "pages/appointment/index",
-    "pages/announcement/index",
-    "pages/photoWall/index",
-    "pages/encyclopedia/index",
-    "pages/encyclopedias/encyclopedias",
-    "pages/announcements/index",
-    "pages/coaches/index",
-    "pages/discount/index",
-    "pages/intro/intro",
-    "pages/physicalExamination/physicalExamination",
-    "pages/private/private"
+    "pages/user/user"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {
@@ -33,20 +16,8 @@
         "text": "首页"
       },
       {
-        "iconPath": "images/yueke.png",
-        "pagePath": "pages/appointment/index",
-        "selectedIconPath": "images/yueke-on.png",
-        "text": "约课"
-      },
-      {
-        "iconPath": "images/check-in.png",
-        "pagePath": "pages/checkIn/checkIn",
-        "selectedIconPath": "images/check-in-on.png",
-        "text": "已约"
-      },
-      {
         "iconPath": "images/my-off.png",
-        "pagePath": "pages/user/index",
+        "pagePath": "pages/user/user",
         "selectedIconPath": "images/my-on.png",
         "text": "我的"
       }

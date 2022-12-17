@@ -1,7 +1,7 @@
 {
-  "navigationBarTitleText": "瑜伽约课工具",
-  "usingComponents": {
-    "action-items": "../../components/action-items/action-items"
-  },
-  "navigationStyle": "custom"
-}
+    "usingComponents": {
+      "home-bar":"../../components/home-bar/home-bar",
+      "poster":"../../components/poster/poster"
+    },
+    "navigationStyle": "custom"
+  }

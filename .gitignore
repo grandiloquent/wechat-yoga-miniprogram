@@ -16,4 +16,4 @@ node_modules/
 miniprogram_npm
 
 *.bat
-/app
+app/

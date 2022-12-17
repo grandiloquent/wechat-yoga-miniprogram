@@ -4,7 +4,8 @@
     "poster": "../../components/poster/poster",
     "home-actions": "../../components/home-actions/home-actions",
     "gift": "../../components/gift/gift",
-    "teacher": "../../components/teacher/teacher"
+    "teacher": "../../components/teacher/teacher",
+    "home-booked": "../../components/home-booked/home-booked"
   },
   "navigationStyle": "custom"
 }

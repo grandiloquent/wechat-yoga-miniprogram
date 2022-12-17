@@ -21,7 +21,8 @@ Page({
   async loadData() {
     [["v1/slideshow/home", "poster"],
     ["v1/functions/home", "actions"],
-    ["v1/teachers/home", "teachers"]]
+    ["v1/teachers/home", "teachers"],
+    ["v1/booked/home", "booked"]]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {
           if (err) return;
@@ -36,9 +37,11 @@ Page({
       title: app.globalData.title
     };
   }, onSubmit() {
-    console.log("-----------")
   }
 })
 function onTeacherSubmit(evt) {
+
+}
+function onHomeBookedSubmit(evt) {
 
 }

@@ -17,3 +17,4 @@ miniprogram_npm
 
 *.bat
 app/
+server/

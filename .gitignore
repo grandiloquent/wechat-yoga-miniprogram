@@ -16,7 +16,4 @@ node_modules/
 miniprogram_npm
 
 *.bat
-/app/app
-/app/templates
-/app/*.*
-/app/static
+/app

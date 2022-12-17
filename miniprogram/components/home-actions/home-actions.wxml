@@ -1,0 +1,6 @@
+<view class="wrapper">
+    <view class="item" wx:for="{{items}}" wx:key="id">
+        <image class="image" mode="aspectFill" src="{{item.image}}"></image>
+        <view class="text">{{item.name}}</view>
+    </view>
+</view>

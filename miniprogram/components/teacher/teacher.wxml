@@ -1,0 +1,10 @@
+<view class="title">专业教练</view>
+<view class="teachers">
+    <view class="wrapper" wx:for="{{items}}" wx:key="id">
+        <view class="image">
+            <image src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
+        </view>
+        <view class="name">{{item.name}}</view>
+        <view class="subtitle">{{item.introduction}}</view>
+    </view>
+</view>

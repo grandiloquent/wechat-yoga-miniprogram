@@ -3,7 +3,7 @@
     height: 375rpx;
 }
 
-image {
+swiper-item>.image {
     width: 750rpx;
     height: 375rpx;
 }

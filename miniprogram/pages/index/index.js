@@ -19,7 +19,9 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    [["v1/slideshow/home", "poster"]]
+    [["v1/slideshow/home", "poster"],
+    ["v1/functions/home", "actions"],
+    ["v1/teachers/home", "teachers"]]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {
           if (err) return;
@@ -33,5 +35,10 @@ Page({
     return {
       title: app.globalData.title
     };
-  },
+  }, onSubmit() {
+    console.log("-----------")
+  }
 })
+function onTeacherSubmit(evt) {
+
+}

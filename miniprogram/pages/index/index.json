@@ -1,7 +1,10 @@
 {
-    "usingComponents": {
-      "home-bar":"../../components/home-bar/home-bar",
-      "poster":"../../components/poster/poster"
-    },
-    "navigationStyle": "custom"
-  }
+  "usingComponents": {
+    "home-bar": "../../components/home-bar/home-bar",
+    "poster": "../../components/poster/poster",
+    "home-actions": "../../components/home-actions/home-actions",
+    "gift": "../../components/gift/gift",
+    "teacher": "../../components/teacher/teacher"
+  },
+  "navigationStyle": "custom"
+}

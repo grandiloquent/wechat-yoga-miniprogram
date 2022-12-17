@@ -19,12 +19,16 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    utils.getString(app, "v1/slideshow/home", (err, data) => {
-      if (err) return;
-      this.setData({
-        poster: data
-      });
-    });
+    [["v1/slideshow/home", "poster"]]
+      .forEach(x => {
+        utils.getString(app, x[0], (err, data) => {
+          if (err) return;
+          this.setData({
+            [x[1]]: data
+          });
+        });
+      })
+
   }, onShareAppMessage() {
     return {
       title: app.globalData.title

@@ -71,6 +71,10 @@ func main() {
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
+		case "/v1/notices/home":
+			handlers.V1NoticesHome(db, w, r)
+			return
+
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return

@@ -1,7 +1,7 @@
 <view class="title">公告</view>
- <view style="background-color: #fff;padding:26rpx 0 32rpx;" bindtap="onClick">
-<view class="item">
-    <view class="item-title">世界</view>
-    <view class="item-subtitle">世界</view>
+<view style="background-color: #fff;padding:26rpx 0 32rpx;" bindtap="onClick">
+    <view class="item" wx:for="{{notices}}" wx:key="id" data-id="{{item.id}}" bindtap="navigate">
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-subtitle">{{item.timeago}}</view>
+    </view>
 </view>
-</view>  

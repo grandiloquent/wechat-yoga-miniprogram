@@ -2,29 +2,29 @@
 // "home-notice":"../../components/home-notice/home-notice"
 // <home-notice app="{{app}}"></home-notice>
 
-
+const utils = require('../../utils');
 Component({
   options: {
     styleIsolation: 'isolated'
   },
   properties: {
     items: {
-      type: Array,
+      type: Array
     },
     app: Object
-  },
-  data: {
-  },
-  lifetimes: {
-    async attached() {
-
-    },
-    detached: function () {
+  }, observers: {
+    'items': function (items) {
+      this.setData({
+        notices: items.map(x => {
+          x.timeago = utils.timeago(x.updated_time)
+          return x;
+        })
+      })
     },
   },
   methods: {
-    onClick(evt) {
-      this.triggerEvent('submit')
+    navigate(evt) {
+      this.triggerEvent('submit', evt.currentTarget.dataset.id)
     }
   }
 })

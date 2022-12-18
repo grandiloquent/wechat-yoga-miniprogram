@@ -24,12 +24,12 @@ Page({
       ["v1/functions/home", "actions"],
       ["v1/teachers/home", "teachers"],
       ["v1/booked/home", "booked"],
-      ["v1/market/home", "market"]
+      ["v1/market/home", "market"],
+      ["v1/notices/home","notices"]
     ]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {
           if (err) return;
-          console.log(data)
           this.setData({
             [x[1]]: data
           });
@@ -45,15 +45,14 @@ Page({
   }, 
   onHomeActionsSubmit(evt) {
     console.log(evt.detail)
+  },onHomeNoticeSubmit(evt) {
+    console.log(evt.detail)
   }
 })
 function onTeacherSubmit(evt) {
 
 }
 function onHomeBookedSubmit(evt) {
-
-}
-function onHomeNoticeSubmit(evt) {
 
 }
 function onCopyrightSubmit(evt) {

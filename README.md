@@ -2,11 +2,17 @@
 
 一个专注于瑜伽约课的微信小程序。
 
+## 后端
+
+Windows 系统 PowerShell 终端可使用如下命令启动后端服务器：
+
+```ps
+# 使用恰当的参数替换中文描述的内容
+$ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=数据库用户名 password=数据库密码 dbname=数据库名称 sslmode=disable" ;go run main.go
+```
+
 ## 在线示例
 
 <img src="/images/扫码_搜索联合传播样式-标准色版.png">
 
-## 公众号页面在线预览
-
-https://lucidu.cn
 

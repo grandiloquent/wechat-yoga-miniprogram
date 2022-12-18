@@ -1,0 +1,2 @@
+<user-profile item="{{user}}" app="{{app}}" bind:submit="onUserProfileSubmit"></user-profile>
+<login wx:if="{{showLogin}}" items="{{login}}" app="{{app}}" bind:submit="onLoginSubmit"></login>

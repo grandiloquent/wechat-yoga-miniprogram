@@ -1,7 +1,7 @@
 <home-bar app="{{app}}"></home-bar>
 <poster items="{{poster}}" app="{{app}}"></poster>
 <home-actions items="{{actions}}" app="{{app}}"></home-actions>
-<gift items="{{gift}}" app="{{app}}" bind:submit="onSubmit"></gift>
+<gift slogan="{{market.slogan}}" app="{{app}}" bind:submit="onSubmit"></gift>
 <teacher items="{{teachers}}" app="{{app}}" bind:submit="onTeacherSubmit"></teacher>
 
 <home-booked items="{{booked}}" app="{{app}}" bind:submit="onHomeBookedSubmit"></home-booked>

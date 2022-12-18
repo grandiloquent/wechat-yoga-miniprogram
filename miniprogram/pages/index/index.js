@@ -23,7 +23,8 @@ Page({
       ["v1/slideshow/home", "poster"],
       ["v1/functions/home", "actions"],
       ["v1/teachers/home", "teachers"],
-      ["v1/booked/home", "booked"]
+      ["v1/booked/home", "booked"],
+      ["v1/market/home","market"]
     ]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {

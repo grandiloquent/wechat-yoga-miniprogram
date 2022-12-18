@@ -1,0 +1,29 @@
+.wrapper {
+    height: 30vh;
+    position: relative;
+    margin-bottom: 120rpx;
+    display: flex;
+    align-items: center;
+    padding-bottom: 24rpx;
+    border-bottom-left-radius: 32rpx;
+    border-bottom-right-radius: 32rpx;
+}
+
+.header-box {
+    margin-left: 40rpx;
+    display: flex;
+    align-items: center;
+    color: #333;
+}
+
+.header-box .avatar {
+    width: 128rpx;
+    height: 128rpx;
+    border-radius: 50%;
+}
+
+.header-box .r {
+    margin-left: 32rpx;
+    font-size: 40rpx;
+    color: #fff;
+}

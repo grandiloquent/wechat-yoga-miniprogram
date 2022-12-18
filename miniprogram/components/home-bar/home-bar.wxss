@@ -5,13 +5,14 @@
     align-items: center;
 }
 
-.wrapper>view {
+.item-wrapper {
     line-height: 40rpx;
     justify-content: center;
     display: flex;
     font-size: 28rpx;
     padding-left: 16rpx;
     flex-direction: column;
+    width: 100%;
 }
 
 .swiper {

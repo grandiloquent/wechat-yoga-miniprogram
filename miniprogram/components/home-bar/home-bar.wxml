@@ -1,5 +1,5 @@
 <view class="wrapper" style="height:{{height}};padding-top:{{top}}">
-    <view>
+    <view class="item-wrapper">
         <view>{{app.globalData.title}}</view>
         <swiper class="swiper" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
             <swiper-item>长沙市 {{weather}}</swiper-item>

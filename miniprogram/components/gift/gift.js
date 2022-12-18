@@ -4,13 +4,10 @@
 Component({
   properties: {
     slogan: String,
-    app: Object,
-    id: String
+    app: Object
   },
   methods: {
-    onClick(evt) {
-      // this.triggerEvent
-      console.log(this)
+    onClick(evt) { 
       this.triggerEvent('submit')
     }
   }

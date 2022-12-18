@@ -1,0 +1,8 @@
+<view class="wrapper">
+    <view class="header-box" catchtap="updateUserInfo">
+        <image class="avatar" src="{{ user.avatar_url }}" mode="aspectFill"></image>
+        <view class="r">
+            <view class="nick">{{ user.nick_name }}</view>
+        </view>
+    </view>
+</view>

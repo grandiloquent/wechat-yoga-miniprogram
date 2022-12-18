@@ -1,0 +1,7 @@
+<view class="title">公告</view>
+ <view style="background-color: #fff;padding-bottom:32rpx;" bindtap="onClick">
+<view class="item">
+    <view class="item-title">世界</view>
+    <view class="item-subtitle">世界</view>
+</view>
+</view>  

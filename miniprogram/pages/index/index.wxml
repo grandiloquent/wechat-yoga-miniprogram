@@ -5,3 +5,5 @@
 <teacher items="{{teachers}}" app="{{app}}" bind:submit="onTeacherSubmit"></teacher>
 
 <home-booked items="{{booked}}" app="{{app}}" bind:submit="onHomeBookedSubmit"></home-booked>
+<home-notice items="{{home-notice}}" app="{{app}}" bind:submit="onHomeNoticeSubmit"></home-notice>
+<copyright items="{{copyright}}" app="{{app}}" bind:submit="onCopyrightSubmit"></copyright>

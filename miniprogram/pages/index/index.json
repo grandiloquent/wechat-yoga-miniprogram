@@ -5,7 +5,9 @@
     "home-actions": "../../components/home-actions/home-actions",
     "gift": "../../components/gift/gift",
     "teacher": "../../components/teacher/teacher",
-    "home-booked": "../../components/home-booked/home-booked"
+    "home-booked": "../../components/home-booked/home-booked",
+    "home-notice": "../../components/home-notice/home-notice",
+    "copyright": "../../components/copyright/copyright"
   },
   "navigationStyle": "custom"
 }

@@ -19,10 +19,12 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    [["v1/slideshow/home", "poster"],
-    ["v1/functions/home", "actions"],
-    ["v1/teachers/home", "teachers"],
-    ["v1/booked/home", "booked"]]
+    [
+      ["v1/slideshow/home", "poster"],
+      ["v1/functions/home", "actions"],
+      ["v1/teachers/home", "teachers"],
+      ["v1/booked/home", "booked"]
+    ]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {
           if (err) return;
@@ -43,5 +45,11 @@ function onTeacherSubmit(evt) {
 
 }
 function onHomeBookedSubmit(evt) {
+
+}
+function onHomeNoticeSubmit(evt){
+
+}
+function onCopyrightSubmit(evt){
 
 }

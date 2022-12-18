@@ -11,7 +11,6 @@ Component({
   },
   lifetimes: {
     async attached() {
-      console.log(this.data)
     },
     detached: function () {
     },

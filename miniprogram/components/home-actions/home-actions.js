@@ -2,7 +2,6 @@
 // "home-actions":"../../components/home-actions/home-actions"
 // <home-actions app="{{app}}"></home-actions>
 
-const utils = require('../../utils');
 
 Component({
   properties: {
@@ -11,17 +10,9 @@ Component({
     },
     app: Object
   },
-  data: {
-  },
-  lifetimes: {
-    async attached() {
-
-    },
-    detached: function () {
-    },
-  },
   methods: {
-    // 这里是一个自定义方法
-    customMethod: function () { }
+    navigate(evt) {
+      this.triggerEvent('submit', evt.currentTarget.dataset.id)
+    }
   }
 })

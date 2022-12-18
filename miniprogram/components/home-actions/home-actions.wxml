@@ -1,6 +1,12 @@
 <view class="wrapper">
-    <view class="item" wx:for="{{items}}" wx:key="id">
-        <image class="image" mode="aspectFill" src="{{item.image}}"></image>
-        <view class="text">{{item.name}}</view>
-    </view>
+    <block wx:for="{{items}}" wx:key="id">
+        <view wx:if="{{item.id !== 8}}" class="item" data-id="{{item.id}}" bindtap="navigate">
+            <image class="image" mode="aspectFill" src="{{item.image}}"></image>
+            <view class="text">{{item.name}}</view>
+        </view>
+        <button wx:else open-type="contact" data-id="{{item.id}}" class="button">
+            <image mode="aspectFill" class="image" src="{{item.image}}"></image>
+            <view class="text">{{item.name}}</view>
+        </button>
+    </block>
 </view>

@@ -24,22 +24,27 @@ Page({
       ["v1/functions/home", "actions"],
       ["v1/teachers/home", "teachers"],
       ["v1/booked/home", "booked"],
-      ["v1/market/home","market"]
+      ["v1/market/home", "market"]
     ]
       .forEach(x => {
         utils.getString(app, x[0], (err, data) => {
           if (err) return;
+          console.log(data)
           this.setData({
             [x[1]]: data
           });
         });
       })
 
-  }, onShareAppMessage() {
+  },
+  onShareAppMessage() {
     return {
       title: app.globalData.title
     };
   }, onSubmit() {
+  }, 
+  onHomeActionsSubmit(evt) {
+    console.log(evt.detail)
   }
 })
 function onTeacherSubmit(evt) {
@@ -48,9 +53,9 @@ function onTeacherSubmit(evt) {
 function onHomeBookedSubmit(evt) {
 
 }
-function onHomeNoticeSubmit(evt){
+function onHomeNoticeSubmit(evt) {
 
 }
-function onCopyrightSubmit(evt){
+function onCopyrightSubmit(evt) {
 
 }

@@ -1,8 +1,10 @@
 [Unit]
-Description=Example .NET Web API App running on Ubuntu
+Description=瑜伽约课微信小程序后端服务
 
 [Service]
 WorkingDirectory=/root/bin
+Environment=DATA_SOURCE_NAME=""
+Environment=AUTH_URL=""
 ExecStart=/root/bin/y
 Restart=always
 RestartSec=10

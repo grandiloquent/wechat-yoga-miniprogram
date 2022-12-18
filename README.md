@@ -14,7 +14,7 @@ Windows 系统 PowerShell 终端可使用如下命令启动后端服务器：
 
 ```ps
 # 使用恰当的参数替换中文描述的内容
-$ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=数据库用户名 password=数据库密码 dbname=数据库名称 sslmode=disable" ;go run main.go
+$ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=数据库用户名 password=数据库密码 dbname=数据库名称 sslmode=disable";$ENV:AUTH_URL="https://api.weixin.qq.com/sns/jscode2session?appid=小程序Id&secret=小程序密钥&grant_type=authorization_code&js_code="go run main.go
 ```
 
 ## 在线示例

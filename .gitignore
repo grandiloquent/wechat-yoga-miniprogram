@@ -16,5 +16,6 @@ node_modules/
 miniprogram_npm
 
 *.bat
-app/
-server/
+app/handlers/V1Picture.go
+app/handlers/V1UserUpdate.go
+server/nginx*.conf

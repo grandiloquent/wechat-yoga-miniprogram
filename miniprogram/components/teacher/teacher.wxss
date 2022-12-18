@@ -65,6 +65,7 @@
     align-items: stretch;
     overflow-x: scroll;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .teachers::-webkit-scrollbar {

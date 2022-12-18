@@ -1,5 +1,5 @@
 <view class="title">预约课程</view>
-<swiper vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
+<swiper class=swiper" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
     <swiper-item wx:for="{{items}}" wx:key="id">
         <view bindtap="navigate" data-tab="/pages/appointment/index">
             <image class="market-image" src="{{item.avatar_url}}"></image>

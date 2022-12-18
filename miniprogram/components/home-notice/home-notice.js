@@ -2,7 +2,6 @@
 // "home-notice":"../../components/home-notice/home-notice"
 // <home-notice app="{{app}}"></home-notice>
 
-const utils = require('../../utils');
 
 Component({
   options: {

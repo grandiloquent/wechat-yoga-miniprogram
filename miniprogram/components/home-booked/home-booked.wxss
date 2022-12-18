@@ -7,9 +7,9 @@
     margin-top: 20rpx;
 }
 
-swiper {
+.swiper {
     height: 96rpx;
-    padding: 32rpx;
+    padding: 26rpx 32rpx 32rpx;
     background-color: #fff;
 }
 

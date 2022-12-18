@@ -5,6 +5,9 @@ const utils = require('../../utils');
 const calendar = require('calendar');
 
 Component({
+  options: {
+    styleIsolation: 'isolated'
+  },
   properties: {
     items: {
       type: Array,

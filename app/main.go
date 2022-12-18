@@ -63,9 +63,8 @@ func main() {
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
-
 		default:
-			http.ServeFile(w, r, "./static"+r.URL.Path)
+			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return
 		}
 	}))

@@ -8,14 +8,19 @@ import (
 
 	"yg/handlers"
 
+// 第三方 PostgreSQL 数据库客户端
 	_ "github.com/lib/pq"
 )
 
 func main() {
+
+// 包含连接数据库的字符串的环境变量
 	dataSourceName := os.Getenv("DATA_SOURCE_NAME")
 	if len(dataSourceName) == 0 {
 		log.Fatal("Data source name cant be empty!")
 	}
+// 包含微信鉴权 URL 的环境变量
+// https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/others/WeChat_login.html
 	authUrl := os.Getenv("AUTH_URL")
 	if len(authUrl) == 0 {
 		log.Fatal("Auth url cant be empty!")
@@ -24,6 +29,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		// /版本/大类/操作

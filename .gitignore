@@ -19,3 +19,4 @@ miniprogram_npm
 app/handlers/V1Picture.go
 app/handlers/V1UserUpdate.go
 server/nginx*.conf
+server/Yoga.service

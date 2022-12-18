@@ -7,19 +7,6 @@ import (
 	"net/http"
 )
 
-/*
-create or replace function v1_debug() returns json
-    language sql
-as
-$$
-select json_agg(t)
-from (
-         select id,
-                image
-         from slideshow
-     ) as t
-$$;
-*/
 func V1Debug(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	xforward := r.Header.Get("X-Forwarded-For")
 	buf, err := io.ReadAll(r.Body)

@@ -6,6 +6,11 @@ Page({
     app,
     showLogin: false
   },
+  onShow() {
+    this.setData({
+      backgroundColor: utils.getRandomColor()
+    })
+  },
   async onLoad() {
 
     wx.showShareMenu({
@@ -20,7 +25,7 @@ Page({
   navigate(e) {
     utils.navigate(e)
   },
-  async loadData() {
+  loadData() {
     utils.getString(app, "v1/user/user", (err, data) => {
       if (err) return;
       if (data) {
@@ -38,11 +43,20 @@ Page({
     return {
       title: app.globalData.title
     };
-  },
+  }, onUserProfileSubmit(evt) {
+    if (evt.detail === '0') {
+      this.setData({
+        showLogin: true
+      });
+    }
+  }, onLoginSubmit(evt) {
+    this.setData({
+      showLogin: false
+    });
+    this.loadData();
+  }
 })
-function onUserProfileSubmit(evt) {
 
-}
-function onLoginSubmit(evt) {
+function onUserActionsSubmit(evt){
 
 }

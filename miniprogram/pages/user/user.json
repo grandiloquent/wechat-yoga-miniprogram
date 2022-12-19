@@ -1,7 +1,8 @@
 {
   "usingComponents": {
     "user-profile": "../../components/user-profile/user-profile",
-    "login": "../../components/login/login"
+    "login": "../../components/login/login",
+    "user-actions": "../../components/user-actions/user-actions"
   },
   "navigationBarBackgroundColor": "#ffffff"
 }

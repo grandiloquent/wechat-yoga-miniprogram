@@ -2,14 +2,13 @@
 // "user-profile":"../../components/user-profile/user-profile"
 // <user-profile app="{{app}}"></user-profile>
 
-const utils = require('../../utils');
-
 Component({
   options: {
     styleIsolation: 'isolated'
   },
   properties: {
     user: Object,
+    backgroundColor: String,
     app: Object
   },
   data: {
@@ -22,8 +21,8 @@ Component({
     },
   },
   methods: {
-    onClick(evt) {
-      this.triggerEvent('submit')
+    navigate(evt) {
+      this.triggerEvent('submit', evt.currentTarget.dataset.id)
     }
   }
 })

@@ -1,10 +1,7 @@
 class CustomHeader extends HTMLElement {
-
     constructor() {
         super();
-
         this.root = this.attachShadow({ mode: 'open' });
-
         this.root.innerHTML = `<style>
     .header {
         color: black;
@@ -20,7 +17,6 @@ class CustomHeader extends HTMLElement {
         right: 0;
         background-color: rgba(255, 255, 255, 1);
     }
-
     .wrapper {
         box-sizing: border-box;
         position: relative;
@@ -32,7 +28,6 @@ class CustomHeader extends HTMLElement {
         padding-left: 8px;
         min-width: 0;
     }
-
     .left {
         height: 48px;
         vertical-align: middle;
@@ -46,19 +41,15 @@ class CustomHeader extends HTMLElement {
         flex: 1 1 auto;
         overflow: hidden;
     }
-
     .middle {
         height: 48px;
-        vertical-align: middle;
         white-space: nowrap;
-        -webkit-box-align: center;
         align-items: center;
         display: flex;
         -webkit-user-select: none;
         justify-content: flex-end;
         flex: 0 0 auto;
     }
-
     .svg {
         fill: currentColor;
         opacity: 1;
@@ -69,15 +60,41 @@ class CustomHeader extends HTMLElement {
         margin-left: 1px;
         margin-right: 1px;
     }
+    .title {
+        display: inline-block;
+        font-size: 22px;
+        line-height: 24px;
+        position: relative;
+        vertical-align: middle;
+        color: #5f6368;
+        opacity: 1;
+        padding-left: 0;
+    }
+    .hamburger-menu {
+        border-radius: 50%;
+        display: inline-block;
+        padding: 12px;
+        overflow: hidden;
+        vertical-align: middle;
+        cursor: pointer;
+        height: 24px;
+        width: 24px;
+        -webkit-user-select: none;
+        flex: 0 0 auto;
+        margin: 0 4px 0 0;
+    }
 </style>
-
-
-
-
-
 <div class="header">
     <div class="wrapper">
         <div class="left">
+            <div class="hamburger-menu">
+                <svg focusable="false" viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                </svg>
+            </div>
+            <div class="title">
+                首页
+            </div>
         </div>
         <div class="middle">
             <svg class="svg" focusable="false" height="24px" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg">
@@ -88,17 +105,11 @@ class CustomHeader extends HTMLElement {
     </div>
 </div>`;
     }
-
-
     static get observedAttributes() {
         return ['title'];
     }
-
-
     connectedCallback() {
-
         this.root.host.style.userSelect = 'none';
-
         // this.dispatchEvent(new CustomEvent());
         /*
         const close = evt => {
@@ -114,27 +125,22 @@ class CustomHeader extends HTMLElement {
         */
     }
     disconnectedCallback() {
-
     }
-
     attributeChangedCallback(attrName, oldVal, newVal) {
         if (attrName === 'title') {
             this.root.querySelector('.title').textContent = newVal;
         }
     }
-
 }
 customElements.define('custom-header', CustomHeader);
 /*
 <!--\
 <custom-header></custom-header>
 <script src="custom-header.js"></script>
-
 const customHeader = document.querySelector('custom-header');
 customHeader.addEventListener('submit', evt => {
             evt.stopPropagation();
         });
-
 const customHeader = document.createElement('custom-header');
 customHeader.setAttribute('title','');
 document.body.appendChild(customHeader);

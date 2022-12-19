@@ -75,6 +75,18 @@ class CustomEditorBar extends HTMLElement {
             保存
           </div>
         </div>
+
+        <div class="item" id="action-menu">
+          <div class="image">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z">
+              </path>
+            </svg>
+          </div>
+          <div class="text">
+            菜单
+          </div>
+        </div>
       </div>
     </div>`;
 
@@ -112,6 +124,13 @@ class CustomEditorBar extends HTMLElement {
         this.root.querySelector('#save').addEventListener('click', async evt => {
             evt.stopPropagation();
             saveData(textarea);
+        });
+
+        const actionMenu = this.root.querySelector('#action-menu');
+        actionMenu.addEventListener('click', evt => {
+            evt.stopPropagation();
+            const customEditorMenu = document.createElement('custom-editor-menu');
+            document.body.appendChild(customEditorMenu);
         });
 
 
@@ -335,7 +354,7 @@ async function submitData(textarea) {
 }
 
 async function loadData(baseUri, path) {
-    
+
     const response = await fetch(`${baseUri}/api/files?path=${path}&isDir=0`);
     return await response.text();
 }

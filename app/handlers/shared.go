@@ -163,5 +163,17 @@ func CrossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "authorization")
 }
-
+// 使用通过环境变量传入键
+func createToken(secret []byte, id string) ([]byte, error) {
+	s := fmt.Sprintf("%s-%d", id, time.Now().Unix())
+	buf, err := HmacSha256(secret, s)
+	if err != nil {
+		return nil, err
+	}
+	dst := make([]byte, base64.StdEncoding.EncodedLen(len(buf)))
+	base64.StdEncoding.Encode(dst, buf)
+	dst = append(dst, []byte("|")...)
+	dst = append(dst, []byte(s)...)
+	return dst, nil
+}
 var Secret = []byte{161, 219, 25, 253, 28, 70, 147, 43, 68, 17, 168, 75, 89, 233, 117, 116, 224, 230, 127, 165, 60, 187, 219, 70, 136, 54, 148, 244, 27, 121, 235, 73}

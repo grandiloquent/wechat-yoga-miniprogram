@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g>
+                    <path d="M0 0H40V40H0z" transform="translate(-1112 -187) translate(1069 116) translate(43 71)"/>
+                    <g>
+                        <g transform="translate(-1112 -187) translate(1069 116) translate(43 71) translate(2 1) translate(5)">
+                            <rect width="29" height="33" x=".5" y=".5" fill="#FFF" stroke="#E0E0E0" rx="1"/>
+                            <path fill="#FFA72B" d="M10.469 9c2.468 0 4.469 2 4.469 4.469 0 .972-.311 1.872-.838 2.605 1.117.91 1.83 2.296 1.83 3.85 0 2.742-2.222 4.965-4.965 4.965H6V9h4.469zm11.42 12.91h1.986v2.979h-1.986v-.032c-.12.02-.242.032-.366.032-1.502 0-2.613-1.112-2.613-2.352 0-.044 0-.088.003-.13h-.003l-.001-4.718h-1.985V14.71h1.985v-1.738h2.98l-.001 1.738h1.987v2.98l-1.987-.001v4.22zm-11.042-3.973H8.979v4.22l1.868.001c1.116 0 2.022-.864 2.1-1.96l.004-.15-.005-.152c-.077-1.102-.987-1.959-2.1-1.959zm-.377-5.958H8.98v2.979h1.491c.78 0 1.41-.59 1.482-1.346l.006-.143-.006-.145c-.073-.76-.708-1.345-1.482-1.345z"/>
+                        </g>
+                        <g transform="translate(-1112 -187) translate(1069 116) translate(43 71) translate(2 1) translate(0 4)">
+                            <rect width="29" height="33" x=".5" y=".5" fill="#FFF" stroke="#E0E0E0" rx="1"/>
+                            <path fill="#7C878E" d="M16 9v6h6v10H8V9h8zm2 0l4 4h-4V9z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

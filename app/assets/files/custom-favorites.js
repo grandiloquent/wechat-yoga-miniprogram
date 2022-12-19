@@ -133,10 +133,8 @@ class CustomFavorites extends HTMLElement {
     let favorites = localStorage.getItem('favorites');
     if (!favorites) {
       favorites = JSON.stringify([
-        `C:/Users/Administrator/Desktop/Resources/脚本`,
-        `C:/Users/Administrator/Desktop/Resources/工具`,
-        `C:/Users/Administrator/WeChatProjects/yoga/Server`,
-        `C:/Users/Administrator/Desktop/Resources/fileserver/app/src/main/assets`,
+        `C:/Users/Administrator/WeChatProjects`,
+        `C:/Users/Administrator/WeChatProjects/yg`,
         `C:/Users/Administrator/GolandProjects/yun`,
         `C:/Users/Administrator/Desktop/Resources`
       ]);

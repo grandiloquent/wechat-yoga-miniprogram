@@ -1,12 +1,9 @@
 class CustomEditorMenu extends HTMLElement {
-
-    constructor() {
-        super();
-
-        this.root = this.attachShadow({ mode: 'open' });
-
-        this.root.innerHTML = `<style>.menu-item
-{
+  constructor() {
+    super();
+    this.root = this.attachShadow({ mode: 'open' });
+    this.root.innerHTML = `<style>
+  .menu-item {
     -webkit-box-direction: normal;
     color: #030303;
     padding: 0;
@@ -14,9 +11,8 @@ class CustomEditorMenu extends HTMLElement {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-}
-#overlay
-{
+  }
+  #overlay {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -24,10 +20,9 @@ class CustomEditorMenu extends HTMLElement {
     right: 0;
     z-index: 10;
     cursor: pointer;
-    background-color: rgba(0,0,0,.6);
-}
-#hidden-button
-{
+    background-color: rgba(0, 0, 0, .6);
+  }
+  #hidden-button {
     word-wrap: break-word;
     -webkit-text-size-adjust: 100%;
     padding: 0;
@@ -43,9 +38,8 @@ class CustomEditorMenu extends HTMLElement {
     left: 0;
     height: 1px;
     width: 1px;
-}
-.menu-item-button
-{
+  }
+  .menu-item-button {
     border: none;
     outline: none;
     font: inherit;
@@ -61,9 +55,8 @@ class CustomEditorMenu extends HTMLElement {
     margin-left: 12px;
     font-size: 16px;
     line-height: 22px;
-}
-.layout
-{
+  }
+  .layout {
     border-radius: 12px;
     background-color: #fff;
     display: block;
@@ -74,150 +67,141 @@ class CustomEditorMenu extends HTMLElement {
     left: 0;
     right: 0;
     z-index: 20;
-}
-.header
-{
+  }
+  .header {
     overflow: hidden;
     -webkit-box-flex: 0;
     flex: none;
     border-bottom: 1px solid #fff;
-}
-.body
-{
+  }
+  .body {
     flex: 1;
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
     color: #030303;
-}
-.button-clear
-{
+  }
+  .button-clear {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-#items
-{
+  }
+  #items {
     max-height: 288px;
     overflow-y: auto;
-}
-#items::-webkit-scrollbar
-{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background-color: #dadce0;
+    border: 1px solid #dadce0;
+  }
+  #items::-webkit-scrollbar {
     display: none;
-}</style>
-    <div id="overlay">
-      <button id="hidden-button">
+  }
+  #items>div {
+    font-size: 14px;
+    line-height: 32px;
+    background:#fff;
+    text-align:center;
+  }
+</style>
+<div id="overlay">
+  <button id="hidden-button">
+  </button>
+</div>
+<div class="layout">
+  <div class="header">
+    <div style="background: #030303; opacity: .15; border-radius: 4px; height: 4px; margin: 0 auto; width: 40px; margin-top: 8px;">
+    </div>
+    <div style="-webkit-box-pack: justify; justify-content: space-between; display: flex; margin-top: 8px;">
+    </div>
+  </div>
+  <div class="body">
+    <div id="items">
+    </div>
+    <div class="menu-item">
+      <button class="menu-item-button">
+        取消
       </button>
     </div>
-    <div class="layout">
-      <div class="header">
-        <div style="background: #030303; opacity: .15; border-radius: 4px; height: 4px; margin: 0 auto; width: 40px; margin-top: 8px;">
-        </div>
-        <div style="-webkit-box-pack: justify; justify-content: space-between; display: flex; margin-top: 8px;">
-        </div>
-      </div>
-      <div class="body">
-        <div id="items">
-          <div data-index="0" class="menu-item">
-            <button class="menu-item-button">
-              预览
-            </button>
-          </div>
-          <div data-index="1" class="menu-item">
-            <button class="menu-item-button">
-              列表
-            </button>
-          </div>
-          <div data-index="2" class="menu-item">
-            <button class="menu-item-button">
-              上传图片
-            </button>
-          </div>
-          <div data-index="3" class="menu-item">
-            <button class="menu-item-button">
-              翻译中文
-            </button>
-          </div>
-          <div data-index="4" class="menu-item">
-            <button class="menu-item-button">
-              设置模板
-            </button>
-          </div>
-          <div data-index="5" class="menu-item">
-            <button class="menu-item-button">
-              复制代码
-            </button>
-          </div>
-          <div data-index="6" class="menu-item">
-            <button class="menu-item-button">
-              粘贴代码
-            </button>
-          </div>
-        </div>
-        <div class="menu-item">
-          <button class="menu-item-button">
-            取消
-          </button>
-        </div>
-      </div>
-    </div>`;
+  </div>
+</div>`;
+  }
+  static get observedAttributes() {
+    return ['title'];
+  }
+  connectedCallback() {
+    this.root.host.style.userSelect = 'none';
+    this.root.querySelectorAll('#overlay,.menu-item')
+      .forEach(x => {
+        x.addEventListener('click', evt => {
+          this.root.host.remove();
+        });
+      });
+    this.root.querySelectorAll('.menu-item')
+      .forEach(x => {
+        x.addEventListener('click', async evt => {
+          this.dispatchEvent(new CustomEvent('submit', {
+            detail: evt.currentTarget.dataset.index
+          }));
+        })
+      })
+    // this.dispatchEvent(new CustomEvent());
+    /*
+    this.dispatchEvent(new CustomEvent('submit', {
+              detail: 0
+          }));
+          */
+    const items = this.root.querySelector('#items');
+    items.addEventListener('click', evt => {
+      evt.stopPropagation();
+    });
+    const textarea = document.querySelector('textarea');
+    let j = 0;
+    `
+             新建文件
+             新建文件夹
+             微信页面
+             微信组件
+             Web组件
+             `.split('\n')
+      .map(x => {
+        const s = x.trim();
+        if (!s) return;
+        const div = document.createElement('div');
+        div.textContent = s;
+        items.appendChild(div);
+        div.addEventListener('click', async evt => {
+          evt.stopPropagation();
+          if (s === '新建文件') {
+            await createNewFile(textarea, false);
+          } else if (s === '新建文件夹') {
+            await createNewFile(textarea, true);
+          }
+        });
+        j++;
+      })
+  }
+  disconnectedCallback() {
+  }
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (attrName === 'title') {
+      this.root.querySelector('.title').textContent = newVal;
     }
-
-
-    static get observedAttributes() {
-        return ['title'];
-    }
-
-
-    connectedCallback() {
-
-        this.root.host.style.userSelect = 'none';
-        this.root.querySelectorAll('#overlay,.menu-item')
-            .forEach(x => {
-                x.addEventListener('click', evt => {
-                    this.root.host.remove();
-                });
-            });
-        this.root.querySelectorAll('.menu-item')
-            .forEach(x => {
-                x.addEventListener('click', async evt => {
-                    this.dispatchEvent(new CustomEvent('submit', {
-                        detail: evt.currentTarget.dataset.index
-                    }));
-                })
-            })
-        // this.dispatchEvent(new CustomEvent());
-        /*
-        this.dispatchEvent(new CustomEvent('submit', {
-                  detail: 0
-              }));
-              */
-    }
-    disconnectedCallback() {
-
-    }
-
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'title') {
-            this.root.querySelector('.title').textContent = newVal;
-        }
-    }
-
+  }
 }
 customElements.define('custom-editor-menu', CustomEditorMenu);
 /*
 <!--\
 <custom-editor-menu></custom-editor-menu>
 <script src="custom-editor-menu.js"></script>
-
 const customEditorMenu = document.querySelector('custom-editor-menu');
 customEditorMenu.addEventListener('submit', evt => {
             evt.stopPropagation();
         });
-
 const customEditorMenu = document.createElement('custom-editor-menu');
 customEditorMenu.setAttribute('title','');
 document.body.appendChild(customEditorMenu);
@@ -226,3 +210,30 @@ detail: evt.currentTarget.dataset.index
 }))
 -->
 */
+async function createNewFile(textarea, isDir) {
+  const path = new URL(document.URL).searchParams.get('path');
+  const src = encodeURIComponent(substringBeforeLast(path, "/"));
+  const selectedString = getSelectedString(textarea).trim();
+  const dst = encodeURIComponent(selectedString);
+  try {
+    const response = await fetch(`/api/${isDir ? 'newfolder' : 'newfile'}?src=${src}&dst=${dst}`);
+    await response.text();
+    document.getElementById('toast').setAttribute('message', '成功');
+  } catch (error) {
+    document.getElementById('toast').setAttribute('message', '错误');
+  }
+}
+function getSelectedString(textarea) {
+  return textarea.value.substring(
+    textarea.selectionStart,
+    textarea.selectionEnd
+  );
+}
+function substringBeforeLast(string, delimiter, missingDelimiterValue) {
+  const index = string.lastIndexOf(delimiter);
+  if (index === -1) {
+    return missingDelimiterValue || string;
+  } else {
+    return string.substring(0, index);
+  }
+}

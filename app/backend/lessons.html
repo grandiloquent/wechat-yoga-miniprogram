@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排课 - 晨蕴瑜伽</title>
+    <style>
+        html {
+            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
+        }
+
+        body {
+            font-size: small;
+            margin: 0;
+            background: #fff;
+            color: #4d5156;
+            background-color: #fff;
+            overflow: initial;
+            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <custom-header flat></custom-header>
+    <div style="height: 64px;"></div>
+
+    <custom-drawer></custom-drawer>
+
+    <script src="custom-header.js"></script>
+    <script src="custom-drawer.js"></script>
+    <custom-filter></custom-filter>
+    <div id="layout" style="padding: 16px 16px 56px;">
+
+    </div>
+    <script src="custom-filter.js"></script>
+    <script src="custom-mini-item.js"></script>
+    <script>
+        const customHeader = document.querySelector('custom-header');
+        customHeader.setAttribute('title', "课程");
+        const layout = document.querySelector('#layout');
+
+        const date = new Date().setHours(0, 0, 0, 0) / 1000;
+        render(date, date + 86400);
+
+        const customFilter = document.querySelector('custom-filter');
+        customFilter.addEventListener('submit', evt => {
+            if (evt.detail <= 4) {
+                const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 1) * 86400;
+                render(date, date + 86400);
+            } else {
+                const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 6) * 86400;
+                render(date, date + 86400);
+            }
+
+        })
+        async function render(start, end) {
+
+            layout.innerHTML = '';
+            let obj;
+            if (window.JInterface) {
+
+                obj = JSON.parse(JInterface.executeQuery(`select * from query_lessons(${start},${end},5)`));
+            } else {
+                const res = await fetch(`/v/lessons.admin?start=${start}&end=${end}`);
+                obj = await res.json();
+                console.log(obj)
+            }
+            obj = obj.sort((x, y) => {
+                if (x.date_time === y.date_time) {
+                    return x.start_time - y.start_time
+                }
+                else
+                    return x.date_time - y.date_time
+            });
+
+            for (const iterator of obj) {
+                const customMiniItem = document.createElement('custom-mini-item');
+                customMiniItem.style.width = '100%'
+                layout.appendChild(customMiniItem);
+                customMiniItem.setAttribute("image", `https://chenyunyoga.cn/images/${iterator.thumbnail}`);
+                customMiniItem.setAttribute("title", iterator.lesson_name);
+                let dif = parseInt(iterator.peoples) - parseInt(iterator.count);
+                customMiniItem.setAttribute("bottom-title", dif > 0 ? `差 ${dif} 人` : '已满额');
+                const date = new Date(iterator.date_time * 1000);
+                // •
+                customMiniItem.setAttribute("bottom-subhead", `周${'日一二三四五六'[date.getDay()]} ${iterator.start_time / 3600 | 0}:${((iterator.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}`);
+                customMiniItem.setAttribute("subhead", (iterator.class_type === 4 && '团课') || (iterator.class_type === 1 && '小班') || '');
+
+                customMiniItem.addEventListener('click', evt => {
+                    evt.stopPropagation();
+                    window.location = `lesson.html?id=${iterator.course_id}`;
+                });
+
+
+            }
+        }
+    </script>
+
+</body>
+
+</html>

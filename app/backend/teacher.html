@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排课 - 晨蕴瑜伽</title>
+    <style>
+        html {
+            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
+        }
+
+        body {
+            font-size: small;
+            margin: 0;
+            background: #fff;
+            color: #4d5156;
+            background-color: #fff;
+            overflow: initial;
+            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <custom-header></custom-header>
+    <div style="height: 64px;"></div>
+
+    <div style="font-size: 16px;margin: 20px;line-height: 24px;">信息详情</div>
+    <custom-input label="姓名" id="input-name"></custom-input>
+    <custom-input label="电话号码" type="phone" id="input-phone-number"></custom-input>
+    <custom-input label="简介" id="input-introduction"></custom-input>
+    <custom-input label="介绍" type="textarea" id="input-description"></custom-input>
+    <div style="font-size: 16px;margin:0 20px 20px;line-height: 24px;">照片</div>
+
+    <div id="input-thumbnail"
+        style="color: rgb(26,115,232);fill: currentColor;display: flex;align-items: center;justify-content: center;border: 1px solid #dadce0;width: 112px; height: 96px;margin-left: 20px;border-radius: 16px;box-sizing: border-box;overflow: hidden;position: relative;">
+        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+            <path
+                d="M9.797 14.016q0-1.359 0.938-2.297t2.25-0.938q1.359 0 2.297 0.938t0.938 2.297q0 1.313-0.938 2.25t-2.297 0.938-2.273-0.914-0.914-2.273zM12.984 18.984q2.063 0 3.539-1.453t1.477-3.516-1.477-3.539-3.539-1.477-3.516 1.477-1.453 3.539 1.453 3.516 3.516 1.453zM6 9.984v-3h3v-3h6.984l1.828 2.016h3.188q0.797 0 1.406 0.609t0.609 1.406v12q0 0.797-0.609 1.383t-1.406 0.586h-15.984q-0.797 0-1.406-0.586t-0.609-1.383v-10.031h3zM3 3.984v-3h2.016v3h3v2.016h-3v3h-2.016v-3h-3v-2.016h3z">
+            </path>
+        </svg>
+    </div>
+
+    <script src="js/custom-input.js"></script>
+
+    <script src="js/custom-menu-picker.js"></script>
+    <custom-drawer></custom-drawer>
+    <script src="js/custom-header.js"></script>
+    <script src="js/custom-drawer.js"></script>
+    <div style="height: 88px;"></div>
+    <script src="js/custom-image-viewer.js"></script>
+    <custom-submit-bar></custom-submit-bar>
+    <script src="js/custom-submit-bar.js"></script>
+    <script>
+        // (() => {
+        //     function rgbToHex(r, g, b) {
+        //         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        //     }
+        //     console.log(rgbToHex(218, 220, 224))
+        // })();
+        const inputDescription = document.querySelector('#input-description');
+        const inputIntroduction = document.querySelector('#input-introduction');
+        const inputName = document.querySelector('#input-name');
+        const inputPhoneNumber = document.querySelector('#input-phone-number');
+        const inputThumbnail = document.querySelector('#input-thumbnail');
+
+        const customHeader = document.querySelector('custom-header');
+        customHeader.setAttribute('title', "老师");
+        const customSubmitBar = document.querySelector('custom-submit-bar');
+        if (window.JInterface) {
+            const obj = JSON.parse(JInterface.executeQuery("select * from coach where id=2"));
+            inputDescription.value = obj[0].description || '';
+            inputIntroduction.value = obj[0].introduction || '';
+            inputName.value = obj[0].name || '';
+            inputPhoneNumber.value = obj[0].phone_number || '';
+            inputThumbnail.innerHTML = `<img style="max-width:100%" src="https://chenyunyoga.cn/images/${obj[0].thumbnail}">
+            <div style="width:24px;height:24px;position:absolute;top:8px;right:8px;border-radius:50%;background:rgba(32,33,36,0.6);color:#fff;display:flex;align-items:center;justify-content:center">
+                <svg style="wdith:18px;height:18px" viewBox="0 0 24 24">
+<path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>
+</svg>
+                </div>
+            `;
+            const img = inputThumbnail.querySelector('img');
+            img.addEventListener('click', evt => {
+                evt.stopPropagation();
+                const customImageViewer = document.createElement('custom-image-viewer');
+                customImageViewer.setAttribute('src',img.src);
+                document.body.appendChild(customImageViewer);
+            });
+        }
+        /*
+        (() => {
+            const obj = { "id": 2, "description": "擅长主题：教龄6年艾扬格、哈他瑜伽、流瑜伽、\n阴瑜伽、普拉提垫上\n\n- 跟随艾扬格全国最高级别认证范炎炎老师密集课\n程，开启艾扬格瑜伽和理疗瑜伽的探索进修\n- 系统学习艾扬格密集一、密集二、精进课\n- 系统学习艾扬格主题工作坊\n- 系统学习3D解剖和运动人体科学\n- 教学清晰敏锐、细致严谨并富有灵性。注重哲学\n与自我戒律的渗透，强调逻辑性与根基的扎实建\n构。", "introduction": "艾扬格教练", "name": "周琼老师", "open_id": "oQOVx5L_LjsIZXlZ3ap_pD0Ly6eA", "phone_number": "18711104317", "thumbnail": "20220419-ulogqi-W970H970.jpg", "coach_type": "", "creation_time": 1650180526, "updated_time": 1650878988 };
+            const buf = [];
+            for (const iterator of Object.keys(obj)) {
+                console.log(iterator);
+                let u = iterator.replace(/_([a-z])/, m => m[1].toUpperCase());
+                u = u.slice(0, 1).toUpperCase() + u.slice(1);
+                // buf.push(`const input${u} = document.querySelector('#input-${iterator.replace('_', '-')}');`);
+                buf.push(`input${u}.value = obj[0].${iterator} || '';`);
+
+            }
+            console.log(buf.join('\n'))
+        })()
+*/
+    </script>
+
+</body>
+
+</html>

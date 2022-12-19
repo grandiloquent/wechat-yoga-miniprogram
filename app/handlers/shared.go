@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -115,3 +117,16 @@ func StringWithCharset(length int, charset string) string {
 func String(length int) string {
 	return StringWithCharset(length, charset)
 }
+func HmacSha256(key []byte, data string) ([]byte, error) {
+	h := hmac.New(sha256.New, key)
+	if _, err := h.Write([]byte(data)); err != nil {
+		return nil, err
+	}
+	return h.Sum(nil), nil
+}
+func CrossOrigin(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "*")
+}
+
+var Secret = []byte{161, 219, 25, 253, 28, 70, 147, 43, 68, 17, 168, 75, 89, 233, 117, 116, 224, 230, 127, 165, 60, 187, 219, 70, 136, 54, 148, 244, 27, 121, 235, 73}

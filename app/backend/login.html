@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员登录 - 瑜伽约课微信小程序</title>
+    <style>
+        body {
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .input {
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            padding: 16px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .button {
+            background: #4CAF50;
+            width: 100%;
+            padding: 16px;
+            color: #FFFFFF;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div style="margin: 36px;display: flex;flex-direction: column;gap: 16px;">
+        <input type="text" name="phone_number" placeholder="手机号码" class="input">
+        <input type="password" name="password" placeholder="密码" class="input">
+        <div class="button">
+            登录
+        </div>
+    </div>
+    <script>
+        const phoneNumber = document.querySelector('[name=phone_number]');
+        phoneNumber.addEventListener('click', evt => {
+            evt.stopPropagation();
+        });
+
+        const password = document.querySelector('[name=password]');
+        password.addEventListener('click', evt => {
+            evt.stopPropagation();
+        });
+        const button = document.querySelector('.button');
+        button.addEventListener('click', async evt => {
+            evt.stopPropagation();
+            const data = new FormData();
+            data.append('phone_number', phoneNumber.value);
+            data.append('password', password.value);
+            console.log([...data.keys()])
+            const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
+            try {
+                const response = await fetch(`${baseUri}/v1/login`, {
+                    method: 'POST',
+                    // headers: {
+                    //     'Content-Type':'multipart/form-data'
+                    // },
+                    body: data
+                });
+                const obj = await response.text();
+                console.log(obj)
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

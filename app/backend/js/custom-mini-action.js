@@ -56,4 +56,16 @@ const customMiniAction = document.createElement('custom-mini-action');
 customMiniAction.setAttribute('data',JSON.stringify(obj));
 document.body.appendChild(customMiniAction);
 -->
+
+(()=>{
+
+  console.log(
+    [...new Array(10).keys()].map(x=>{
+      return `case Key.NumPad${x}:
+      {
+          break;
+      }`
+    }).join('\n')
+  )
+})();
 */

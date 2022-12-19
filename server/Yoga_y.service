@@ -5,6 +5,7 @@ Description=瑜伽约课微信小程序后端服务
 WorkingDirectory=/root/bin
 Environment=DATA_SOURCE_NAME=""
 Environment=AUTH_URL=""
+Environment=SECRET=
 ExecStart=/root/bin/y
 Restart=always
 RestartSec=10

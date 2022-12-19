@@ -26,6 +26,11 @@ func main() {
 	if len(authUrl) == 0 {
 		log.Fatal("Auth url cant be empty!")
 	}
+	secretString := os.Getenv("SECRET")
+	if len(secretString) == 0 {
+		log.Fatal("Secret cant be empty")
+	}
+	secret := []byte(secretString)
 	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		log.Fatal(err)
@@ -56,6 +61,12 @@ func main() {
 		case "/v1/market/home":
 			handlers.V1MarketHome(db, w, r)
 			return
+		case "/v1/notices/home":
+			handlers.V1NoticesHome(db, w, r)
+			return
+		case "/v1/picture":
+			handlers.V1Picture(db, w, r)
+			return
 		case "/v1/slideshow/home":
 			handlers.V1SlideshowHome(db, w, r)
 			return
@@ -65,14 +76,12 @@ func main() {
 		case "/v1/user/update":
 			handlers.V1UserUpdate(db, w, r)
 			return
-		case "/v1/picture":
-			handlers.V1Picture(db, w, r)
-			return
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
-		case "/v1/notices/home":
-			handlers.V1NoticesHome(db, w, r)
+
+		case "/v1/login":
+			handlers.V1Login(db, w, r, secret)
 			return
 
 		default:

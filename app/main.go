@@ -80,8 +80,8 @@ func main() {
 			handlers.V1UserUser(db, w, r)
 			return
 
-		case "/v1/login":
-			handlers.V1Login(db, w, r, secret)
+		case "/v1/admin/login":
+			handlers.V1AdminLogin(db, w, r, secret)
 			return
 
 		default:

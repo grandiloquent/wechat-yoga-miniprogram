@@ -23,7 +23,7 @@ func createToken(secret []byte, id string) ([]byte, error) {
 }
 
 // 管理员登录
-func V1Login(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func V1AdminLogin(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	CrossOrigin(w)
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusBadRequest)

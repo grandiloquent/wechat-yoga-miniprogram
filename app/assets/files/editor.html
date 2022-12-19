@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,shrink-to-fit=no" name="viewport">
+    <title>Title</title>
+
+    <style>
+        html {
+            word-wrap: break-word;
+            color: #030303;
+            background-color: #fff;
+            -webkit-text-size-adjust: 100%;
+            font-size: 10px;
+            font-family: Roboto, Arial, sans-serif
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            font-size: 1.2rem;
+            overflow-x: hidden
+        }
+
+        [hidden][hidden] {
+            display: none;
+            visibility: hidden
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg)
+            }
+
+            100% {
+                -webkit-transform: rotate(1turn);
+                transform: rotate(1turn)
+            }
+        }
+
+        .spinner {
+            display: block;
+            box-sizing: border-box;
+            margin: 12px auto;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #eee;
+            border-top-color: #666;
+            -webkit-animation: spinner .8s linear infinite;
+            animation: spinner .8s linear infinite
+        }
+
+        .spinner:not([hidden]) {
+            color: #333;
+            font-size: 1.6rem
+        }
+
+
+        input,
+        textarea {
+            background-color: transparent;
+            padding-bottom: 4px;
+            outline: none;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 1px;
+            font: inherit;
+            color: #030303
+        }
+
+        input::-webkit-input-placeholder,
+        textarea::-webkit-input-placeholder {
+            color: #606060;
+            opacity: 1
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #606060;
+            opacity: 1
+        }
+
+        textarea {
+            -webkit-appearance: none;
+            appearance: none;
+            min-height: 8.4rem;
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 8px
+        }
+
+        input {
+            border-bottom: 1px solid #737373;
+            text-overflow: ellipsis
+        }
+
+        input:focus {
+            margin-bottom: 0;
+            border-bottom-width: 2px;
+            border-bottom-color: #030303
+        }
+
+        form {
+            margin: 0
+        }
+
+        a {
+            color: currentColor;
+            text-decoration: none
+        }
+
+        strong,
+        b {
+            font-weight: 500
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin: 0 0 3px
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .subhead {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            max-height: 2.5em;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            line-height: 1.25;
+            text-overflow: ellipsis;
+            font-weight: normal
+        }
+
+        h2 {
+            font-size: 1.8rem
+        }
+
+        h3 {
+            font-size: 1.4rem
+        }
+
+        h4 {
+            font-size: 1.3rem
+        }
+
+        .subhead {
+            opacity: .6
+        }
+
+        img {
+            min-width: 1px;
+            min-height: 1px;
+            -webkit-filter: none;
+            filter: none
+        }
+
+        img:not([src]) {
+            visibility: hidden
+        }
+
+        :focus {
+            outline: none
+        }
+
+        p {
+            margin: 8px 0;
+            line-height: 1.25
+        }
+
+        button,
+        select,
+        [role=button],
+        input[type=checkbox] {
+            cursor: pointer
+        }
+
+        .hidden-button {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 1px;
+            width: 1px
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.8)
+        }
+    </style>
+</head>
+
+<body style="height: 100%;">
+    <div style="height: 100%;display:flex;align-items: center;justify-content: center;flex-direction: column;padding-bottom: 49px;box-sizing: border-box;">
+        <textarea style="flex-grow: 1;resize: none;border: none;font-size: 18px;"></textarea>
+        <custom-editor-bar></custom-editor-bar>
+    </div>
+    <custom-toast id="toast"></custom-toast>
+    <script src="toast.js"></script>
+    <script src="custom-editor-bar.js"></script>
+
+    
+</body>
+
+</html>

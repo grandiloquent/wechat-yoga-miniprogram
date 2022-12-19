@@ -1,0 +1,71 @@
+.option-item {
+    outline: 0;
+    margin: 0;
+    vertical-align: baseline;
+    position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    height: 45px;
+    line-height: 45px;
+    font-size: 14px;
+    color: #333;
+    padding: 0 10px;
+    background-size: 15px auto;
+}
+
+.option {
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    box-sizing: border-box;
+    float: none;
+    display: inline-block;
+    width: 24%;
+    padding-right: 6px;
+    vertical-align: top;
+}
+
+.option>div {
+    outline: 0;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    padding: 2.5px 5px;
+    height: 25px;
+    line-height: 25px;
+    color: #666;
+    background-color: #f2f2f7;
+    border-radius: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.options-layout {
+    box-sizing: border-box;
+    position: relative;
+    padding: 10px 5px 10px 15px;
+    height: 50px;
+    text-align: center;
+    overflow: hidden;
+    overflow-x: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: text-top;
+    white-space: nowrap;
+    z-index: 105;
+    background: #fff;
+}
+
+.options-layout::-webkit-scrollbar {
+    display: none;
+}
+
+.CodeMirror {
+    height: 100% !important;
+    font-family: Consolas, serif !important;
+    font-size: 15px;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件管理器</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="shared.js"></script>
+    <script src="custom-header.js"></script>
+    <script src="custom-bottom-sheet.js"></script>
+    <script src="custom-bar-renderer.js"></script>
+    <script src="custom-media-item.js"></script>
+    <script src="custom-image-viewer.js"></script>
+    <script src="custom-files.js"></script>
+    <script src="custom-dialog-rename.js"></script>
+    <script src="custom-favorites.js"></script>
+    <script src="custom-sort.js"></script>
+    <script src="custom-menu.js"></script>
+</head>
+
+<body>
+    <custom-header></custom-header>
+
+    <div>
+
+    </div>
+    <div style="height:61px;"></div>
+
+
+    <custom-bar-renderer></custom-bar-renderer>
+    <script src="index.js"></script>
+
+    
+    <div class="dialog">
+        <div class="dialog-mask">
+        </div>
+        <div class="dialog-wrapper">
+            <div class="dialog-container">
+                <div class="dialog-container-wrapper">
+                    <div class="dialog-content">
+                        <div class="spinner">
+                        </div>
+                        <span>正在上传文件...
+                        </span>
+                    </div>
+                    <div class="dialog-footer" style="display: none;">
+                        <div class="dialog-button">
+                            确认
+                        </div>
+                        <div class="dialog-button" style="color: #db4437;">
+                            删除
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="upload.js"></script>
+
+</body>
+
+</html>

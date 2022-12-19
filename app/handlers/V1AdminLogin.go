@@ -51,10 +51,7 @@ func V1AdminLogin(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []b
 	}
 	w.Header().Set("Content-Type", "application/jwt")
 	w.Write(buf)
-	//p := strings.Split(s, "|")
-	//b, _ := HmacSha256(secret, p[1])
-	//fmt.Println(base64.StdEncoding.EncodeToString(b))
-	//w.Write(buf)
+
 }
 func validCookie(db *sql.DB, w http.ResponseWriter, r *http.Request) bool {
 	id := CalculateToken(r)

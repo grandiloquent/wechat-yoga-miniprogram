@@ -4,11 +4,13 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -94,6 +96,38 @@ func writeError(w http.ResponseWriter, err error) {
 	w.WriteHeader(500)
 	fmt.Fprintln(w, err)
 }
+func decodeToken(token string, secret []byte) (string, error) {
+	if len(token) == 0 {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	pieces := strings.Split(token, "|")
+	if len(pieces) < 2 {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	b, err := HmacSha256(secret, pieces[1])
+	if err != nil {
+		return "", err
+	}
+	if base64.StdEncoding.EncodeToString(b) != pieces[0] {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	return pieces[1], nil
+}
+func checkUserInfo(userinfo string) bool {
+	return true
+}
+func validToken(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) bool {
+	token := r.Header.Get("Authorization")
+	userinfo, err := decodeToken(token, secret)
+	if !checkUserInfo(userinfo) {
+		w.WriteHeader(http.StatusForbidden)
+		return false
+	}
+	if CheckError(w, err) {
+		return false
+	}
+	return true
+}
 
 func GetDateTimeString() string {
 	now := time.Now()
@@ -127,6 +161,7 @@ func HmacSha256(key []byte, data string) ([]byte, error) {
 func CrossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "authorization")
 }
 
 var Secret = []byte{161, 219, 25, 253, 28, 70, 147, 43, 68, 17, 168, 75, 89, 233, 117, 116, 224, 230, 127, 165, 60, 187, 219, 70, 136, 54, 148, 244, 27, 121, 235, 73}

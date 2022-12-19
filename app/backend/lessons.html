@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>排课 - 晨蕴瑜伽</title>
+    <title>排课 - 瑜伽约课微信小程序</title>
     <style>
         html {
             font-family: Roboto, Helvetica Neue, Arial, sans-serif;
@@ -29,23 +29,27 @@
 
     <custom-drawer></custom-drawer>
 
-    <script src="custom-header.js"></script>
-    <script src="custom-drawer.js"></script>
+    <script src="js/custom-header.js"></script>
+    <script src="js/custom-drawer.js"></script>
     <custom-filter></custom-filter>
     <div id="layout" style="padding: 16px 16px 56px;">
-
     </div>
-    <script src="custom-filter.js"></script>
-    <script src="custom-mini-item.js"></script>
+    <script src="js/custom-filter.js"></script>
+    <script src="js/custom-mini-item.js"></script>
     <script>
+
+        const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
+
         const customHeader = document.querySelector('custom-header');
-        customHeader.setAttribute('title', "课程");
         const layout = document.querySelector('#layout');
+        const customFilter = document.querySelector('custom-filter');
+
+
+        customHeader.setAttribute('title', "课程");
 
         const date = new Date().setHours(0, 0, 0, 0) / 1000;
         render(date, date + 86400);
 
-        const customFilter = document.querySelector('custom-filter');
         customFilter.addEventListener('submit', evt => {
             if (evt.detail <= 4) {
                 const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 1) * 86400;
@@ -56,18 +60,21 @@
             }
 
         })
+        // 加载课程数据
+        async function loadLessonsData(start, end) {
+            console.log(window.localStorage.getItem("Authorization"))
+            const res = await fetch(`${baseUri}/v1/admin/lessons?start=${start}&end=${end}`, {
+                headers: {
+                    "Authorization": window.localStorage.getItem("Authorization")
+                }
+            });
+            return await res.json();
+        }
         async function render(start, end) {
 
             layout.innerHTML = '';
-            let obj;
-            if (window.JInterface) {
+            let obj = await loadLessonsData(start, end);
 
-                obj = JSON.parse(JInterface.executeQuery(`select * from query_lessons(${start},${end},5)`));
-            } else {
-                const res = await fetch(`/v/lessons.admin?start=${start}&end=${end}`);
-                obj = await res.json();
-                console.log(obj)
-            }
             obj = obj.sort((x, y) => {
                 if (x.date_time === y.date_time) {
                     return x.start_time - y.start_time

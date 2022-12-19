@@ -63,14 +63,10 @@
             const data = new FormData();
             data.append('phone_number', phoneNumber.value);
             data.append('password', password.value);
-            console.log([...data.keys()])
             const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
             try {
                 const response = await fetch(`${baseUri}/v1/login`, {
                     method: 'POST',
-                    // headers: {
-                    //     'Content-Type':'multipart/form-data'
-                    // },
                     body: data
                 });
                 const obj = await response.text();

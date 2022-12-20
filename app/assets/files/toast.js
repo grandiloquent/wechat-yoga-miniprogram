@@ -87,14 +87,14 @@ class CustomToast extends HTMLElement {
             z-index: 4;
             left: 0;
             right: 0;
-            bottom: 0;
+            top: 0;
             box-sizing: border-box;
             padding: 14px 24px;
             font-size: 1.4rem;
             color: #ffffff;
             background: hsl(0, 0%, 20%);
             will-change: transform;
-            margin-bottom: -100%;
+            margin-top: -100%;
         }
         
         .notification-action-renderer {

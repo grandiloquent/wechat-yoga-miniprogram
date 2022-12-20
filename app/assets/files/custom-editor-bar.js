@@ -1,10 +1,10 @@
 class CustomEditorBar extends HTMLElement {
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.root = this.attachShadow({ mode: 'open' });
-        this.root.innerHTML = `<style>.text
+    this.root = this.attachShadow({ mode: 'open' });
+    this.root.innerHTML = `<style>.text
 {
     max-width: 100%;
     padding: 0 4px;
@@ -90,71 +90,152 @@ class CustomEditorBar extends HTMLElement {
       </div>
     </div>`;
 
-    }
+  }
 
 
-    static get observedAttributes() {
-        return ['title'];
-    }
+  static get observedAttributes() {
+    return ['title'];
+  }
 
 
-    connectedCallback() {
+  connectedCallback() {
 
-        this.root.host.style.userSelect = 'none';
+    this.root.host.style.userSelect = 'none';
 
-        // this.dispatchEvent(new CustomEvent());
-        /*
-        this.dispatchEvent(new CustomEvent('submit', {
-                  detail: 0
-              }));
-              */
-        const textarea = document.querySelector('textarea');
-        tab(textarea);
-        document.addEventListener('visibilitychange', async ev => {
-            localStorage.setItem('content', textarea.value);
-        });
-        this.root.querySelector('#head').addEventListener('click', evt => {
-            evt.stopPropagation();
-            formatHead(textarea, 2);
-        });
-        this.root.querySelector('#english').addEventListener('click', async evt => {
-            evt.stopPropagation();
-            await trans(textarea, 0);
-        });
-        this.root.querySelector('#save').addEventListener('click', async evt => {
-            evt.stopPropagation();
-            saveData(textarea);
-        });
+    // this.dispatchEvent(new CustomEvent());
+    /*
+    this.dispatchEvent(new CustomEvent('submit', {
+              detail: 0
+          }));
+          */
+    const textarea = document.querySelector('textarea');
+    tab(textarea);
+    document.addEventListener('visibilitychange', async ev => {
+      localStorage.setItem('content', textarea.value);
+    });
+    this.root.querySelector('#head').addEventListener('click', evt => {
+      evt.stopPropagation();
+      formatHead(textarea, 2);
+    });
+    this.root.querySelector('#english').addEventListener('click', async evt => {
+      evt.stopPropagation();
+      await trans(textarea, 0);
+    });
+    this.root.querySelector('#save').addEventListener('click', async evt => {
+      evt.stopPropagation();
+      saveData(textarea);
+    });
 
-        const actionMenu = this.root.querySelector('#action-menu');
-        actionMenu.addEventListener('click', evt => {
-            evt.stopPropagation();
-            const customEditorMenu = document.createElement('custom-editor-menu');
-            document.body.appendChild(customEditorMenu);
-        });
+    const actionMenu = this.root.querySelector('#action-menu');
+    actionMenu.addEventListener('click', evt => {
+      evt.stopPropagation();
+      const customEditorMenu = document.createElement('custom-editor-menu');
+      document.body.appendChild(customEditorMenu);
+    });
 
 
-        render(textarea);
-        document.addEventListener('keydown', async ev => {
-            if (ev.key === 'F3') {
-                ev.preventDefault();
-                await trans(textarea, 0);
-            } else if (ev.key === 'F5') {
-                ev.preventDefault();
-                saveData();
-            }
-        });
-    }
+    render(textarea);
 
-    disconnectedCallback() {
 
-    }
-
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'title') {
-            this.root.querySelector('.title').textContent = newVal;
+    document.addEventListener('keydown', async ev => {
+      if (ev.key === 'F1') {
+        onF1Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F2') {
+        onF2Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F3') {
+        ev.preventDefault();
+        await trans(textarea, 0);
+      }
+      else if (ev.key === 'F4') {
+        onF4Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F5') {
+        ev.preventDefault();
+        saveData(textarea);
+      }
+      else if (ev.key === 'F6') {
+        onF6Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F7') {
+        onF7Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F8') {
+        onF8Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F9') {
+        onF9Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F10') {
+        onF10Pressed(textarea);
+        ev.preventDefault();
+      }
+      else if (ev.key === 'F11') {
+        onF11Pressed(textarea);
+        ev.preventDefault();
+      } else if (ev.ctrlKey) {
+        if (ev.key === '0') {
+          onKey0Pressed(textarea);
+          ev.preventDefault();
         }
+        else if (ev.key === '1') {
+          onKey1Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '2') {
+          onKey2Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '3') {
+          onKey3Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '4') {
+          onKey4Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '5') {
+          onKey5Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '6') {
+          onKey6Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '7') {
+          onKey7Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '8') {
+          onKey8Pressed(textarea);
+          ev.preventDefault();
+        }
+        else if (ev.key === '9') {
+          onKey9Pressed(textarea);
+          ev.preventDefault();
+        }
+      }
+    });
+
+  }
+
+  disconnectedCallback() {
+
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (attrName === 'title') {
+      this.root.querySelector('.title').textContent = newVal;
     }
+  }
 
 }
 
@@ -181,196 +262,196 @@ detail: evt.currentTarget.dataset.index
 
 
 function formatHead(editor, count) {
-    // console.log("formatHead, ");
-    // let start = editor.selectionStart;
-    // const string = editor.value;
-    // while (start - 1 > -1 && string.charAt(start - 1) !== '\n') {
-    //     start--;
-    // }
-    // editor.setRangeText('#'.repeat(count || 2) + " ", start, start);
-    const start = editor.selectionStart;
-    const end = editor.selectionEnd;
-    const string = editor.value;
-    let offsetStart = start;
-    while (offsetStart > 0) {
-        if (string[offsetStart - 1] !== '\n')
-            offsetStart--;
-        else {
-            // while (offsetStart > 0) {
-            //     if (/\s/.test(string[offsetStart - 1]))
-            //         offsetStart--;
-            //     else break;
-            // }
-            break;
-        }
+  // console.log("formatHead, ");
+  // let start = editor.selectionStart;
+  // const string = editor.value;
+  // while (start - 1 > -1 && string.charAt(start - 1) !== '\n') {
+  //     start--;
+  // }
+  // editor.setRangeText('#'.repeat(count || 2) + " ", start, start);
+  const start = editor.selectionStart;
+  const end = editor.selectionEnd;
+  const string = editor.value;
+  let offsetStart = start;
+  while (offsetStart > 0) {
+    if (string[offsetStart - 1] !== '\n')
+      offsetStart--;
+    else {
+      // while (offsetStart > 0) {
+      //     if (/\s/.test(string[offsetStart - 1]))
+      //         offsetStart--;
+      //     else break;
+      // }
+      break;
     }
-    let offsetEnd = end;
-    while (offsetEnd < string.length) {
-        if (string[offsetEnd + 1] !== '\n')
-            offsetEnd++;
-        else {
-            /* while (offsetEnd < string.length) {
-                 if (/\s/.test(string[offsetEnd + 1]))
-                     offsetEnd++;
-                 else break;
-             }*/
-            //offsetEnd++;
-            break;
-        }
+  }
+  let offsetEnd = end;
+  while (offsetEnd < string.length) {
+    if (string[offsetEnd + 1] !== '\n')
+      offsetEnd++;
+    else {
+      /* while (offsetEnd < string.length) {
+           if (/\s/.test(string[offsetEnd + 1]))
+               offsetEnd++;
+           else break;
+       }*/
+      //offsetEnd++;
+      break;
     }
-    const str = string.substring(offsetStart, offsetEnd).trim();
-    if (!str.startsWith('//')) {
-        editor.setRangeText(`// ${str}`, offsetStart,
-            offsetEnd);
-    }
-    editor.selectionStart = offsetEnd;
-    editor.selectionEnd = offsetEnd;
+  }
+  const str = string.substring(offsetStart, offsetEnd).trim();
+  if (!str.startsWith('//')) {
+    editor.setRangeText(`// ${str}`, offsetStart,
+      offsetEnd);
+  }
+  editor.selectionStart = offsetEnd;
+  editor.selectionEnd = offsetEnd;
 
 }
 
 function formatList(textarea) {
-    const p = findExtendPosition(textarea);
-    textarea.setRangeText(
-        textarea.value.substring(p[0], p[1])
-            .split('\n')
-            .map(i => {
-                // console.log(i);
-                // if (i.startsWith('*')) {
-                //     return i.substring(2);
-                // } else {}
-                return '- ' + i;
-            })
-            .join('\n'), p[0], p[1]);
+  const p = findExtendPosition(textarea);
+  textarea.setRangeText(
+    textarea.value.substring(p[0], p[1])
+      .split('\n')
+      .map(i => {
+        // console.log(i);
+        // if (i.startsWith('*')) {
+        //     return i.substring(2);
+        // } else {}
+        return '- ' + i;
+      })
+      .join('\n'), p[0], p[1]);
 }
 
 function tab(textarea) {
-    textarea.addEventListener('keydown', function (e) {
-        if (e.keyCode === 9) {
-            const p = findExtendPosition(textarea);
-            const start = this.selectionStart;
-            textarea.setRangeText(
-                textarea.value.substring(p[0], p[1])
-                    .split('\n')
-                    .map(i => {
-                        return '\t' + i;
-                    })
-                    .join('\n'), p[0], p[1]);
-            this.selectionStart = this.selectionEnd = start + 1;
-            // prevent the focus lose
-            e.preventDefault();
-        }
-    }, false);
+  textarea.addEventListener('keydown', function (e) {
+    if (e.keyCode === 9) {
+      const p = findExtendPosition(textarea);
+      const start = this.selectionStart;
+      textarea.setRangeText(
+        textarea.value.substring(p[0], p[1])
+          .split('\n')
+          .map(i => {
+            return '\t' + i;
+          })
+          .join('\n'), p[0], p[1]);
+      this.selectionStart = this.selectionEnd = start + 1;
+      // prevent the focus lose
+      e.preventDefault();
+    }
+  }, false);
 }
 
 async function trans(editor, english) {
-    // let start = editor.selectionStart;
-    // let end = editor.selectionEnd;
-    // const string = editor.value;
-    // while (start > 0 && string[start - 1] !== '\n') {
-    //     start--;
-    // }
-    // while (end < string.length) {
-    //     end++;
-    //     if (string[end] === '\n') break;
-    // }
-    // const value = string.substring(start, end);
-    // if (!value.trim()) return;
-    // const lines = await google(value, english);
-    // editor.setRangeText(`${lines[0].join(' ')}\n\n${lines[1].join(' ')}`, start, end);
-    const points = findExtendPosition(editor);
-    const string = editor.value.substring(points[0], points[1]);
+  // let start = editor.selectionStart;
+  // let end = editor.selectionEnd;
+  // const string = editor.value;
+  // while (start > 0 && string[start - 1] !== '\n') {
+  //     start--;
+  // }
+  // while (end < string.length) {
+  //     end++;
+  //     if (string[end] === '\n') break;
+  // }
+  // const value = string.substring(start, end);
+  // if (!value.trim()) return;
+  // const lines = await google(value, english);
+  // editor.setRangeText(`${lines[0].join(' ')}\n\n${lines[1].join(' ')}`, start, end);
+  const points = findExtendPosition(editor);
+  const string = editor.value.substring(points[0], points[1]);
 
-    const value = string.replaceAll(/\n/g, ' ');
-    if (!value.trim()) return;
+  const value = string.replaceAll(/\n/g, ' ');
+  if (!value.trim()) return;
 
-    const lines = await google(value.replace(/\d+[\r\n\s]+(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/, "").trim(), english);
-    let results = lines[1].join(' ');
-    const pattern = localStorage.getItem('string');
-    if (pattern && pattern.trim().length) {
-        const values = pattern.split('\n').filter(i => i.trim().length).map(i => i.trim());
-        console.log(values);
-        for (let i = 0; i < values.length; i += 2) {
-            if (i + 1 < values.length) {
-                results = results.replaceAll(values[i], values[i + 1]);
-            }
-        }
+  const lines = await google(value.replace(/\d+[\r\n\s]+(\d{2}:\d{2}:\d{2},\d{3}) --> (\d{2}:\d{2}:\d{2},\d{3})/, "").trim(), english);
+  let results = lines[1].join(' ');
+  const pattern = localStorage.getItem('string');
+  if (pattern && pattern.trim().length) {
+    const values = pattern.split('\n').filter(i => i.trim().length).map(i => i.trim());
+    console.log(values);
+    for (let i = 0; i < values.length; i += 2) {
+      if (i + 1 < values.length) {
+        results = results.replaceAll(values[i], values[i + 1]);
+      }
     }
-    let year = '';
-    let matchYear = /\d{4}/.exec(value);
-    if (matchYear) {
-        year = matchYear[0] + '年'
-    }
-    console.log('---------------->', results)
-    // string
-    // \n\n${year}
-    editor.setRangeText(`${english ? '' : (lines[0].join(' '))}\n${results}`, points[1], points[1]);
+  }
+  let year = '';
+  let matchYear = /\d{4}/.exec(value);
+  if (matchYear) {
+    year = matchYear[0] + '年'
+  }
+  console.log('---------------->', results)
+  // string
+  // \n\n${year}
+  editor.setRangeText(`${english ? '' : (lines[0].join(' '))}\n${results}`, points[1], points[1]);
 }
 
 let translate = 'http://kpkpkp.cn/api/trans';
 
 async function google(value, english) {
-    // /translate
-    // https://service-mayeka3y-1258705152.hk.apigw.tencentcs.com/release/
-    // https://service-ehkp0lyi-1301282710.hk.apigw.tencentcs.com/release/
-    const response = await fetch(`${translate}?q=${encodeURIComponent(value.trim())}&to=${english ? "zh" : "en"}`);
-    const obj = await response.text();
-    const lines1 = [];
-    const lines2 = [];
-    const translated = JSON.parse(obj.replaceAll(/您/g, '你').replaceAll(/ - /g, "——"));
-    if (translated.sentences) {
-        const sentences = translated.sentences;
-        for (let index = 0; index < sentences.length; index++) {
-            const element = sentences[index];
-            //lines1.push(element.orig);
-            lines2.push(element.trans);
-        }
-    } else {
-        const trans = translated.trans_result;
-        for (let index = 0; index < trans.length; index++) {
-            const element = trans[index];
-            // lines1.push(element.src);
-            lines2.push(element.dst);
-        }
+  // /translate
+  // https://service-mayeka3y-1258705152.hk.apigw.tencentcs.com/release/
+  // https://service-ehkp0lyi-1301282710.hk.apigw.tencentcs.com/release/
+  const response = await fetch(`${translate}?q=${encodeURIComponent(value.trim())}&to=${english ? "zh" : "en"}`);
+  const obj = await response.text();
+  const lines1 = [];
+  const lines2 = [];
+  const translated = JSON.parse(obj.replaceAll(/您/g, '你').replaceAll(/ - /g, "——"));
+  if (translated.sentences) {
+    const sentences = translated.sentences;
+    for (let index = 0; index < sentences.length; index++) {
+      const element = sentences[index];
+      //lines1.push(element.orig);
+      lines2.push(element.trans);
     }
-    return [lines1, lines2];
+  } else {
+    const trans = translated.trans_result;
+    for (let index = 0; index < trans.length; index++) {
+      const element = trans[index];
+      // lines1.push(element.src);
+      lines2.push(element.dst);
+    }
+  }
+  return [lines1, lines2];
 }
 
 async function saveData(textarea) {
-    await submitData(textarea);
+  await submitData(textarea);
 
 }
 
 async function submitData(textarea) {
-    const searchParams = new URL(window.location.href).searchParams;
-    const path = searchParams.get('path');
-    const response = await fetch(`/api/save?path=${path}`, {
-        method: 'POST',
-        body: textarea.value
-    });
-    const res = await response.text();
-    document.getElementById('toast').setAttribute('message', '成功');
+  const searchParams = new URL(window.location.href).searchParams;
+  const path = searchParams.get('path');
+  const response = await fetch(`/api/save?path=${path}`, {
+    method: 'POST',
+    body: textarea.value
+  });
+  const res = await response.text();
+  document.getElementById('toast').setAttribute('message', '成功');
 
 
 }
 
 async function loadData(baseUri, path) {
 
-    const response = await fetch(`${baseUri}/api/files?path=${path}&isDir=0`);
-    return await response.text();
+  const response = await fetch(`${baseUri}/api/files?path=${path}&isDir=0`);
+  return await response.text();
 }
 
 async function render(textarea) {
-    //textarea.value = localStorage.getItem("content");
-    const searchParams = new URL(window.location.href).searchParams;
-    const path = searchParams.get('path');
-    let baseUri = '';
-    if (path) {
-        try {
-            textarea.value = await loadData(baseUri, path);
-        } catch (error) {
+  //textarea.value = localStorage.getItem("content");
+  const searchParams = new URL(window.location.href).searchParams;
+  const path = searchParams.get('path');
+  let baseUri = '';
+  if (path) {
+    try {
+      textarea.value = await loadData(baseUri, path);
+    } catch (error) {
 
-        }
     }
+  }
 }
 
 /*

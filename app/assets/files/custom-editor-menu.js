@@ -182,7 +182,7 @@ class CustomEditorMenu extends HTMLElement {
             await createNewFile(textarea, true);
           } else if (s === '微信页面') {
             await weChatPage(textarea, true);
-          }else if (s === '微信组件') {
+          } else if (s === '微信组件') {
             await createWeChatComponents(textarea);
           }
 
@@ -190,7 +190,9 @@ class CustomEditorMenu extends HTMLElement {
 
         });
         j++;
-      })
+      });
+
+
   }
   disconnectedCallback() {
   }
@@ -217,54 +219,31 @@ detail: evt.currentTarget.dataset.index
 }))
 -->
 */
-async function createNewFile(textarea, isDir) {
-  const path = new URL(document.URL).searchParams.get('path');
-  const src = encodeURIComponent(substringBeforeLast(path, "/"));
-  const selectedString = getSelectedString(textarea).trim();
-  const dst = encodeURIComponent(selectedString);
-  try {
-    const response = await fetch(`/api/${isDir ? 'newfolder' : 'newfile'}?src=${src}&dst=${dst}`);
-    await response.text();
-    document.getElementById('toast').setAttribute('message', '成功');
-  } catch (error) {
-    document.getElementById('toast').setAttribute('message', '错误');
-  }
-}
-function getSelectedString(textarea) {
-  return textarea.value.substring(
-    textarea.selectionStart,
-    textarea.selectionEnd
-  );
-}
-function substringBeforeLast(string, delimiter, missingDelimiterValue) {
-  const index = string.lastIndexOf(delimiter);
-  if (index === -1) {
-    return missingDelimiterValue || string;
-  } else {
-    return string.substring(0, index);
-  }
-}
-async function weChatPage(textarea) {
 
-  const selectedString = getSelectedString(textarea).trim();
-  const dst = encodeURIComponent(selectedString);
-  try {
-    const response = await fetch(`/api/wechatpage?dst=${dst}`);
-    await response.text();
-    document.getElementById('toast').setAttribute('message', '成功');
-  } catch (error) {
-    document.getElementById('toast').setAttribute('message', '错误');
-  }
-}
+/*
+(() => {
+  console.log([...new Array(11).keys()].map(x => {
+    return `else if (ev.key === 'F${x + 1}') {
+    onF${x + 1}Pressed(textarea);
+    ev.preventDefault();
+  }`
+  }).join('\n'))
+})();
+(() => {
+  console.log([...new Array(11).keys()].map(x => {
+    return `function onF${x + 1}Pressed(textarea){
 
-async function createWeChatComponents(textarea) {
-  const selectedString = getSelectedString(textarea).trim();
-  const dst = encodeURIComponent(selectedString);
-  try {
-    const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`)}`);
-    await response.text();
-    document.getElementById('toast').setAttribute('message', '成功');
-  } catch (error) {
-    document.getElementById('toast').setAttribute('message', '错误');
-  }
-}
+    }
+    `
+  }).join('\n'))
+})();
+(() => {
+  console.log([...new Array(10).keys()].map(x => {
+    return `else if (ev.key === '${x}') {
+    onKey${x}Pressed(textarea);
+    ev.preventDefault();
+  }`
+  }).join('\n'))
+})();
+*/
+

@@ -18,5 +18,6 @@ miniprogram_npm
 *.bat
 app/handlers/V1Picture.go
 app/handlers/V1UserUpdate.go
+app/assets/*.exe
 server/nginx*.conf
 server/Yoga.service

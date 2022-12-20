@@ -3,11 +3,8 @@ package handlers
 import (
 	"database/sql"
 	"encoding/base64"
-	"fmt"
 	"net/http"
-	"time"
 )
-
 
 // 管理员登录
 func V1AdminLogin(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {

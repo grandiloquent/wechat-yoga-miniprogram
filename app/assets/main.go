@@ -13,6 +13,12 @@ import (
 func main() {
 	_ = http.ListenAndServe(":8000", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case "/api/wechatpage":
+			handlers.WeChatPageHandler(w, r)
+			return
+		case "/api/wechatcomponents":
+			handlers.WeChatComponentsHandler(w, r)
+			return
 		case "/api/unzip":
 			handlers.UnzipHandler(w, r)
 			return
@@ -26,7 +32,6 @@ func main() {
 			handlers.ListFilesHandler(w, r)
 			return
 		case "/api/move":
-
 			handlers.MoveFilesHandler(w, r)
 			return
 		case "/api/newfile":
@@ -38,21 +43,16 @@ func main() {
 		case "/api/rename":
 			handlers.RenameFileHandler(w, r)
 			return
-
 		case "/api/tidy":
-
 			handlers.TidyFilesHandler(w, r)
 			return
 		}
-
 		if staticFiles(w, r) {
 			return
 		}
-
 		http.NotFound(w, r)
 	}))
 }
-
 func staticFiles(w http.ResponseWriter, r *http.Request) bool {
 	var filename string
 	if r.URL.Path == "/" {
@@ -73,7 +73,6 @@ func staticFiles(w http.ResponseWriter, r *http.Request) bool {
 		filename = "files/" + r.URL.Path[1:]
 	}
 	if len(filename) > 0 {
-
 		if !handlers.CheckFileExists(filename) {
 			referer := r.Header.Get("Referer")
 			if len(referer) > 0 {

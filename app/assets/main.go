@@ -4,7 +4,6 @@ import (
 	"assets/handlers"
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"path"
 	"regexp"
 	"strings"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -60,6 +61,9 @@ func main() {
 			return
 		case "/api/sql":
 			handlers.SQLHandler(w, r, db)
+			return
+		case "/api/formatclass":
+			handlers.FormatClassHandlerr(w, r)
 			return
 		}
 		if staticFiles(w, r) {

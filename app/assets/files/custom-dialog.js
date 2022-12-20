@@ -153,6 +153,7 @@ input
         <div class="dialog-body">
           <div><div>F2</div><div>格式化微信样式</div></div>
           <div><div>F4</div><div>翻译函数</div></div>
+          <div><div>F5</div><div>格式化样式类</div></div>
           <div><div>F6</div><div>格式化代码</div></div>
           <div><div>F7</div><div>返回上级目录</div></div>
           <div><div>F8</div><div>微信页面</div></div>

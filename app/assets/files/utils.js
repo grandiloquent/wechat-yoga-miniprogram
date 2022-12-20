@@ -43,7 +43,7 @@ async function createWeChatComponents(textarea) {
   const dst = encodeURIComponent(selectedString);
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
-    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booking`;
+    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\teacher`;
 
     const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
@@ -253,12 +253,39 @@ async function formatWeChatStyle(textarea) {
   s = formatStyleForWeChat(s);
   textarea.setRangeText(`<view style="${s}"></view>`, textarea.selectionStart, textarea.selectionEnd);
 }
+async function formatClass(textarea) {
+  const path = new URL(document.URL).searchParams.get('path');
+  const selectedString = getSelectedString(textarea);
+  let k, ss;
+
+  const match = /(<*?[a-zA-Z0-9_-]+) +(style="([^"]+)")/.exec(selectedString);
+  k = match[1]
+  ss = match[3];
+  textarea.value = textarea.value.replace(match[0], `class="${k}"`)
+    .replaceAll(match[2], `class="${k}"`);
+  const dst = k.startsWith('<') ? `${k.slice(1)}{
+      ${ss}
+      }` : `.${k}{
+      ${ss}
+      }`;
+  console.log(dst);
+  try {
+    const response = await fetch(`/api/formatclass?path=${path}`, {
+      method: "POST",
+      body: dst
+    });
+    await response.json();
+    document.getElementById('toast').setAttribute('message', '成功');
+  } catch (error) {
+    document.getElementById('toast').setAttribute('message', '错误');
+  }
+}
 function onF1Pressed(textarea) {
 
 }
 
-function replaceSelectedText(textarea,s) {
-  textarea.setRangeText(s,textarea.selectionStart, textarea.selectionEnd);
+function replaceSelectedText(textarea, s) {
+  textarea.setRangeText(s, textarea.selectionStart, textarea.selectionEnd);
 }
 
 async function onF2Pressed(textarea) {
@@ -273,7 +300,7 @@ function onF4Pressed(textarea) {
 }
 
 function onF5Pressed(textarea) {
-
+  formatClass(textarea)
 }
 
 function onF6Pressed(textarea) {

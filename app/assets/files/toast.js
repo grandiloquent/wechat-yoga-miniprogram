@@ -74,7 +74,7 @@ class CustomToast extends HTMLElement {
         return `
         .c3-toast[dir="in"] {
             transition: margin 225ms cubic-bezier(0.0, 0.0, 0.2, 1);
-            margin-bottom: 0;
+            margin-top: 0;
         }
         
         .c3-toast[dir="out"] {

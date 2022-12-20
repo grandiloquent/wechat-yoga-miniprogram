@@ -260,6 +260,11 @@ class CustomEditorBar extends HTMLElement {
           saveData(textarea);
           ev.preventDefault();
         }
+      } else if (ev.altKey) {
+        if (ev.key === 'h') {
+          const customDialog = document.createElement('custom-dialog');
+          document.body.appendChild(customDialog);
+        }
       }
     });
 

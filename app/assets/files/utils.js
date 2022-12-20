@@ -42,7 +42,10 @@ async function createWeChatComponents(textarea) {
   const selectedString = getSelectedString(textarea).trim();
   const dst = encodeURIComponent(selectedString);
   try {
-    const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`)}`);
+    // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
+    const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booking`;
+
+    const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
     document.getElementById('toast').setAttribute('message', '成功');
   } catch (error) {

@@ -17,6 +17,12 @@
 				"selectedIconPath": "images/home-on.png",
 				"text": "首页"
 			},
+{
+				"iconPath": "images/yueke.png",
+				"pagePath": "pages/booking/booking",
+				"selectedIconPath": "images/yueke-on.png",
+				"text": "约课"
+			},
 			{
 				"iconPath": "images/my-off.png",
 				"pagePath": "pages/user/user",

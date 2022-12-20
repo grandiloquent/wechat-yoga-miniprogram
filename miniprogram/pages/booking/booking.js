@@ -30,4 +30,9 @@ Page({
       title: app.globalData.title
     };
   },
-})
+onBookingBarSubmit(evt) {
+        console.log(evt.detail)
+      }
+}
+
+)

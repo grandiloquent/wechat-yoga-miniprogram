@@ -1,6 +1,7 @@
 {
 	"navigationStyle": "custom",
 	"usingComponents": {
-		"booking-bar": "../../components/booking-bar/booking-bar"
+		"booking-bar": "../../components/booking-bar/booking-bar",
+		"daily-schedule": "../../components/daily-schedule/daily-schedule"
 	}
 }

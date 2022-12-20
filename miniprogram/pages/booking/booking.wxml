@@ -1,2 +1,3 @@
 
-<booking-bar app="{{app}}"></booking-bar>
+<booking-bar app="{{app}}" bind:submit="onBookingBarSubmit"></booking-bar>
+<daily-schedule app="{{app}}" offset="{{offset}}"  bind:submit="onDailyScheduleSubmit"></daily-schedule>

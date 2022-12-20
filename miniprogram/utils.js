@@ -271,7 +271,7 @@ function postString(app, path, data, callback, arg) {
             callback && callback(null, response.data)
         },
         fail: error => {
-            callback(error)
+           callback &&  callback(error)
         }
     });
 }

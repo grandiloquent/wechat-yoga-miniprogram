@@ -65,6 +65,16 @@ class CustomEditorBar extends HTMLElement {
             翻译
           </div>
         </div>
+        <div class="item" id="format">
+          <div class="image">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+            <path d="M10.688 12.75h2.625l-1.313-3.844zM13.734 14.016h-3.516l-0.703 1.969h-1.641l3.422-9h1.406l3.375 9h-1.594zM18.984 5.016h2.016v-2.016h-2.016v2.016zM21 21v-2.016h-2.016v2.016h2.016zM17.016 18.984v-1.969h1.969v-10.031h-1.969v-1.969h-10.031v1.969h-1.969v10.031h1.969v1.969h10.031zM5.016 21v-2.016h-2.016v2.016h2.016zM3 3v2.016h2.016v-2.016h-2.016zM23.016 6.984h-2.016v10.031h2.016v6h-6v-2.016h-10.031v2.016h-6v-6h2.016v-10.031h-2.016v-6h6v2.016h10.031v-2.016h6v6z"></path>
+            </svg>
+          </div>
+          <div class="text">
+            格式化
+          </div>
+        </div>    
         <div class="item" id="save">
           <div class="image">
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
@@ -132,6 +142,13 @@ class CustomEditorBar extends HTMLElement {
       const customEditorMenu = document.createElement('custom-editor-menu');
       document.body.appendChild(customEditorMenu);
     });
+
+    const format = this.root.querySelector('#format');
+    format.addEventListener('click', evt => {
+      evt.stopPropagation();
+      formattingJavaScript(textarea);
+    });
+
 
 
     render(textarea);

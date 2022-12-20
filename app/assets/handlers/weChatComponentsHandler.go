@@ -123,7 +123,7 @@ options: {
 	f = path.Join(d, d[strings.LastIndex(d, "\\")+1:]+".wxml")
 	buf, _ = ioutil.ReadFile(f)
 	buf = append(buf, []byte("\n")...)
-	buf = append(buf, []byte(fmt.Sprintf("<%s app=\"{{app}}\"></%s>", dst, dst))...)
+	buf = append(buf, []byte(fmt.Sprintf("<%s app=\"{{app}}\" bind:submit=\"on%sSubmit\"></%s>", dst, NameName, dst))...)
 	ioutil.WriteFile(f, buf, 0644)
 	f = path.Join(d, d[strings.LastIndex(d, "\\")+1:]+".js")
 	buf, _ = ioutil.ReadFile(f)

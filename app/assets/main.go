@@ -87,3 +87,5 @@ func staticFiles(w http.ResponseWriter, r *http.Request) bool {
 	}
 	return false
 }
+
+// go build -o m.exe

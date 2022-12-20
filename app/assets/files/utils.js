@@ -185,12 +185,84 @@ async function createNormalHandler(textarea) {
     document.getElementById('toast').setAttribute('message', '错误');
   }
 }
+async function executeSQL(textarea) {
+  let start = textarea.selectionStart;
+  let end = start;
+  while (start > -1) {
+    if (textarea.value[start] === '*' && start - 1 > -1 && textarea.value[start - 1] === '/')
+      break
+    start--;
+  }
+  while (end + 1 < textarea.value.length) {
+    if (textarea.value[end] === '*' && end + 1 < textarea.value.length && textarea.value[end + 1] === '/')
+      break
+    end++;
+  }
+  let dst = textarea.value.substring(start + 1, end).trim();
+  try {
+    const response = await fetch(`/api/sql`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: dst
+    });
+    const res = await response.text();
+    document.getElementById('toast').setAttribute('message', res);
+  } catch (error) {
+    document.getElementById('toast').setAttribute('message', '错误');
+  }
+}
+function formatStyleForWeChat(strings) {
+  const lines = strings.split(';').map(x => x.trim());
+  const properties = lines.filter(x => x.startsWith('--')).map(x => {
+    const pieces = x.split(':');
+    if (pieces.length > 1)
+      return {
+        key: pieces[0].trim(),
+        value: pieces[1].trim()
+      }
+  });
+  const source = lines.filter(x => !x.startsWith('--'))
+    .map(x => {
+
+      return x.replace(/var\([^\)]+\)/g, m => {
+        const key = /--[a-zA-Z0-9-]+/.exec(m)[0];
+        const founded = properties.filter(x => x.key === key);
+        const value = /,([^\)]+)\)/.exec(m);
+        console.log(founded)
+        return founded && founded.length ? founded[0]["value"] : ((value && value[1]) || '')
+      });
+    });
+  const s = source.join(';').replaceAll(/[\d.]+px/g, m => {
+    return parseFloat(m) * 2 + 'rpx'
+  }).replaceAll(/font: \d+ \d+rpx\/\d+rpx[^;]+;/g, m => {
+    const r = /font: (\d+) (\d+rpx)\/(\d+rpx)[^;]+;/.exec(m);
+    return `font-weight: ${r[1]};font-size: ${r[2]};line-height: ${r[3]};`;
+  });
+  return substringAfter(s, "-webkit-tap-highlight-color: transparent;")
+}
+
+async function formatWeChatStyle(textarea) {
+  let s;
+  if (typeof NativeAndroid !== 'undefined') {
+    s = NativeAndroid.readText()
+  } else {
+    s = await navigator.clipboard.readText()
+  }
+  s = formatStyleForWeChat(s);
+  textarea.setRangeText(`<view style="${s}"></view>`, textarea.selectionStart, textarea.selectionEnd);
+}
 function onF1Pressed(textarea) {
 
 }
 
-function onF2Pressed(textarea) {
+function replaceSelectedText(textarea,s) {
+  textarea.setRangeText(s,textarea.selectionStart, textarea.selectionEnd);
+}
 
+async function onF2Pressed(textarea) {
+  await formatWeChatStyle(textarea);
 }
 
 function onF3Pressed(textarea) {

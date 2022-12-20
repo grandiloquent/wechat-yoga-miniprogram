@@ -4,6 +4,7 @@ import (
 	"assets/handlers"
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"io/ioutil"
 	"log"
 	"net/http"

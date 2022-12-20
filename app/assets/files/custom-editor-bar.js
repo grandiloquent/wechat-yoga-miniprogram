@@ -4,8 +4,8 @@ class CustomEditorBar extends HTMLElement {
     super();
 
     this.root = this.attachShadow({ mode: 'open' });
-    this.root.innerHTML = `<style>.text
-{
+    this.root.innerHTML = `<style>
+  .text {
     max-width: 100%;
     padding: 0 4px;
     box-sizing: border-box;
@@ -14,9 +14,9 @@ class CustomEditorBar extends HTMLElement {
     white-space: nowrap;
     text-overflow: ellipsis;
     color: #030303;
-}
-.image
-{
+  }
+
+  .image {
     flex-shrink: 0;
     width: 24px;
     height: 24px;
@@ -24,9 +24,9 @@ class CustomEditorBar extends HTMLElement {
     stroke: none;
     color: #030303;
     display: block;
-}
-.item
-{
+  }
+
+  .item {
     display: flex;
     -webkit-box-flex: 1;
     flex: 1 1 0%;
@@ -39,66 +39,79 @@ class CustomEditorBar extends HTMLElement {
     justify-content: center;
     overflow: hidden;
     color: #030303;
-}</style>
-    <div style="display: flex; justify-content: space-around; position: fixed; bottom: 0; left: 0; right: 0; padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); z-index: 3; height: 48px; border-top: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.98); color: #030303; font-size: 1.1rem;">
-      <div style="display: flex; -webkit-box-flex: 1; flex: 1 1 0%; min-width: 0;">
-        <div class="item" id="head">
-          <div class="image">
-            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
-              <g>
-                <path d="M5.016 3.984h13.969v3h-5.484v12h-3v-12h-5.484v-3z">
-                </path>
-              </g>
-            </svg>
-          </div>
-          <div class="text">
-            标题
-          </div>
-        </div>
-        <div class="item" id="english">
-          <div class="image">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-              <path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z" />
-            </svg>
-          </div>
-          <div class="text">
-            翻译
-          </div>
-        </div>
-        <div class="item" id="format">
-          <div class="image">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-            <path d="M10.688 12.75h2.625l-1.313-3.844zM13.734 14.016h-3.516l-0.703 1.969h-1.641l3.422-9h1.406l3.375 9h-1.594zM18.984 5.016h2.016v-2.016h-2.016v2.016zM21 21v-2.016h-2.016v2.016h2.016zM17.016 18.984v-1.969h1.969v-10.031h-1.969v-1.969h-10.031v1.969h-1.969v10.031h1.969v1.969h10.031zM5.016 21v-2.016h-2.016v2.016h2.016zM3 3v2.016h2.016v-2.016h-2.016zM23.016 6.984h-2.016v10.031h2.016v6h-6v-2.016h-10.031v2.016h-6v-6h2.016v-10.031h-2.016v-6h6v2.016h10.031v-2.016h6v6z"></path>
-            </svg>
-          </div>
-          <div class="text">
-            格式化
-          </div>
-        </div>    
-        <div class="item" id="save">
-          <div class="image">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-              <path d="M15 9v-3.984h-9.984v3.984h9.984zM12 18.984q1.219 0 2.109-0.891t0.891-2.109-0.891-2.109-2.109-0.891-2.109 0.891-0.891 2.109 0.891 2.109 2.109 0.891zM17.016 3l3.984 3.984v12q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h12z" />
-            </svg>
-          </div>
-          <div class="text">
-            保存
-          </div>
-        </div>
-
-        <div class="item" id="action-menu">
-          <div class="image">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-              <path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z">
-              </path>
-            </svg>
-          </div>
-          <div class="text">
-            菜单
-          </div>
-        </div>
+  }
+</style>
+<div style="display: flex; justify-content: space-around; position: fixed; bottom: 0; left: 0; right: 0; padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); z-index: 3; height: 48px; border-top: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.98); color: #030303; font-size: 1.1rem;">
+  <div style="display: flex; -webkit-box-flex: 1; flex: 1 1 0%; min-width: 0;">
+    <div class="item" id="head">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24">
+          <g>
+            <path d="M5.016 3.984h13.969v3h-5.484v12h-3v-12h-5.484v-3z">
+            </path>
+          </g>
+        </svg>
       </div>
-    </div>`;
+      <div class="text">
+        标题
+      </div>
+    </div>
+    <div class="item" id="english">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z" />
+        </svg>
+      </div>
+      <div class="text">
+        翻译
+      </div>
+    </div>
+    <div class="item" id="format">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M10.688 12.75h2.625l-1.313-3.844zM13.734 14.016h-3.516l-0.703 1.969h-1.641l3.422-9h1.406l3.375 9h-1.594zM18.984 5.016h2.016v-2.016h-2.016v2.016zM21 21v-2.016h-2.016v2.016h2.016zM17.016 18.984v-1.969h1.969v-10.031h-1.969v-1.969h-10.031v1.969h-1.969v10.031h1.969v1.969h10.031zM5.016 21v-2.016h-2.016v2.016h2.016zM3 3v2.016h2.016v-2.016h-2.016zM23.016 6.984h-2.016v10.031h2.016v6h-6v-2.016h-10.031v2.016h-6v-6h2.016v-10.031h-2.016v-6h6v2.016h10.031v-2.016h6v6z"></path>
+        </svg>
+      </div>
+      <div class="text">
+        格式化
+      </div>
+    </div>
+    <div class="item" id="save">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M15 9v-3.984h-9.984v3.984h9.984zM12 18.984q1.219 0 2.109-0.891t0.891-2.109-0.891-2.109-2.109-0.891-2.109 0.891-0.891 2.109 0.891 2.109 2.109 0.891zM17.016 3l3.984 3.984v12q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h12z" />
+        </svg>
+      </div>
+      <div class="text">
+        保存
+      </div>
+    </div>
+
+    <div class="item" id="action-menu">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+          <path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z">
+          </path>
+        </svg>
+      </div>
+      <div class="text">
+        菜单
+      </div>
+    </div>
+
+    <div class="item" id="action-snippet">
+      <div class="image">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+        <path d="M20.391 8.391l-4.828-4.828q-0.563-0.563-1.406-0.563h-9.141q-0.844 0-1.43 0.586t-0.586 1.43v13.969q0 0.844 0.586 1.43t1.43 0.586h13.969q0.844 0 1.43-0.586t0.586-1.43v-9.141q0-0.844-0.609-1.453zM6.984 6.984h7.031v2.016h-7.031v-2.016zM17.016 17.016h-10.031v-2.016h10.031v2.016zM17.016 12.984h-10.031v-1.969h10.031v1.969z"></path>
+        </svg>
+      </div>
+      <div class="text">
+        代码段
+      </div>
+    </div>
+
+  </div>
+</div>`;
 
   }
 
@@ -120,9 +133,9 @@ class CustomEditorBar extends HTMLElement {
           */
     const textarea = document.querySelector('textarea');
     tab(textarea);
-    document.addEventListener('visibilitychange', async ev => {
-      localStorage.setItem('content', textarea.value);
-    });
+    // document.addEventListener('visibilitychange', async ev => {
+    //   localStorage.setItem('content', textarea.value);
+    // });
     this.root.querySelector('#head').addEventListener('click', evt => {
       evt.stopPropagation();
       formatHead(textarea, 2);
@@ -142,7 +155,12 @@ class CustomEditorBar extends HTMLElement {
       const customEditorMenu = document.createElement('custom-editor-menu');
       document.body.appendChild(customEditorMenu);
     });
-
+    const actionSnippet = this.root.querySelector('#action-snippet');
+    actionSnippet.addEventListener('click', evt => {
+      evt.stopPropagation();
+      const customEditorSnippet = document.createElement('custom-editor-snippet');
+      document.body.appendChild(customEditorSnippet);
+    });
     const format = this.root.querySelector('#format');
     format.addEventListener('click', evt => {
       evt.stopPropagation();
@@ -453,7 +471,11 @@ async function submitData(textarea) {
 
 async function loadData(baseUri, path) {
 
-  const response = await fetch(`${baseUri}/api/files?path=${path}&isDir=0`);
+  const response = await fetch(`${baseUri}/api/files?path=${path}&isDir=0&dummy=${Date.now()}`, {
+    headers: {
+      'Cache-Control': 'no-cache'
+    }
+  });
   return await response.text();
 }
 

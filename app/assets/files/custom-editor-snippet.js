@@ -1,9 +1,9 @@
-class CustomEditorMenu extends HTMLElement {
+class CustomEditorSnippet extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
     this.root.innerHTML = `<style>
-  .menu-item {
+  .snippet-item {
     -webkit-box-direction: normal;
     color: #030303;
     padding: 0;
@@ -39,7 +39,7 @@ class CustomEditorMenu extends HTMLElement {
     height: 1px;
     width: 1px;
   }
-  .menu-item-button {
+  .snippet-item-button {
     border: none;
     outline: none;
     font: inherit;
@@ -122,8 +122,8 @@ class CustomEditorMenu extends HTMLElement {
   <div class="body">
     <div id="items">
     </div>
-    <div class="menu-item">
-      <button class="menu-item-button">
+    <div class="snippet-item">
+      <button class="snippet-item-button">
         取消
       </button>
     </div>
@@ -135,13 +135,13 @@ class CustomEditorMenu extends HTMLElement {
   }
   connectedCallback() {
     this.root.host.style.userSelect = 'none';
-    this.root.querySelectorAll('#overlay,.menu-item')
+    this.root.querySelectorAll('#overlay,.snippet-item')
       .forEach(x => {
         x.addEventListener('click', evt => {
           this.root.host.remove();
         });
       });
-    this.root.querySelectorAll('.menu-item')
+    this.root.querySelectorAll('.snippet-item')
       .forEach(x => {
         x.addEventListener('click', async evt => {
           this.dispatchEvent(new CustomEvent('submit', {
@@ -160,18 +160,8 @@ class CustomEditorMenu extends HTMLElement {
       evt.stopPropagation();
     });
     const textarea = document.querySelector('textarea');
-    let j = 0;
-    `
-             新建文件
-             新建文件夹
-             微信页面
-             微信组件
-             Web组件
-             格式化JavaScript
-             返回目录
-             创建 Go Handler
-             执行 SQL
-             格式化微信样式
+    `flex
+    grid
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -181,32 +171,16 @@ class CustomEditorMenu extends HTMLElement {
         items.appendChild(div);
         div.addEventListener('click', async evt => {
           evt.stopPropagation();
-          if (s === '新建文件') {
-            await createNewFile(textarea, false);
-          } else if (s === '新建文件夹') {
-            await createNewFile(textarea, true);
-          } else if (s === '微信页面') {
-            await weChatPage(textarea, true);
-          } else if (s === '微信组件') {
-            await createWeChatComponents(textarea);
-          } else if (s === '格式化JavaScript') {
-            formattingJavaScript(textarea)
-          } else if (s === '返回目录') {
-            returnToParentDirectory();
-          } else if (s === '创建 Go Handler') {
-            await createNormalHandler(textarea);
-          }else if (s === '执行 SQL') {
-            await executeSQL(textarea);
-          }else if (s === '格式化微信样式') {
-            await formatWeChatStyle(textarea);
+          if (s === 'flex') {
+            replaceSelectedText(textarea, `display:flex;align-items: center;justify-content: center;`)
+          } else if (s === 'grid') {
+            replaceSelectedText(textarea, `display: grid;grid-template-columns: repeat(2,1fr);gap: 1px;column-gap: 8px;background-color: #dadce0;border: 1px solid #dadce0;`)
           }
 
-          
 
           this.remove()
 
         });
-        j++;
       });
 
 
@@ -219,18 +193,18 @@ class CustomEditorMenu extends HTMLElement {
     }
   }
 }
-customElements.define('custom-editor-menu', CustomEditorMenu);
+customElements.define('custom-editor-snippet', CustomEditorSnippet);
 /*
 <!--\
-<custom-editor-menu></custom-editor-menu>
-<script src="custom-editor-menu.js"></script>
-const customEditorMenu = document.querySelector('custom-editor-menu');
-customEditorMenu.addEventListener('submit', evt => {
+<custom-editor-snippet></custom-editor-snippet>
+<script src="custom-editor-snippet.js"></script>
+const customEditorSnippet = document.querySelector('custom-editor-snippet');
+customEditorSnippet.addEventListener('submit', evt => {
             evt.stopPropagation();
         });
-const customEditorMenu = document.createElement('custom-editor-menu');
-customEditorMenu.setAttribute('title','');
-document.body.appendChild(customEditorMenu);
+const customEditorSnippet = document.createElement('custom-editor-snippet');
+customEditorSnippet.setAttribute('title','');
+document.body.appendChild(customEditorSnippet);
 this.dispatchEvent(new CustomEvent('submit', {
 detail: evt.currentTarget.dataset.index
 }))

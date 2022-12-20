@@ -162,6 +162,7 @@ class CustomEditorSnippet extends HTMLElement {
     const textarea = document.querySelector('textarea');
     `flex
     grid
+    getString
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -172,12 +173,19 @@ class CustomEditorSnippet extends HTMLElement {
         div.addEventListener('click', async evt => {
           evt.stopPropagation();
           if (s === 'flex') {
-            replaceSelectedText(textarea, `display:flex;align-items: center;justify-content: center;`)
+            replaceSelectedText(textarea, `display:flex;align-items: center;justify-content: center;flex-direction:column;`)
           } else if (s === 'grid') {
             replaceSelectedText(textarea, `display: grid;grid-template-columns: repeat(2,1fr);gap: 1px;column-gap: 8px;background-color: #dadce0;border: 1px solid #dadce0;`)
+          }else if (s === 'getString') {
+            replaceSelectedText(textarea, ` utils.getString(app,"api/", (err, data) => {
+              if (err) return;
+              this.setData({
+                key: data
+              });
+            });`)
           }
 
-
+         
           this.remove()
 
         });
@@ -210,31 +218,3 @@ detail: evt.currentTarget.dataset.index
 }))
 -->
 */
-
-/*
-(() => {
-  console.log([...new Array(11).keys()].map(x => {
-    return `else if (ev.key === 'F${x + 1}') {
-    onF${x + 1}Pressed(textarea);
-    ev.preventDefault();
-  }`
-  }).join('\n'))
-})();
-(() => {
-  console.log([...new Array(11).keys()].map(x => {
-    return `function onF${x + 1}Pressed(textarea){
-
-    }
-    `
-  }).join('\n'))
-})();
-(() => {
-  console.log([...new Array(10).keys()].map(x => {
-    return `else if (ev.key === '${x}') {
-    onKey${x}Pressed(textarea);
-    ev.preventDefault();
-  }`
-  }).join('\n'))
-})();
-*/
-

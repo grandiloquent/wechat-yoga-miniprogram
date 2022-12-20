@@ -190,8 +190,8 @@ class CustomEditorBar extends HTMLElement {
         ev.preventDefault();
       }
       else if (ev.key === 'F5') {
+        onF5Pressed(textarea);
         ev.preventDefault();
-        saveData(textarea);
       }
       else if (ev.key === 'F6') {
         onF6Pressed(textarea);
@@ -255,6 +255,9 @@ class CustomEditorBar extends HTMLElement {
         }
         else if (ev.key === '9') {
           onKey9Pressed(textarea);
+          ev.preventDefault();
+        } else if (ev.key === 's') {
+          saveData(textarea);
           ev.preventDefault();
         }
       }

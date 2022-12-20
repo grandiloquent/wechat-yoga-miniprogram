@@ -18,6 +18,7 @@
     <script src="custom-favorites.js"></script>
     <script src="custom-sort.js"></script>
     <script src="custom-menu.js"></script>
+    <script src="utils.js"></script>
 </head>
 
 <body>
@@ -32,7 +33,7 @@
     <custom-bar-renderer></custom-bar-renderer>
     <script src="index.js"></script>
 
-    
+
     <div class="dialog">
         <div class="dialog-mask">
         </div>
@@ -59,7 +60,15 @@
     </div>
 
     <script src="upload.js"></script>
-
+    <script>
+        document.addEventListener('keydown', evt => {
+            console.log(evt.key)
+            if (evt.key === 'F7') {
+                returnToParentDirectory();
+                evt.preventDefault();
+            }
+        })
+    </script>
 </body>
 
 </html>

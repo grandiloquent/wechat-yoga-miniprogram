@@ -13,15 +13,15 @@ func CreateNormalHandler(w http.ResponseWriter, r *http.Request) {
 	src := `C:\Users\Administrator\WeChatProjects\yg\app\handlers`
 	dst := r.URL.Query().Get("dst")
 	s := fmt.Sprintf("/v1/%s", dst)
-	name := ToCamel(strings.ReplaceAll(s, "/", "_"))
-	f := path.Join(src, name+".go")
+	name := strings.ReplaceAll(s, "/", "_")[1:]
+	NameName := ToCamel(strings.ReplaceAll(s, "/", "_"))
+	f := path.Join(src, NameName+".go")
 
-	NameName := ToCamel(dst)
 	writeFile(f, `package handlers
 
 import (
-	""database/sql""
-	""net/http""
+	"database/sql"
+	"net/http"
 )
 /*
 create or replace function ${name}() returns json
@@ -36,14 +36,14 @@ from (
      ) as t
 $$;
 */
-func ${NameName}(db *sql.DB, w http.ResponseWriter, r *http.Request) {{
-    openId := r.URL.Query().Get(""openId"")
-	if len(openId) == 0 {{
+func ${NameName}(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+    openId := r.URL.Query().Get("openId")
+	if len(openId) == 0 {
 		http.NotFound(w, r)
     return
-	}}
-	QueryJSON(w, db, ""select * from ${name}($1)"",openId)
-}}");
+	}
+	QueryJSON(w, db, "select * from ${name}($1)",openId)
+}
 
 `, name, NameName)
 	s = fmt.Sprintf(`case "%s":

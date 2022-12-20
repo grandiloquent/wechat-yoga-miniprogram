@@ -21,3 +21,4 @@ app/handlers/V1UserUpdate.go
 app/assets/*.exe
 server/nginx*.conf
 server/Yoga.service
+app/assets/dataSourceName.txt

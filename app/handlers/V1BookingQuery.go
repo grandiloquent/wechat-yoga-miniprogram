@@ -1,11 +1,12 @@
 package handlers
 
 import (
-	""database/sql""
-	""net/http""
+	"database/sql"
+	"net/http"
 )
+
 /*
-create or replace function V1BookingQuery() returns json
+create or replace function v1_booking_query() returns json
     language sql
 as
 $$
@@ -17,12 +18,11 @@ from (
      ) as t
 $$;
 */
-func Bookingquery(db *sql.DB, w http.ResponseWriter, r *http.Request) {{
-    openId := r.URL.Query().Get(""openId"")
-	if len(openId) == 0 {{
+func V1BookingQuery(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+	openId := r.URL.Query().Get("openId")
+	if len(openId) == 0 {
 		http.NotFound(w, r)
-    return
-	}}
-	QueryJSON(w, db, ""select * from V1BookingQuery($1)"",openId)
-}}");
-
+		return
+	}
+	QueryJSON(w, db, "select * from v1_booking_query($1)", openId)
+}

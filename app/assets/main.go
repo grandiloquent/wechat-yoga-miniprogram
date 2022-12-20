@@ -2,7 +2,10 @@ package main
 
 import (
 	"assets/handlers"
+	"database/sql"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -11,6 +14,11 @@ import (
 )
 
 func main() {
+	dataSourceName, _ := ioutil.ReadFile("dataSourceName.txt")
+	db, err := sql.Open("postgres", string(dataSourceName))
+	if err != nil {
+		log.Fatal(err)
+	}
 	_ = http.ListenAndServe(":8000", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/api/wechatpage":
@@ -48,6 +56,9 @@ func main() {
 			return
 		case "/api/tidy":
 			handlers.TidyFilesHandler(w, r)
+			return
+		case "/api/sql":
+			handlers.SQLHandler(w, r, db)
 			return
 		}
 		if staticFiles(w, r) {

@@ -167,6 +167,7 @@ class CustomEditorMenu extends HTMLElement {
              微信页面
              微信组件
              Web组件
+             格式化JavaScript
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -184,6 +185,8 @@ class CustomEditorMenu extends HTMLElement {
             await weChatPage(textarea, true);
           } else if (s === '微信组件') {
             await createWeChatComponents(textarea);
+          } else if (s === '格式化JavaScript') {
+            formattingJavaScript(textarea)
           }
 
           this.remove()

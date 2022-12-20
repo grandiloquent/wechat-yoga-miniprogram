@@ -43,7 +43,7 @@ async function createWeChatComponents(textarea) {
   const dst = encodeURIComponent(selectedString);
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
-    const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booking`;
+    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booking`;
 
     const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
@@ -52,6 +52,13 @@ async function createWeChatComponents(textarea) {
     document.getElementById('toast').setAttribute('message', '错误');
   }
 }
+
+function formattingJavaScript(textarea) {
+  const options = { indent_size: 2, space_in_empty_paren: true }
+  const s = js_beautify(textarea.value, options);
+  textarea.value = s;
+}
+
 function onF1Pressed(textarea) {
 
 }
@@ -77,7 +84,7 @@ function onF6Pressed(textarea) {
 }
 
 function onF7Pressed(textarea) {
-
+  formattingJavaScript(textarea);
 }
 
 function onF8Pressed(textarea) {

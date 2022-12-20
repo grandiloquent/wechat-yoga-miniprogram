@@ -4,49 +4,50 @@
 const utils = require('../../utils')
 
 Component({
-options: {
+  options: {
     styleIsolation: 'isolated'
   },
   properties: {
-  selected: Number,
-    app:Object
+    selected: Number,
+    app: Object
   },
-  data: {
-  },
-   lifetimes: {
+  data: {},
+  lifetimes: {
     async attached() {
-     const { navigationHeight, navigationTop } = utils.calculateNavigationBarSize();
-  
+      const {
+        navigationHeight,
+        navigationTop
+      } = utils.calculateNavigationBarSize();
+
       this.setData({
         height: `${navigationHeight}px`,
         top: `${navigationTop}px`
-})
+      })
     },
-    detached: function () {
+    detached: function() {},
+  },
+  observers: {
+    'items': function(items) {
+      this.setData({
+        notices: items.map(x => {
+          x.timeago = utils.timeago(x.updated_time)
+          return x;
+        })
+      })
     },
   },
- observers: {
-     'items': function (items) {
-       this.setData({
-         notices: items.map(x => {
-           x.timeago = utils.timeago(x.updated_time)
-           return x;
-         })
-       })
-     },
-   },
   methods: {
-   onClick(evt){
-if(evt.currentTarget.dataset.id==="1"){
- this.setData({
-        selected: 0
-      });
-}else{
-      this.setData({
-        selected: 1
-      });
-}
-    this.triggerEvent('submit', evt.currentTarget.dataset.id)
+    onClick(evt) {
+      if (evt.currentTarget.dataset.id === "1") {
+        this.setData({
+          selected: 0
+        });
+      } else {
+        this.setData({
+          selected: 1
+        });
+      }
+      this.triggerEvent('submit', evt.currentTarget.dataset.id)
     }
     /*
    bindtap="navigate"

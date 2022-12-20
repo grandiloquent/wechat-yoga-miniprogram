@@ -31,8 +31,9 @@ Component({
       const dates = getDates(offset);
       this.setData({
         dates,
-        selectedTime: offset ?  dates[0].time:t 
+        selectedTime: offset ? dates[0].time : t
       });
+      this.triggerEvent('submit', this.data.selectedTime);
     },
   },
   methods: {

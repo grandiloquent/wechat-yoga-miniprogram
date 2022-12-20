@@ -1,3 +1,9 @@
-
-<booking-bar app="{{app}}" bind:submit="onBookingBarSubmit"></booking-bar>
-<daily-schedule app="{{app}}" offset="{{offset}}"  bind:submit="onDailyScheduleSubmit"></daily-schedule>
+ <booking-bar app="{{app}}" bind:submit="onBookingBarSubmit"></booking-bar>
+ <daily-schedule app="{{app}}" offset="{{offset}}" bind:submit="onDailyScheduleSubmit"></daily-schedule>
+  <view style="height:16rpx;background:#f2f2f2">  </view>
+ <view class="empty-container">
+   <view>
+     <image class="empty-picture" src="../../images/smile.svg"></image>
+     <view class="empty-text">假日注意休息</view>
+   </view>
+ </view>

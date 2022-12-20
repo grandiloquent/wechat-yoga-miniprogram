@@ -1,0 +1,14 @@
+<view class="title">近 7 日课程</view>
+<view style="background-color: #fff;padding:26rpx 0 32rpx;display:flex;align-items: center;justify-content: center;flex-direction:column;" >
+<view class="wrapper">
+  <view class="item" data-id="1" bindtap="onClick">
+    团课
+  </view>
+  <view class="item" data-id="2" bindtap="onClick">
+    私教
+  </view>
+  <view class="item" data-id="3"   bindtap="onClick">
+    小班
+  </view>
+</view>
+</view>

@@ -1,0 +1,6 @@
+{
+	"navigationBarBackgroundColor": "#ffffff",
+	"usingComponents": {
+		"teacher-buttons": "../../components/teacher-buttons/teacher-buttons"
+	}
+}

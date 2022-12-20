@@ -1,7 +1,7 @@
 {
 	"lazyCodeLoading": "requiredComponents",
 	"pages": [
-
+		"pages/teacher/teacher",
 		"pages/booking/booking",
 		"pages/index/index",
 		"pages/user/user"
@@ -17,7 +17,7 @@
 				"selectedIconPath": "images/home-on.png",
 				"text": "首页"
 			},
-{
+			{
 				"iconPath": "images/yueke.png",
 				"pagePath": "pages/booking/booking",
 				"selectedIconPath": "images/yueke-on.png",

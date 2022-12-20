@@ -1,0 +1,42 @@
+page{
+background:#f2f2f2
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 500rpx;
+  position: relative;
+  border-bottom-left-radius: 24rpx;
+  border-bottom-right-radius: 24rpx;
+}
+
+.avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(60, 64, 67, .30), 0rpx 2rpx 6rpx 2rpx rgba(60, 64, 67, .15);
+}
+
+.teacher-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  height: 150rpx;
+  left: 0;
+  right: 0;
+}
+
+.title {
+  font-size: 36rpx;
+  color: #fff
+}
+
+.subtitle {
+  font-size: 30rpx;
+  color: #fff;
+}

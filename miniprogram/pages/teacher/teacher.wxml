@@ -1,0 +1,9 @@
+<view class="wrapper" style="background-color:{{background}}">
+  <image class="avatar" src="{{app.globalData.staticHost}}/images/{{teacher.thumbnail}}" mode="aspectFit"></image>
+<view  class="teacher-info">
+  <view class="title">{{teacher.name}}</view>
+  <view class="subtitle">{{teacher.introduction}}</view>
+</view>
+</view>
+
+<teacher-buttons app="{{app}}"></teacher-buttons>

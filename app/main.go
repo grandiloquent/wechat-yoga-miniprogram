@@ -86,6 +86,9 @@ func main() {
 		case "/v1/admin/lessons":
 			handlers.V1AdminLessons(db, w, r, secret)
 			return
+case "/v1/booking/query":
+handlers.Bookingquery(db,w,r)
+return
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return

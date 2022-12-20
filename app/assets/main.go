@@ -19,6 +19,9 @@ func main() {
 		case "/api/wechatcomponents":
 			handlers.WeChatComponentsHandler(w, r)
 			return
+		case "/api/handler":
+			handlers.CreateNormalHandler(w, r)
+			return
 		case "/api/unzip":
 			handlers.UnzipHandler(w, r)
 			return

@@ -169,6 +169,7 @@ class CustomEditorMenu extends HTMLElement {
              Web组件
              格式化JavaScript
              返回目录
+             创建 Go Handler
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -188,9 +189,13 @@ class CustomEditorMenu extends HTMLElement {
             await createWeChatComponents(textarea);
           } else if (s === '格式化JavaScript') {
             formattingJavaScript(textarea)
-          }else if (s === '返回目录') {
+          } else if (s === '返回目录') {
             returnToParentDirectory();
+          } else if (s === '创建 Go Handler') {
+            await createNormalHandler(textarea);
           }
+
+
 
           this.remove()
 

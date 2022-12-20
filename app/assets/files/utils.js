@@ -57,8 +57,8 @@ function formattingJavaScript(textarea) {
   const options = { indent_size: 2, space_in_empty_paren: true }
   let str = textarea.value;
   let s;
-  
-  if (str.indexOf('</html>') !== -1 ||str.indexOf('</view>') !== -1 ) {
+
+  if (str.indexOf('</html>') !== -1 || str.indexOf('</view>') !== -1) {
     s = html_beautify(str, options);
   } else if (/\)\s+{/.test(str)) {
     s = js_beautify(str, options);
@@ -172,7 +172,19 @@ function returnToParentDirectory() {
   console.log(uri)
   window.location.href = uri
 }
-
+async function createNormalHandler(textarea) {
+  const selectedString = getSelectedString(textarea).trim();
+  const dst = encodeURIComponent(selectedString);
+  try {
+    const response = await fetch(`/api/handler?dst=${dst}`);
+    const res = await response.text();
+    textarea.setRangeText(res, textarea.selectionStart,
+      textarea.selectionEnd)
+    document.getElementById('toast').setAttribute('message', '成功');
+  } catch (error) {
+    document.getElementById('toast').setAttribute('message', '错误');
+  }
+}
 function onF1Pressed(textarea) {
 
 }

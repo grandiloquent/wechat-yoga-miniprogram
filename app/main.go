@@ -79,7 +79,6 @@ func main() {
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
-
 		case "/v1/admin/login":
 			handlers.V1AdminLogin(db, w, r, secret)
 			return
@@ -94,6 +93,9 @@ func main() {
 			return
 		case "/v1/teacher":
 			handlers.V1Teacher(db, w, r)
+			return
+		case "/v1/teacher/lessons":
+			handlers.V1TeacherLessons(db, w, r)
 			return
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)

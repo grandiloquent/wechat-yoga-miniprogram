@@ -172,6 +172,8 @@ class CustomEditorMenu extends HTMLElement {
              创建 Go Handler
              执行 SQL
              格式化微信样式
+             替换
+             排序函数
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -199,8 +201,12 @@ class CustomEditorMenu extends HTMLElement {
             await executeSQL(textarea);
           }else if (s === '格式化微信样式') {
             await formatWeChatStyle(textarea);
+          }else if (s === '替换') {
+            replaceSelected(textarea)
+          }else if (s === '排序函数') {
+            sortFunction(textarea)
           }
-
+          
           
 
           this.remove()

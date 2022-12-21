@@ -280,14 +280,52 @@ async function formatClass(textarea) {
     document.getElementById('toast').setAttribute('message', '错误');
   }
 }
-function onF1Pressed(textarea) {
-
-}
 
 function replaceSelectedText(textarea, s) {
   textarea.setRangeText(s, textarea.selectionStart, textarea.selectionEnd);
 }
+function replaceSelected(textarea) {
+  const selectedString = getSelectedString(textarea).trim();
+  const firstLine = substringBefore(selectedString, "\n").trim().split(' ');
+  const content = substringAfter(selectedString, "\n").trim();
+  replaceSelectedText(textarea, content.replaceAll(
+    firstLine[0], firstLine[1]
+  ))
+}
 
+function toBlocks(string) {
+  let count = 0;
+  let buf = [];
+  const blocks = [];
+  for (let i = 0; i < string.length; i++) {
+    buf.push(string[i])
+    if (string[i] === '{') {
+      count++;
+    } else if (string[i] === '}') {
+      count--;
+      if (count === 0) {
+        blocks.push(buf.join(''))
+        buf = [];
+      }
+    }
+  }
+  return blocks;
+}
+
+function sortFunctions(string) {
+  return toBlocks(string.replaceAll(/{}/g, "<<<--->>>"))
+    .sort((x, y) => {
+      return substringAfterLast(substringBefore(x, '(').trim(), ' ').localeCompare(substringAfterLast(substringBefore(y, '(').trim(), ' '))
+    }).join('').replaceAll(/<<<--->>>/g, "{}");
+}
+function sortFunction(textarea) {
+  const selectedString = getSelectedString(textarea).trim();
+  
+  replaceSelectedText(textarea, sortFunctions(selectedString))
+}
+function onF1Pressed(textarea) {
+
+}
 async function onF2Pressed(textarea) {
   await formatWeChatStyle(textarea);
 }

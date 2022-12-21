@@ -29,5 +29,7 @@ Page({
     return {
       title: app.globalData.title
     };
-  },
+  },onHeaderSubmit(evt) {
+        console.log(evt.detail)
+      }
 })

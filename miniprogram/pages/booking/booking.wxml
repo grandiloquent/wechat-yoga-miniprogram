@@ -7,7 +7,7 @@
      <view class="empty-text">假日注意休息</view>
    </view>
  </view>
-<view wx:elif="{{loading}}" style="display:flex;align-items: center;justify-content: center;flex-direction:column;height:33.333vh">
+<view wx:elif="{{loading}}" style="display:none;align-items: center;justify-content: center;flex-direction:column;height:33.333vh">
 <spinner></spinner>
 <view style="font-size:24rpx;color: rgba(0, 0, 0, 0.35);">正在加载...</view>
 </view>

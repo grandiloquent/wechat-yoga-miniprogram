@@ -1,5 +1,6 @@
 {
-    "usingComponents": {
-    },
-     "navigationBarBackgroundColor": "#ffffff"
-  }
+	"navigationBarBackgroundColor": "#ffffff",
+	"usingComponents": {
+		"header": "../../components/header/header"
+	}
+}

@@ -6,9 +6,10 @@ import (
 )
 
 /*
- 
-*/
-func V1Book(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+
+ */
+func V1Unbook(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+
 	openId := r.URL.Query().Get("openId")
 	if len(openId) == 0 {
 		http.NotFound(w, r)
@@ -19,5 +20,5 @@ func V1Book(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	QueryJSON(w, db, "select * from v1_book($1,$2)",  id,openId)
+	QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
 }

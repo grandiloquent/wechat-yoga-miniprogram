@@ -6,7 +6,7 @@
    <view class="right">
      <view class="text-time">
        {{lesson.time}}
-       <text wx:if="{{!(item.mode & 4)}}" style="color: #70757a;">{{lesson.teacher_name}}</text>
+       <text >{{lesson.teacher_name}}</text>
      </view>
      <view class="text-lesson">
        {{lesson.lesson_name}}

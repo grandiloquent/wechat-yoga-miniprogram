@@ -531,5 +531,10 @@ console.log([...document.querySelectorAll('.slide-image-wrap img')]
     */
 
 const snippets = {
-  "log": `console.log();`
+  "log": `console.log();`,
+  "seconds":`new Date().setHours(0, 0, 0, 0) / 1000`,
+  "map":`.map((element,index)=>{
+    return element;
+  })`,
+"wxfor":`wx:for="{{lessons}}" wx:key="*this"`
 }

@@ -4,7 +4,8 @@ const app = getApp();
 Page({
     data: {
       app,
-      offse: -1
+      offse: -1,
+      selectedTime: 0
     },
     async onLoad() {
       wx.showShareMenu({
@@ -14,26 +15,28 @@ Page({
       wx.setNavigationBarTitle({
         title: app.globalData.title
       })
-      this.loadData(new Date().setHours(0, 0, 0, 0) / 1000)
+      this.data.selectedTime = new Date().setHours(0, 0, 0, 0) / 1000
+      this.loadData()
     },
     navigate(e) {
       utils.navigate(e)
     },
-    async loadData(start) {
+    async loadData() {
       this.setData({
         lessons: null,
         holiday: false,
         loading: true
       })
       try {
-        const data = await utils.getStringAsync(app, `v1/booking/query?start=${start}`);
+        const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}`);
         if (!data.length) {
           throw new Error()
         }
         utils.setLessonStatus(data, 3, 60);
+        const lessons = utils.sortLessons(data);
         this.setData({
           holiday: false,
-          lessons: data,
+          lessons,
           loading: false
         });
       } catch (error) {
@@ -60,15 +63,15 @@ Page({
         });
       }
     },
-    loadThisWeek() {
-      console.log('---------');
-    },
     onDailyScheduleSubmit(evt) {
-      this.loadData(evt.detail)
+      this.data.selectedTime = evt.detail
+      this.loadData()
     },
     async onBookingItemSubmit(evt) {
       const item = evt.detail;
-      if (item.mode & 8) {
+      if (item.mode & 6) {
+        await this.unbook(item)
+      } else if (item.mode & 8) {
         await this.book(item)
       }
     },
@@ -80,10 +83,18 @@ Page({
         });
         return;
       }
-console.log(item);
       try {
-        result = await utils.getStringAsync(app,`v1/book?id=${item.course_id}`);
+        result = await utils.getStringAsync(app, `v1/book?id=${item.course_id}`);
         console.log(result);
+        this.loadData();
+      } catch (error) {
+
+      }
+    },
+    async unbook(item) {
+      try {
+        const result = await utils.getStringAsync(app, `v1/unbook?id=${item.reservation_id}`);
+        this.loadData();
       } catch (error) {
 
       }

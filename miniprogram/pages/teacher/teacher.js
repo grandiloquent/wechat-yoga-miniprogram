@@ -20,9 +20,13 @@ Page({
         throw new Error()
       }
       utils.setLessonStatus(data, 3, 60);
+      const lessons = utils.sortLessons(data).map((element, index) => {
+        element.teacher_name = utils.formatLessonShortDate(element);
+        return element;
+      })
       this.setData({
         holiday: false,
-        lessons: data,
+        lessons,
         loading: false
       });
     } catch (error) {
@@ -32,9 +36,6 @@ Page({
         loading: false
       });
     }
-  },
-  navigate(e) {
-    utils.navigate(e)
   },
   async onLoad(options) {
     wx.showShareMenu({
@@ -65,9 +66,41 @@ Page({
     this.setData({
       background: utils.getRandomColor()
     })
-  }, async onTeacherButtonsSubmit(evt) {
-       this.data.type=(evt.detail===1&&4)||(evt.detail===2&&2)||(evt.detail===3&&1)
+  },
+  async onTeacherButtonsSubmit(evt) {
+    this.data.type = (evt.detail === 1 && 4) || (evt.detail === 2 && 2) || (evt.detail === 3 && 1)
+    await this.loadData();
+  },
+  async onBookingItemSubmit(evt) {
+    const item = evt.detail;
+    if (item.mode & 6) {
+      await this.unbook(item)
+    } else if (item.mode & 8) {
+      await this.book(item)
+    }
+  },
+  async book(item) {
+    let result = await utils.checkUserAvailability(app);
+    if (!result) {
+      this.setData({
+        showLogin: true
+      });
+      return;
+    }
+    try {
+      result = await utils.getStringAsync(app, `v1/book?id=${item.course_id}`);
+      console.log(result);
+      this.loadData();
+    } catch (error) {
 
-await this.loadData();
-      }
+    }
+  },
+  async unbook(item) {
+    try {
+      const result = await utils.getStringAsync(app, `v1/unbook?id=${item.reservation_id}`);
+      this.loadData();
+    } catch (error) {
+
+    }
+  },
 })

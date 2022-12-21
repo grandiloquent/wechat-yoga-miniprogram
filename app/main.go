@@ -103,6 +103,12 @@ func main() {
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
+		case "/v1/unbook":
+			handlers.V1Unbook(db, w, r)
+			return
+case "/v1/booked/query":
+handlers.V1BookedQuery(db,w,r)
+return
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return

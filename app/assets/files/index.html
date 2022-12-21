@@ -61,6 +61,8 @@
 
     <script src="upload.js"></script>
     <script>
+        document.title = substringAfterLast(new URL(document.URL).searchParams.get('path'), '/');
+ 
         document.addEventListener('keydown', evt => {
             console.log(evt.key)
             if (evt.key === 'F7') {

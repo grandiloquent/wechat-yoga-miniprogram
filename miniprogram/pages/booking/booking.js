@@ -73,12 +73,24 @@ Page({
       }
     },
     async book(item) {
-      console.log(item)
-      utils.getString(app, "v1/book", (err, data) => {
+      const result = await utils.getStringAsync(app, "v1/user/user");
+      if (!result) {
+        this.setData({
+          showLogin: true
+        });
+        return;
+      }
+console.log(result)
+      /*utils.getString(app, "v1/book", (err, data) => {
         if (err) return;
         this.setData({
           key: data
         });
+      });*/
+    },
+    onLoginSubmit(evt) {
+      this.setData({
+        showLogin: false
       });
     }
 
@@ -86,4 +98,3 @@ Page({
   }
 
 )
-

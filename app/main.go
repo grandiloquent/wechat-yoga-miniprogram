@@ -46,11 +46,23 @@ func main() {
 		case "/favicon.ico":
 			handlers.Favicon(db, w, r)
 			return
+		case "/v1/admin/lessons":
+			handlers.V1AdminLessons(db, w, r, secret)
+			return
+		case "/v1/admin/login":
+			handlers.V1AdminLogin(db, w, r, secret)
+			return
 		case "/v1/authorization":
 			handlers.V1Authorization(db, w, r, authUrl)
 			break
+		case "/v1/book":
+			handlers.V1Book(db, w, r)
+			return
 		case "/v1/booked/home":
 			handlers.V1BookedHome(db, w, r)
+			return
+		case "/v1/booking/query":
+			handlers.V1BookingQuery(db, w, r)
 			return
 		case "/v1/debug":
 			handlers.V1Debug(db, w, r)
@@ -61,6 +73,9 @@ func main() {
 		case "/v1/market/home":
 			handlers.V1MarketHome(db, w, r)
 			return
+		case "/v1/notice":
+			handlers.V1Notice(db, w, r)
+			return
 		case "/v1/notices/home":
 			handlers.V1NoticesHome(db, w, r)
 			return
@@ -70,8 +85,17 @@ func main() {
 		case "/v1/slideshow/home":
 			handlers.V1SlideshowHome(db, w, r)
 			return
+		case "/v1/teacher":
+			handlers.V1Teacher(db, w, r)
+			return
+		case "/v1/teacher/lessons":
+			handlers.V1TeacherLessons(db, w, r)
+			return
 		case "/v1/teachers/home":
 			handlers.V1TeachersHome(db, w, r)
+			return
+		case "/v1/user/check":
+			handlers.V1UserCheck(db, w, r)
 			return
 		case "/v1/user/update":
 			handlers.V1UserUpdate(db, w, r)
@@ -79,27 +103,6 @@ func main() {
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
 			return
-		case "/v1/admin/login":
-			handlers.V1AdminLogin(db, w, r, secret)
-			return
-		case "/v1/admin/lessons":
-			handlers.V1AdminLessons(db, w, r, secret)
-			return
-		case "/v1/booking/query":
-			handlers.V1BookingQuery(db, w, r)
-			return
-		case "/v1/book":
-			handlers.V1Book(db, w, r)
-			return
-		case "/v1/teacher":
-			handlers.V1Teacher(db, w, r)
-			return
-		case "/v1/teacher/lessons":
-			handlers.V1TeacherLessons(db, w, r)
-			return
-case "/v1/notice":
-handlers.V1Notice(db,w,r)
-return
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return

@@ -6,25 +6,7 @@ Page({
     app,
     showLogin: false
   },
-  onShow() {
-    this.setData({
-      backgroundColor: utils.getRandomColor()
-    })
-  },
-  async onLoad() {
 
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })
-    wx.setNavigationBarTitle({
-      title: app.globalData.title
-    })
-    this.loadData();
-  },
-  navigate(e) {
-    utils.navigate(e)
-  },
   loadData() {
     utils.getString(app, "v1/user/user", (err, data) => {
       if (err) return;
@@ -39,24 +21,46 @@ Page({
       }
 
     });
-  }, onShareAppMessage() {
+  },
+  navigate(e) {
+    utils.navigate(e)
+  },
+  async onLoad() {
+
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+    wx.setNavigationBarTitle({
+      title: app.globalData.title
+    })
+    this.loadData();
+  },
+  onLoginSubmit(evt) {
+    this.setData({
+      showLogin: false
+    });
+    this.loadData();
+  },
+  onShareAppMessage() {
     return {
       title: app.globalData.title
     };
-  }, onUserProfileSubmit(evt) {
+  },
+  onShow() {
+    this.setData({
+      backgroundColor: utils.getRandomColor()
+    })
+  },
+  onUserProfileSubmit(evt) {
     if (evt.detail === '0') {
       this.setData({
         showLogin: true
       });
     }
-  }, onLoginSubmit(evt) {
-    this.setData({
-      showLogin: false
-    });
-    this.loadData();
   }
 })
 
-function onUserActionsSubmit(evt){
+function onUserActionsSubmit(evt) {
 
 }

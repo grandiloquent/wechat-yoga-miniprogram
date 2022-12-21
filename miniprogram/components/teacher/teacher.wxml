@@ -1,6 +1,6 @@
 <view class="title">专业教练</view>
 <view class="teachers">
-    <view class="wrapper" wx:for="{{items}}" wx:key="id">
+    <view class="wrapper" wx:for="{{items}}" wx:key="id" data-id="{{item.id}}" bindtap="onClick">
         <view class="image">
             <image src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
         </view>

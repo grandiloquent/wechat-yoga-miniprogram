@@ -1,6 +1,7 @@
-page{
-background:#f2f2f2
+page {
+  background: #f2f2f2
 }
+
 .wrapper {
   display: flex;
   align-items: center;
@@ -40,3 +41,29 @@ background:#f2f2f2
   font-size: 30rpx;
   color: #fff;
 }
+
+.more {
+  background-color: #fff;
+  box-shadow: 0 0 0 2rpx #ebedef;
+  color: #70757a;
+  font-size: 28rpx;
+  margin: 40rpx 32rpx 56rpx;
+  overflow: hidden;
+  border-radius: 16rpx;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+line-height:48rpx;
+padding:12rpx 0;
+}
+
+.more-image {
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(112, 117, 122)' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'></path></svg>");
+  width: 48rpx;
+  height: 48rpx;
+}
+

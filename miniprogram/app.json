@@ -1,9 +1,11 @@
 {
 	"lazyCodeLoading": "requiredComponents",
 	"pages": [
+
+		"pages/booked/booked",
+		"pages/index/index",
 		"pages/teacher/teacher",
 		"pages/booking/booking",
-		"pages/index/index",
 		"pages/user/user"
 	],
 	"sitemapLocation": "sitemap.json",
@@ -22,6 +24,11 @@
 				"pagePath": "pages/booking/booking",
 				"selectedIconPath": "images/yueke-on.png",
 				"text": "约课"
+			},{
+				"iconPath": "images/check-in.png",
+				"pagePath": "pages/booked/booked",
+				"selectedIconPath": "images/check-in-on.png",
+				"text": "已约"
 			},
 			{
 				"iconPath": "images/my-off.png",

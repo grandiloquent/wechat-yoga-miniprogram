@@ -17,7 +17,7 @@ Component({
   },
   methods: {
     onClick(evt) {
-      this.triggerEvent('submit')
+      this.triggerEvent('submit',evt.currentTarget.dataset.id)
     }
   }
 })

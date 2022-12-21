@@ -6,37 +6,19 @@
 const utils = require('../../utils');
 
 Component({
-options: {
-    styleIsolation: 'isolated'
-  },
-  properties: {
-    items: {
-      type: Array,
-    },
-    app:Object
-  },
+
   data: {
+    selected: 1
   },
-   lifetimes: {
-    async attached() {
-     
-    },
-    detached: function () {
-    },
-  },
- observers: {
-     'items': function (items) {
-       this.setData({
-         notices: items.map(x => {
-           x.timeago = utils.timeago(x.updated_time)
-           return x;
-         })
-       })
-     },
-   },
+
+
   methods: {
-   onClick(evt){
-      this.triggerEvent('submit')
+    onClick(evt) {
+      const id = parseInt(evt.currentTarget.dataset.id);
+      this.setData({
+        selected: id
+      });
+      this.triggerEvent('submit', id)
     }
     /*
    bindtap="navigate"

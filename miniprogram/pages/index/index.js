@@ -25,36 +25,42 @@ Page({
       ["v1/teachers/home", "teachers"],
       ["v1/booked/home", "booked"],
       ["v1/market/home", "market"],
-      ["v1/notices/home","notices"]
+      ["v1/notices/home", "notices"]
     ]
-      .forEach(x => {
-        utils.getString(app, x[0], (err, data) => {
-          if (err) return;
-          this.setData({
-            [x[1]]: data
-          });
+    .forEach(x => {
+      utils.getString(app, x[0], (err, data) => {
+        if (err) return;
+        this.setData({
+          [x[1]]: data
         });
-      })
+      });
+    })
 
   },
   onShareAppMessage() {
     return {
       title: app.globalData.title
     };
-  }, onSubmit() {
-  }, 
+  },
+  onSubmit() {},
   onHomeActionsSubmit(evt) {
     console.log(evt.detail)
-  },onHomeNoticeSubmit(evt) {
+  },
+  onHomeNoticeSubmit(evt) {
     console.log(evt.detail)
-  }
+  },
+  onTeacherSubmit(evt) {
+    wx.navigateTo({
+        url: `/pages/teacher/teacher?id=${evt.detail}`
+      })
+  },onHomeBookedSubmit(evt) {
+  wx.switchTab({
+        url: `/pages/booking/booking`
+      })
+}
+
 })
-function onTeacherSubmit(evt) {
 
-}
-function onHomeBookedSubmit(evt) {
-
-}
 function onCopyrightSubmit(evt) {
 
 }

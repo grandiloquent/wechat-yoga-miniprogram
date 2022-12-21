@@ -1,6 +1,6 @@
  <booking-bar app="{{app}}" bind:submit="onBookingBarSubmit"></booking-bar>
- <daily-schedule app="{{app}}" offset="{{offset}}" bind:submit="onDailyScheduleSubmit"></daily-schedule>
-  <view style="height:16rpx;background:#f2f2f2">  </view>
+ <daily-schedule app="{{app}}" offset="{{offset}}" bind:submit="onDailyScheduleSubmit" style="background:#fff"></daily-schedule>
+
  <view wx:if="{{holiday}}" class="empty-container">
    <view>
      <image class="empty-picture" src="../../images/smile.svg"></image>
@@ -12,6 +12,6 @@
 <view style="font-size:24rpx;color: rgba(0, 0, 0, 0.35);">正在加载...</view>
 </view>
 
-<view style="padding:32rpx">
+<view style="padding:20rpx">
 <booking-item wx:for="{{lessons}}" item="{{item}}" app="{{app}}" bind:submit="onBookingItemSubmit"></booking-item>
 </view>

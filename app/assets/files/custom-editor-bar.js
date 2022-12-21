@@ -536,5 +536,21 @@ const snippets = {
   "map":`.map((element,index)=>{
     return element;
   })`,
-"wxfor":`wx:for="{{lessons}}" wx:key="*this"`
+"wxfor":`wx:for="{{lessons}}" wx:key="*this"`,
+"switch":`switch(){
+
+}`,
+
+
+"view":`<view style="padding:32rpx 32rpx">
+</view>`,
+"flex":`display:flex;align-items: center;justify-content: center;`,
+"border":`60,176,53`,
+"center":`
+.center{top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}`,
+"navigate":`bindtap="navigate" data-tab="/pages/index/index"`,
+"id":`data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
 }

@@ -530,7 +530,15 @@ function formatLessonShortDate(lesson) {
   const t = new Date(lesson.date_time * 1000);
   return `${t.getMonth()+1}月${t.getDate()}日`;
 }
-
+// 将秒钟转换为更通简的时间格式（9:30）
+function formatDuration(ms) {
+// 先取余减掉小时，然后计算分钟
+  var minutes = ms % 3600 / 60
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  return Math.floor(ms / 3600) + ':' + minutes;
+}
 module.exports = {
   calculateNavigationBarSize,
   checkIfAvatar,
@@ -559,6 +567,7 @@ module.exports = {
   substringAfterLast,
   timeago,
   uploadFile,
-  formatLessonShortDate
+  formatLessonShortDate,
+formatDuration
 }
 // const utils = require('../../utils');

@@ -42,18 +42,10 @@ Component({
     */
   }
 })
-// 将秒钟转换为更通简的时间格式（9:30）
-function formatDuration(ms) {
-// 先取余减掉小时，然后计算分钟
-  var minutes = ms % 3600 / 60
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  return Math.floor(ms / 3600) + ':' + minutes;
-}
+
 
 function process(item) {
-  item.time = `${formatDuration(item.start_time)}-${formatDuration(item.end_time)}`;
+  item.time = `${utils. formatDuration(item.start_time)}-${utils.formatDuration(item.end_time)}`;
   if ((item.mode & 1)) {
     item.label = "已完成"
   } else if ((item.mode & 2)) {

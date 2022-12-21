@@ -43,7 +43,7 @@ async function createWeChatComponents(textarea) {
   const dst = encodeURIComponent(selectedString);
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
-    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\teacher`;
+    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booked`;
 
     const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();

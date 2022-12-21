@@ -13,6 +13,6 @@
 </view>
 
 <view style="padding:20rpx">
-<booking-item wx:for="{{lessons}}" item="{{item}}" app="{{app}}" bind:submit="onBookingItemSubmit"></booking-item>
+<booking-item wx:for="{{lessons}}" wx:key="*this" item="{{item}}" app="{{app}}" bind:submit="onBookingItemSubmit"></booking-item>
 </view>
 <login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>

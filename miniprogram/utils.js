@@ -223,6 +223,10 @@ function getStringAsync(app, path, arg) {
       url: `${app.globalData.host}/${path}${path.indexOf('?') === -1 ? '?' : '&'}openId=${app.globalData.openid}`,
       ...arg,
       success: response => {
+        if (response.statusCode > 399 || response.statusCode < 200) {
+          reject(new Error(response.statusCode));
+          return
+        }
         resolve(response.data)
       },
       fail: error => {
@@ -516,6 +520,23 @@ function setLessonStatus(lessons, throttleHours, minutesLimit) {
     lessons[i].mode |= 8;
   }
 }
+async function checkUserAvailability(app) {
+  if (app.globalData.userId) {
+    return true;
+  }
+  let result;
+  try {
+    result = await getStringAsync(app, "v1/user/check");
+    if (!result) {
+      return false;
+    }
+    app.globalData.userId = result;
+    return true;
+  } catch (error) {
+    return false;
+  }
+
+}
 module.exports = {
   calculateNavigationBarSize,
   checkIfAvatar,
@@ -541,6 +562,7 @@ module.exports = {
   timeago,
   uploadFile,
   formatDate,
-  setLessonStatus
+  setLessonStatus,
+  checkUserAvailability
 }
 // const utils = require('../../utils');

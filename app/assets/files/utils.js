@@ -340,7 +340,7 @@ function encodeSVG(textarea){
 }
 
 function onF1Pressed(textarea) {
-
+  replaceSelectedText(textarea,`console.log();`)
 }
 async function onF2Pressed(textarea) {
   await formatWeChatStyle(textarea);

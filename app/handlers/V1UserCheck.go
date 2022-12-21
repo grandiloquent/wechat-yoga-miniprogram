@@ -14,5 +14,5 @@ func V1UserCheck(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	QueryJSON(w, db, "select * from v1_user_check($1)", openId)
+	QueryInt(w, db, "select * from v1_user_check($1)", openId)
 }

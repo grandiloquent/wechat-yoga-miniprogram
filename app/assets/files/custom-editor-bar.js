@@ -173,6 +173,7 @@ class CustomEditorBar extends HTMLElement {
 
 
     document.addEventListener('keydown', async ev => {
+
       if (ev.key === 'F1') {
         onF1Pressed(textarea);
         ev.preventDefault();
@@ -216,7 +217,8 @@ class CustomEditorBar extends HTMLElement {
       else if (ev.key === 'F11') {
         onF11Pressed(textarea);
         ev.preventDefault();
-      } else if (ev.ctrlKey) {
+      }
+      else if (ev.ctrlKey) {
         if (ev.key === '0') {
           onKey0Pressed(textarea);
           ev.preventDefault();
@@ -265,6 +267,25 @@ class CustomEditorBar extends HTMLElement {
           const customDialog = document.createElement('custom-dialog');
           document.body.appendChild(customDialog);
         }
+      } else if (ev.key === ' ') {
+        let start = textarea.selectionStart;
+        let end = start;
+        if (start > -1)
+          start--;
+        while (start > -1 && /[a-zA-Z0-9]+/.test(textarea.value[start])) {
+          start--;
+        }
+        start++;
+        const key = textarea.value.substring(start, end).trim();
+        if (!key) {
+          return;
+        }
+        const value = snippets[key];
+        if (!value) {
+          return;
+        }
+        textarea.setRangeText(value, start, end);
+        ev.preventDefault();
       }
     });
 
@@ -508,3 +529,7 @@ console.log([...document.querySelectorAll('.slide-image-wrap img')]
     }).reverse()
     .join('\n'))
     */
+
+const snippets = {
+  "log": `console.log();`
+}

@@ -73,20 +73,20 @@ Page({
       }
     },
     async book(item) {
-      const result = await utils.getStringAsync(app, "v1/user/user");
+      let result = await utils.checkUserAvailability(app);
       if (!result) {
         this.setData({
           showLogin: true
         });
         return;
       }
-console.log(result)
-      /*utils.getString(app, "v1/book", (err, data) => {
-        if (err) return;
-        this.setData({
-          key: data
-        });
-      });*/
+console.log(item);
+      try {
+        result = await utils.getStringAsync(app,`v1/book?id=${item.course_id}`);
+        console.log(result);
+      } catch (error) {
+
+      }
     },
     onLoginSubmit(evt) {
       this.setData({

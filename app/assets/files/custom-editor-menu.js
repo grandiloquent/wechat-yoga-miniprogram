@@ -174,6 +174,7 @@ class CustomEditorMenu extends HTMLElement {
              格式化微信样式
              替换
              排序函数
+             编码SVG
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -205,6 +206,8 @@ class CustomEditorMenu extends HTMLElement {
             replaceSelected(textarea)
           }else if (s === '排序函数') {
             sortFunction(textarea)
+          }else if (s === '编码SVG') {
+            encodeSVG(textarea)
           }
           
           

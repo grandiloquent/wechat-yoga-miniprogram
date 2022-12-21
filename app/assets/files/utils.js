@@ -323,6 +323,21 @@ function sortFunction(textarea) {
   
   replaceSelectedText(textarea, sortFunctions(selectedString))
 }
+
+function encodeSVG(textarea){
+  const selectedString = getSelectedString(textarea).trim();
+  let s = selectedString
+  .replace("<svg","<svg fill='rgb(25, 103, 210)' xmlns='http://www.w3.org/2000/svg' ")
+  .replaceAll("\"", "'")
+    .replaceAll(/[\r\n]+/g, '');
+  replaceSelectedText(textarea, `
+  background-size:36px 36px;
+  background-position: center center;
+            background-repeat: no-repeat;
+            background-image:url("data:image/svg+xml;utf8,${s}");
+  `)
+}
+
 function onF1Pressed(textarea) {
 
 }

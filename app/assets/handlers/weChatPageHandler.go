@@ -67,7 +67,9 @@ Page({
 
 	f = path.Join(d, dst+".wxss")
 	if !CheckFileExists(f) {
-		ioutil.WriteFile(f, []byte(fmt.Sprintf(``)), 0644)
+		ioutil.WriteFile(f, []byte(fmt.Sprintf(`page {
+  background: #f2f2f2
+}`)), 0644)
 	}
 	f = `C:\Users\Administrator\WeChatProjects\yg\miniprogram\app.json`
 	buf, _ := ioutil.ReadFile(f)

@@ -44,7 +44,7 @@ Page({
     wx.setNavigationBarTitle({
       title: app.globalData.title
     })
-    this.data.id = options.id || 2;
+    this.data.id = options.id || 3;
     utils.getString(app, `v1/teacher?id=${this.data.id}`, (err, data) => {
       if (err) return;
       this.setData({

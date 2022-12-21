@@ -1,5 +1,5 @@
 <view class="title">公告</view>
-<view style="background-color: #fff;padding:26rpx 0 32rpx;" bindtap="navigate">
+<view style="background-color: #fff;padding:26rpx 0 32rpx;">
     <view class="item" wx:for="{{notices}}" wx:key="id" data-id="{{item.id}}" bindtap="navigate">
         <view class="item-title">{{item.title}}</view>
         <view class="item-subtitle">{{item.timeago}}</view>

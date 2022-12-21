@@ -47,17 +47,21 @@ Page({
     console.log(evt.detail)
   },
   onHomeNoticeSubmit(evt) {
-    console.log(evt.detail)
+    evt.detail
+    wx.navigateTo({
+      url: `/pages/notice/notice?id=${evt.detail}`
+    })
   },
   onTeacherSubmit(evt) {
     wx.navigateTo({
-        url: `/pages/teacher/teacher?id=${evt.detail}`
-      })
-  },onHomeBookedSubmit(evt) {
-  wx.switchTab({
-        url: `/pages/booking/booking`
-      })
-}
+      url: `/pages/teacher/teacher?id=${evt.detail}`
+    })
+  },
+  onHomeBookedSubmit(evt) {
+    wx.switchTab({
+      url: `/pages/booking/booking`
+    })
+  }
 
 })
 

@@ -43,7 +43,7 @@ async function createWeChatComponents(textarea) {
   const dst = encodeURIComponent(selectedString);
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
-    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\booked`;
+    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\notice`;
 
     const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
@@ -251,7 +251,8 @@ async function formatWeChatStyle(textarea) {
     s = await navigator.clipboard.readText()
   }
   s = formatStyleForWeChat(s);
-  textarea.setRangeText(`<view style="${s}"></view>`, textarea.selectionStart, textarea.selectionEnd);
+  textarea.setRangeText(`<view style="${s}">
+  </view>`, textarea.selectionStart, textarea.selectionEnd);
 }
 async function formatClass(textarea) {
   const path = new URL(document.URL).searchParams.get('path');

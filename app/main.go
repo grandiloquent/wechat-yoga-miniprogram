@@ -97,6 +97,9 @@ func main() {
 		case "/v1/teacher/lessons":
 			handlers.V1TeacherLessons(db, w, r)
 			return
+case "/v1/notice":
+handlers.V1Notice(db,w,r)
+return
 		default:
 			http.ServeFile(w, r, "./backend"+r.URL.Path)
 			return

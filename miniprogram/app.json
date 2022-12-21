@@ -3,8 +3,9 @@
 	"pages": [
 
 		"pages/index/index",
-		"pages/booked/booked",
+		"pages/notice/notice",
 		"pages/teacher/teacher",
+		"pages/booked/booked",
 		"pages/booking/booking",
 		"pages/user/user"
 	],
@@ -24,7 +25,8 @@
 				"pagePath": "pages/booking/booking",
 				"selectedIconPath": "images/yueke-on.png",
 				"text": "约课"
-			},{
+			},
+			{
 				"iconPath": "images/check-in.png",
 				"pagePath": "pages/booked/booked",
 				"selectedIconPath": "images/check-in-on.png",

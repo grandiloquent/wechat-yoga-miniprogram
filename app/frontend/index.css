@@ -58,3 +58,38 @@ body {
     padding: 8px 16px;
 
 }
+
+.header {
+    max-width: 1024px;
+    margin: auto;
+    position: relative;
+    padding: 8px 16px 16px 16px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background-color: #dadce0;
+    border: 1px solid #dadce0;
+    margin: 24px 24px 40px;
+    border-radius: 8px;
+    overflow: hidden;
+
+}
+
+.grid-item {
+    padding: 12px 8px 8px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.grid-item-text {
+
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+}

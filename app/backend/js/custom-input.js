@@ -1,135 +1,63 @@
 class CustomInput extends HTMLElement {
-
     constructor() {
         super();
         this.root = this.attachShadow({ mode: 'open' });
         this.root.innerHTML = `<style>
-      
-            
-                  
-                        
-                              
-                                    
-                                          
-                                                
-                                                      
-                                                            
-                                                                  
-                                                                        
-                                                                              
-                                                                                    
-                                                                                          
-                                                                                                
-                                                                                                      
-                                                                                                            
-                                                                                                                  
-                                                                                                                        
-                                                                                                                              
-                                                                                                                                    
-                                                                                                                                          
-                                                                                                                                                
-                                                                                                                                                      
-                                                                                                                                                            
-                                                                                                                                                                  
-                                                                                                                                                                        
-                                                                                                                                                                              
-                                                                                                                                                                                    
-                                                                                                                                                                                          .input
-                                                                                                                                                                                          {
-                                                                                                                                                                                              font-size: 16px;
-                                                                                                                                                                                              line-height: 56px;
-                                                                                                                                                                                              padding: 0;
-                                                                                                                                                                                              outline: none;
-                                                                                                                                                                                              border: none;
-                                                                                                                                                                                              flex-grow: 1;
-                                                                                                                                                                                              resize:none;
-                                                                                                                                                                                          }
-                                                                                                                                                                                          .label
-                                                                                                                                                                                          {
-                                                                                                                                                                                              color: #5f6368;
-                                                                                                                                                                                              position: absolute;
-                                                                                                                                                                                              left: 12px;
-                                                                                                                                                                                              top: 0;
-                                                                                                                                                                                              font-size: 16px;
-                                                                                                                                                                                              background: #fff;
-                                                                                                                                                                                              line-height: 56px;
-                                                                                                                                                                                              transition: transform 150ms cubic-bezier(.4,0,.2,1),color 150ms cubic-bezier(.4,0,.2,1);
-                                                                                                                                                                                          }
-                                                                                                                                                                                          .layout
-                                                                                                                                                                                          {
-                                                                                                                                                                                              display: flex;
-                                                                                                                                                                                              align-items: center;
-                                                                                                                                                                                              justify-content: center;
-                                                                                                                                                                                              border-radius: 4px;
-                                                                                                                                                                                              border: 1px solid #80868b;
-                                                                                                                                                                                              padding: 0 12px;
-                                                                                                                                                                                              margin: 14px 20px 28px;
-                                                                                                                                                                                              position: relative;
-                                                                                                                                                                                          }
-                                                                                                                                                                                          input::-webkit-outer-spin-button,
-                                                                                                                                                                                          input::-webkit-inner-spin-button {
-                                                                                                                                                                                              /* display: none; <- Crashes Chrome on hover */
-                                                                                                                                                                                              -webkit-appearance: none;
-                                                                                                                                                                                              margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-                                                                                                                                                                                          }
-                                                                                                                                                                                          
-                                                                                                                                                                                          input[type=number] {
-                                                                                                                                                                                              -moz-appearance:textfield; /* Firefox */
-                                                                                                                                                                                          }
-                                                                                                                                                                                          
-                                                                                                                                                                                          
-                                                                                                                                                                                        
-                                                                                                                                                                                  
-                                                                                                                                                                            
-                                                                                                                                                                        
-                                                                                                                                                                      
-                                                                                                                                                                  
-                                                                                                                                                                  
-                                                                                                                                                                
-                                                                                                                                                          
-                                                                                                                                                    
-                                                                                                                                              
-                                                                                                                                        
-                                                                                                                                  
-                                                                                                                            
-                                                                                                                        
-                                                                                                                      
-                                                                                                                  
-                                                                                                                
-                                                                                                          
-                                                                                                    
-                                                                                              
-                                                                                        
-                                                                                  
-                                                                            
-                                                                      
-                                                                
-                                                          
-                                                    
-                                              
-                                        
-                                  
-                            
-                      
-                
-          
-    </style>
-    <div class="layout">
-      <input class="input" type="text" /><span class="label">
-      </span>
-    </div>`;
+    .input {
+        font-size: 16px;
+        line-height: 56px;
+        padding: 0;
+        outline: none;
+        border: none;
+        flex-grow: 1;
+        resize: none;
     }
 
+    .label {
+        color: #5f6368;
+        position: absolute;
+        left: 12px;
+        top: 0;
+        font-size: 16px;
+        background: #fff;
+        line-height: 56px;
+        transition: transform 150ms cubic-bezier(.4, 0, .2, 1), color 150ms cubic-bezier(.4, 0, .2, 1);
+    }
 
+    .layout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        border: 1px solid #80868b;
+        padding: 0 12px;
+        margin: 14px 20px 28px;
+        position: relative;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0;
+        /* <-- Apparently some margin are still there even though it's hidden */
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        /* Firefox */
+    }
+</style>
+<div class="layout">
+    <input class="input" type="text" /><span class="label">
+    </span>
+</div>`;
+    }
     static get observedAttributes() {
         return ['label', 'type'];
     }
-
-
     connectedCallback() {
-
         this.root.host.style.userSelect = 'none';
-
         this.input = this.root.querySelector('.input');
         this.input.addEventListener('click', evt => {
             this.collapse();
@@ -139,7 +67,6 @@ class CustomInput extends HTMLElement {
                 this.expand();
             else
                 this.collapse();
-
         })
         this.input.addEventListener('keydown', evt => {
             if (this.input.dataset.type === 'phone') {
@@ -154,10 +81,6 @@ class CustomInput extends HTMLElement {
             this.collapse();
         });
         this.label.textContent = this.getAttribute('label');
-
-
-
-
         // this.dispatchEvent(new CustomEvent());
         /*
         this.dispatchEvent(new CustomEvent('submit', {
@@ -189,9 +112,7 @@ class CustomInput extends HTMLElement {
         this.input.value = v;
     }
     disconnectedCallback() {
-
     }
-
     attributeChangedCallback(attrName, oldVal, newVal) {
         if (attrName === 'label') {
             this.root.querySelector('.label').textContent = newVal;
@@ -207,7 +128,6 @@ class CustomInput extends HTMLElement {
                 input.dataset.type = newVal;
         }
     }
-
 }
 customElements.define('custom-input', CustomInput);
 /*

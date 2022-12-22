@@ -8,8 +8,9 @@ customHeader.setAttribute('title', "管理员");
     })
 
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+const id = new URL(document.URL).searchParams.get('id') || 1;
+
 async function loadData() {
-    const id = new URL(document.URL).searchParams.get('id') || 1;
     const response = await fetch(`${baseUri}/v1/admin/notice?id=${id}`, {
         headers: {
             "Authorization": window.localStorage.getItem("Authorization")
@@ -17,19 +18,38 @@ async function loadData() {
     })
     return response.json();
 }
+const title = document.querySelector('.title');
+const content = document.querySelector('.content');
+const submit = document.querySelector('.submit');
+submit.addEventListener('submit', async evt => {
+    evt.stopPropagation();
+    const data = {};
+    data.id = id;
+    data.title = title.value.trim();
+    data.content = content.value.trim();
+    try {
+        const response = await fetch(`${baseUri}/v1/admin/notice/update`, {
+            method: 'POST',
+            headers: {
+                "Authorization": window.localStorage.getItem("Authorization")
+            },
+            body: JSON.stringify(data)
+        });
+         await response.text();
+         document.getElementById('toast').setAttribute('message','成功');
+    } catch (error) {
+        console.log(error);
+        document.getElementById('toast').setAttribute('message','失败');
+    }
+});
+
 async function render() {
-    const wrapper = document.querySelector('.wrapper');
     let obj;
     try {
         obj = await loadData();
-        obj.forEach(value => {
-            const div = document.createElement('div');
-            div.textContent = value.title;
-            div.addEventListener('click', evt => {
-                evt.stopPropagation();
-            });
-            wrapper.appendChild(div);
-        })
+        title.value = obj.title;
+        content.value = obj.content;
+
     } catch (error) {
 
     }

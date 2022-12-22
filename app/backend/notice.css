@@ -1,0 +1,13 @@
+html {
+            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
+        }
+
+        body {
+            font-size: small;
+            margin: 0;
+            background: #fff;
+            color: #4d5156;
+            background-color: #fff;
+            overflow: initial;
+            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
+        }

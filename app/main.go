@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"yg/handlers"
 
@@ -106,11 +107,22 @@ func main() {
 		case "/v1/unbook":
 			handlers.V1Unbook(db, w, r)
 			return
-case "/v1/booked/query":
-handlers.V1BookedQuery(db,w,r)
-return
+		case "/v1/booked/query":
+			handlers.V1BookedQuery(db, w, r)
+			return
+		case "/v1/admin/notices":
+			handlers.V1AdminNotices(db, w, r, secret)
+			return
+		case "/v1/admin/notice":
+			handlers.V1AdminNotice(db, w, r, secret)
+			return
 		default:
-			http.ServeFile(w, r, "./backend"+r.URL.Path)
+			if strings.Index(r.URL.Path, ".") == -1 {
+				println(r.URL.Path + ".html")
+				http.ServeFile(w, r, "."+r.URL.Path+".html")
+			} else {
+				http.ServeFile(w, r, "."+r.URL.Path)
+			}
 			return
 		}
 	}))

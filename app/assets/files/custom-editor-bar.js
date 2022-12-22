@@ -173,7 +173,6 @@ class CustomEditorBar extends HTMLElement {
 
 
     document.addEventListener('keydown', async ev => {
-console.log(ev.key);
       if (ev.key === 'F1') {
         onF1Pressed(textarea);
         ev.preventDefault();
@@ -267,7 +266,8 @@ console.log(ev.key);
           const customDialog = document.createElement('custom-dialog');
           document.body.appendChild(customDialog);
         }
-      } else if (ev.key === ' ') {
+      } else if (ev.key === ' ' || ev.keyCode == 229) {
+        ev.preventDefault();
         let start = textarea.selectionStart;
         let end = start;
         if (start > -1)
@@ -284,8 +284,8 @@ console.log(ev.key);
         if (!value) {
           return;
         }
-        textarea.setRangeText(value, start, end);
-        ev.preventDefault();
+        textarea.setRangeText(value, start, end,"end");
+        
       }
     });
 
@@ -390,7 +390,7 @@ function formatList(textarea) {
 
 function tab(textarea) {
   textarea.addEventListener('keydown', function (e) {
-   
+
     if (e.keyCode === 9) {
       const p = findExtendPosition(textarea);
       const start = this.selectionStart;
@@ -533,26 +533,45 @@ console.log([...document.querySelectorAll('.slide-image-wrap img')]
 
 const snippets = {
   "log": `console.log();`,
-  "seconds":`new Date().setHours(0, 0, 0, 0) / 1000`,
-  "map":`.map((element,index)=>{
+  "seconds": `new Date().setHours(0, 0, 0, 0) / 1000`,
+  "map": `.map((element,index)=>{
     return element;
   })`,
-"wxfor":`wx:for="{{lessons}}" wx:key="*this"`,
-"switch":`switch(){
+  "wxfor": `wx:for="{{lessons}}" wx:key="*this"`,
+  "switch": `switch(){
 
 }`,
 
 
-"view":`<view class="wrapper" style="padding:32rpx 32rpx">
+  "view": `<view class="wrapper" style="padding:32rpx 32rpx">
 </view>`,
-"flex":`display:flex;align-items: center;justify-content: center;`,
-"border":`60,176,53`,
-"center":`
+  "flex": `display:flex;align-items: center;justify-content: center;`,
+  "border": `60,176,53`,
+  "center": `
 .center{top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 }`,
-"navigate":`bindtap="navigate" data-tab="/pages/index/index"`,
-"id":`data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
-"style":`style="padding:32rpx 32rpx"`
+  "navigate": `bindtap="navigate" data-tab="/pages/index/index"`,
+  "id": `data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
+  "style": `style="padding:32rpx 32rpx"`,
+  "b":`<!-- -->`,
+  'load':`let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+  async function loadData() {
+      const response = await fetch(\`${baseUri}/v1/admin/\`, {
+          headers: {
+              "Authorization": window.localStorage.getItem("Authorization")
+          }
+      })
+      return response.json();
+  }
+  async function render() {
+      let obj;
+      try {
+          obj = await loadData()
+      } catch (error) {
+  
+      }
+  }
+  await render();`
 }

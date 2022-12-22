@@ -542,7 +542,7 @@ const snippets = {
 }`,
 
 
-"view":`<view style="padding:32rpx 32rpx">
+"view":`<view class="wrapper" style="padding:32rpx 32rpx">
 </view>`,
 "flex":`display:flex;align-items: center;justify-content: center;`,
 "border":`60,176,53`,
@@ -553,4 +553,5 @@ transform: translate(-50%, -50%);
 }`,
 "navigate":`bindtap="navigate" data-tab="/pages/index/index"`,
 "id":`data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
+"style":`style="padding:32rpx 32rpx"`
 }

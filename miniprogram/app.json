@@ -1,59 +1,42 @@
 {
   "lazyCodeLoading": "requiredComponents",
-  "pages": [ "pages/index/index",
-  "pages/booked/booked",
-  "pages/notice/notice",
-  "pages/teacher/teacher",
-  "pages/booking/booking",
-  "pages/user/user"
-
+  "pages": [
+    "pages/index/index",
+    "pages/booked/booked",
+    "pages/notice/notice",
+    "pages/teacher/teacher",
+    "pages/booking/booking",
+    "pages/small/small",
+    "pages/one/one",
+    "pages/user/user"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {
-
-    "backgroundColor": "white",
-    "color": "#8c8c8c",
-    "list": [ {
-      "iconPath": "images/home-off.png",
-        "pagePath": "pages/index/index",
-        "selectedIconPath": "images/home-on.png",
-        "text": "首页"
-    }
-
-    ,
-    {
-    "iconPath": "images/yueke.png",
-      "pagePath": "pages/booking/booking",
-      "selectedIconPath": "images/yueke-on.png",
-      "text": "约课"
-  }
-
-  ,
-  {
-  "iconPath": "images/check-in.png",
-    "pagePath": "pages/booked/booked",
-    "selectedIconPath": "images/check-in-on.png",
-    "text": "已约"
-}
-
-,
-{
-"iconPath": "images/my-off.png",
-  "pagePath": "pages/user/user",
-  "selectedIconPath": "images/my-on.png",
-  "text": "我的"
-}
-
-],
-"selectedColor": "#749b15"
-}
-
-,
-"window": {
-  "backgroundColor": "#F6F6F6",
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/index/index"
+      },
+      {
+        "pagePath": "pages/booking/booking"
+      },
+      {
+        "pagePath": "pages/small/small"
+      },
+      {
+        "pagePath": "pages/booked/booked"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "瑜伽约课工具"
-}
+  }
 }

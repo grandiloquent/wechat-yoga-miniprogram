@@ -16,6 +16,29 @@ Page({
     const t = new Date().setHours(0, 0, 0, 0);
     this.data.startTime = t / 1000;
     this.data.endTime = 86400 + this.data.startTime;
+
+         this.getTabBar().setData({
+      items: [{
+        name: "首页",
+        src: "home",
+        href: "index"
+      }, {
+        name: "约课",
+        src: "book",
+        href: "booking"
+      }, {
+        name: "已约",
+        src: "booked",
+        href: "booked"
+      }, {
+        name: "我的",
+        src: "user",
+        href: "user"
+      }
+
+],
+      selected:2
+    })
     this.loadData();
   },
   async loadData() {

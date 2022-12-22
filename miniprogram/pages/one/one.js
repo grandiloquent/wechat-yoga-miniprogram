@@ -16,27 +16,7 @@ Page({
         title: app.globalData.title
       })
       this.data.selectedTime = new Date().setHours(0, 0, 0, 0) / 1000;
-      this.getTabBar().setData({
-        items: [{
-          name: "首页",
-          src: "home",
-          href: "index"
-        }, {
-          name: "团课",
-          src: "big",
-          href: "booking"
-        }, {
-          name: "小班",
-          src: "small",
-          href: "small"
-        }, {
-          name: "私教",
-          src: "one",
-          href: "one",
-          page: true
-        }],
-        selected: 1
-      })
+      
       this.loadData()
     },
     navigate(e) {
@@ -49,7 +29,7 @@ Page({
         loading: true
       })
       try {
-        const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=4`);
+        const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=2`);
         if (!data.length) {
           throw new Error()
         }

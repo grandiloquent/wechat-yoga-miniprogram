@@ -29,13 +29,13 @@ Page({
           name: "小班",
           src: "small",
           href: "small"
-        }, {
+        },{
           name: "私教",
           src: "one",
           href: "one",
           page: true
         }],
-        selected: 1
+        selected: 2
       })
       this.loadData()
     },
@@ -49,7 +49,7 @@ Page({
         loading: true
       })
       try {
-        const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=4`);
+        const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=1`);
         if (!data.length) {
           throw new Error()
         }

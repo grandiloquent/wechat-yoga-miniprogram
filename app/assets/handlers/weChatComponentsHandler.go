@@ -11,7 +11,10 @@ import (
 )
 
 func WeChatComponentsHandler(w http.ResponseWriter, r *http.Request) {
-	src := `C:\Users\Administrator\WeChatProjects\yg\miniprogram\components`
+	src := r.URL.Query().Get("src")
+	if len(src) == 0 {
+		src = `C:\Users\Administrator\WeChatProjects\yg\miniprogram\components`
+	}
 	dst := r.URL.Query().Get("dst")
 	dir := r.URL.Query().Get("dir")
 	d := path.Join(src, dst)
@@ -106,6 +109,9 @@ options: {
     background-color: #fff;
     margin-top: 20rpx;
 }`), 0644)
+	}
+	if len(dir) == 0 {
+		return
 	}
 	d = dir
 	f = path.Join(d, d[strings.LastIndex(d, "\\")+1:]+".json")

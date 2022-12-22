@@ -9,5 +9,45 @@
     "home-notice": "../../components/home-notice/home-notice",
     "copyright": "../../components/copyright/copyright"
   },
-  "navigationStyle": "custom"
+  "navigationStyle": "custom",
+  "tabBar": {
+ "custom": true,
+    "backgroundColor": "white",
+    "color": "#8c8c8c",
+    "list": [ {
+      "iconPath": "images/home-off.png",
+        "pagePath": "pages/index/index",
+        "selectedIconPath": "images/home-on.png",
+        "text": "首页"
+    }
+
+    ,
+    {
+    "iconPath": "images/yueke.png",
+      "pagePath": "pages/booking/booking",
+      "selectedIconPath": "images/yueke-on.png",
+      "text": "约课"
+  }
+
+  ,
+  {
+  "iconPath": "images/check-in.png",
+    "pagePath": "pages/booked/booked",
+    "selectedIconPath": "images/check-in-on.png",
+    "text": "已约"
+}
+
+,
+{
+"iconPath": "images/my-off.png",
+  "pagePath": "pages/user/user",
+  "selectedIconPath": "images/my-on.png",
+  "text": "我的"
+}
+
+],
+"selectedColor": "#749b15"
+}
+
+
 }

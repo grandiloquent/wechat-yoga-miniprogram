@@ -1,0 +1,8 @@
+<view class="wrapper">
+  <view class="item" wx:for="{{items}}" wx:key="*this" bindtap="onClick" data-href="{{item.href}}" data-page="{{item.page}}">
+    <image mode="aspectFit" class="image" src="../images/{{item.src}}-{{selected==index?'on':'off'}}.png"></image>
+    <view class="text {{selected==index?'selected':''}}">
+      {{item.name}}
+    </view>
+  </view>
+</view>

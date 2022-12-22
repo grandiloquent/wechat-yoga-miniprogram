@@ -16,7 +16,27 @@ Page({
         title: app.globalData.title
       })
       this.data.selectedTime = new Date().setHours(0, 0, 0, 0) / 1000;
-      
+       this.setData({
+        items: [{
+          name: "首页",
+          src: "home",
+          href: "index"
+        }, {
+          name: "团课",
+          src: "big",
+          href: "booking"
+        }, {
+          name: "小班",
+          src: "small",
+          href: "small"
+        }, {
+          name: "私教",
+          src: "one",
+          href: "one",
+          page: true
+        }],
+        selected:3
+      })
       this.loadData()
     },
     navigate(e) {
@@ -104,7 +124,9 @@ Page({
       this.setData({
         showLogin: false
       });
-    }
+    },onTabbarSubmit(evt) {
+        console.log(evt.detail)
+      }
 
 
   }

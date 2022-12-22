@@ -7,8 +7,8 @@
     "pages/teacher/teacher",
     "pages/booking/booking",
     "pages/small/small",
-    "pages/one/one",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/one/one"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

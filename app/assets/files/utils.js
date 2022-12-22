@@ -43,10 +43,11 @@ async function createWeChatComponents(textarea) {
   const dst = encodeURIComponent(selectedString);
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
-    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\notice`;
+    const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\one`;
 // &dir=${encodeURIComponent(dir)}
 // &src=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg`)}
-    const response = await fetch(`/api/wechatcomponents?dst=${dst}&src=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg`)}`);
+
+    const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
     document.getElementById('toast').setAttribute('message', '成功');
   } catch (error) {

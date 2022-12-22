@@ -175,6 +175,7 @@ class CustomEditorMenu extends HTMLElement {
              替换
              排序函数
              编码SVG
+             格式化函数
              `.split('\n')
       .map(x => {
         const s = x.trim();
@@ -208,7 +209,10 @@ class CustomEditorMenu extends HTMLElement {
             sortFunction(textarea)
           }else if (s === '编码SVG') {
             encodeSVG(textarea)
+          }else if (s === '格式化函数') {
+            formatCode(textarea);
           }
+         
           this.remove()
         });
         j++;

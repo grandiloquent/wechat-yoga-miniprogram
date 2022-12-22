@@ -6,37 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员登录 - 瑜伽约课微信小程序</title>
-    <style>
-        body {
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .input {
-            outline: 0;
-            background: #f2f2f2;
-            width: 100%;
-            border: 0;
-            padding: 16px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-
-        .button {
-            background: #4CAF50;
-            width: 100%;
-            padding: 16px;
-            color: #FFFFFF;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            box-sizing: border-box;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-
-
+        <link rel="stylesheet" href="login.css">
+        <script src="login.js"></script>
 </head>
 
 <body>
@@ -49,51 +20,7 @@
     </div>
     <custom-toast id="toast"></custom-toast>
     <script src="toast.js"></script>
-    
-    <script>
-        
-        const phoneNumber = document.querySelector('[name=phone_number]');
-        const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
-
-        phoneNumber.addEventListener('click', evt => {
-            evt.stopPropagation();
-        });
-
-        const password = document.querySelector('[name=password]');
-        password.addEventListener('click', evt => {
-            evt.stopPropagation();
-        });
-        async function submitUserInformation(data) {
-            const response = await fetch(`${baseUri}/v1/admin/login`, {
-                method: 'POST',
-                body: data
-            });
-            return await response.text();
-        }
-        function collectUserInformation() {
-            const data = new FormData();
-            data.append('phone_number', phoneNumber.value);
-            data.append('password', password.value);
-            return data;
-        }
-        function cacheLoginToken(token) {
-            window.localStorage.setItem("Authorization", token)
-        }
-        const button = document.querySelector('.button');
-        button.addEventListener('click', async evt => {
-            evt.stopPropagation();
-            try {
-                const data = collectUserInformation();
-                const obj = await submitUserInformation(data);
-                cacheLoginToken(obj)
-                document.getElementById('toast').setAttribute('message', '成功');
-            } catch (error) {
-                document.getElementById('toast').setAttribute('message', `错误${error.messaage}`);
-                console.log(error);
-            }
-        });
-
-    </script>
+ 
 </body>
 
 </html>

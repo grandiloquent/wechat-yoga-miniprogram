@@ -267,7 +267,7 @@ class CustomEditorBar extends HTMLElement {
           document.body.appendChild(customDialog);
         }
       } else if (ev.key === ' ' || ev.keyCode == 229) {
-        ev.preventDefault();
+        
         let start = textarea.selectionStart;
         let end = start;
         if (start > -1)
@@ -284,6 +284,7 @@ class CustomEditorBar extends HTMLElement {
         if (!value) {
           return;
         }
+        ev.preventDefault();
         textarea.setRangeText(value, start, end,"end");
         
       }
@@ -449,7 +450,8 @@ async function trans(editor, english) {
   console.log('---------------->', results)
   // string
   // \n\n${year}
-  editor.setRangeText(`${english ? '' : (lines[0].join(' '))}\n${results}`, points[1], points[1]);
+  // (lines[0].join(' '))}\n
+  editor.setRangeText(`${english ? '' : results}`, points[0], points[1],"end");
 }
 
 let translate = 'http://kpkpkp.cn/api/trans';
@@ -558,7 +560,7 @@ transform: translate(-50%, -50%);
   "b":`<!-- -->`,
   'load':`let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
   async function loadData() {
-      const response = await fetch(\`${baseUri}/v1/admin/\`, {
+      const response = await fetch(\`\${baseUri}/v1/admin/\`, {
           headers: {
               "Authorization": window.localStorage.getItem("Authorization")
           }

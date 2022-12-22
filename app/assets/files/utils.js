@@ -44,8 +44,8 @@ async function createWeChatComponents(textarea) {
   try {
     // const dir=`C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\user`;
     const dir = `C:\\Users\\Administrator\\WeChatProjects\\yg\\miniprogram\\pages\\one`;
-// &dir=${encodeURIComponent(dir)}
-// &src=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg`)}
+    // &dir=${encodeURIComponent(dir)}
+    // &src=${encodeURIComponent(`C:\\Users\\Administrator\\WeChatProjects\\yg`)}
 
     const response = await fetch(`/api/wechatcomponents?dst=${dst}&dir=${encodeURIComponent(dir)}`);
     await response.text();
@@ -323,15 +323,15 @@ function sortFunctions(string) {
 }
 function sortFunction(textarea) {
   const selectedString = getSelectedString(textarea).trim();
-  
+
   replaceSelectedText(textarea, sortFunctions(selectedString))
 }
 
-function encodeSVG(textarea){
+function encodeSVG(textarea) {
   const selectedString = getSelectedString(textarea).trim();
   let s = selectedString
-  .replace("<svg","<svg fill='rgb(25, 103, 210)' xmlns='http://www.w3.org/2000/svg' ")
-  .replaceAll("\"", "'")
+    .replace("<svg", "<svg fill='rgb(25, 103, 210)' xmlns='http://www.w3.org/2000/svg' ")
+    .replaceAll("\"", "'")
     .replaceAll(/[\r\n]+/g, '');
   replaceSelectedText(textarea, `
   background-size:36px 36px;
@@ -340,9 +340,56 @@ function encodeSVG(textarea){
             background-image:url("data:image/svg+xml;utf8,${s}");
   `)
 }
+async function formatCode(textarea) {
+  let start = textarea.selectionStart;
+  let end = textarea.selectionEnd;
 
+  while (start > -1) {
+    if (textarea.value[start] === '\n') {
+      let s = [];
+
+      while (start > -1 && /\s/.test(textarea.value[start])) {
+        s.push(textarea.value[start])
+        start--;
+      }
+      if ([...s.join('').matchAll(/\n/g)].length > 2) {
+        break;
+      }
+    }
+    start--;
+  }
+  while (end + 1 < textarea.value.length) {
+    if (textarea.value[end] === '\n') {
+      let s = [];
+
+      while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end])) {
+        s.push(textarea.value[end])
+        end++;
+      }
+      if ([...s.join('').matchAll(/\n/g)].length > 2) {
+        break;
+      }
+    }
+    end++;
+  }
+  start++;
+  let s = textarea.value.substring(start, end).trim();
+  const n = substringBefore(s, "\n").trim();
+  textarea.setRangeText(`
+  ${n}();
+  `, start, end, "end")
+  const str = `function ${n}()}(){
+    ${substringAfter(s, '\n').trim()}
+  }`;
+  if (typeof NativeAndroid !== 'undefined') {
+    NativeAndroid.writeText(str);
+  } else {
+    await navigator.clipboard.writeText(str)
+  }
+
+}
 function onF1Pressed(textarea) {
-  replaceSelectedText(textarea,`console.log();`)
+  replaceSelectedText(textarea, `console.log();`)
 }
 async function onF2Pressed(textarea) {
   await formatWeChatStyle(textarea);
@@ -368,7 +415,8 @@ function onF7Pressed(textarea) {
 }
 
 function onF8Pressed(textarea) {
-  weChatPage(textarea)
+  // weChatPage(textarea)
+  formatCode(textarea);
 }
 
 function onF9Pressed(textarea) {

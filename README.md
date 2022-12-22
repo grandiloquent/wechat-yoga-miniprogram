@@ -21,8 +21,6 @@ $ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=�
 
 <img src="/images/扫码_搜索联合传播样式-标准色版.png">
 
-## 支持和赞助
-
 ## 待解决事项
 
 - 某些图标在高清屏幕下锯齿，例如底部栏的约课图标
@@ -30,6 +28,10 @@ $ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=�
     <img src="/images/image.png">
 - 执行用户约课候补
 
+## 相关文档
 
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link
+
+## 支持和赞助
 
 

@@ -13,6 +13,11 @@ class CustomInput extends HTMLElement {
         resize: none;
     }
 
+    textarea.input {
+        line-height: 24px;
+        padding-top: 16px;
+    }
+
     .label {
         color: #5f6368;
         position: absolute;

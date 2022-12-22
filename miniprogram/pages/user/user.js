@@ -11,6 +11,7 @@ Page({
     utils.getString(app, "v1/user/user", (err, data) => {
       if (err) return;
       if (data) {
+        app.globalData.userId = data.id;
         this.setData({
           user: data
         });
@@ -34,26 +35,26 @@ Page({
     wx.setNavigationBarTitle({
       title: app.globalData.title
     });
-this.getTabBar().setData({
+    this.getTabBar().setData({
       items: [{
-        name: "首页",
-        src: "home",
-        href: "index"
-      }, {
-        name: "约课",
-        src: "book",
-        href: "booking"
-      }, {
-        name: "已约",
-        src: "booked",
-        href: "booked"
-      }, {
-        name: "我的",
-        src: "user",
-        href: "user"
-      }
+          name: "首页",
+          src: "home",
+          href: "index"
+        }, {
+          name: "约课",
+          src: "book",
+          href: "booking"
+        }, {
+          name: "已约",
+          src: "booked",
+          href: "booked"
+        }, {
+          name: "我的",
+          src: "user",
+          href: "user"
+        }
 
-],
+      ],
       selected: 3
     })
     this.loadData();

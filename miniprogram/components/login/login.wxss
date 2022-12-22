@@ -49,9 +49,9 @@
 
 .avatar-wrapper {
   display: flex;
-  padding: 0;
   padding: 24rpx;
   background-color: #fff;
+outline:0
 }
 
 .avatar {
@@ -63,4 +63,8 @@
 
 input {
   text-align: left;
+}
+
+button::after {
+display:none
 }

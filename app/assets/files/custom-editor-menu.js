@@ -209,16 +209,10 @@ class CustomEditorMenu extends HTMLElement {
           }else if (s === '编码SVG') {
             encodeSVG(textarea)
           }
-          
-          
-
           this.remove()
-
         });
         j++;
       });
-
-
   }
   disconnectedCallback() {
   }
@@ -245,7 +239,6 @@ detail: evt.currentTarget.dataset.index
 }))
 -->
 */
-
 /*
 (() => {
   console.log([...new Array(11).keys()].map(x => {
@@ -258,7 +251,6 @@ detail: evt.currentTarget.dataset.index
 (() => {
   console.log([...new Array(11).keys()].map(x => {
     return `function onF${x + 1}Pressed(textarea){
-
     }
     `
   }).join('\n'))
@@ -272,4 +264,3 @@ detail: evt.currentTarget.dataset.index
   }).join('\n'))
 })();
 */
-

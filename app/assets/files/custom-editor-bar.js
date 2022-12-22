@@ -173,7 +173,7 @@ class CustomEditorBar extends HTMLElement {
 
 
     document.addEventListener('keydown', async ev => {
-
+console.log(ev.key);
       if (ev.key === 'F1') {
         onF1Pressed(textarea);
         ev.preventDefault();
@@ -390,6 +390,7 @@ function formatList(textarea) {
 
 function tab(textarea) {
   textarea.addEventListener('keydown', function (e) {
+   
     if (e.keyCode === 9) {
       const p = findExtendPosition(textarea);
       const start = this.selectionStart;

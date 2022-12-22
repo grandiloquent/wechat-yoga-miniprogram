@@ -9,32 +9,41 @@ import (
 // 管理员登录
 func V1AdminLogin(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	CrossOrigin(w)
-	if r.Method != "POST" {
+	if r.Method == "OPTIONS" {
+		return
+	}
+	if r.Method != "POST" && r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	phoneNumber := r.FormValue("phone_number")
-	password := r.FormValue("password")
-	row := db.QueryRow("select * from check_user_password($1,$2)", phoneNumber, password)
-	if CheckError(w, row.Err()) {
-		return
-	}
+	if r.Method == "POST" {
+		phoneNumber := r.FormValue("phone_number")
+		password := r.FormValue("password")
+		row := db.QueryRow("select * from check_user_password($1,$2)", phoneNumber, password)
+		if CheckError(w, row.Err()) {
+			return
+		}
 
-	var id sql.NullString
-	err := row.Scan(&id)
-	if CheckError(w, err) {
-		return
+		var id sql.NullString
+		err := row.Scan(&id)
+		if CheckError(w, err) {
+			return
+		}
+		if !id.Valid {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		buf, err := createToken(secret, id.String)
+		if CheckError(w, err) {
+			return
+		}
+		w.Header().Set("Content-Type", "application/jwt")
+		w.Write(buf)
+	} else {
+		if !validToken(db, w, r, secret) {
+			return
+		}
 	}
-	if !id.Valid {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	buf, err := createToken(secret, id.String)
-	if CheckError(w, err) {
-		return
-	}
-	w.Header().Set("Content-Type", "application/jwt")
-	w.Write(buf)
 
 }
 func validCookie(db *sql.DB, w http.ResponseWriter, r *http.Request) bool {

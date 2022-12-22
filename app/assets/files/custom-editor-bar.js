@@ -560,7 +560,7 @@ transform: translate(-50%, -50%);
   "b":`<!-- -->`,
   'load':`let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
   async function loadData() {
-      const response = await fetch(\`\${baseUri}/v1/admin/\`, {
+      const response = await fetch(\`\${baseUri}/v1/admin/notices\`, {
           headers: {
               "Authorization": window.localStorage.getItem("Authorization")
           }
@@ -568,12 +568,26 @@ transform: translate(-50%, -50%);
       return response.json();
   }
   async function render() {
+      const wrapper = document.querySelector('.wrapper');
       let obj;
       try {
-          obj = await loadData()
+          obj = await loadData();
+          obj.forEach(value => {
+              const div = document.createElement('div');
+              div.textContent = value.title;
+              div.addEventListener('click', evt => {
+                  evt.stopPropagation();
+              });
+              wrapper.appendChild(div);
+          })
       } catch (error) {
   
       }
   }
-  await render();`
+  render();`,
+  "toast":`<custom-toast id="toast"></custom-toast>
+  <script src="toast.js"></script>
+  document.getElementById('toast').setAttribute('message','成功');
+  document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`
 }
+

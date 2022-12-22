@@ -26,6 +26,8 @@ $ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=�
 ## 待解决事项
 
 - 某些图标在高清屏幕下锯齿，例如底部栏的约课图标
+
+    <img src="/images/image.png">
 - 执行用户约课候补
 
 

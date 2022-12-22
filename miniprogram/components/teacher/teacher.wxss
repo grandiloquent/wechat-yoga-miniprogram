@@ -5,12 +5,14 @@
     overflow: hidden;
     border-radius: 16rpx;
     flex-shrink: 0;
-    margin-right: 16rpx;
     position: relative;
     width: 192rpx;
     box-shadow: 0 0 0 2rpx #dadce0;
+    overflow: hidden;
 }
-
+.wrapper:last-child{
+    margin-right: 0;
+}
 .image {
     transform-origin: top left;
     overflow: hidden;
@@ -62,10 +64,11 @@
     background: #fff;
     box-shadow: 0 0 0 1px #ebedef;
     display: inline-flex;
-    align-items: stretch;
+    align-items: stretch; 
     overflow-x: scroll;
     width: 100%;
     box-sizing: border-box;
+    gap: 16rpx;
 }
 
 .teachers::-webkit-scrollbar {

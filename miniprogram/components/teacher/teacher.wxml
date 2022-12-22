@@ -7,4 +7,5 @@
         <view class="name">{{item.name}}</view>
         <view class="subtitle">{{item.introduction}}</view>
     </view>
+ <view style="width:0rpx;padding:0 8rpx"></view>
 </view>

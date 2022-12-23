@@ -8,7 +8,7 @@ function humanFileSize(size) {
 }
 
 function isEditableFile(path) {
-    return /\.(?:c|conf|cpp|cs|css|go|h|hpp|java|jl|js|json|jsx|py|service|sql|txt|gitignore|md|xml|bat|properties|gradle|properties|wxml|wxss)$/.test(path)
+    return /\.(?:c|conf|cpp|cs|css|go|h|hpp|java|jl|js|json|jsx|py|service|sql|txt|gitignore|md|xml|bat|properties|gradle|properties|wxml|wxss|html)$/.test(path)
 }
 
 function substringAfter(string, delimiter, missingDelimiterValue) {

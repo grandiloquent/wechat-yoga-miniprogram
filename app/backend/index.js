@@ -23,7 +23,7 @@ async function render() {
   try {
     await loadData()
   } catch (error) {
-    window.location = `/login?returns=${encodeURIComponent(window.location.href)}`
+    window.location = `/backend/login?returns=${encodeURIComponent(window.location.href)}`
   }
 }
 render();

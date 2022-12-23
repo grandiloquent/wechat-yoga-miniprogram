@@ -86,6 +86,10 @@ Page({
       wx.navigateTo({
         url: `/pages/market/market`
       })
+    }else if (evt.detail === 7) {
+      wx.navigateTo({
+        url: `/pages/notice/notice`
+      })
     }
   },
   // 导航到公告页面

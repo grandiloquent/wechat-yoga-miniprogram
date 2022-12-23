@@ -63,8 +63,10 @@ submit.addEventListener('submit', async evt => {
   evt.stopPropagation();
   const data = {};
   data.id = id;
-  data.title = title.value.trim();
-  data.content = content.value.trim();
+  data.description = inputDescription.value.trim();
+  data.introduction = inputIntroduction.value.trim();
+  data.name = inputName.value.trim();
+  data.phone_number = inputPhoneNumber.value.trim();
   try {
     const response = await fetch(`${baseUri}/v1/admin/teacher/update`, {
       method: 'POST',

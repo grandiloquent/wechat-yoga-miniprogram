@@ -294,35 +294,17 @@ function replaceSelected(textarea) {
   // replaceSelectedText(textarea, content.replaceAll(
   //   firstLine[0], firstLine[1]
   // ))
-  
-  let start = textarea.selectionStart;
-  let end = textarea.selectionEnd;
 
-  while (start > -1) {
-    if (textarea.value[start] === '<' && start - 1 > -1
-      && textarea.value[start - 1] === '<') {
-      break
-    }
-    start--;
-  }
-  while (end + 1 < textarea.value.length) {
-    if (textarea.value[end] === '>' &&
-    end + 1 < textarea.value.length&& 
-      textarea.value[end + 1] === '>') {
-      break;
-    }
-    end++;
-  }
-  start++;
+  let { start, end } = findBlock(textarea);
   let s = textarea.value.substring(start, end).trim();
   const n = substringBefore(s, "\n").trim().split(' ');
   textarea.setRangeText(`
   ${substringAfter(s, '\n').trim().replaceAll(
-    n[0],n[1]
+    n[0], n[1]
   )
-}
+    }
 `, start, end, "end")
-   
+
 }
 
 function toBlocks(string) {
@@ -369,26 +351,48 @@ function encodeSVG(textarea) {
             background-image:url("data:image/svg+xml;utf8,${s}");
   `)
 }
-async function formatCode(textarea) {
+function findBlock(textarea) {
   let start = textarea.selectionStart;
   let end = textarea.selectionEnd;
-
-  while (start > -1) {
-    if (textarea.value[start] === '<' && start - 1 > -1
-      && textarea.value[start - 1] === '<') {
-      break
+  while (start > 0) {
+    if (/\s/.test(textarea.value[start])) {
+      let j = 0;
+      while (start > 0 && /\s/.test(textarea.value[start])) {
+        if (textarea.value[start] === '\n') {
+          j++;
+        }
+        start--;
+      }
+      if (j > 2) {
+        break;
+      }
     }
     start--;
   }
-  while (end + 1 < textarea.value.length) {
-    if (textarea.value[end] === '>' &&
-    end + 1 < textarea.value.length&& 
-      textarea.value[end + 1] === '>') {
-      break;
+  start++;
+  while (end < textarea.value.length) {
+    if (/\s/.test(textarea.value[end])) {
+      let j = 0;
+      while (end < textarea.value.length > 0 && /\s/.test(textarea.value[end])) {
+        if (textarea.value[end] === '\n') {
+          j++;
+        }
+        end++;
+      }
+      if (j > 2) {
+        break;
+      }
     }
     end++;
   }
-  start++;
+  return {
+    start, end
+  }
+}
+async function formatCode(textarea) {
+  let { start, end } = findBlock(textarea);
+
+  
   let s = textarea.value.substring(start, end).trim();
   const n = substringBefore(s, "\n").trim();
   textarea.setRangeText(`

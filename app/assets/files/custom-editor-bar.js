@@ -260,6 +260,9 @@ class CustomEditorBar extends HTMLElement {
         } else if (ev.key === 's') {
           saveData(textarea);
           ev.preventDefault();
+        } else if (ev.key === 'h') {
+          replaceSelected(textarea)
+          ev.preventDefault();
         }
       } else if (ev.altKey) {
         if (ev.key === 'h') {
@@ -267,7 +270,7 @@ class CustomEditorBar extends HTMLElement {
           document.body.appendChild(customDialog);
         }
       } else if (ev.key === ' ' || ev.keyCode == 229) {
-        
+
         let start = textarea.selectionStart;
         let end = start;
         if (start > -1)
@@ -285,8 +288,8 @@ class CustomEditorBar extends HTMLElement {
           return;
         }
         ev.preventDefault();
-        textarea.setRangeText(value, start, end,"end");
-        
+        textarea.setRangeText(value, start, end, "end");
+
       }
     });
 
@@ -451,7 +454,7 @@ async function trans(editor, english) {
   // string
   // \n\n${year}
   // (lines[0].join(' '))}\n
-  editor.setRangeText(`${english ? '' : results}`, points[0], points[1],"end");
+  editor.setRangeText(`${english ? '' : results}`, points[0], points[1], "end");
 }
 
 let translate = 'http://kpkpkp.cn/api/trans';
@@ -557,8 +560,8 @@ transform: translate(-50%, -50%);
   "navigate": `bindtap="navigate" data-tab="/pages/index/index"`,
   "id": `data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
   "style": `style="padding:32rpx 32rpx"`,
-  "b":`<!-- -->`,
-  'load':`let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+  "b": `<!-- -->`,
+  'load': `let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
   async function loadData() {
       const response = await fetch(\`\${baseUri}/v1/admin/notices\`, {
           headers: {
@@ -585,14 +588,14 @@ transform: translate(-50%, -50%);
       }
   }
   render();`,
-  "toast":`<custom-toast id="toast"></custom-toast>
+  "toast": `<custom-toast id="toast"></custom-toast>
   <script src="toast.js"></script>
   document.getElementById('toast').setAttribute('message','成功');
   document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`,
-  "link":`<link rel="stylesheet" href=".css">
+  "link": `<link rel="stylesheet" href=".css">
   <script src=".js"></script>`,
-  "search":`const id = new URL(document.URL).searchParams.get('id');`,
-  "submit":`const submit = document.querySelector('.submit');
+  "search": `const id = new URL(document.URL).searchParams.get('id');`,
+  "submit": `const submit = document.querySelector('.submit');
   submit.addEventListener('submit', async evt => {
       evt.stopPropagation();
       const data = {};
@@ -614,9 +617,9 @@ transform: translate(-50%, -50%);
           document.getElementById('toast').setAttribute('message','失败');
       }
   });`,
-  "click":`document.querySelector('.').addEventListener('click', evt => {
+  "click": `document.querySelector('.').addEventListener('click', evt => {
   });`,
-  "upload":`const input = document.createElement('input');
+  "upload": `const input = document.createElement('input');
   input.type = "file";
   input.accept = "image/*";
   input.style = "display:fixed;left:-100%";

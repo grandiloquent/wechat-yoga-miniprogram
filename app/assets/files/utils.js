@@ -288,12 +288,41 @@ function replaceSelectedText(textarea, s) {
   textarea.setRangeText(s, textarea.selectionStart, textarea.selectionEnd);
 }
 function replaceSelected(textarea) {
-  const selectedString = getSelectedString(textarea).trim();
-  const firstLine = substringBefore(selectedString, "\n").trim().split(' ');
-  const content = substringAfter(selectedString, "\n").trim();
-  replaceSelectedText(textarea, content.replaceAll(
-    firstLine[0], firstLine[1]
-  ))
+  // const selectedString = getSelectedString(textarea).trim();
+  // const firstLine = substringBefore(selectedString, "\n").trim().split(' ');
+  // const content = substringAfter(selectedString, "\n").trim();
+  // replaceSelectedText(textarea, content.replaceAll(
+  //   firstLine[0], firstLine[1]
+  // ))
+  
+  let start = textarea.selectionStart;
+  let end = textarea.selectionEnd;
+
+  while (start > -1) {
+    if (textarea.value[start] === '<' && start - 1 > -1
+      && textarea.value[start - 1] === '<') {
+      break
+    }
+    start--;
+  }
+  while (end + 1 < textarea.value.length) {
+    if (textarea.value[end] === '>' &&
+    end + 1 < textarea.value.length&& 
+      textarea.value[end + 1] === '>') {
+      break;
+    }
+    end++;
+  }
+  start++;
+  let s = textarea.value.substring(start, end).trim();
+  const n = substringBefore(s, "\n").trim().split(' ');
+  textarea.setRangeText(`
+  ${substringAfter(s, '\n').trim().replaceAll(
+    n[0],n[1]
+  )
+}
+`, start, end, "end")
+   
 }
 
 function toBlocks(string) {
@@ -345,16 +374,16 @@ async function formatCode(textarea) {
   let end = textarea.selectionEnd;
 
   while (start > -1) {
-    if (textarea.value[start] === '/' && start - 1 > -1
-      && textarea.value[start - 1] === '/') {
+    if (textarea.value[start] === '<' && start - 1 > -1
+      && textarea.value[start - 1] === '<') {
       break
     }
     start--;
   }
   while (end + 1 < textarea.value.length) {
-    if (textarea.value[end] === '/' &&
+    if (textarea.value[end] === '>' &&
     end + 1 < textarea.value.length&& 
-      textarea.value[end + 1] === '/') {
+      textarea.value[end + 1] === '>') {
       break;
     }
     end++;

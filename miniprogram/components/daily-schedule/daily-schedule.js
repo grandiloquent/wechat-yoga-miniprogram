@@ -13,7 +13,7 @@ Component({
     selectedTime: Number,
     offset: {
       type: Number,
-      value: -1
+      value: 0
     },
     app: Object
   },

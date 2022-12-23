@@ -5,7 +5,7 @@ Page({
     data: {
       app,
       // 距离今天的天数，用于切换本周下周
-      offset: -1,
+      offset: 0,
       // 用户选定单位为秒钟的时间
       selectedTime: 0
     },

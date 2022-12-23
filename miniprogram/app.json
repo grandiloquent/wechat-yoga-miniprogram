@@ -2,9 +2,9 @@
   "lazyCodeLoading": "requiredComponents",
   "pages": [
     "pages/index/index",
+    "pages/booking/booking",
     "pages/notices/notices",
     "pages/booked/booked",
-    "pages/booking/booking",
     "pages/market/market",
     "pages/notice/notice",
     "pages/one/one",

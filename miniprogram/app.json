@@ -2,13 +2,14 @@
   "lazyCodeLoading": "requiredComponents",
   "pages": [
     "pages/index/index",
+    "pages/market/market",
     "pages/booked/booked",
-    "pages/notice/notice",
-    "pages/teacher/teacher",
     "pages/booking/booking",
+    "pages/notice/notice",
+    "pages/one/one",
     "pages/small/small",
-    "pages/user/user",
-    "pages/one/one"
+    "pages/teacher/teacher",
+    "pages/user/user"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

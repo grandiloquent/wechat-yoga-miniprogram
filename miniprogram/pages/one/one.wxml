@@ -17,4 +17,4 @@
 </view>
 <login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>
 
-<tabbar app="{{app}}"items="{{items}}" selected="{{selected}}"></tabbar>
+<tabbar app="{{app}}"items="{{items}}" selected="{{selected}}"></tabbar> 

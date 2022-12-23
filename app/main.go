@@ -119,6 +119,11 @@ func main() {
 		case "/v1/admin/notice/update":
 			handlers.V1AdminNoticeUpdate(db, w, r, secret)
 			return
+
+		case "/v1/market":
+			handlers.V1Market(db, w, r)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				println(r.URL.Path + ".html")

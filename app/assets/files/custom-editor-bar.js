@@ -590,6 +590,30 @@ transform: translate(-50%, -50%);
   document.getElementById('toast').setAttribute('message','成功');
   document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`,
   "link":`<link rel="stylesheet" href=".css">
-  <script src=".js"></script>`
+  <script src=".js"></script>`,
+  "search":`const id = new URL(document.URL).searchParams.get('id');`,
+  "submit":`const submit = document.querySelector('.submit');
+  submit.addEventListener('submit', async evt => {
+      evt.stopPropagation();
+      const data = {};
+      data.id = id;
+      data.title = title.value.trim();
+      data.content = content.value.trim();
+      try {
+          const response = await fetch(\`\${baseUri}/v1/admin/notice/update\`, {
+              method: 'POST',
+              headers: {
+                  "Authorization": window.localStorage.getItem("Authorization")
+              },
+              body: JSON.stringify(data)
+          });
+           await response.text();
+           document.getElementById('toast').setAttribute('message','成功');
+      } catch (error) {
+          console.log(error);
+          document.getElementById('toast').setAttribute('message','失败');
+      }
+  });`
 }
+
 

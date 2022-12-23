@@ -345,30 +345,17 @@ async function formatCode(textarea) {
   let end = textarea.selectionEnd;
 
   while (start > -1) {
-    if (textarea.value[start] === '\n') {
-      let s = [];
-
-      while (start > -1 && /\s/.test(textarea.value[start])) {
-        s.push(textarea.value[start])
-        start--;
-      }
-      if ([...s.join('').matchAll(/\n/g)].length > 2) {
-        break;
-      }
+    if (textarea.value[start] === '/' && start - 1 > -1
+      && textarea.value[start - 1] === '/') {
+      break
     }
     start--;
   }
   while (end + 1 < textarea.value.length) {
-    if (textarea.value[end] === '\n') {
-      let s = [];
-
-      while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end])) {
-        s.push(textarea.value[end])
-        end++;
-      }
-      if ([...s.join('').matchAll(/\n/g)].length > 2) {
-        break;
-      }
+    if (textarea.value[end] === '/' &&
+    end + 1 < textarea.value.length&& 
+      textarea.value[end + 1] === '/') {
+      break;
     }
     end++;
   }
@@ -378,7 +365,7 @@ async function formatCode(textarea) {
   textarea.setRangeText(`
   ${n}();
   `, start, end, "end")
-  const str = `function ${n}()}(){
+  const str = `function ${n}(){
     ${substringAfter(s, '\n').trim()}
   }`;
   if (typeof NativeAndroid !== 'undefined') {

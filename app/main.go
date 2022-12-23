@@ -53,6 +53,31 @@ func main() {
 		case "/v1/admin/login":
 			handlers.V1AdminLogin(db, w, r, secret)
 			return
+		case "/v1/admin/market":
+			handlers.V1AdminMarket(db, w, r, secret)
+			return
+
+		case "/v1/admin/market/update":
+			handlers.V1AdminMarketUpdate(db, w, r, secret)
+			return
+
+		case "/v1/admin/notice":
+			handlers.V1AdminNotice(db, w, r, secret)
+			return
+		case "/v1/admin/notice/update":
+			handlers.V1AdminNoticeUpdate(db, w, r, secret)
+			return
+
+		case "/v1/admin/notices":
+			handlers.V1AdminNotices(db, w, r, secret)
+			return
+		case "/v1/admin/teacher":
+			handlers.V1AdminTeacher(db, w, r, secret)
+			return
+
+		case "/v1/admin/teacher/update":
+			handlers.V1AdminTeacherUpdate(db, w, r, secret)
+			return
 		case "/v1/authorization":
 			handlers.V1Authorization(db, w, r, authUrl)
 			break
@@ -61,6 +86,9 @@ func main() {
 			return
 		case "/v1/booked/home":
 			handlers.V1BookedHome(db, w, r)
+			return
+		case "/v1/booked/query":
+			handlers.V1BookedQuery(db, w, r)
 			return
 		case "/v1/booking/query":
 			handlers.V1BookingQuery(db, w, r)
@@ -71,12 +99,20 @@ func main() {
 		case "/v1/functions/home":
 			handlers.V1FunctionsHome(db, w, r)
 			return
+		case "/v1/market":
+			handlers.V1Market(db, w, r)
+			return
+
 		case "/v1/market/home":
 			handlers.V1MarketHome(db, w, r)
 			return
 		case "/v1/notice":
 			handlers.V1Notice(db, w, r)
 			return
+		case "/v1/notices":
+			handlers.V1Notices(db, w, r)
+			return
+
 		case "/v1/notices/home":
 			handlers.V1NoticesHome(db, w, r)
 			return
@@ -95,6 +131,9 @@ func main() {
 		case "/v1/teachers/home":
 			handlers.V1TeachersHome(db, w, r)
 			return
+		case "/v1/unbook":
+			handlers.V1Unbook(db, w, r)
+			return
 		case "/v1/user/check":
 			handlers.V1UserCheck(db, w, r)
 			return
@@ -103,37 +142,6 @@ func main() {
 			return
 		case "/v1/user/user":
 			handlers.V1UserUser(db, w, r)
-			return
-		case "/v1/unbook":
-			handlers.V1Unbook(db, w, r)
-			return
-		case "/v1/booked/query":
-			handlers.V1BookedQuery(db, w, r)
-			return
-		case "/v1/admin/notices":
-			handlers.V1AdminNotices(db, w, r, secret)
-			return
-		case "/v1/admin/notice":
-			handlers.V1AdminNotice(db, w, r, secret)
-			return
-		case "/v1/admin/notice/update":
-			handlers.V1AdminNoticeUpdate(db, w, r, secret)
-			return
-
-		case "/v1/market":
-			handlers.V1Market(db, w, r)
-			return
-
-		case "/v1/notices":
-			handlers.V1Notices(db, w, r)
-			return
-
-		case "/v1/admin/market":
-			handlers.V1AdminMarket(db, w, r, secret)
-			return
-
-		case "/v1/admin/market/update":
-			handlers.V1AdminMarketUpdate(db, w, r, secret)
 			return
 
 		default:

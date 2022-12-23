@@ -613,7 +613,26 @@ transform: translate(-50%, -50%);
           console.log(error);
           document.getElementById('toast').setAttribute('message','失败');
       }
-  });`
+  });`,
+  "click":`document.querySelector('.').addEventListener('click', evt => {
+  });`,
+  "upload":`const input = document.createElement('input');
+  input.type = "file";
+  input.accept = "image/*";
+  input.style = "display:fixed;left:-100%";
+  document.body.appendChild(input);
+  input.click();
+  input.addEventListener('change', async evt => {
+    input.remove();
+    const formData = new FormData();
+    formData.append("images", input.files[0]);
+    const res = await fetch(\`\${baseUri}/v1/picture\`, {
+      method: 'POST',
+      body: formData
+    });
+    const src = await res.text();
+    img.src = \`https://lucidu.cn/images/\${src}\`;
+    inputThumbnail.dataset.src = src;`
 }
 
 

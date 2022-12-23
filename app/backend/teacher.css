@@ -11,3 +11,17 @@ body {
   overflow: initial;
   font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
 }
+
+.close {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  background: rgba(32, 33, 36, 0.6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}

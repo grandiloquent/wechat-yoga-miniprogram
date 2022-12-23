@@ -39,7 +39,7 @@ async function render() {
     inputName.value = obj.name || '';
     inputPhoneNumber.value = obj.phone_number || '';
     inputThumbnail.innerHTML = `<img style="max-width:100%" src="https://lucidu.cn/images/${obj.thumbnail}">
-            <div style="width:24px;height:24px;position:absolute;top:8px;right:8px;border-radius:50%;background:rgba(32,33,36,0.6);color:#fff;display:flex;align-items:center;justify-content:center">
+            <div class="close">
                 <svg style="wdith:18px;height:18px" viewBox="0 0 24 24">
 <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>
 </svg>
@@ -52,11 +52,32 @@ async function render() {
       customImageViewer.setAttribute('src', img.src);
       document.body.appendChild(customImageViewer);
     });
+    inputThumbnail.querySelector('.close').addEventListener('click', evt => {
+      const input = document.createElement('input');
+      input.type = "file";
+      input.accept = "image/*";
+      input.style = "display:fixed;left:-100%";
+      document.body.appendChild(input);
+      input.click();
+      input.addEventListener('change', async evt => {
+        input.remove();
+        const formData = new FormData();
+        formData.append("images", input.files[0]);
+        const res = await fetch(`${baseUri}/v1/picture`, {
+          method: 'POST',
+          body: formData
+        });
+        const src = await res.text();
+        img.src = `https://lucidu.cn/images/${src}`;
+        inputThumbnail.dataset.src = src;
+      });
+    });
   } catch (error) {
 
   }
 }
 render();
+
 
 const submit = document.querySelector('custom-submit-bar');
 submit.addEventListener('submit', async evt => {
@@ -67,6 +88,9 @@ submit.addEventListener('submit', async evt => {
   data.introduction = inputIntroduction.value.trim();
   data.name = inputName.value.trim();
   data.phone_number = inputPhoneNumber.value.trim();
+  if (inputThumbnail.dataset.src) {
+    data.thumbnail = inputThumbnail.dataset.src;
+  }
   try {
     const response = await fetch(`${baseUri}/v1/admin/teacher/update`, {
       method: 'POST',

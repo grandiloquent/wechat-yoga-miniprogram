@@ -35,6 +35,9 @@ $ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=�
 
     <img src="/images/image.png">
 - 执行用户约课候补
+- 团课图标线条过粗，应通过路径偏移减少 4 个像素
+- 预约课程页面天数偏移不应初始化为-1，否则会导致显示错误
+
 
 ## 相关文档
 

@@ -1,5 +1,5 @@
 function filterHandler(evt) {
-
+  if (!evt.detail) return;
   if (evt.detail <= 4) {
     const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 1) * 86400;
     render(date, date + 86400);
@@ -20,7 +20,7 @@ async function loadLessonsData(start, end) {
 
 function navigateToLessonHandler(evt) {
   evt.stopPropagation();
-  window.location = `lesson?id=${iterator.course_id}`;
+  window.location = `lesson?id=${evt.currentTarget.dataset.id}`;
 }
 
 function sortLessons(obj) {
@@ -58,22 +58,27 @@ customFilter.addEventListener('submit', filterHandler);
 async function render(start, end) {
 
   layout.innerHTML = '';
-  let obj = await loadLessonsData(start, end);
+  let obj;
+  try {
+    obj = await loadLessonsData(start, end);
+  } catch (error) {
 
+  }
+  if (!obj) return;
   sortLessons(obj);
-
-obj .forEach((lesson,index)=>{
-  const customMiniItem = document.createElement('custom-mini-item');
+  obj.forEach((lesson, index) => {
+    const customMiniItem = document.createElement('custom-mini-item');
     customMiniItem.style.width = '100%'
     layout.appendChild(customMiniItem);
 
-  customMiniItem.setAttribute("image", `https://lucidu.cn/images/${lesson.thumbnail}`);
-                customMiniItem.setAttribute("title", lesson.lesson_name);
+    customMiniItem.setAttribute("image", `https://lucidu.cn/images/${lesson.thumbnail}`);
+    customMiniItem.setAttribute("title", lesson.lesson_name);
 
-let dif = parseInt(lesson.peoples) - parseInt(lesson.count);
+    let dif = parseInt(lesson.peoples) - parseInt(lesson.count);
     customMiniItem.setAttribute("bottom-title", dif > 0 ? `差 ${dif} 人` : '已满额');
     customMiniItem.setAttribute("bottom-subhead", formatLessonDateTime(lesson));
     customMiniItem.setAttribute("subhead", formatLessonType(lesson));
+    customMiniItem.dataset.id = lesson.course_id;
     customMiniItem.addEventListener('click', navigateToLessonHandler);
   })
 

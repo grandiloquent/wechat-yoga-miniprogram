@@ -369,7 +369,7 @@ function findBlock(textarea) {
     }
     start--;
   }
-  start++;
+  start && start++;
   while (end < textarea.value.length) {
     if (/\s/.test(textarea.value[end])) {
       let j = 0;
@@ -392,7 +392,7 @@ function findBlock(textarea) {
 async function formatCode(textarea) {
   let { start, end } = findBlock(textarea);
 
-  
+
   let s = textarea.value.substring(start, end).trim();
   const n = substringBefore(s, "\n").trim();
   textarea.setRangeText(`

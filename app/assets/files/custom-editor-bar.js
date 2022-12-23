@@ -635,7 +635,46 @@ transform: translate(-50%, -50%);
     });
     const src = await res.text();
     img.src = \`https://lucidu.cn/images/\${src}\`;
-    inputThumbnail.dataset.src = src;`
+    inputThumbnail.dataset.src = src;`,
+    "try":`try{
+
+    }catch(error){
+      console.log(error);
+    }`,
+    'del':`function showCloseDialog(id) {
+      const customDialog = document.createElement('custom-dialog');
+      customDialog.addEventListener('submit', submitCloseHandler);
+      customDialog.dataset.id = id;
+      document.body.appendChild(customDialog);
+    }
+    
+    function bindCloseButton(svg) {
+      svg.addEventListener('click', evt => {
+        showCloseDialog(evt.currentTarget.parentNode.dataset.id);
+      });
+    }
+    
+    async function submitCloseHandler(evt) {
+      evt.stopPropagation();
+      const id = evt.currentTarget.dataset.id;
+      console.log(id);
+      evt.currentTarget.remove();
+      try {
+        const res = await fetch(\`\${baseUri}/v1/admin/notice/delete?id=\${id}\`, {
+          headers: {
+            "Authorization": window.localStorage.getItem("Authorization")
+          }
+        });
+        if (res.status > 399 || res.status < 200) {
+          throw new Error(\`\${res.status} \${res.statusText}\`);
+        }
+        await res.text();
+        await render();
+      } catch (error) {
+        console.log(error);
+      }
+    
+    }`
 }
 
 

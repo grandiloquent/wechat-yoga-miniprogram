@@ -588,6 +588,8 @@ transform: translate(-50%, -50%);
   "toast":`<custom-toast id="toast"></custom-toast>
   <script src="toast.js"></script>
   document.getElementById('toast').setAttribute('message','成功');
-  document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`
+  document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`,
+  "link":`<link rel="stylesheet" href=".css">
+  <script src=".js"></script>`
 }
 

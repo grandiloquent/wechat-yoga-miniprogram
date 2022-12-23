@@ -2,46 +2,49 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>排课 - 晨蕴瑜伽</title>
-    <style>
-        html {
-            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
-        }
-
-        body {
-            font-size: small;
-            margin: 0;
-            background: #fff;
-            color: #4d5156;
-            background-color: #fff;
-            overflow: initial;
-            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>设置 - 晨蕴瑜伽</title>
+  <link rel="stylesheet" href="settings.css">
+  <script src="js/custom-header.js"></script>
+  <script src="js/custom-drawer.js"></script>
+  <script src="js/custom-submit-bar.js"></script>
+  <script src="js/custom-input.js"></script>
+  <script src="js/custom-mini-action.js"></script>
 </head>
 
 <body>
-    <custom-header></custom-header>
-    <div style="height: 64px;"></div>
+  <custom-header></custom-header>
+  <div style="height: 64px;"></div>
 
-    <div style="font-size: 16px;margin: 20px;line-height: 24px;">登录信息</div>
-    <custom-input label="服务器地址" id="input-host-name"></custom-input>
-    <custom-input label="登录密码" type="phone" id="input-password"></custom-input>
+  <div style="margin: 16px 20px;display: grid;grid-template-columns: repeat(5,1fr);row-gap: 16px;">
 
-    <script src="custom-input.js"></script>
+    <custom-mini-action data-href="notices">
+      <svg slot="image" style="height: 20px;width:20px;" viewBox="0 0 24 24">
+        <path d="M12.984 15v-2.016h-1.969v2.016h1.969zM12.984 11.016v-6h-1.969v6h1.969zM20.016 2.016q0.797 0 1.383 0.586t0.586 1.383v12q0 0.797-0.586 1.406t-1.383 0.609h-14.016l-3.984 3.984v-18q0-0.797 0.586-1.383t1.383-0.586h16.031z"></path>
+      </svg>
+      <div slot="title">公告</div>
+    </custom-mini-action>
 
-    <custom-drawer></custom-drawer>
-    <script src="custom-header.js"></script>
-    <script src="custom-drawer.js"></script>
-    <div style="height: 88px;"></div>
-    <custom-submit-bar></custom-submit-bar>
-    <script src="custom-submit-bar.js"></script>
-    <script>
-        
-    </script>
+    <custom-mini-action data-href="market">
+      <svg slot="image" style="height: 20px;width:20px;" viewBox="0 0 24 24">
+        <path d="M20.016 14.016v-6h-5.109l2.109 2.813-1.641 1.172q-3-4.078-3.375-4.594-0.375 0.516-3.375 4.594l-1.641-1.172 2.109-2.813h-5.109v6h16.031zM20.016 18.984v-1.969h-16.031v1.969h16.031zM9 3.984q-0.422 0-0.703 0.305t-0.281 0.727 0.281 0.703 0.703 0.281 0.703-0.281 0.281-0.703-0.281-0.727-0.703-0.305zM15 3.984q-0.422 0-0.703 0.305t-0.281 0.727 0.281 0.703 0.703 0.281 0.703-0.281 0.281-0.703-0.281-0.727-0.703-0.305zM20.016 6q0.844 0 1.406 0.586t0.563 1.43v10.969q0 0.844-0.563 1.43t-1.406 0.586h-16.031q-0.844 0-1.406-0.586t-0.563-1.43v-10.969q0-0.844 0.563-1.43t1.406-0.586h2.203q-0.188-0.656-0.188-0.984 0-1.219 0.891-2.109t2.109-0.891q1.547 0 2.484 1.313l0.516 0.703 0.516-0.703q0.328-0.563 1.078-0.938t1.406-0.375q1.219 0 2.109 0.891t0.891 2.109q0 0.328-0.188 0.984h2.203z"></path>
+      </svg>
+      <div slot="title">营销</div>
+    </custom-mini-action>
+
+  </div>
+  <div style="font-size: 16px;margin: 20px;line-height: 24px;">登录信息</div>
+  <custom-input label="服务器地址" id="input-host-name"></custom-input>
+  <custom-input label="登录密码" type="phone" id="input-password"></custom-input>
+
+
+  <custom-drawer></custom-drawer>
+  <div style="height: 88px;"></div>
+  <custom-submit-bar></custom-submit-bar>
+
+  <script src="settings.js"></script>
 
 </body>
 

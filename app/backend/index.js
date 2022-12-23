@@ -17,13 +17,14 @@ async function loadData() {
       "Authorization": window.localStorage.getItem("Authorization")
     }
   })
-  return response.json();
+  return response.text();
 }
 async function render() {
   try {
     await loadData()
   } catch (error) {
-    window.location = `/backend/login?returns=${encodeURIComponent(window.location.href)}`
+console.log(error);
+   window.location = `/backend/login?returns=${encodeURIComponent(window.location.href)}`
   }
 }
 render();

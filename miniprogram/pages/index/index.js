@@ -19,24 +19,24 @@ Page({
     // 设置底部工具栏
     this.getTabBar().setData({
       items: [{
-        name: "首页",
-        // 图标的路径
-        src: "home",
-        // 导航的页面
-        href: "index"
-      }, {
-        name: "约课",
-        src: "book",
-        href: "booking"
-      }, {
-        name: "已约",
-        src: "booked",
-        href: "booked"
-      }, {
-        name: "我的",
-        src: "user",
-        href: "user"
-      }
+          name: "首页",
+          // 图标的路径
+          src: "home",
+          // 导航的页面
+          href: "index"
+        }, {
+          name: "约课",
+          src: "book",
+          href: "booking"
+        }, {
+          name: "已约",
+          src: "booked",
+          href: "booked"
+        }, {
+          name: "我的",
+          src: "user",
+          href: "user"
+        }
 
       ],
       selected: 0
@@ -56,14 +56,14 @@ Page({
       ["v1/market/home", "market"],
       ["v1/notices/home", "notices"]
     ]
-      .forEach(x => {
-        utils.getString(app, x[0], (err, data) => {
-          if (err) return;
-          this.setData({
-            [x[1]]: data
-          });
+    .forEach(x => {
+      utils.getString(app, x[0], (err, data) => {
+        if (err) return;
+        this.setData({
+          [x[1]]: data
         });
-      })
+      });
+    })
 
   },
   // 设置分享时的标题
@@ -72,9 +72,21 @@ Page({
       title: app.globalData.title
     };
   },
-  onSubmit() { },
+  onSubmit() {},
   onHomeActionsSubmit(evt) {
-    console.log(evt.detail)
+    if (evt.detail === 2) {
+      wx.switchTab({
+        url: `/pages/booking/booking`
+      })
+    } else if (evt.detail === 3) {
+      wx.navigateTo({
+        url: `/pages/one/one`
+      })
+    }else if (evt.detail === 6) {
+      wx.navigateTo({
+        url: `/pages/market/market`
+      })
+    }
   },
   // 导航到公告页面
   onHomeNoticeSubmit(evt) {

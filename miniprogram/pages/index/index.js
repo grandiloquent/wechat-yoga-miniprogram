@@ -90,7 +90,7 @@ Page({
   },
   // 导航到公告页面
   onHomeNoticeSubmit(evt) {
-    evt.detail
+    
     wx.navigateTo({
       url: `/pages/notice/notice?id=${evt.detail}`
     })

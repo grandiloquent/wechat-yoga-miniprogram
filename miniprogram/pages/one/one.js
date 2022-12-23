@@ -133,3 +133,6 @@ Page({
 
 )
  
+onNoticesSubmit(evt) {
+        console.log(evt.detail)
+      }

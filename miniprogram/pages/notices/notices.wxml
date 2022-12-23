@@ -1,0 +1,4 @@
+<view class="item" wx:for="{{notices}}" wx:key="id" data-id="{{item.id}}" bindtap="navigate">
+        <view class="item-title">{{item.title}}</view>
+        <view class="item-subtitle">{{item.timeago}}</view>
+    </view>

@@ -124,6 +124,10 @@ func main() {
 			handlers.V1Market(db, w, r)
 			return
 
+		case "/v1/notices":
+			handlers.V1Notices(db, w, r)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				println(r.URL.Path + ".html")

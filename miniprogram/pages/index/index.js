@@ -88,7 +88,7 @@ Page({
       })
     }else if (evt.detail === 7) {
       wx.navigateTo({
-        url: `/pages/notice/notice`
+        url: `/pages/notices/notices`
       })
     }
   },

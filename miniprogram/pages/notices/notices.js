@@ -3,7 +3,8 @@ const app = getApp();
 
 Page({
   data: {
-    app
+    app,
+title:'公告'
   },
   async onLoad() {
     wx.showShareMenu({
@@ -11,7 +12,7 @@ Page({
       menus: ['shareAppMessage', 'shareTimeline']
     })
     wx.setNavigationBarTitle({
-      title: app.globalData.title
+      title: this.data.title
     })
     this.loadData();
   },
@@ -32,7 +33,7 @@ Page({
     });
   }, onShareAppMessage() {
     return {
-      title: app.globalData.title
+      title:this.data.title
     };
   },
 })

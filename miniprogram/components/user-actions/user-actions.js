@@ -38,6 +38,9 @@ options: {
    onClick(evt){
       this.triggerEvent('submit')
     }
+, navigate(evt) {
+utils.navigate(evt)
+}
     /*
    bindtap="navigate"
    navigate(evt) {

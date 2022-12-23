@@ -674,7 +674,13 @@ transform: translate(-50%, -50%);
         console.log(error);
       }
     
-    }`
+    }`,
+    "bind":`document.querySelectorAll('[bind]').forEach(value => {
+      const keys = value.getAttribute('bind').split(':');
+      value.addEventListener(keys[0], evt => {
+          window[keys[1]](evt);
+      })
+  })`
 }
 
 

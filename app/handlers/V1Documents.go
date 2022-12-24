@@ -17,10 +17,14 @@ func V1Documents(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	var array []string
+	var array []map[string]interface{}
 	for i := 0; i < len(files); i++ {
 		if !files[i].IsDir() && strings.HasSuffix(files[i].Name(), ".md") {
-			array = append(array, files[i].Name())
+			m := make(map[string]interface{})
+			n := files[i].Name()
+			m["name"] = n[:strings.LastIndex(n, ".")]
+			m["time"] = files[i].ModTime().Unix()
+			array = append(array, m)
 		}
 	}
 	buf, err := json.Marshal(array)

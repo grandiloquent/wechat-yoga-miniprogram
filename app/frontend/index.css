@@ -93,3 +93,20 @@ body {
     font-size: 14px;
     line-height: 20px;
 }
+
+.separator {
+    background: #f2f2f2;
+    height: 8px
+}
+.section{
+      padding:16px
+      }
+.section-title{
+      font-size:18px;line-height:24px;color:rgba(0,0,0,.87)
+      }
+.items{
+      padding:0 16px
+      }
+.item{
+      border-top:1px solid #dadce0;padding:8px 0;box-sizing:border-box;display:flex;min-height:43px;font-size:12px;justify-content:space-between;color:#5f6368
+      }

@@ -536,151 +536,36 @@ console.log([...document.querySelectorAll('.slide-image-wrap img')]
     .join('\n'))
     */
 
-const snippets = {
-  "log": `console.log();`,
-  "seconds": `new Date().setHours(0, 0, 0, 0) / 1000`,
-  "map": `.map((element,index)=>{
-    return element;
-  })`,
-  "wxfor": `wx:for="{{lessons}}" wx:key="*this"`,
-  "switch": `switch(){
-
-}`,
+const snippets =JSON.parse(window.localStorage.getItem('snippets'))
 
 
-  "view": `<view class="wrapper" style="padding:32rpx 32rpx">
-</view>`,
-  "flex": `display:flex;align-items: center;justify-content: center;`,
-  "border": `60,176,53`,
-  "center": `
-.center{top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-}`,
-  "navigate": `bindtap="navigate" data-tab="/pages/index/index"`,
-  "id": `data-id="{{item.id}}" bindtap="{{onSubmit}}"`,
-  "style": `style="padding:32rpx 32rpx"`,
-  "b": `<!-- -->`,
-  'load': `let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
-  async function loadData() {
-      const response = await fetch(\`\${baseUri}/v1/admin/notices\`, {
-          headers: {
-              "Authorization": window.localStorage.getItem("Authorization")
-          }
-      })
-      return response.json();
-  }
-  async function render() {
-      const wrapper = document.querySelector('.wrapper');
-      let obj;
-      try {
-          obj = await loadData();
-          obj.forEach(value => {
-              const div = document.createElement('div');
-              div.textContent = value.title;
-              div.addEventListener('click', evt => {
-                  evt.stopPropagation();
-              });
-              wrapper.appendChild(div);
-          })
-      } catch (error) {
-  
-      }
-  }
-  render();`,
-  "toast": `<custom-toast id="toast"></custom-toast>
-  <script src="toast.js"></script>
-  document.getElementById('toast').setAttribute('message','成功');
-  document.getElementById('toast').setAttribute('message', \`错误\${error.messaage}\`);`,
-  "link": `<link rel="stylesheet" href=".css">
-  <script src=".js"></script>`,
-  "search": `const id = new URL(document.URL).searchParams.get('id');`,
-  "submit": `const submit = document.querySelector('.submit');
-  submit.addEventListener('submit', async evt => {
-      evt.stopPropagation();
-      const data = {};
-      data.id = id;
-      data.title = title.value.trim();
-      data.content = content.value.trim();
-      try {
-          const response = await fetch(\`\${baseUri}/v1/admin/notice/update\`, {
-              method: 'POST',
-              headers: {
-                  "Authorization": window.localStorage.getItem("Authorization")
-              },
-              body: JSON.stringify(data)
-          });
-           await response.text();
-           document.getElementById('toast').setAttribute('message','成功');
-      } catch (error) {
-          console.log(error);
-          document.getElementById('toast').setAttribute('message','失败');
-      }
-  });`,
-  "click": `document.querySelector('.').addEventListener('click', evt => {
-  });`,
-  "upload": `const input = document.createElement('input');
-  input.type = "file";
-  input.accept = "image/*";
-  input.style = "display:fixed;left:-100%";
-  document.body.appendChild(input);
-  input.click();
-  input.addEventListener('change', async evt => {
-    input.remove();
-    const formData = new FormData();
-    formData.append("images", input.files[0]);
-    const res = await fetch(\`\${baseUri}/v1/picture\`, {
-      method: 'POST',
-      body: formData
-    });
-    const src = await res.text();
-    img.src = \`https://lucidu.cn/images/\${src}\`;
-    inputThumbnail.dataset.src = src;`,
-    "try":`try{
+/*
+b
+bind
+border
+center
+click
+del
+flex
+id
+link
+load
+log
+map
+navigate
+search
+seconds
+style
+submit
+switch
+toast
+try
+upload
+view
+wxfor
+(()=>{
+const s="";
+console.log(Object.keys( s).sort().join('\n'))
 
-    }catch(error){
-      console.log(error);
-    }`,
-    'del':`function showCloseDialog(id) {
-      const customDialog = document.createElement('custom-dialog');
-      customDialog.addEventListener('submit', submitCloseHandler);
-      customDialog.dataset.id = id;
-      document.body.appendChild(customDialog);
-    }
-    
-    function bindCloseButton(svg) {
-      svg.addEventListener('click', evt => {
-        showCloseDialog(evt.currentTarget.parentNode.dataset.id);
-      });
-    }
-    
-    async function submitCloseHandler(evt) {
-      evt.stopPropagation();
-      const id = evt.currentTarget.dataset.id;
-      console.log(id);
-      evt.currentTarget.remove();
-      try {
-        const res = await fetch(\`\${baseUri}/v1/admin/notice/delete?id=\${id}\`, {
-          headers: {
-            "Authorization": window.localStorage.getItem("Authorization")
-          }
-        });
-        if (res.status > 399 || res.status < 200) {
-          throw new Error(\`\${res.status} \${res.statusText}\`);
-        }
-        await res.text();
-        await render();
-      } catch (error) {
-        console.log(error);
-      }
-    
-    }`,
-    "bind":`document.querySelectorAll('[bind]').forEach(value => {
-      const keys = value.getAttribute('bind').split(':');
-      value.addEventListener(keys[0], evt => {
-          window[keys[1]](evt);
-      })
-  })`
-}
-
-
+})(); 
+*/

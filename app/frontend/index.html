@@ -2,54 +2,108 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>瑜伽约课微信小程序 - 开源免费</title>
-    <link rel="stylesheet" href="index.css">
-    <script src="custom-breadcrumb.js"></script>
-    <script src="custom-button.js"></script>
-    <script src="custom-header.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>瑜伽约课微信小程序 - 开源免费</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="custom-breadcrumb.js"></script>
+  <script src="custom-button.js"></script>
+  <script src="custom-header.js"></script>
 </head>
 
 <body>
-    <div style="height: 56px;">
+  <div style="height: 56px;">
+  </div>
+  <div class="header">
+    <div class="heading-wrapper">
+      <div class="heading-top">
+        <custom-breadcrumb></custom-breadcrumb>
+        <div class="heading-right">
+          <custom-button></custom-button>
+        </div>
+      </div>
+      <h1 class="heading">瑜伽约课微信小程序</h1>
     </div>
-    <div class="header">
-        <div class="heading-wrapper">
-            <div class="heading-top">
-                <custom-breadcrumb></custom-breadcrumb>
-                <div class="heading-right">
-                    <custom-button></custom-button>
-                </div>
-            </div>
-            <h1 class="heading">瑜伽约课微信小程序</h1>
-        </div>
+  </div>
+  <div class="grid">
+    <div class="grid-item">
+      <div class="grid-item-text">
+        免费
+      </div>
     </div>
-    <div class="grid">
-        <div class="grid-item">
-            <div class="grid-item-text">
-                免费
-            </div>
-        </div>
-        <div class="grid-item">
-            <div class="grid-item-text">
-                开源
-            </div>
-        </div>
-        <div class="grid-item">
-            <div class="grid-item-text">
-                弹性
-            </div>
-        </div>
-        <div class="grid-item">
-            <div class="grid-item-text">
-                高效
-            </div>
-        </div>
+    <div class="grid-item">
+      <div class="grid-item-text">
+        开源
+      </div>
     </div>
+    <div class="grid-item">
+      <div class="grid-item-text">
+        弹性
+      </div>
+    </div>
+    <div class="grid-item">
+      <div class="grid-item-text">
+        高效
+      </div>
+    </div>
+  </div>
 
-    <custom-header title="瑜伽"></custom-header>
+  <div class="separator"></div>
+  <div class="section" style="display:flex;align-items: center;justify-content: space-between;color:rgba(0,0,0,.87);fill:currentcolor">
+    <div class="section-title">简介</div>
+    <div style="width:24px;height:24px;"><svg viewBox="0 0 24 24">
+        <path d="M7.406 8.578l4.594 4.594 4.594-4.594 1.406 1.406-6 6-6-6z"></path>
+      </svg></div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="section">
+    <div class="section-title">视频</div>
+  </div>
+
+  <div class="separator"></div>
+
+  <div class="section">
+    <div class="section-title">文档</div>
+  </div>
+
+
+  <div class="items">
+    <div class="item">
+      <div></div>
+    </div>
+  </div>
+
+
+  <custom-header title="瑜伽"></custom-header>
+
+  <script>
+    let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+    async function loadData() {
+      const response = await fetch(`${baseUri}/v1/documents`)
+      return response.json();
+    }
+    async function render() {
+      const wrapper = document.querySelector('.items');
+      let obj;
+      try {
+        obj = await loadData();
+        obj.forEach(value => {
+          const div = document.createElement('div');
+          div.textContent = value.title;
+          div.addEventListener('click', evt => {
+            evt.stopPropagation();
+          });
+          wrapper.appendChild(div);
+        })
+      } catch (error) {
+
+      }
+    }
+    render();
+  </script>
 </body>
 
 </html>

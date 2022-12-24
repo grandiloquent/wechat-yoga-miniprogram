@@ -148,6 +148,10 @@ func main() {
 			handlers.V1AdminNoticeDelete(db, w, r, secret)
 			return
 
+		case "/v1/documents":
+			handlers.V1Documents(db, w, r)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				http.ServeFile(w, r, "."+r.URL.Path+".html")

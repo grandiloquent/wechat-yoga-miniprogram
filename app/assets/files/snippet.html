@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码段</title>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            background-color: #f7f8fa;
+            color: #323233;
+            font-family: Open Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Helvetica, Segoe UI, Arial, Roboto, PingFang SC, miui, Hiragino Sans GB, Microsoft Yahei, sans-serif;
+            font-size: 16px;
+            min-width: 1100px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        a:focus,
+        input:focus,
+        button:focus,
+        textarea:focus{
+            outline: none;
+        }
+
+        .field {
+
+            position: relative;
+            display: flex;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px 16px;
+            overflow: hidden;
+            color: #323233;
+            font-size: 14px;
+            line-height: 24px;
+            background-color: #fff;
+
+        }
+
+        .field__label {
+
+            flex: none;
+            box-sizing: border-box;
+            width: 6.2em;
+            margin-right: 12px;
+            color: #646566;
+            text-align: left;
+            word-wrap: break-word;
+
+        }
+
+        .field__value {
+
+            flex: 1;
+            position: relative;
+            color: #969799;
+            text-align: right;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow: visible;
+
+        }
+
+        .field__body {
+
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+
+        }
+
+        .field__control {
+
+            word-wrap: break-word;
+            font: inherit;
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            color: #323233;
+            line-height: inherit;
+            text-align: left;
+            background-color: transparent;
+            border: 0;
+            resize: none;
+
+        }
+    </style>
+
+
+
+
+
+</head>
+
+<body>
+    <div class="wrapper">
+        
+    </div>
+    <div>
+        <textarea style="width: 100%;height: 500px;resize: none;"></textarea>
+    </div>
+    <button>添加</button>
+    <script src="snippet.js"></script>
+</body>
+
+</html>

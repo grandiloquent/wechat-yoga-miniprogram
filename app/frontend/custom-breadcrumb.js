@@ -51,6 +51,7 @@ class CustomBreadcrumb extends HTMLElement {
             <path d="M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12"></path>
         </svg>
     </div>
+<div class="breadcrumb-item">文档</div>
 </div>`;
     }
 

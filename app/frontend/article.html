@@ -6,35 +6,317 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>瑜伽约课微信小程序</title>
+
   <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+  <style>
+    html {
+      height: 100%;
+      overflow: visible;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      color: rgba(0, 0, 0, .87);
+      font-family: Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      text-size-adjust: 100%;
+      overflow: visible;
+      overflow-y: scroll;
+      bottom: auto;
+      height: 100%;
+      right: auto;
+      width: auto;
+    }
+
+    .header {
+      max-width: 1024px;
+      margin: auto;
+      position: relative;
+      padding: 8px 16px 16px 16px;
+    }
+
+    .heading-wrapper {
+
+      margin: -12px -16px 0;
+      padding: 8px 16px;
+
+    }
+
+    .heading-top {
+
+      display: flex;
+      width: 100%;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+
+    }
+
+    .markdown strong {
+      font-weight: 700;
+      color: #000;
+    }
+
+    .markdown h1:first-of-type {
+      -webkit-margin-end: 52px;
+      -moz-margin-end: 52px;
+      margin-inline-end: 52px;
+      display: inline;
+      margin-bottom: 20px;
+      vertical-align: middle;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font: 600 40px / 48px Android Euclid, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif;
+      letter-spacing: -0.5px;
+    }
+
+    .markdown h2 {
+      color: #202124;
+      -webkit-font-smoothing: antialiased;
+      text-size-adjust: 100%;
+      -webkit-box-direction: normal;
+      box-sizing: inherit;
+      font: 600 24px / 32px Android Euclid, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif;
+      letter-spacing: normal;
+      margin: 56px 0 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      outline: none;
+    }
+
+    .markdown p {
+      margin: 16px 0;
+      padding: 0;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .markdown a {
+      -webkit-font-smoothing: antialiased;
+      text-size-adjust: 100%;
+      -webkit-box-direction: normal;
+      direction: ltr !important;
+      text-align: left !important;
+      font: Roboto Mono, monospace;
+      box-sizing: inherit;
+      color: #1769e0;
+      outline: 0;
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .markdown ol,
+    .markdown ul {
+      margin: 0;
+      padding-left: 40px;
+    }
+
+    .markdown li,
+    .markdown li p {
+      margin: 12px 0;
+      padding: 0;
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    .markdown .table-wrapper {
+      margin: 32px 0;
+      overflow: auto;
+    }
+
+    .markdown table {
+      border: 0;
+      border-collapse: collapse;
+      border-spacing: 0;
+      font: 14px / 20px Roboto, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif;
+      width: 100%;
+      margin: 32px 0;
+    }
+
+    .markdown tr {
+      box-sizing: inherit;
+      background: 0;
+      border: 0;
+      border-bottom: 1px solid #dadce0;
+    }
+
+    .markdown td {
+      border: 0;
+      margin: 0;
+      text-align: left;
+      padding: 15px 16px 16px;
+      background: #fff;
+      vertical-align: top;
+      word-break: keep-all;
+    }
+
+    .markdown .note {
+      border-radius: 4px;
+      display: block;
+      font-size: 14px;
+      margin: 32px 0;
+      background: #e1f5fe;
+      color: #01579b;
+      padding: 16px 24px 16px 24px;
+      /*60px*/
+    }
+
+    .markdown .success {
+      border-radius: 4px;
+      display: block;
+      font-size: 14px;
+      margin: 32px 0;
+      background: #e0f2f1;
+      color: #00796b;
+      padding: 16px 24px 16px 60px;
+    }
+
+    .markdown .success>svg {
+      fill: currentColor;
+    }
+
+    code,
+    pre {
+      background: rgb(248, 249, 250);
+      color: rgb(55, 71, 79);
+      direction: ltr !important;
+      font: 400 100% / 1 Consolas, Mono, monospace;
+      padding: 1px 4px;
+      text-align: left !important;
+    }
+
+    code {
+      border: 1px solid #e8eaed;
+      border-radius: 4px;
+      font: 500 90% / 1 Consolas, Mono, monospace;
+      word-break: break-word;
+    }
+
+    th {
+
+      border-collapse: collapse;
+      border-spacing: 0;
+      box-sizing: inherit;
+      border: 0;
+      margin: 0;
+      text-align: left;
+      height: 48px;
+      padding: 16px;
+      vertical-align: middle;
+      font: 500 16px / 24px Roboto, "Noto Sans", "Noto Sans JP", "Noto Sans KR";
+      background: #f1f3f4;
+      color: #000;
+      width: 15%;
+    }
+
+    .markdown h3 {
+      font: 500 20px / 28px Android Euclid, Noto Sans, Noto Sans JP, Noto Sans KR, Noto Naskh Arabic, Noto Sans Thai, Noto Sans Hebrew, Noto Sans Bengali, sans-serif;
+      letter-spacing: normal;
+      margin: 32px 0 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      outline: none;
+    }
+
+    img,
+    video {
+      border: 0;
+      height: auto;
+      max-width: 100%;
+    }
+
+    pre {
+      /*#f8f9fa;*/
+      color: #37474f;
+      direction: ltr !important;
+      text-align: left !important;
+      font: 14px / 20px Consolas, monospace;
+      overflow-x: auto;
+      position: relative;
+      margin: 0;
+      /*padding: 24px;*/
+      box-sizing: border-box;
+    }
+
+    pre::-webkit-scrollbar {
+      display: none;
+    }
+
+    pre code {
+      color: #37474f;
+      direction: ltr !important;
+      text-align: left !important;
+      border-radius: 4px;
+      font: 500 90% / 1 Consolas, monospace;
+      font-weight: 400;
+      word-break: normal;
+      background: 0;
+      border: 0;
+      font-size: 14px;
+      padding: 0;
+    }
+
+    .caution {
+      border-radius: 4px;
+      display: block;
+      font-size: 14px;
+      margin: 32px 0;
+      padding: 16px 24px 16px 24px;
+      /* padding: 16px 24px 16px 60px; */
+      background: #feefe3;
+      color: #bf360c;
+    }
+
+
+    .hljs {
+      background: #f3f3f3 !important;
+    }
+  </style>
+
 </head>
+<script src="custom-breadcrumb.js"></script>
+<script src="custom-button.js"></script>
+<script src="custom-header.js"></script>
 
 <body>
-  <div>
+  <custom-header title="文档"></custom-header>
+  <div style="height: 56px;">
+  </div>
+  <div class="header">
+    <div class="heading-wrapper">
+      <div class="heading-top">
+        <custom-breadcrumb></custom-breadcrumb>
+        <div class="heading-right">
+          <custom-button></custom-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="markdown" style="padding:16px;">
   </div>
   <script>
-    console.log(window.markdownit);
     let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
     const name = new URL(document.URL).searchParams.get('name') || '服务器';
+    document.title = `${name} - ${document.title}`
     async function loadData() {
       const response = await fetch(`${baseUri}/v1/document?name=${encodeURIComponent(name)}`)
-      return response.json();
+      return response.text();
     }
     async function render() {
-      const wrapper = document.querySelector('.wrapper');
+      const wrapper = document.querySelector('.markdown');
       let obj;
       try {
         obj = await loadData();
-        obj.forEach(value => {
-          const div = document.createElement('div');
-          div.textContent = value.title;
-          div.addEventListener('click', evt => {
-            evt.stopPropagation();
-          });
-          wrapper.appendChild(div);
-        })
-      } catch (error) {
 
+
+        wrapper.innerHTML = markdownit({
+          html: true,
+          linkify: true,
+          typographer: true
+        }).render(obj);
+
+      } catch (error) {
+        console.log(error);
       }
     }
     render();

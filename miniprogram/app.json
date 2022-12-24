@@ -29,8 +29,7 @@
         "pagePath": "pages/booked/booked"
       },
       {
-        "pagePath": "pages/user/user",
-        "text": "我的"
+        "pagePath": "pages/user/user"
       }
     ]
   },

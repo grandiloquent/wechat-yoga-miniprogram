@@ -114,6 +114,3 @@ Page({
 
 })
 
-function onCopyrightSubmit(evt) {
-
-}

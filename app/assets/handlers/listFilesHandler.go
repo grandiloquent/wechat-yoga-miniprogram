@@ -32,7 +32,7 @@ func ListFilesHandler(w http.ResponseWriter, r *http.Request) {
 		p = "C:/Users/Administrator/Desktop"
 	}
 	if r.URL.Query().Get("isDir") == "0" {
-		if strings.HasSuffix(p, ".html") {
+		if strings.HasSuffix(p, ".htm") {
 			b, err := ioutil.ReadFile(p)
 			if err != nil {
 				http.NotFound(w, r)

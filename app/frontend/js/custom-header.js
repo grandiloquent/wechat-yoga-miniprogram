@@ -1,8 +1,10 @@
 class CustomHeader extends HTMLElement {
-    constructor() {
-        super();
-        this.root = this.attachShadow({ mode: 'open' });
-        this.root.innerHTML = `<style>
+  constructor() {
+    super();
+    this.root = this.attachShadow({
+      mode: 'open'
+    });
+    this.root.innerHTML = `<style>
     .header {
         color: black;
         min-width: 320px;
@@ -102,33 +104,41 @@ class CustomHeader extends HTMLElement {
         </div>
     </div>
 </div>`;
+  }
+  static get observedAttributes() {
+    return ['title'];
+  }
+  connectedCallback() {
+    this.root.host.style.userSelect = 'none';
+    const header = this.root.querySelector('.header');
+    document.addEventListener("scroll", evt => {
+      if (window.scrollY > 56) {
+        if (!header.hasAttribute('style'))
+          header.style.boxShadow = '0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%), 0px 2px 4px -1px rgb(0 0 0 / 20%)'
+      } else {
+        header.removeAttribute('style');
+      }
+    })
+    // this.dispatchEvent(new CustomEvent());
+    /*
+    const close = evt => {
+                evt.stopPropagation();
+                this.remove();
+            };
+            this.root.querySelectorAll('').forEach(x => {
+                x.addEventListener('click', close);
+            })
+    this.dispatchEvent(new CustomEvent('submit', {
+                    detail: 0
+                }));
+    */
+  }
+  disconnectedCallback() {}
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (attrName === 'title') {
+      this.root.querySelector('.title').textContent = newVal;
     }
-    static get observedAttributes() {
-        return ['title'];
-    }
-    connectedCallback() {
-        this.root.host.style.userSelect = 'none';
-        // this.dispatchEvent(new CustomEvent());
-        /*
-        const close = evt => {
-                    evt.stopPropagation();
-                    this.remove();
-                };
-                this.root.querySelectorAll('').forEach(x => {
-                    x.addEventListener('click', close);
-                })
-        this.dispatchEvent(new CustomEvent('submit', {
-                        detail: 0
-                    }));
-        */
-    }
-    disconnectedCallback() {
-    }
-    attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'title') {
-            this.root.querySelector('.title').textContent = newVal;
-        }
-    }
+  }
 }
 customElements.define('custom-header', CustomHeader);
 /*

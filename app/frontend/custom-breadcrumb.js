@@ -64,6 +64,11 @@ class CustomBreadcrumb extends HTMLElement {
     connectedCallback() {
 
         this.root.host.style.userSelect = 'none';
+        const breadcrumbItem = this.root.querySelector('.breadcrumb-item');
+        breadcrumbItem.addEventListener('click', evt => {
+            evt.stopPropagation();
+            window.location='/'
+        });
 
         // this.dispatchEvent(new CustomEvent());
         /*

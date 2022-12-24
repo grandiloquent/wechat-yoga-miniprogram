@@ -2,643 +2,99 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>排课 - 晨蕴瑜伽</title>
-    <style>
-        html {
-            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
-        }
-
-        body {
-            font-size: small;
-            margin: 0;
-            background: #fff;
-            color: #4d5156;
-            background-color: #fff;
-            overflow: initial;
-            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
-        }
-
-        .image {
-            position: absolute;
-            top: 0px;
-            right: 0;
-            width: 100%;
-        }
-
-        .title {
-            color: rgb(32, 33, 36);
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 26px;
-            margin-block: 0;
-            opacity: 1;
-            transform: translate(0px, 0px);
-        }
-
-        .subhead {
-            max-height: 999999px;
-            -webkit-box-orient: horizontal;
-            -webkit-box-direction: normal;
-            flex-direction: row;
-            display: flex;
-        }
-
-        .header {
-            contain: style;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            overflow-x: hidden;
-            padding: 12px 16px;
-            border-bottom: 1px solid #dadce0;
-        }
-
-        .subhead-text {
-            max-height: 999999px;
-            display: inline-flex;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-        }
-
-        .image-container {
-            width: 100%;
-            padding-top: 220px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .top-space {
-            height: 64px;
-        }
-
-        .bottom-space {
-            height: 88px;
-        }
-
-        .actions {
-            max-height: 999999px;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            margin: 16px 16px;
-            display: flex;
-        }
-
-        .action {
-            display: flex;
-            flex-direction: column;
-            flex: 1 1 0%;
-        }
-
-        .action-image {
-            max-height: 999999px;
-            border-radius: 50%;
-            border: 1px solid #1a73e8;
-            color: #1a73e8;
-            fill: currentColor;
-            line-height: 0;
-            margin: 0 auto;
-            padding: 8px;
-        }
-
-        .action-text {
-            max-height: 999999px;
-            font-size: 12px;
-            font-weight: 500;
-            text-transform: uppercase;
-            color: #1a73e8;
-            letter-spacing: .75px;
-            line-height: 1;
-            margin-top: 6px;
-            overflow: hidden;
-            text-align: center;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .item {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            min-height: 48px;
-            margin: 0 16px;
-            padding: 12px 0;
-            border-bottom: 1px solid #dadce0;
-        }
-
-        .item-image {
-            border: none;
-            border-radius: 8px;
-            flex: none;
-            height: 48px;
-            width: 48px;
-        }
-
-        .item-content {
-            -webkit-tap-highlight-color: transparent;
-            margin-left: 16px;
-            margin-right: auto;
-            min-width: 0;
-            padding-right: 16px;
-        }
-
-        .item-action {
-            -webkit-tap-highlight-color: transparent;
-            font: 500 14px/20px Roboto, Arial, sans-serif;
-            letter-spacing: .25px;
-            color: rgb(60, 64, 67);
-            line-height: 20px;
-            margin-bottom: 4px;
-        }
-
-        .item-right {
-            display: flex;
-            flex-direction: column;
-            line-height: 20px;
-            min-width: 60px;
-            text-align: right;
-        }
-
-        .item-title {
-            -webkit-tap-highlight-color: transparent;
-            font: 500 14px/20px Roboto, Arial, sans-serif;
-            letter-spacing: .25px;
-            color: rgb(32, 33, 36);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            display: -webkit-box;
-            max-height: 40px;
-            line-height: 20px;
-            margin-bottom: 4px;
-        }
-
-        .section {
-            max-height: 999999px;
-            padding: 20px 16px;
-            font-size: 18px;
-            font-weight: 500;
-            line-height: 24px;
-            color: #202124;
-            text-transform: none;
-            border-top: 1px solid #dadce0;
-        }
-
-        .disabled .action-image {
-            color: rgba(0, 0, 0, 0.35);
-            border-color: rgba(0, 0, 0, 0.35);
-        }
-
-        .disabled .action-text {
-            color: rgba(0, 0, 0, 0.35);
-        }
-
-        .button-back {
-
-            height: 56px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-            padding: 0 12px;
-            display: flex;
-            align-items: center;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.4), transparent 100%);
-            z-index: 1;
-
-        }
-
-        .button-back-image {
-            width: 48px;
-            height: 48px;
-            margin-right: 12px;
-            color: #fff;
-            fill: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .popup-button {
-            font-size: 14px;
-            border: 1px solid rgb(218, 220, 224);
-            width: 100%;
-            text-align: center;
-            border-radius: 6px;
-            line-height: 34px;
-            color: rgb(26, 115, 232);
-        }
-
-        .popup-buttons {
-
-            padding: 4px 20px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            column-gap: 8px;
-            justify-items: center;
-            height: 100%;
-            box-sizing: border-box;
-            align-items: center;
-
-        }
-
-        .popup-footer {
-
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 56px;
-            box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-            background-color: #fff;
-
-        }
-
-        .popup-content {
-            background-color: #fff;
-            overflow-y: scroll;
-            padding: 56px 0;
-            height: 100%;
-            box-sizing: border-box;
-        }
-
-        .popup {
-            position: fixed;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            z-index: 2;
-            background-color: #fff;
-        }
-
-        .popup-header {
-
-            display: flex;
-            box-shadow: 0 2px 6px rgb(60 64 67 / 16%);
-            position: absolute;
-            left: 0;
-            right: 0;
-            background-color: #fff;
-
-        }
-
-        .popup-button-back {
-            color: #3c4043;
-            width: 64px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .popup-header-content {
-            flex-grow: 1;
-            padding: 16px 0;
-        }
-
-        .popup-header-title {
-            font-size: 18px;
-            line-height: 24px;
-            color: #202124;
-        }
-    </style>
-
-
-
-
-
-
-
-
-
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排课 - 晨蕴瑜伽</title>
+  <link rel="stylesheet" href="css/lesson.css">
 
 </head>
 
 <body>
-    <div class="image-container">
-        <div class="button-back">
-            <div class="button-back-image">
-                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M hhikbc">
-                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-                </svg>
-            </div>
-        </div>
-        <img class="image">
+  <div class="image-container">
+    <div class="button-back">
+      <div class="button-back-image">
+        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+        </svg>
+      </div>
     </div>
-    <div class="header">
-        <div class="title">
-            其他
-        </div>
-        <div class="subhead">
-            <div class="subhead-text"></div>
-        </div>
+    <img class="image" id="image">
+  </div>
+  <div class="header">
+    <div class="title" id="title">
+      其他
     </div>
-    <div class="actions">
-        <div class="action">
-            <div class="action-image">
-                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
-                    <path d="M0 0h24v24H0V0z" fill="none" />
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-            </div>
-            <div class="action-text">
-                停课
-            </div>
-        </div>
-        <div class="action">
-            <div class="action-image">
-                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
-                    <path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
-                    </path>
-                </svg>
-            </div>
-            <div class="action-text">
-                修改
-            </div>
-        </div>
+    <div class="subhead">
+      <div class="subhead-text" id="subhead-text"></div>
     </div>
-    <div class="section">
-        学员
+  </div>
+  <div class="actions">
+    <div class="action" id="suspend-lesson">
+      <div class="action-image">
+        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
+          <path d="M0 0h24v24H0V0z" fill="none" />
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+        </svg>
+      </div>
+      <div class="action-text">
+        停课
+      </div>
     </div>
-
-    <custom-drawer></custom-drawer>
-    <div class="bottom-space"></div>
-    <script>
-        function formatSeconds(s) {
-            if (isNaN(s)) return '0:00';
-            if (s < 0) s = -s;
-            const time = {
-                hour: Math.floor(s / 3600) % 24,
-                minute: Math.floor(s / 60) % 60,
-            };
-            return Object.entries(time)
-                .filter((val, index) => index || val[1])
-                .map(val => (val[1] + '').padStart(2, '0'))
-                .join(':');
-        }
-        function formatWeek(date) {
-            return '日一二三四五六'.split('')[date.getDay()];
-        }
-    </script>
-    <script src="custom-dialog.js"></script>
-    <script>
-       async function action(){
-        const action = document.querySelector('.action');
-        const actions = document.querySelector('.actions');
-
-        let obj;
-        let expired = true;
-        const id = new URL(window.location).searchParams.get('id');
-        if (window.JInterface) {
-            obj = JSON.parse(JInterface.executeJSON(`select * from _query_booked_users(${id})`));
-        } else {
-            const res = await fetch(`/v/lesson.query?id=${id}`);
-                obj = await res.json();
-        }
-        const now = new Date();
-        const seconds = now.getHours() * 3600 + now.getMinutes() * 60;
-        if (now.setHours(0, 0, 0, 0) / 1000 < obj.lesson.date_time || (now.setHours(0, 0, 0, 0) / 1000 === obj.lesson.date_time && seconds <= obj.lesson.start_time)) {
-            expired = false;
-        } else {
-            actions.classList.add('disabled');
-        }
-        document.querySelector('.image').src = `https://chenyunyoga.cn/images/${obj.lesson.thumbnail}`;
-        document.querySelector('.title').textContent = obj.lesson.lesson_name;
-        const date = new Date(obj.lesson.date_time * 1000);
-        document.querySelector('.subhead-text').textContent = `${((obj.lesson.class_type === 1) && '小班') || ((obj.lesson.class_type === 4) && '团课')} • ${obj.lesson.teacher_name} • ${date.getMonth() + 1}月${date.getDate()}日周${formatWeek(date)} • ${formatSeconds(obj.lesson.start_time)}`;
-
-        const section = document.querySelector('.section');
-
-        for (const iterator of obj.users) {
-
-            const item = document.createElement('div');
-            item.setAttribute("class", "item");
-            const itemImage = document.createElement('img');
-            itemImage.setAttribute("class", "item-image");
-            itemImage.setAttribute("src", `${iterator.avatar_url}`);
-            item.appendChild(itemImage);
-            const itemContent = document.createElement('div');
-            itemContent.setAttribute("class", "item-content");
-            item.appendChild(itemContent);
-            const itemTitle = document.createElement('div');
-            itemTitle.setAttribute("class", "item-title");
-            itemContent.appendChild(itemTitle);
-            itemTitle.textContent = `${iterator.name || iterator.nick_name}`;
-            const itemRight = document.createElement('div');
-            itemRight.setAttribute("class", "item-right");
-            item.appendChild(itemRight);
-            if (!expired) {
-                const itemAction = document.createElement('div');
-                itemAction.setAttribute("class", "item-action");
-                itemRight.appendChild(itemAction);
-                itemAction.textContent = `删除`;
-                itemAction.addEventListener('click', evt => {
-                    evt.stopPropagation();
-                    deleteBook(iterator, item);
-                });
-            }
-            section.insertAdjacentElement('afterend', item)
-        }
-
-        if (obj.lesson.hidden === 1) {
-            actions.classList.add('disabled');
-        }
-        function deleteBook(iterator, item) {
-            const customDialog = document.createElement('custom-dialog');
-            customDialog.addEventListener('submit', evt => {
-                evt.stopPropagation();
-                customDialog.remove();
-                if (window.JInterface) {
-                    console.log(JSON.stringify(iterator))
-                    console.log(`delete from reservation where course_id = ${id} and user_id = ${iterator.id}`)
-                    JInterface.executeQuery(`delete from reservation where course_id = ${id} and user_id = ${iterator.id}`);
-                    item.remove();
-                }
-            });
-            customDialog.setAttribute('title', `您确定要删除 ${iterator.name || iterator.nick_name} 的预约吗？`)
-            document.body.appendChild(customDialog);
-        }
-        if (!expired) {
-            action.addEventListener('click', evt => {
-                if (actions.classList.contains('disabled')) {
-                    const customDialog = document.createElement('custom-dialog');
-                    customDialog.addEventListener('submit', evt => {
-                        evt.stopPropagation();
-                        customDialog.remove();
-                        actions.classList.remove('disabled');
-                        if (window.JInterface) {
-                            JInterface.executeQuery(`update course set hidden = 0 where id = ${id}`);
-                        }
-                    });
-                    customDialog.setAttribute('title', `您确定要开课吗？`)
-                    document.body.appendChild(customDialog);
-                } else {
-                    const customDialog = document.createElement('custom-dialog');
-                    customDialog.addEventListener('submit', evt => {
-                        evt.stopPropagation();
-                        customDialog.remove();
-                        actions.classList.add('disabled');
-                        if (window.JInterface) {
-                            JInterface.executeQuery(`update course set hidden = 1 where id = ${id}`);
-                        }
-                    });
-                    customDialog.setAttribute('title', `您确定要停课吗？`)
-                    document.body.appendChild(customDialog);
-                }
-
-            })
-
-
-
-
-        }
-        document.querySelector('.action:last-child').addEventListener('click', evt => {
-            popup.style.display = 'block';
-        });
-        document.querySelector('.button-back').addEventListener('click', evt => {
-            history.back();
-        })
-
-       }
-       action();
-    </script>
-    <script src="custom-menu-picker.js"></script>
-
-    <div class="popup" style="display:none; ">
-        <!-- height: 76px; -->
-        <div class="popup-header">
-            <div class="popup-button-back">
-                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
-                    <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
-                    </path>
-                </svg>
-            </div>
-            <div class="popup-header-content">
-                <div class="popup-header-title">修改</div>
-                <div style="font-size: 14px;line-height: 20px;color: #5f6368;"></div>
-            </div>
-        </div>
-        <div class="popup-content">
-            <custom-menu-picker id="picker-lesson"></custom-menu-picker>
-            <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
-            <custom-menu-picker id="picker-teacher"></custom-menu-picker>
-            <custom-menu-picker id="picker-start-time"></custom-menu-picker>
-            <custom-menu-picker id="picker-peoples"></custom-menu-picker>
-        </div>
-        <div class="popup-footer">
-            <div class="popup-buttons">
-                <div class="popup-button">
-                    取消
-                </div>
-                <div class="popup-button">
-                    确认
-                </div>
-            </div>
-        </div>
-        <script>
-            function durationToSeconds(duration) {
-                let result = 0;
-                if (/(\d{1,2}:){1,2}\d{1,2}/.test(duration)) {
-                    const pieces = duration.split(':');
-                    for (let i = pieces.length - 1; i > -1; i--) {
-                        result += Math.pow(60, i) * parseInt(pieces[pieces.length - i - 1]);
-                    }
-                    return result;
-                }
-                result = parseInt(duration);
-                if (isNaN(result)) {
-                    result = 0;
-                }
-                return result;
-            }
-            const popup = document.querySelector('.popup');
-
-            const popupButtonBack = document.querySelector('.popup-button-back');
-            popupButtonBack.addEventListener('click', evt => {
-                popup.style.display = 'none';
-            })
-
-            const popupButton = document.querySelector('.popup-button');
-            popupButton.addEventListener('click', evt => {
-                popup.style.display = 'none';
-            })
-            document.querySelector('.popup-button:last-child').addEventListener('click', evt => {
-                popup.style.display = 'none';
-                const classType = ((pickerLessonType.selectedItem === '小班') && 1) || ((pickerLessonType.selectedItem === '团课') && 4);
-                const lesson = pickerLesson.selectedItem;
-                const peoples = parseInt(pickerPeoples.selectedItem || '0');
-                const startTime = durationToSeconds(pickerStartTime.selectedItem + ":00");
-                const endTime = startTime + 3600;
-                const teacher = pickerTeacher.selectedItem;
-                const sql = `update course set class_type = ${classType},end_time = ${endTime},lesson_id=(select id from lesson where name ='${lesson}'),peoples = ${peoples},start_time=${startTime},teacher_id=(select id from coach where name='${teacher}') where id =${id}`
-                if (window.JInterface) {
-                    JInterface.executeQuery(sql);
-                    location.reload();
-                }
-            })
-
-
-
-
-            const pickerStartTime = document.querySelector('#picker-start-time');
-            pickerStartTime.setAttribute('data', JSON.stringify([...new Array(25).keys()].map(x => {
-                const m = x * 30 + 60 * 9;
-                return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
-            })));
-            pickerStartTime.setAttribute('columns', '5');
-            pickerStartTime.setAttribute('title', '开课时间');
-            pickerStartTime.setAttribute('select', `${obj.lesson.start_time / 3600 | 0}:${(obj.lesson.start_time % 3600 / 60).toString().padEnd(2, '0')}`);
-            const pickerLesson = document.querySelector('#picker-lesson');
-            pickerLesson.setAttribute('columns', '2');
-            pickerLesson.setAttribute('title', '课程');
-            if (window.JInterface) {
-                pickerLesson.setAttribute('data', JSON.stringify(JSON.parse(JInterface.executeQuery("select name from lesson"))
-                    .map(x => x.name)));
-            } else {
-                pickerLesson.setAttribute('data', JSON.stringify(["肩颈理疗", "流瑜伽", "脊柱保养", "伸展瑜伽", "蜜桃臀", "空中瑜伽", "普拉提", "开肩美背", "纤体瑜伽", "阴瑜伽", "阿斯汤伽", "哈他基础", "臀腿塑形", "腰腹塑形", "椅子瑜伽", "精准正位", "女性保养", "肩髋伸展", "尊巴", "艾扬格", "维密蜜桃臀", "基础阿斯汤", "排毒养颜", "艾扬格瑜伽", "内观流", "伸展流", "开髋流", "核心流", "后弯流"]
-                ));
-            }
-            pickerLesson.setAttribute('select', obj.lesson.lesson_name);
-
-            const pickerTeacher = document.querySelector('#picker-teacher');
-            if (window.JInterface) {
-                pickerTeacher.setAttribute('data', JSON.stringify(JSON.parse(JInterface.executeQuery("select name from coach"))
-                    .map(x => x.name)));
-            } else {
-                pickerTeacher.setAttribute('data', JSON.stringify(["欧阳老师", "周琼老师", "汐子老师", "倩倩老师", "细雨老师", "阿MAY老师", "金钰老师"]
-                ));
-            }
-            pickerTeacher.setAttribute('columns', '2');
-            pickerTeacher.setAttribute('title', '老师');
-            pickerTeacher.setAttribute('select', obj.lesson.teacher_name);
-            const pickerLessonType = document.querySelector('#picker-lesson-type');
-            pickerLessonType.setAttribute('data', JSON.stringify([
-                "团课", "小班"
-            ]));
-            pickerLessonType.setAttribute('columns', '3');
-            pickerLessonType.setAttribute('title', '课程类型');
-            pickerLessonType.setAttribute('select', (obj.lesson.class_type === 1 && '小班')
-                || (obj.lesson.class_type === 4 && '团课'))
-
-            const pickerPeoples = document.querySelector('#picker-peoples');
-            pickerPeoples.setAttribute('data', JSON.stringify([...new Array(9).keys()].map(x => x + 8)));
-            pickerPeoples.setAttribute('title', '人数');
-            pickerPeoples.setAttribute('select', obj.lesson.peoples);
-
-
-
-
-        </script>
+    <div class="action" bind="click:updateLesson">
+      <div class="action-image">
+        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+          </path>
+        </svg>
+      </div>
+      <div class="action-text">
+        修改
+      </div>
     </div>
+  </div>
+  <div class="section">
+    学员
+  </div>
+  <custom-drawer></custom-drawer>
+  <div class="bottom-space"></div>
+
+  </div>
+  <div class="popup" style="display:none; ">
+    <!-- height: 76px; -->
+    <div class="popup-header">
+      <div class="popup-button-back">
+        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+          </path>
+        </svg>
+      </div>
+      <div class="popup-header-content">
+        <div class="popup-header-title">修改</div>
+        <div style="font-size: 14px;line-height: 20px;color: #5f6368;"></div>
+      </div>
+    </div>
+    <div class="popup-content">
+      <custom-menu-picker id="picker-lesson"></custom-menu-picker>
+      <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
+      <custom-menu-picker id="picker-teacher"></custom-menu-picker>
+      <custom-menu-picker id="picker-start-time"></custom-menu-picker>
+      <custom-menu-picker id="picker-peoples"></custom-menu-picker>
+    </div>
+    <div class="popup-footer">
+      <div class="popup-buttons">
+        <div class="popup-button">
+          取消
+        </div>
+        <div class="popup-button">
+          确认
+        </div>
+      </div>
+    </div>
+    <script src="js/custom-dialog.js"></script>
+    <script src="js/lesson.utils.js"></script>
+    <script src="js/lesson.js"></script>
+    <script src="js/custom-menu-picker.js"></script>
 </body>
 
 </html>

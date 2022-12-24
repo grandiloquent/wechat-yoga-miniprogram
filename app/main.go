@@ -156,6 +156,10 @@ func main() {
 			handlers.V1Document(db, w, r)
 			return
 
+		case "/v1/admin/lesson":
+			handlers.V1AdminLesson(db, w, r, secret)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				http.ServeFile(w, r, "."+r.URL.Path+".html")

@@ -7,7 +7,7 @@ function renderMarkdown(obj) {
 }
 const wrapper = document.querySelector('.markdown');
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
-const name = new URL(document.URL).searchParams.get('name') || '免费科学上网';
+const name = new URL(document.URL).searchParams.get('name') || '安装和配置';
 document.title = `${name} - ${document.title}`
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/document?name=${encodeURIComponent(name)}`)

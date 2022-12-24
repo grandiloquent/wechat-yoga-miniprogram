@@ -3,7 +3,6 @@ package handlers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -13,7 +12,6 @@ func V1Documents(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	CrossOrigin(w)
 	files, err := ioutil.ReadDir("./frontend")
 	if err != nil {
-		fmt.Print(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

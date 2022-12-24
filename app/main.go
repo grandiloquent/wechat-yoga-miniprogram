@@ -152,6 +152,10 @@ func main() {
 			handlers.V1Documents(db, w, r)
 			return
 
+		case "/v1/document":
+			handlers.V1Document(db, w, r)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				http.ServeFile(w, r, "."+r.URL.Path+".html")

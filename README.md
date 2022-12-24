@@ -16,6 +16,10 @@
 - Go 语言
 - PostgreSQL 数据库
 
+## 安装和配置
+
+安装和配置小程序的详细步骤，请参见[说明文档](https://lucidu.cn/article?name=%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE)。
+
 ## 后端
 
 Windows 系统 PowerShell 终端可使用如下命令启动后端服务器：

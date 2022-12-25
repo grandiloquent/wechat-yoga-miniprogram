@@ -13,6 +13,7 @@ const popupButtonBack = document.getElementById('popup-button-back');
 const pickerLesson = document.getElementById('picker-lesson');
 const pickerLessonType = document.getElementById('picker-lesson-type');
 const pickerTeacher = document.getElementById('picker-teacher');
+const pickerStartTime = document.getElementById('picker-start-time');
 //==================//
 suspendLesson.addEventListener('click', suspendLessonHandler);
 updateLesson.addEventListener('click', updateLessonHandler);
@@ -43,13 +44,25 @@ async function queryLessonInfo(lesson) {
       }
     });
     const obj = await response.json();
-    
+
     setLesson(obj, lesson);
     setLessonType(obj, lesson);
- setTeacher(obj,lesson);
+    setTeacher(obj, lesson);
+    setStartTime(obj, lesson);
 
+    function setStartTime(obj, lesson) {
+      pickerStartTime.setAttribute('title', '开课时间');
+      const array = [...new Array(25).keys()].map(x => {
+        const m = x * 30 + 60 * 9;
+        return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
+      });
+      paddingArray(array);
 
-} catch (error) {
+      pickerStartTime.setAttribute('data', JSON.stringify(array));
+
+      pickerStartTime.setAttribute('select', `${lesson.start_time / 3600 | 0}:${(lesson.start_time % 3600 / 60).toString().padEnd(2, '0')}`);
+    }
+  } catch (error) {
     console.log(error);
   }
 }
@@ -60,14 +73,26 @@ function pickerLessonTypeHandler(evt) {
   evt.stopImmediatePropagation();
 }
 
-pickerTeacher.addEventListener('click',pickerTeacherHandler);
+pickerTeacher.addEventListener('click', pickerTeacherHandler);
 
-function pickerTeacherHandler(evt){
-evt.stopPropagation();
-evt.stopImmediatePropagation();
+function pickerTeacherHandler(evt) {
+  evt.stopPropagation();
+  evt.stopImmediatePropagation();
 }
 
 
+pickerStartTime.addEventListener('click', pickerStartTimeHandler);
+
+function pickerStartTimeHandler(evt) {
+  evt.stopPropagation();
+  evt.stopImmediatePropagation();
+}
+
+/*
+pickerStartTime.textContent='';
+pickerStartTime.setAttribute('class','');
+pickerStartTime.style.display='block'
+*/
 //==================//
 
 

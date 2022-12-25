@@ -28,6 +28,12 @@ function appendUser(iterator) {
   section.insertAdjacentElement('afterend', item);
 }
 
+function backHandler(evt) {
+  evt.stopPropagation();
+  evt.stopImmediatePropagation();
+  history.back();
+}
+
 function durationToSeconds(duration) {
   let result = 0;
   if (/(\d{1,2}:){1,2}\d{1,2}/.test(duration)) {
@@ -84,6 +90,29 @@ function paddingArray(array) {
 function popupButtonBackHandler(evt) {
   popup.style.display = "none";
 }
+
+function popupCloseHandler(evt) {
+  evt.stopPropagation();
+  evt.stopImmediatePropagation();
+  popup.style.display = 'none';
+}
+async function queryLessonInfo(lesson) {
+  try {
+    const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    });
+    const obj = await response.json();
+    setLesson(obj, lesson);
+    setLessonType(obj, lesson);
+    setTeacher(obj, lesson);
+    setStartTime(obj, lesson);
+    setPeoples(obj, lesson);
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function render() {
   const wrapper = document.querySelector('.wrapper');
   let obj;
@@ -115,6 +144,14 @@ function setLessonType(obj, lesson) {
   ]));
   pickerLessonType.setAttribute('select', (lesson.class_type === 1 && '小班') || (lesson.class_type === 2 && '私教') ||
     (lesson.class_type === 4 && '团课'));
+}
+
+function setPeoples(obj, lesson) {
+  const array = [...new Array(9).keys()].map(x => x + 8);
+  paddingArray(array);
+  pickerPeoples.setAttribute('title', '人数');
+  pickerPeoples.setAttribute('data', JSON.stringify(array));
+  pickerPeoples.setAttribute('select', lesson.peoples);
 }
 
 function setStartTime(obj, lesson) {
@@ -161,33 +198,6 @@ async function suspendLessonHandler(evt) {
 async function updateLessonHandler() {
   popup.style.display = "block";
 }
-
-function setPeoples(obj, lesson) {
-  const array = [...new Array(9).keys()].map(x => x + 8);
-  paddingArray(array);
-  pickerPeoples.setAttribute('title', '人数');
-  pickerPeoples.setAttribute('data', JSON.stringify(array));
-  pickerPeoples.setAttribute('select', lesson.peoples);
-}
-async function queryLessonInfo(lesson) {
-  try {
-    const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
-      headers: {
-        "Authorization": window.localStorage.getItem("Authorization")
-      }
-    });
-    const obj = await response.json();
-    setLesson(obj, lesson);
-    setLessonType(obj, lesson);
-    setTeacher(obj, lesson);
-    setStartTime(obj, lesson);
-    setPeoples(obj, lesson);
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 /*
 const observer = new(class Observer {
 constructor() {}

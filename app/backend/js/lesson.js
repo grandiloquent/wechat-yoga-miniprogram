@@ -17,22 +17,21 @@ const pickerStartTime = document.getElementById('picker-start-time');
 const pickerPeoples = document.getElementById('picker-peoples');
 const submit = document.getElementById('submit');
 const popupClose = document.getElementById('popup-close');
+const back = document.getElementById('back');
 //==================//
 suspendLesson.addEventListener('click', suspendLessonHandler);
 updateLesson.addEventListener('click', updateLessonHandler);
 popupButtonBack.addEventListener('click', popupButtonBackHandler);
+popupClose.addEventListener('click', popupCloseHandler);
+back.addEventListener('click', backHandler);
+submit.addEventListener('click', submitHandler);
 
 function deleteBook(student) {}
-
-
-
-submit.addEventListener('click', submitHandler);
 
 function submitHandler(evt) {
   evt.stopPropagation();
   evt.stopImmediatePropagation();
   popup.style.display = 'none';
-
   const class_type = ((pickerLessonType.selectedItem === '小班') && 1) || ((pickerLessonType.selectedItem === '团课') && 4);
   const lesson_name = pickerLesson.selectedItem;
   const peoples = parseInt(pickerPeoples.selectedItem || '0');
@@ -48,22 +47,5 @@ function submitHandler(evt) {
     teacher_name
   });
 }
-
-
-popupClose.addEventListener('click', popupCloseHandler);
-
-function popupCloseHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-  popup.style.display = 'none';
-}
-
-/*
-popupClose.textContent='';
-popupClose.setAttribute('class','');
-popupClose.style.display='block'
-*/
 //==================//
-
-
 render();

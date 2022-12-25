@@ -67,6 +67,7 @@ function formatSubtitle(obj) {
   const date = new Date(obj.date_time * 1000);
   return `${((obj.class_type === 1) && '小班') || ((obj.class_type === 4) && '团课')} • ${obj.teacher_name} • ${date.getMonth() + 1}月${date.getDate()}日周${formatWeek(date)} • ${formatSeconds(obj.start_time)}`;
 }
+
 function appendUser(iterator) {
   const item = document.createElement('div');
   item.setAttribute("class", "item");
@@ -96,13 +97,43 @@ function appendUser(iterator) {
   }
   section.insertAdjacentElement('afterend', item);
 }
+
 function popupButtonBackHandler(evt) {
   popup.style.display = "none";
 }
-function updateLessonHandler() {
+async function updateLessonHandler() {
   popup.style.display = "block";
+  await queryLessonInfo();
 }
 
+function setLesson(obj, lesson) {
+  const dif = obj.lessons.length % 4;
+  for (let j = 0; j < 4 - dif; j++) {
+    obj.lessons.push('');
+  }
+  pickerLesson.setAttribute('title', '课程');
+  pickerLesson.setAttribute('data', JSON.stringify(obj.lessons));
+  pickerLesson.setAttribute('select', lesson.lesson_name);
+}
+
+function setLessonType(obj, lesson) {
+  pickerLessonType.setAttribute('title', '课程类型');
+  pickerLessonType.setAttribute('data', JSON.stringify([
+    "团课", "小班", "私教", ''
+  ]));
+  pickerLessonType.setAttribute('select', (lesson.class_type === 1 && '小班') || (lesson.class_type === 2 && '私教') ||
+    (lesson.class_type === 4 && '团课'));
+}
+
+function setTeacher(obj, lesson) {
+  const dif = obj.teachers.length % 4;
+  for (let j = 0; j < 4 - dif; j++) {
+    obj.teachers.push('');
+  }
+  pickerTeacher.setAttribute('title', '老师');
+  pickerTeacher.setAttribute('data', JSON.stringify(obj.teachers));
+  pickerTeacher.setAttribute('select', lesson.teacher_name);
+}
 /*
 const observer = new(class Observer {
 constructor() {}

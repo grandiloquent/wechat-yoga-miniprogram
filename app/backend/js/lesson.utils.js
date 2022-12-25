@@ -160,6 +160,16 @@ async function updateLessonHandler() {
   popup.style.display = "block";
   await queryLessonInfo();
 }
+
+function setPeoples(obj, lesson) {
+  const array = [...new Array(9).keys()].map(x => x + 8);
+  paddingArray(array);
+  pickerPeoples.setAttribute('title', '人数');
+  pickerPeoples.setAttribute('data', JSON.stringify(array));
+  pickerPeoples.setAttribute('select', lesson.peoples);
+}
+
+
 /*
 const observer = new(class Observer {
 constructor() {}

@@ -61,37 +61,37 @@
   <custom-drawer></custom-drawer>
   <div class="bottom-space"></div>
 
-  <div class="popup" id="popup">
-    <!-- height: 76px;  style="display:none; "-->
-    <div class="popup-header">
-      <div class="popup-button-back" id="popup-button-back">
-        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
-          </path>
-        </svg>
+  <div class="popup" id="popup" style="display:none; >
+    <!-- height: 76px;  style=" display:none; "-->
+    <div class=" popup-header">
+    <div class="popup-button-back" id="popup-button-back">
+      <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+        </path>
+      </svg>
+    </div>
+    <div class="popup-header-content">
+      <div class="popup-header-title">修改</div>
+      <div style="font-size: 14px;line-height: 20px;color: #5f6368;"></div>
+    </div>
+  </div>
+  <div class="popup-content">
+    <custom-menu-picker id="picker-lesson"></custom-menu-picker>
+    <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
+    <custom-menu-picker id="picker-teacher"></custom-menu-picker>
+    <custom-menu-picker id="picker-start-time"></custom-menu-picker>
+    <custom-menu-picker id="picker-peoples"></custom-menu-picker>
+  </div>
+  <div class="popup-footer">
+    <div class="popup-buttons">
+      <div class="popup-button">
+        取消
       </div>
-      <div class="popup-header-content">
-        <div class="popup-header-title">修改</div>
-        <div style="font-size: 14px;line-height: 20px;color: #5f6368;"></div>
+      <div class="popup-button">
+        确认
       </div>
     </div>
-    <div class="popup-content">
-      <custom-menu-picker id="picker-lesson"></custom-menu-picker>
-      <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
-      <custom-menu-picker id="picker-teacher"></custom-menu-picker>
-      <custom-menu-picker id="picker-start-time"></custom-menu-picker>
-      <custom-menu-picker id="picker-peoples"></custom-menu-picker>
-    </div>
-    <div class="popup-footer">
-      <div class="popup-buttons">
-        <div class="popup-button">
-          取消
-        </div>
-        <div class="popup-button">
-          确认
-        </div>
-      </div>
-    </div>
+  </div>
   </div>
   <script src="js/custom-dialog.js"></script>
   <script src="js/lesson.utils.js"></script>

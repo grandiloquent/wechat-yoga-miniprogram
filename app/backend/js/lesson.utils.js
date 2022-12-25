@@ -134,6 +134,20 @@ function setTeacher(obj, lesson) {
   pickerTeacher.setAttribute('data', JSON.stringify(obj.teachers));
   pickerTeacher.setAttribute('select', lesson.teacher_name);
 }
+async function render() {
+  const wrapper = document.querySelector('.wrapper');
+  let obj;
+  try {
+    obj = await loadData();
+    image.src = `https://lucidu.cn/images/${obj.thumbnail}`;
+    title.textContent = obj.lesson_name;
+    subheadText.textContent = formatSubtitle(obj);
+    obj.students.forEach((element, index) => {
+      appendUser(element);
+    })
+    await queryLessonInfo(obj);
+  } catch (error) {}
+}
 /*
 const observer = new(class Observer {
 constructor() {}

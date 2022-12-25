@@ -14,6 +14,7 @@ const pickerLesson = document.getElementById('picker-lesson');
 const pickerLessonType = document.getElementById('picker-lesson-type');
 const pickerTeacher = document.getElementById('picker-teacher');
 //==================//
+suspendLesson.addEventListener('click', suspendLessonHandler);
 updateLesson.addEventListener('click', updateLessonHandler);
 
 function deleteBook(student) {}
@@ -66,26 +67,8 @@ evt.stopPropagation();
 evt.stopImmediatePropagation();
 }
 
-/*
-pickerTeacher.textContent='';
-pickerTeacher.setAttribute('class','');
-pickerTeacher.style.display='block'
-*/
+
 //==================//
-suspendLesson.addEventListener('click', suspendLessonHandler);
-async function render() {
-  const wrapper = document.querySelector('.wrapper');
-  let obj;
-  try {
-    obj = await loadData();
-    image.src = `https://lucidu.cn/images/${obj.thumbnail}`;
-    title.textContent = obj.lesson_name;
-    subheadText.textContent = formatSubtitle(obj);
-    console.log(obj);
-    obj.students.forEach((element, index) => {
-      appendUser(element);
-    })
-    await queryLessonInfo(obj);
-  } catch (error) {}
-}
+
+
 render();

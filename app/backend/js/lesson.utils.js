@@ -40,7 +40,7 @@ function showSuspendLessonDialog(handler) {
 async function suspendLessonHandler(evt) {
   showSuspendLessonDialog(async evt => {
     evt.stopPropagation();
-    customDialog.remove();
+    evt.target.remove();
     try {
       const response = await fetch(`/v1/admin/lesson/suspend?id=${id}`, {
         headers: {
@@ -65,7 +65,42 @@ async function loadData() {
 
 function formatSubtitle(obj) {
   const date = new Date(obj.date_time * 1000);
-return  `${((obj.class_type === 1) && '小班') || ((obj.class_type === 4) && '团课')} • ${obj.teacher_name} • ${date.getMonth() + 1}月${date.getDate()}日周${formatWeek(date)} • ${formatSeconds(obj.start_time)}`;
+  return `${((obj.class_type === 1) && '小班') || ((obj.class_type === 4) && '团课')} • ${obj.teacher_name} • ${date.getMonth() + 1}月${date.getDate()}日周${formatWeek(date)} • ${formatSeconds(obj.start_time)}`;
+}
+function appendUser(iterator) {
+  const item = document.createElement('div');
+  item.setAttribute("class", "item");
+  const itemImage = document.createElement('img');
+  itemImage.setAttribute("class", "item-image");
+  itemImage.setAttribute("src", `${iterator.avatar_url}`);
+  item.appendChild(itemImage);
+  const itemContent = document.createElement('div');
+  itemContent.setAttribute("class", "item-content");
+  item.appendChild(itemContent);
+  const itemTitle = document.createElement('div');
+  itemTitle.setAttribute("class", "item-title");
+  itemContent.appendChild(itemTitle);
+  itemTitle.textContent = `${iterator.name || iterator.nick_name}`;
+  const itemRight = document.createElement('div');
+  itemRight.setAttribute("class", "item-right");
+  item.appendChild(itemRight);
+  if (!expired) {
+    const itemAction = document.createElement('div');
+    itemAction.setAttribute("class", "item-action");
+    itemRight.appendChild(itemAction);
+    itemAction.textContent = `删除`;
+    itemAction.addEventListener('click', evt => {
+      evt.stopPropagation();
+      deleteBook(iterator, item);
+    });
+  }
+  section.insertAdjacentElement('afterend', item);
+}
+function popupButtonBackHandler(evt) {
+  popup.style.display = "none";
+}
+function updateLessonHandler() {
+  popup.style.display = "block";
 }
 
 /*

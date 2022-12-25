@@ -121,10 +121,16 @@ async function render() {
     image.src = `https://lucidu.cn/images/${obj.thumbnail}`;
     title.textContent = obj.lesson_name;
     subheadText.textContent = formatSubtitle(obj);
+    if (checkIfLessonAvailable(obj))
+      await queryLessonInfo(obj);
+    else {
+      expired = true;
+      setStatus();
+    }
     obj.students && obj.students.forEach((element, index) => {
       appendUser(element);
     })
-    await queryLessonInfo(obj);
+
   } catch (error) {
     console.log(error);
   }
@@ -179,6 +185,9 @@ function showSuspendLessonDialog(handler) {
   document.body.appendChild(customDialog);
 }
 async function suspendLessonHandler(evt) {
+  if (expired) {
+    return;
+  }
   showSuspendLessonDialog(async evt => {
     evt.stopPropagation();
     evt.target.remove();
@@ -196,6 +205,9 @@ async function suspendLessonHandler(evt) {
   })
 }
 async function updateLessonHandler() {
+  if (expired) {
+    return;
+  }
   popup.style.display = "block";
 }
 /*

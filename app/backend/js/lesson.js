@@ -1,4 +1,4 @@
-const id = new URL(document.URL).searchParams.get('id') || 348;
+const id = new URL(document.URL).searchParams.get('id') || 174;
 const baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
 let expired = false;
 const suspendLesson = document.querySelector('#suspend-lesson');
@@ -46,6 +46,25 @@ function submitHandler(evt) {
     end_time,
     teacher_name
   });
+}
+
+function checkIfLessonAvailable(lesson) {
+  if (lesson.hidden === 1) {
+    return false;
+  }
+  const seconds = new Date().setHours(0, 0, 0, 0) / 1000;
+
+  if (seconds > lesson.date_time) {
+    return false;
+  }
+  return true;
+}
+
+function setStatus() {
+  if (!expired) {
+    return;
+  }
+  actions.classList.add('disabled');
 }
 //==================//
 render();

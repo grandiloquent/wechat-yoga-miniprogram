@@ -1,4 +1,4 @@
-const id = new URL(document.URL).searchParams.get('id') || 415;
+const id = new URL(document.URL).searchParams.get('id') || 348;
 const baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
 let expired = false;
 const suspendLesson = document.querySelector('#suspend-lesson');
@@ -18,82 +18,11 @@ const pickerPeoples = document.getElementById('picker-peoples');
 //==================//
 suspendLesson.addEventListener('click', suspendLessonHandler);
 updateLesson.addEventListener('click', updateLessonHandler);
-
-function deleteBook(student) {}
-popup.addEventListener('click', popupHandler);
-
-function popupHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
 popupButtonBack.addEventListener('click', popupButtonBackHandler);
-pickerLesson.addEventListener('click', pickerLessonHandler);
-
-function pickerLessonHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
-/*
-pickerLesson.textContent='';
-pickerLesson.style.display='block'
-*/
-async function queryLessonInfo(lesson) {
-  try {
-    const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
-      headers: {
-        "Authorization": window.localStorage.getItem("Authorization")
-      }
-    });
-    const obj = await response.json();
-    setLesson(obj, lesson);
-    setLessonType(obj, lesson);
-    setTeacher(obj, lesson);
-    setStartTime(obj, lesson);
-    setPeoples(obj, lesson);
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-pickerLessonType.addEventListener('click', pickerLessonTypeHandler);
-
-function pickerLessonTypeHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
-
-pickerTeacher.addEventListener('click', pickerTeacherHandler);
-
-function pickerTeacherHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
+function deleteBook(student) {}
 
 
-pickerStartTime.addEventListener('click', pickerStartTimeHandler);
 
-function pickerStartTimeHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
-
-/*
-pickerStartTime.textContent='';
-pickerStartTime.setAttribute('class','');
-pickerStartTime.style.display='block'
-*/
-pickerPeoples.addEventListener('click', pickerPeoplesHandler);
-
-function pickerPeoplesHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-}
-
-/*
-pickerPeoples.textContent='';
-pickerPeoples.setAttribute('class','');
-pickerPeoples.style.display='block'
-*/
 //==================//
 
 

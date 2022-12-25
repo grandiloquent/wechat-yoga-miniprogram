@@ -92,11 +92,13 @@ async function render() {
     image.src = `https://lucidu.cn/images/${obj.thumbnail}`;
     title.textContent = obj.lesson_name;
     subheadText.textContent = formatSubtitle(obj);
-    obj.students.forEach((element, index) => {
+    obj.students && obj.students.forEach((element, index) => {
       appendUser(element);
     })
     await queryLessonInfo(obj);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function setLesson(obj, lesson) {
@@ -158,7 +160,6 @@ async function suspendLessonHandler(evt) {
 }
 async function updateLessonHandler() {
   popup.style.display = "block";
-  await queryLessonInfo();
 }
 
 function setPeoples(obj, lesson) {
@@ -168,7 +169,24 @@ function setPeoples(obj, lesson) {
   pickerPeoples.setAttribute('data', JSON.stringify(array));
   pickerPeoples.setAttribute('select', lesson.peoples);
 }
+async function queryLessonInfo(lesson) {
+  try {
+    const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    });
+    const obj = await response.json();
+    setLesson(obj, lesson);
+    setLessonType(obj, lesson);
+    setTeacher(obj, lesson);
+    setStartTime(obj, lesson);
+    setPeoples(obj, lesson);
 
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 /*
 const observer = new(class Observer {

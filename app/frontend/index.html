@@ -10,7 +10,9 @@
   <script src="js/custom-breadcrumb.js"></script>
   <script src="js/custom-button.js"></script>
   <!--<script src="js/custom-header.js"></script>-->
-<script type="module" src="./components/custom-header.js"></script>
+  <script type="module" src="./components/custom-header.js"></script>
+
+  <script type="module" src="./components/custom-drawer.js"></script>
 
 
 </head>
@@ -92,13 +94,10 @@
   <div style="display:flex;align-items: center;justify-content: center;font-size:12px;padding:32px 32px;">
     © 2022 微信瑜伽约课工具小程序
   </div>
+  <custom-drawer bind="customDrawer"></custom-drawer>
 
+  <custom-header title="瑜伽" bind @click="showDrawer"></custom-header>
   <script src="js/index.js"></script>
-
-  <script type="module">
-  
-  </script>
-  <custom-header title="瑜伽"></custom-header>
 </body>
 
 </html>

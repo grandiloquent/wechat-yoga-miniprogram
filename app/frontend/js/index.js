@@ -5,7 +5,14 @@ function timeSpan(atime, btime) {
   var hours = ~~(milliseconds / (1 * 60 * 60 * 1000));
   var days = ~~(milliseconds / (1 * 24 * 60 * 60 * 1000));
   var years = ~~(days / 365.5);
-  return { years, days, hours, minutes, seconds, milliseconds };
+  return {
+    years,
+    days,
+    hours,
+    minutes,
+    seconds,
+    milliseconds
+  };
 }
 
 function timeAgo(time, locales = 'zh') {
@@ -41,42 +48,57 @@ const i18n = {
   },
 };
 
-    let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
-    async function loadData() {
-      const response = await fetch(`${baseUri}/v1/documents`);
-      return response.json();
-    }
-    async function render() {
-      const
-        wrapper = document.querySelector('.items');
-      let obj;
-      try {
-        obj = await loadData();
-        obj.forEach(value => {
-          const item = document.createElement('div');
-          item.setAttribute("class", "item");
+let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
+async function loadData() {
+  const response = await fetch(`${baseUri}/v1/documents`);
+  return response.json();
+}
+async function render() {
+  const
+    wrapper = document.querySelector('.items');
+  let obj;
+  try {
+    obj = await loadData();
+    obj.forEach(value => {
+      const item = document.createElement('div');
+      item.setAttribute("class", "item");
 
-          const itemTitle = document.createElement('div');
-          itemTitle.textContent = value.name;
-          itemTitle.setAttribute("class", "item-title");
+      const itemTitle = document.createElement('div');
+      itemTitle.textContent = value.name;
+      itemTitle.setAttribute("class", "item-title");
 
-          item.appendChild(itemTitle);
+      item.appendChild(itemTitle);
 
-          const itemSubtitle = document.createElement('div');
-          itemSubtitle.textContent = timeAgo(new Date(value.time * 1000));
-          itemSubtitle.setAttribute("class", "item-subtitle");
-          item.appendChild(itemSubtitle);
+      const itemSubtitle = document.createElement('div');
+      itemSubtitle.textContent = timeAgo(new Date(value.time * 1000));
+      itemSubtitle.setAttribute("class", "item-subtitle");
+      item.appendChild(itemSubtitle);
 
-          wrapper.appendChild(item);
+      wrapper.appendChild(item);
 
-          item.addEventListener('click', evt => {
-            window.location = `/article?name=${encodeURIComponent(value.name)}`;
-          });
-        })
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    render();
+      item.addEventListener('click', evt => {
+        window.location = `/article?name=${encodeURIComponent(value.name)}`;
+      });
+    })
+  } catch (error) {
+    console.log(error);
+  }
+}
+render();
+document.querySelectorAll('[bind]').forEach(element => {
+  if (element.getAttribute('bind')) {
+    window[element.getAttribute('bind')] = element;
+  }
+  [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
+    if (!attr.value) return;
+    element.addEventListener(attr.nodeName.slice(1), evt => {
+      window[attr.value](evt);
+    });
+  });
+})
 
-    
+function showDrawer(evt) {
+console.log(evt,customDrawer);
+  evt.stopPropagation();
+  customDrawer.setAttribute('expand', 'true');
+}

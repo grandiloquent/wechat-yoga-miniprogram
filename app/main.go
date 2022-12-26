@@ -171,6 +171,10 @@ func main() {
 			handlers.V1AdminNote(db, w, r, secret)
 			return
 
+		case "/v1/admin/users":
+			handlers.V1AdminUsers(db, w, r, secret)
+			return
+
 		default:
 			if strings.Index(r.URL.Path, ".") == -1 {
 				http.ServeFile(w, r, "."+r.URL.Path+".html")

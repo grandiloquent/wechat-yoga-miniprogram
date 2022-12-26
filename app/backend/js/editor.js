@@ -70,7 +70,6 @@ async function saveData() {
   } catch (error) {
     console.log(error);
   }
-  console.log();
 }
 async function navigate(evt) {
   switch (evt.detail) {
@@ -107,9 +106,18 @@ async function render() {
 }
 render();
 
-document.addEventListener('keydown',async evt => {
-  if (evt.ctrlKey && evt.key === 's') {
-    evt.preventDefault();
-    await saveData();
+document.addEventListener('keydown', async evt => {
+  if (evt.ctrlKey) {
+    switch (evt.key) {
+      case 's':
+        evt.preventDefault();
+        await saveData();
+        break
+      case 'l':
+        evt.preventDefault();
+        await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart,textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
+        break
+    }
+
   }
 })

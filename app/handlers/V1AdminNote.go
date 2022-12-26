@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"net/http"
 )
- 
+
 func V1AdminNote(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	CrossOrigin(w)
 	if r.Method == "OPTIONS" {

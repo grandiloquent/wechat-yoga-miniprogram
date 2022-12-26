@@ -42,18 +42,54 @@ function getLine() {
   }
   return strings.substring(start, end);
 }
+const id = new URL(document.URL).searchParams.get('id') || 0;
+async function saveData() {
+  const strings = textarea.value.trim();
+  const index = strings.indexOf('\n');
+  if (index === -1) return;
+  const title = strings.substring(0, index).slice(1).trim();
+  const content = strings.substring(index).trim();
+  try {
+    const response = await fetch(`${baseUri}/v1/admin/note`, {
+      method: 'POST',
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      },
+      body: JSON.stringify({
+        id: id,
+        title,
+        content
+      })
+    })
+    const obj = await response.text();
+    if (id)
+      document.getElementById('toast').setAttribute('message', '成功');
+    else
+      window.location = `${window.location.origin}${window.location.pathname}?id=${obj}`
 
+  } catch (error) {
+    console.log(error);
+  }
+  console.log();
+}
 async function navigate(evt) {
   switch (evt.detail) {
     case 'translate':
-      textarea.setRangeText(`\n\n${await translate(getLine(), 'en')}`, textarea.selectionStart, textarea.selectionEnd, 'end');
+      textarea.setRangeText(`\
+          n\ n$ {
+            await translate(getLine(), 'en')
+          }
+          `, textarea.selectionStart, textarea.selectionEnd, 'end');
+      break;
+    case 'save':
+      await saveData();
       break;
   }
 
 }
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/notices`, {
+  const response = await fetch(`${baseUri}/v1/admin/note?id=${id}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }
@@ -61,18 +97,10 @@ async function loadData() {
   return response.json();
 }
 async function render() {
-  const wrapper = document.querySelector('.wrapper');
   let obj;
   try {
     obj = await loadData();
-    obj.forEach(value => {
-      const div = document.createElement('div');
-      div.textContent = value.title;
-      div.addEventListener('click', evt => {
-        evt.stopPropagation();
-      });
-      wrapper.appendChild(div);
-    })
+    textarea.value=`# ${obj.title}\n\n${obj.content}`
   } catch (error) {
 
   }

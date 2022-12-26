@@ -50,7 +50,7 @@ const i18n = {
 
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/documents`);
+  const response = await fetch(`${baseUri}/v1/admin/notes`);
   return response.json();
 }
 async function render() {
@@ -64,20 +64,20 @@ async function render() {
       item.setAttribute("class", "item");
 
       const itemTitle = document.createElement('div');
-      itemTitle.textContent = value.name;
+      itemTitle.textContent = value.title;
       itemTitle.setAttribute("class", "item-title");
 
       item.appendChild(itemTitle);
 
       const itemSubtitle = document.createElement('div');
-      itemSubtitle.textContent = timeAgo(new Date(value.time * 1000));
+      itemSubtitle.textContent = timeAgo(new Date(value.updated_time * 1000));
       itemSubtitle.setAttribute("class", "item-subtitle");
       item.appendChild(itemSubtitle);
 
       wrapper.appendChild(item);
 
       item.addEventListener('click', evt => {
-        window.location = `/article?name=${encodeURIComponent(value.name)}`;
+        window.location = `/article?id=${encodeURIComponent(value.name)}`;
       });
     })
   } catch (error) {

@@ -11,6 +11,7 @@
   <script type="module" src="../components/custom-drawer.js"></script>
   <script type="module" src="../components/custom-bottom-bar.js"></script>
 
+  <script src="../components/toast.js"></script>
 
 </head>
 
@@ -20,7 +21,7 @@
   <div style="height: 56px;"></div>
   <textarea bind="textarea"></textarea>
   <custom-bottom-bar bind @submit="navigate"></custom-bottom-bar>
-
+  <custom-toast id="toast"></custom-toast>
   <script src="js/editor.js"></script>
 
 </body>

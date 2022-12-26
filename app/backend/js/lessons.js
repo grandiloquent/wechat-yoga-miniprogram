@@ -1,3 +1,19 @@
+document.querySelectorAll('[bind]').forEach(element => {
+  if (element.getAttribute('bind')) {
+    window[element.getAttribute('bind')] = element;
+  }
+  [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
+    if (!attr.value) return;
+    element.addEventListener(attr.nodeName.slice(1), evt => {
+      window[attr.value](evt);
+    });
+  });
+})
+function showDrawer(evt) {
+  evt.stopPropagation();
+  customDrawer.setAttribute('expand', 'true');
+}
+
 function filterHandler(evt) {
   if (!evt.detail) return;
   if (evt.detail <= 4) {
@@ -42,12 +58,9 @@ function formatLessonDateTime(lesson) {
 }
 const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
 
-const customHeader = document.querySelector('custom-header');
 const layout = document.querySelector('#layout');
 const customFilter = document.querySelector('custom-filter');
 
-
-customHeader.setAttribute('title', "课程");
 
 const date = new Date().setHours(0, 0, 0, 0) / 1000;
 render(date, date + 86400);

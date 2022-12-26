@@ -79,13 +79,13 @@ export class CustomUserItem extends LitElement {
   <div class="left">
     <div class="top">
       <div class="top-left">
-${this.data.nick_name}
+已约 ${this.data.booked} 次
       </div>
       <div class="top-right">
 ${this.data.timeago}
       </div>
     </div>
-    <div class="bottom"></div>
+    <div class="bottom">${this.data.nick_name}</div>
   </div>
   <img class="right" src="${this.data.avatar_url}">
 </div>`;

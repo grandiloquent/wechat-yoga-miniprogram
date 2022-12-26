@@ -13,10 +13,12 @@
 </head>
 <script src="./js/custom-breadcrumb.js"></script>
 <script src="./js/custom-button.js"></script>
-<script src="./js/custom-header.js"></script>
+<script type="module" src="./components/custom-header.js"></script>
+<script type="module" src="./components/custom-drawer.js"></script>
 
 <body>
-  <custom-header title="文档"></custom-header>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="文档" bind @click="showDrawer"></custom-header>
   <div style="height: 56px;">
   </div>
   <div class="header">

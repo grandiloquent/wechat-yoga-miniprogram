@@ -98,7 +98,6 @@ document.querySelectorAll('[bind]').forEach(element => {
 })
 
 function showDrawer(evt) {
-console.log(evt,customDrawer);
   evt.stopPropagation();
   customDrawer.setAttribute('expand', 'true');
 }

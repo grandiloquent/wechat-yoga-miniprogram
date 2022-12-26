@@ -29,6 +29,36 @@ Windows 系统 PowerShell 终端可使用如下命令启动后端服务器：
 $ENV:DATA_SOURCE_NAME="host=数据库公网IP port=数据库侦听端口 user=数据库用户名 password=数据库密码 dbname=数据库名称 sslmode=disable";$ENV:AUTH_URL="https://api.weixin.qq.com/sns/jscode2session?appid=小程序Id&secret=小程序密钥&grant_type=authorization_code&js_code=";$ENV:SECRET="长度32的字符串"; go run main.go
 ```
 
+## 前端
+
+在开发前端的过程中，最让人困扰和影响代码质量的，莫过于需要频繁查询特定HTML元素，然后要命名一个相关变量，最后还要绑定它的如鼠标单击的特种事件。我们将通过几行代码来解决这些问题。
+
+```html
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="瑜伽" bind @click="showDrawer"></custom-header>
+```
+
+我们用 `bind` 属性来标记元素，然后用该属性的值作为 `window` 对象的变量缓存该元素。例如 `window['customDrawer']`。
+
+我们用  `@` 作为前缀，来绑定元素的事件。而实现这种规则的代码如下。
+
+```javascript
+document.querySelectorAll('[bind]').forEach(element => {
+  if (element.getAttribute('bind')) {
+    window[element.getAttribute('bind')] = element;
+  }
+  [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
+    if (!attr.value) return;
+    element.addEventListener(attr.nodeName.slice(1), evt => {
+      window[attr.value](evt);
+    });
+  });
+})
+
+```
+
+更多内容请查阅[在线文档](https://lucidu.cn/article?name=%E5%89%8D%E7%AB%AF)。
+
 ## 在线示例
 
 <img src="/images/扫码_搜索联合传播样式-标准色版.png">

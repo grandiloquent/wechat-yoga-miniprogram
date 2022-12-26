@@ -10,15 +10,18 @@
   <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
 
   <link rel="stylesheet" href="./css/article.css">
+
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+
 </head>
 <script src="./js/custom-breadcrumb.js"></script>
 <script src="./js/custom-button.js"></script>
-<script type="module" src="./components/custom-header.js"></script>
-<script type="module" src="./components/custom-drawer.js"></script>
+
 
 <body>
   <custom-drawer bind="customDrawer"></custom-drawer>
-  <custom-header title="文档" bind @click="showDrawer"></custom-header>
+  <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;">
   </div>
   <div class="header">

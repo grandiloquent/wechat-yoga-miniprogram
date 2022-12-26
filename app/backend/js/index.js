@@ -1,13 +1,17 @@
-setHeader();
-
-function setHeader() {
-  const customHeader = document.querySelector('custom-header');
-  customHeader.setAttribute('title', "管理员");
-  [...document.querySelectorAll('[data-href]')].forEach(x => {
-    x.addEventListener('click', evt => {
-      window.location = evt.currentTarget.dataset.href;
+document.querySelectorAll('[bind]').forEach(element => {
+  if (element.getAttribute('bind')) {
+    window[element.getAttribute('bind')] = element;
+  }
+  [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
+    if (!attr.value) return;
+    element.addEventListener(attr.nodeName.slice(1), evt => {
+      window[attr.value](evt);
     });
-  })
+  });
+})
+function showDrawer(evt) {
+  evt.stopPropagation();
+  customDrawer.setAttribute('expand', 'true');
 }
 
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''

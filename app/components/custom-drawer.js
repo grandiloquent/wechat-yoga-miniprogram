@@ -47,7 +47,7 @@ export class CustomDrawer extends LitElement {
 })}
   </div>
 </div>
-<div style="position:fixed;right:0;top:0;left:0;bottom:0;${this.expand?'display:block':'display:none'}" @click="${this.hide}"></div>`;
+<div style="position:fixed;right:0;top:0;left:0;bottom:0;z-index:991;${this.expand?'display:block':'display:none'}" @click="${this.hide}"></div>`;
   }
   connectedCallback() {
     super.connectedCallback();

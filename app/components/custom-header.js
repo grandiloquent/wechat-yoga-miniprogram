@@ -1,16 +1,16 @@
-  import {
-    LitElement,
-    html,
-    css
-  } from './lit-core.min.js';
-  export class CustomHeader extends LitElement {
-    static properties = {
-      title: {},
-      show: {
-        state: false
-      },
-    };
-    static styles = css`.header {
+import {
+  LitElement,
+  html,
+  css
+} from './lit-core.min.js';
+export class CustomHeader extends LitElement {
+  static properties = {
+    title: {},
+    show: {
+      state: false
+    }
+  };
+  static styles = css`.header {
         color: black;
         min-width: 320px;
         transition: box-shadow 250ms;
@@ -91,14 +91,14 @@
         margin: 0 4px 0 0;
     }`;
 
-    constructor() {
-      super();
-    }
-    showDrawer() {
-      this.dispatchEvent(new CustomEvent('submit'));
-    }
-    render() {
-      return html`<div class="header" style="${this.show?'box-shadow:0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%), 0px 2px 4px -1px rgb(0 0 0 / 20%)':''}">
+  constructor() {
+    super();
+  }
+  showDrawer() {
+    this.dispatchEvent(new CustomEvent('submit'));
+  }
+  render() {
+    return html`<div class="header" style="${this.show ? 'box-shadow:0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%), 0px 2px 4px -1px rgb(0 0 0 / 20%)' : ''}">
     <div class="wrapper">
         <div class="left">
             <div class="hamburger-menu" @click=${this.showDrawer}>
@@ -116,19 +116,19 @@
         </div>
     </div>
 </div>`;
-    }
-
-    connectedCallback() {
-      super.connectedCallback();
-      document.addEventListener("scroll", evt => {
-        this.show = window.scrollY > 56;
-      })
-    }
   }
-  customElements.define('custom-header', CustomHeader);
+
+  connectedCallback() {
+    super.connectedCallback();
+    document.addEventListener("scroll", evt => {
+      this.show = window.scrollY > 56;
+    })
+  }
+}
+customElements.define('custom-header', CustomHeader);
   /*
-  <!--
-  <script type="module" src="../components/custom-header.js"></script>
-  <custom-header></custom-header>
-  -->
-  */
+<!--
+<script type="module" src="../components/custom-header.js"></script>
+<custom-header></custom-header>
+-->
+*/

@@ -17,7 +17,7 @@ async function render() {
   let obj;
   try {
     obj = await loadData();
-    renderMarkdown(obj.content);
+    renderMarkdown(`# ${obj.title}\n\n${obj.content}`);
     document.title = `${obj.title} - ${document.title}`
 
     appendCopy();

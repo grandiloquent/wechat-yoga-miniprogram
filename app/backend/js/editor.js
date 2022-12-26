@@ -100,9 +100,16 @@ async function render() {
   let obj;
   try {
     obj = await loadData();
-    textarea.value=`# ${obj.title}\n\n${obj.content}`
+    textarea.value = `# ${obj.title}\n\n${obj.content}`
   } catch (error) {
 
   }
 }
 render();
+
+document.addEventListener('keydown',async evt => {
+  if (evt.ctrlKey && evt.key === 's') {
+    evt.preventDefault();
+    await saveData();
+  }
+})

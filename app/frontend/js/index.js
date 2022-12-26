@@ -77,7 +77,7 @@ async function render() {
       wrapper.appendChild(item);
 
       item.addEventListener('click', evt => {
-        window.location = `/article?id=${encodeURIComponent(value.name)}`;
+        window.location = `/article?id=${encodeURIComponent(value.id)}`;
       });
     })
   } catch (error) {

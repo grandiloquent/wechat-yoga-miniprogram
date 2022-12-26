@@ -12,7 +12,6 @@ export class CustomHeader extends LitElement {
     flat: {
       attribute: true,
       hasChanged: (newVal, oldVal) => {
-        document.removeEventListener("scroll", this.scrollHandler)
         return true;
       }
     }

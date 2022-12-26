@@ -105,7 +105,48 @@ async function render() {
   }
 }
 render();
+async function uploadImage(image, name) {
+  const form = new FormData();
+  form.append('images', image, name)
+  const response = await fetch(`https://lucidu.cn/v1/picture`, {
+    method: 'POST',
+    body: form
+  });
+  return await response.text();
+}
 
+function tryUploadImageFromClipboard(success, error) {
+  navigator.permissions.query({
+    name: "clipboard-read"
+  }).then(result => {
+    if (result.state === "granted" || result.state === "prompt") {
+      navigator.clipboard.read().then(data => {
+          console.log(data[0].types);
+          const blob = data[0].getType("image/png");
+          console.log(blob.then(res => {
+            const formData = new FormData();
+            formData.append("images", res, "1.png");
+            fetch(`https://lucidu.cn/v1/picture`, {
+              method: "POST",
+              body: formData
+            }).then(res => {
+              return res.text();
+            }).then(obj => {
+              success(obj);
+            })
+          }).catch(err => {
+            console.log(err)
+            error(err);
+          }))
+        })
+        .catch(err => {
+          error(err);
+        });
+    } else {
+      error(new Error());
+    }
+  });
+}
 document.addEventListener('keydown', async evt => {
   if (evt.ctrlKey) {
     switch (evt.key) {
@@ -117,6 +158,34 @@ document.addEventListener('keydown', async evt => {
         evt.preventDefault();
         await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart,textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
         break
+      case 'u':
+        if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
+          tryUploadImageFromClipboard((ok) => {
+            const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
+            editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+          }, () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.addEventListener('change', async ev => {
+              const file = input.files[0];
+              const imageFile = await uploadImage(file, file.name);
+              const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
+              editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+            });
+            input.click();
+          });
+        } else {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.addEventListener('change', async ev => {
+            const file = input.files[0];
+            const imageFile = await uploadImage(file, file.name);
+            const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
+            editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+          });
+          input.click();
+        }
+        break;
     }
 
   }

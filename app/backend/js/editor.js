@@ -159,18 +159,20 @@ document.addEventListener('keydown', async evt => {
         await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart,textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
         break
       case 'u':
+        evt.preventDefault();
         if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
           tryUploadImageFromClipboard((ok) => {
             const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
-            editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
-          }, () => {
+             textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
+          }, (error) => {
+            console.log(error);
             const input = document.createElement('input');
             input.type = 'file';
             input.addEventListener('change', async ev => {
               const file = input.files[0];
               const imageFile = await uploadImage(file, file.name);
               const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-              editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+              textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
             });
             input.click();
           });
@@ -181,7 +183,7 @@ document.addEventListener('keydown', async evt => {
             const file = input.files[0];
             const imageFile = await uploadImage(file, file.name);
             const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-            editor.setRangeText(string, editor.selectionStart, editor.selectionStart);
+             textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
           });
           input.click();
         }

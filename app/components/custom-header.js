@@ -8,6 +8,13 @@ export class CustomHeader extends LitElement {
     title: {},
     show: {
       state: false
+    },
+    flat: {
+      attribute: true,
+      hasChanged: (newVal, oldVal) => {
+        document.removeEventListener("scroll", this.scrollHandler)
+        return true;
+      }
     }
   };
   static styles = css`.header {
@@ -117,16 +124,19 @@ export class CustomHeader extends LitElement {
     </div>
 </div>`;
   }
-
+  scroll() {
+    this.show = window.scrollY > 56;
+  }
   connectedCallback() {
     super.connectedCallback();
-    document.addEventListener("scroll", evt => {
-      this.show = window.scrollY > 56;
-    })
+    if (!this.flat) {
+      this.scrollHandler = this.scroll.bind(this);
+      document.addEventListener("scroll", this.scrollHandler)
+    }
   }
 }
 customElements.define('custom-header', CustomHeader);
-  /*
+/*
 <!--
 <script type="module" src="../components/custom-header.js"></script>
 <custom-header></custom-header>

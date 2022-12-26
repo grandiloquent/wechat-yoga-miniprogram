@@ -48,6 +48,10 @@ function appendCopy() {
     });
   });
 }
+function showDrawer(evt) {
+  evt.stopPropagation();
+  customDrawer.setAttribute('expand', 'true');
+}
 document.querySelectorAll('[bind]').forEach(element => {
   if (element.getAttribute('bind')) {
     window[element.getAttribute('bind')] = element;
@@ -60,7 +64,3 @@ document.querySelectorAll('[bind]').forEach(element => {
   });
 })
 
-function showDrawer(evt) {
-  evt.stopPropagation();
-  customDrawer.setAttribute('expand', 'true');
-}

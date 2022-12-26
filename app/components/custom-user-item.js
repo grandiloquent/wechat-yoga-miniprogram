@@ -75,7 +75,6 @@ export class CustomUserItem extends LitElement {
   }
 
   render() {
-console.log(JSON.stringify(this.data));
     return html`<div class="wrapper">
   <div class="left">
     <div class="top">
@@ -83,7 +82,7 @@ console.log(JSON.stringify(this.data));
 ${this.data.nick_name}
       </div>
       <div class="top-right">
-${this.data.nick_name}
+${this.data.timeago}
       </div>
     </div>
     <div class="bottom"></div>

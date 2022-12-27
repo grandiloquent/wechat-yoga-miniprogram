@@ -25,7 +25,6 @@ async function translate(value, to) {
     console.log(error);
   }
 }
-
 function getLine() {
   let start = textarea.selectionStart;
   const strings = textarea.value;
@@ -71,6 +70,37 @@ async function saveData() {
     console.log(error);
   }
 }
+function getOptions() {
+  const line = getLine().trim();
+  const names = [];
+  let start = 0;
+  for (let index = 0; index < line.length; index++) {
+    if (line[index] === ' ' || line[index] === '=') {
+      names.push(line.substring(start, index).trim())
+      start = index + 1;
+      while (line[index + 1] === ' ') {
+        index++;
+      }
+      continue;
+    }
+    else if (line[index] === '"') {
+      names.push(line.substring(start, index))
+      start = index + 1;
+      for (let j = index + 1; j < line.length; j++) {
+        const element = line[j];
+        if (element === '"') {
+          names.push(line.substring(start, j))
+          start = j + 1;
+          index = j + 1;
+          continue;
+        }
+      }
+    }
+
+  }
+  names.push(line.substring(start).trim())
+  return names;
+}
 async function navigate(evt) {
   switch (evt.detail) {
     case 'translate':
@@ -85,10 +115,17 @@ async function navigate(evt) {
       break;
     case 'menu':
       const customDialogActions = document.createElement('custom-dialog-actions');
-      customDialogActions.addEventListener('click', evt => {
+      customDialogActions.addEventListener('submit', evt => {
         switch (evt.detail) {
           case 1:
             customDialogActions.remove();
+            const array = getOptions();
+            const buf = [];
+            for (let index = 0; index < array.length; index++) {
+              const element = array[index];
+              buf.push(`- \`${element}\`：`);
+            }
+            textarea.setRangeText(`\n\n${buf.join('\n')}`, textarea.selectionStart, textarea.selectionEnd, 'end');
             break;
         }
       });
@@ -132,24 +169,24 @@ function tryUploadImageFromClipboard(success, error) {
   }).then(result => {
     if (result.state === "granted" || result.state === "prompt") {
       navigator.clipboard.read().then(data => {
-          console.log(data[0].types);
-          const blob = data[0].getType("image/png");
-          console.log(blob.then(res => {
-            const formData = new FormData();
-            formData.append("images", res, "1.png");
-            fetch(`https://lucidu.cn/v1/picture`, {
-              method: "POST",
-              body: formData
-            }).then(res => {
-              return res.text();
-            }).then(obj => {
-              success(obj);
-            })
-          }).catch(err => {
-            console.log(err)
-            error(err);
-          }))
-        })
+        console.log(data[0].types);
+        const blob = data[0].getType("image/png");
+        console.log(blob.then(res => {
+          const formData = new FormData();
+          formData.append("images", res, "1.png");
+          fetch(`https://lucidu.cn/v1/picture`, {
+            method: "POST",
+            body: formData
+          }).then(res => {
+            return res.text();
+          }).then(obj => {
+            success(obj);
+          })
+        }).catch(err => {
+          console.log(err)
+          error(err);
+        }))
+      })
         .catch(err => {
           error(err);
         });
@@ -167,7 +204,7 @@ document.addEventListener('keydown', async evt => {
         break
       case 'l':
         evt.preventDefault();
-        await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart,textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
+        await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart, textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
         break
       case 'u':
         evt.preventDefault();

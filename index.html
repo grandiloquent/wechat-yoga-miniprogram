@@ -13,9 +13,7 @@
     <textarea style="width: 300px; height: 300px;">sss
 
 
-        2
-        3
-
+        set PGPASSWORD={用户密码}&&"C:\Program Files\PostgreSQL\15\bin\pg_dump.exe" -h {数据库IP} -p {端口默认5432}  -U {用户名} -d {数据库} -s > db.sql
 
         4
 
@@ -23,11 +21,36 @@
 
     </textarea>
     <script>
+        function getLine() {
+            let start = textarea.selectionStart;
+            const strings = textarea.value;
+
+            if (strings[start] === '\n' && start - 1 > 0) {
+                start--;
+            }
+            while (start > 0 && strings[start] != '\n') {
+                start--;
+            }
+            let end = textarea.selectionEnd;
+            while (end - 1 < strings.length && strings[end] != '\n') {
+                end++;
+            }
+            return strings.substring(start, end);
+        }
         const textarea = document.querySelector('textarea');
         document.addEventListener('keydown', evt => {
             if (evt.key === 'F1') {
                 evt.preventDefault();
-                let start = textarea.selectionStart;
+
+
+
+                console.log(names)
+            }
+        })
+
+
+        /*
+        let start = textarea.selectionStart;
                 let end = textarea.selectionEnd;
                 while (start > 0) {
                     if (/\s/.test(textarea.value[start])) {
@@ -61,8 +84,9 @@
                     end++;
                 }
                 console.log(start,end, textarea.value.substring(start,end))
-            }
-        })
+        */
+
+        
     </script>
 </body>
 

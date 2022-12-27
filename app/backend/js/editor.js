@@ -25,7 +25,7 @@ async function translate(value, to) {
     console.log(error);
   }
 }
-function getLine() {
+function getLine(isArray) {
   let start = textarea.selectionStart;
   const strings = textarea.value;
 
@@ -38,6 +38,9 @@ function getLine() {
   let end = textarea.selectionEnd;
   while (end - 1 < strings.length && strings[end] != '\n') {
     end++;
+  }
+  if (isArray) {
+    return [start, end]
   }
   return strings.substring(start, end);
 }
@@ -148,16 +151,16 @@ function findBlock(textarea) {
 async function navigate(evt) {
   switch (evt.detail) {
     case 'english':
-      textarea.setRangeText(`\n\n${
-            await translate(getLine(), 'en')
-          }
-          `, textarea.selectionStart, textarea.selectionEnd, 'end');
+      let array = getLine(1);
+      textarea.setRangeText(`\n\n${await translate(getLine(), 'en')
+        }
+          `, array[0], array[1], 'end');
       break;
-      case 'chinese':
-      textarea.setRangeText(`\n\n${
-            await translate(getLine(), 'zh')
-          }
-          `, textarea.selectionStart, textarea.selectionEnd, 'end');
+    case 'chinese':
+      array = getLine(1);
+      textarea.setRangeText(`\n\n${await translate(getLine(), 'zh')
+        }
+          `, array[0], array[1], 'end');
       break;
     case 'save':
       await saveData();
@@ -181,7 +184,7 @@ async function navigate(evt) {
             const points = findBlock(textarea);
             const lines = textarea.value.substring(points[0], points[1]).split('\n')
               .map(x => `    ${x}`);
-            textarea.setRangeText(`\n\n${lines.join('\n')}`,points[0],points[1], 'end');
+            textarea.setRangeText(`\n\n${lines.join('\n')}`, points[0], points[1], 'end');
             break;
         }
       });

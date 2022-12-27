@@ -56,8 +56,22 @@ func main() {
 	handlers["/favicon.ico"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		http.NotFound(w, r)
 	}
+	handlers["/v1/admin/lesson"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		// 检查是否包含id查询字符串
+		// 该逻辑在迭代版本中应该进一步优化
+		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+		// 通过调用数据库自定义函数进行查询操作
+		// 成功返回Json，失败空字符串
+		QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
+	}
+	handlers["/v1/admin/lesson/info"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		QueryJSON(w, db, "select * from v1_admin_lesson_info()")
+	}
 	handlers["/v1/admin/lessons"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		// 跨域时浏览器会先发送一个预检请求
 		if r.Method == "OPTIONS" {
@@ -80,10 +94,8 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
-
 	}
 	handlers["/v1/admin/login"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -99,7 +111,6 @@ func main() {
 			if CheckError(w, row.Err()) {
 				return
 			}
-
 			var id sql.NullString
 			err := row.Scan(&id)
 			if CheckError(w, err) {
@@ -120,11 +131,8 @@ func main() {
 				return
 			}
 		}
-
 	}
-
 	handlers["/v1/admin/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -132,26 +140,45 @@ func main() {
 		if !validToken(db, w, r, secret) {
 			return
 		}
-
 		QueryJSON(w, db, "select * from v1_admin_market()")
-
 	}
 	handlers["/v1/admin/market/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
 		}
-
 		if !validToken(db, w, r, secret) {
 			return
 		}
-
 		InsertNumber(db, w, r, "select * from v1_admin_market_update($1)")
-
+	}
+	handlers["/v1/admin/note"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "OPTIONS" {
+			return
+		}
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_note($1)", id)
+		} else if r.Method == "POST" {
+			if !validToken(db, w, r, secret) {
+				return
+			}
+			InsertNumber(db, w, r, "select * from v1_admin_note_update($1)")
+		}
+	}
+	handlers["/v1/admin/notes"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "OPTIONS" {
+			return
+		}
+		QueryJSON(w, db, "select * from v1_admin_notes()")
 	}
 	handlers["/v1/admin/notice"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -164,12 +191,24 @@ func main() {
 		if !validToken(db, w, r, secret) {
 			return
 		}
-
 		QueryJSON(w, db, "select * from v1_admin_notice($1)", id)
-
+	}
+	handlers["/v1/admin/notice/delete"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "OPTIONS" {
+			return
+		}
+		id := r.URL.Query().Get("id")
+		if len(id) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+		if !validToken(db, w, r, secret) {
+			return
+		}
+		QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
 	}
 	handlers["/v1/admin/notice/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -178,10 +217,8 @@ func main() {
 			return
 		}
 		InsertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
-
 	}
 	handlers["/v1/admin/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -190,10 +227,8 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_admin_notices()")
-
 	}
 	handlers["/v1/admin/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -206,26 +241,29 @@ func main() {
 		if !validToken(db, w, r, secret) {
 			return
 		}
-
 		QueryJSON(w, db, "select * from v1_admin_teacher($1)", id)
-
 	}
 	handlers["/v1/admin/teacher/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
 		}
-
 		if !validToken(db, w, r, secret) {
 			return
 		}
-
 		InsertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
-
+	}
+	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "OPTIONS" {
+			return
+		}
+		if !validToken(db, w, r, secret) {
+			return
+		}
+		QueryJSON(w, db, "select * from v1_admin_users()")
 	}
 	handlers["/v1/authorization"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		code := r.URL.Query().Get("code")
 		res, err := http.Get(authUrl + code)
 		if err != nil {
@@ -239,10 +277,8 @@ func main() {
 			}
 		}(res.Body)
 		_, _ = io.Copy(w, res.Body)
-
 	}
 	handlers["/v1/book"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
@@ -254,21 +290,16 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_book($1,$2)", id, openId)
-
 	}
 	handlers["/v1/booked/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_booked_home()")
-
 	}
 	handlers["/v1/booked/query"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
 			return
 		}
-
 		startTime := r.URL.Query().Get("startTime")
 		if len(startTime) == 0 {
 			http.NotFound(w, r)
@@ -280,10 +311,8 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_booked_query($1,$2,$3)", openId, startTime, endTime)
-
 	}
 	handlers["/v1/booking/query"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
@@ -300,10 +329,8 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_booking_query($1,$2,$3)", start, openId, classType)
-
 	}
 	handlers["/v1/debug"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		xforward := r.Header.Get("X-Forwarded-For")
 		buf, err := io.ReadAll(r.Body)
 		if CheckError(w, err) {
@@ -324,45 +351,69 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Write(buf)
-
+	}
+	handlers["/v1/document"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		name := r.URL.Query().Get("name")
+		if len(name) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+		buf, err := ioutil.ReadFile("./frontend/" + name + ".md")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(buf)
+	}
+	handlers["/v1/documents"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		files, err := ioutil.ReadDir("./frontend")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		var array []map[string]interface{}
+		for i := 0; i < len(files); i++ {
+			if !files[i].IsDir() && strings.HasSuffix(files[i].Name(), ".md") {
+				m := make(map[string]interface{})
+				n := files[i].Name()
+				m["name"] = n[:strings.LastIndex(n, ".")]
+				m["time"] = files[i].ModTime().Unix()
+				array = append(array, m)
+			}
+		}
+		buf, err := json.Marshal(array)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(buf)
 	}
 	handlers["/v1/functions/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_functions_home()")
-
 	}
 	handlers["/v1/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_market()")
-
 	}
 	handlers["/v1/market/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_market_home()")
-
 	}
 	handlers["/v1/notice"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.NotFound(w, r)
 			return
 		}
 		QueryJSON(w, db, "select * from v1_notice($1)", id)
-
 	}
 	handlers["/v1/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_notices()")
-
 	}
 	handlers["/v1/notices/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_notices_home()")
-
 	}
 	handlers["/v1/picture"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		_ = r.ParseMultipartForm(32 << 20) // 32MB is the default used by FormFile
 		fhs := r.MultipartForm.File["images"]
@@ -391,7 +442,6 @@ func main() {
 				m = originalImage
 			}
 			_ = os.MkdirAll("static/images", 0644)
-
 			fileName := fmt.Sprintf("%s-%s-W%dH%d%s", GetDateTimeString(), String(6), m.Bounds().Dx(), m.Bounds().Dy(), path.Ext(fh.Filename))
 			fullName := fmt.Sprintf("static/images/%s", fileName)
 			for FileExists(fullName) {
@@ -415,24 +465,18 @@ func main() {
 			_, _ = w.Write([]byte(fileName))
 		}
 	}
-
 	handlers["/v1/slideshow/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_slideshow_home()")
-
 	}
 	handlers["/v1/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.NotFound(w, r)
 			return
 		}
 		QueryJSON(w, db, "select * from v1_teacher($1)", id)
-
 	}
 	handlers["/v1/teacher/lessons"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
@@ -458,17 +502,12 @@ func main() {
 			http.NotFound(w, r)
 			return
 		}
-
 		QueryJSON(w, db, "select * from v1_teacher_lessons($1,$2,$3,$4,$5)", startTime, endTime, openId, classType, teacherId)
-
 	}
 	handlers["/v1/teachers/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		QueryJSON(w, db, "select * from v1_teachers_home()")
-
 	}
 	handlers["/v1/unbook"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
@@ -480,155 +519,25 @@ func main() {
 			return
 		}
 		QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
-
 	}
 	handlers["/v1/user/check"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
 			return
 		}
 		QueryInt(w, db, "select * from v1_user_check($1)", openId)
-
 	}
 	handlers["/v1/user/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		InsertNumber(db, w, r, "select * from v1_user_update($1)")
-
 	}
 	handlers["/v1/user/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
 			http.NotFound(w, r)
 			return
 		}
 		QueryJSON(w, db, "select * from v1_user_user($1)", openId)
-
-	}
-	handlers["/v1/admin/notice/delete"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
-
-		QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
-
-	}
-	handlers["/v1/documents"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		files, err := ioutil.ReadDir("./frontend")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		var array []map[string]interface{}
-		for i := 0; i < len(files); i++ {
-			if !files[i].IsDir() && strings.HasSuffix(files[i].Name(), ".md") {
-				m := make(map[string]interface{})
-				n := files[i].Name()
-				m["name"] = n[:strings.LastIndex(n, ".")]
-				m["time"] = files[i].ModTime().Unix()
-				array = append(array, m)
-			}
-		}
-		buf, err := json.Marshal(array)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Write(buf)
-
-	}
-	handlers["/v1/document"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		name := r.URL.Query().Get("name")
-		if len(name) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		buf, err := ioutil.ReadFile("./frontend/" + name + ".md")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Write(buf)
-
-	}
-	handlers["/v1/admin/lesson"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		// 检查是否包含id查询字符串
-		// 该逻辑在迭代版本中应该进一步优化
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		// 通过调用数据库自定义函数进行查询操作
-		// 成功返回Json，失败空字符串
-		QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
-
-	}
-	handlers["/v1/admin/lesson/info"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		QueryJSON(w, db, "select * from v1_admin_lesson_info()")
-
-	}
-	handlers["/v1/admin/notes"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-
-		QueryJSON(w, db, "select * from v1_admin_notes()")
-
-	}
-	handlers["/v1/admin/note"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_note($1)", id)
-		} else if r.Method == "POST" {
-			if !validToken(db, w, r, secret) {
-				return
-			}
-			InsertNumber(db, w, r, "select * from v1_admin_note_update($1)")
-		}
-
-	}
-	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-
-		if !validToken(db, w, r, secret) {
-			return
-		}
-
-		QueryJSON(w, db, "select * from v1_admin_users()")
-
 	}
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

@@ -154,10 +154,10 @@ async function navigate(evt) {
           `, array[1], array[2], 'end');
       break;
     case 'chinese':
-      array = getLine();
-      textarea.setRangeText(`\n\n${await translate(array[0], 'zh')
+      let array1 = getLine();
+      textarea.setRangeText(`\n\n${await translate(array1[0], 'zh')
         }
-          `, array[1], array[2], 'end');
+          `, array1[1], array1[2], 'end');
       break;
     case 'save':
       await saveData();

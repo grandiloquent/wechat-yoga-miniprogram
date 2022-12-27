@@ -9,26 +9,44 @@ document.querySelectorAll('[bind]').forEach(element => {
     });
   });
 })
+
 function showDrawer(evt) {
   evt.stopPropagation();
   customDrawer.setAttribute('expand', 'true');
 }
-
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/login`, {
+  const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }
   })
-  return response.text();
+  return response.json();
 }
 async function render() {
+
+
+
+
+  let obj;
   try {
-    await loadData()
+    obj = await loadData();
+    startTime.data = paddingArray([...new Array(25).keys()].map(x => {
+      const m = x * 30 + 60 * 9;
+      return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
+    }));
+    lesson.data = paddingArray(obj.lessons);
+
   } catch (error) {
-console.log(error);
-   window.location = `/backend/login?returns=${encodeURIComponent(window.location.href)}`
+
   }
 }
 render();
+
+function paddingArray(array) {
+  const dif = array.length % 4;
+  for (let j = 0; j < 4 - dif; j++) {
+    array.push('');
+  }
+  return array;
+}

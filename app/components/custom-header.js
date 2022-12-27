@@ -2,7 +2,7 @@ import {
   LitElement,
   html,
   css
-} from './lit-core.min.js';
+} from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
 export class CustomHeader extends LitElement {
   static properties = {
     title: {},

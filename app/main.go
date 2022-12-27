@@ -466,7 +466,7 @@ func main() {
 	}
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/admin/") {
+		if strings.HasPrefix(r.URL.Path, "/v1/admin/") {
 			// 启用跨域，便于本地测试
 			CrossOrigin(w)
 			// 如果请求头包含敏感信息浏览器会发送请求预检
@@ -489,6 +489,9 @@ func main() {
 		if strings.Index(r.URL.Path, ".") == -1 {
 			http.ServeFile(w, r, "."+r.URL.Path+".html")
 		} else {
+			if strings.HasSuffix(r.URL.Path, ".js") {
+				w.Header().Set("Content-Type", "application/javascript")
+			}
 			http.ServeFile(w, r, "."+r.URL.Path)
 		}
 

@@ -9,7 +9,7 @@ const wrapper = document.querySelector('.markdown');
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 const id = new URL(document.URL).searchParams.get('id') || '1';
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/note?id=${id}`)
+  const response = await fetch(`${baseUri}/v1/note?id=${id}`)
   return response.json();
 }
 async function render() {

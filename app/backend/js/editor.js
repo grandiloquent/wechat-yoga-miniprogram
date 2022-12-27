@@ -49,7 +49,7 @@ async function saveData() {
   const title = strings.substring(0, index).slice(1).trim();
   const content = strings.substring(index).trim();
   try {
-    const response = await fetch(`${baseUri}/v1/admin/note`, {
+    const response = await fetch(`${baseUri}/v1/note`, {
       method: 'POST',
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")
@@ -192,7 +192,7 @@ async function navigate(evt) {
 }
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/note?id=${id}`, {
+  const response = await fetch(`${baseUri}/v1/note?id=${id}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }

@@ -2,212 +2,26 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>排课 - 晨蕴瑜伽</title>
-    <style>
-        html {
-            font-family: Roboto, Helvetica Neue, Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排课 - 瑜伽约课微信小程序</title>
+  <link rel="stylesheet" href="css/schedule.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script type="module" src="../components/custom-options.js"></script>
 
-        body {
-            font-size: small;
-            margin: 0;
-            background: #fff;
-            color: #4d5156;
-            background-color: #fff;
-            overflow: initial;
-            font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
-        }
-    </style>
+
 </head>
 
 <body>
-    <custom-header>
-    </custom-header>
-    <div style="height: 64px;"></div>
 
-    <custom-menu-picker id="picker-lesson"></custom-menu-picker>
-    <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
-
-
-    <custom-menu-picker id="picker-teacher"></custom-menu-picker>
-    <custom-menu-picker id="picker-date"></custom-menu-picker>
-    <custom-menu-picker id="picker-start-time"></custom-menu-picker>
-    <custom-menu-picker id="picker-peoples"></custom-menu-picker>
-
-    <script src="custom-menu-picker.js"></script>
-
-    <script src="custom-header.js"></script>
-    <script src="custom-drawer.js"></script>
-    <custom-submit-bar></custom-submit-bar>
-    <custom-drawer style="z-index: 1;"></custom-drawer>
-    <script src="custom-submit-bar.js"></script>
-    <custom-toast></custom-toast>
-    <script src="toast.js"></script>
-    <script>
-        function durationToSeconds(duration) {
-            let result = 0;
-            if (/(\d{1,2}:){1,2}\d{1,2}/.test(duration)) {
-                const pieces = duration.split(':');
-                for (let i = pieces.length - 1; i > -1; i--) {
-                    result += Math.pow(60, i) * parseInt(pieces[pieces.length - i - 1]);
-                }
-                return result;
-            }
-            result = parseInt(duration);
-            if (isNaN(result)) {
-                result = 0;
-            }
-            return result;
-        }
-    </script>
-    <script>
-        // (() => {
-        //     function rgbToHex(r, g, b) {
-        //         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        //     }
-        //     console.log(rgbToHex(218, 220, 224))
-        // })();
-
-
-        const customHeader = document.querySelector('custom-header');
-        customHeader.setAttribute('title', "排课");
-
-        const pickerDate = document.querySelector('#picker-date');
-        pickerDate.setAttribute('data', JSON.stringify([
-            "周一", "周二", "周三", "周四", "周五", "周六", "周日"
-        ]));
-        pickerDate.setAttribute('title', '日期');
-
-
-        const pickerStartTime = document.querySelector('#picker-start-time');
-        pickerStartTime.setAttribute('data', JSON.stringify([...new Array(25).keys()].map(x => {
-            const m = x * 30 + 60 * 9;
-            return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
-        })));
-        pickerStartTime.setAttribute('columns', '5');
-        pickerStartTime.setAttribute('title', '开课时间');
-
-        const pickerLesson = document.querySelector('#picker-lesson');
-        pickerLesson.setAttribute('columns', '2');
-        pickerLesson.setAttribute('title', '课程');
-        if (window.JInterface) {
-            pickerLesson.setAttribute('data', JSON.stringify(JSON.parse(JInterface.executeQuery("select name from lesson"))
-                .map(x => x.name)));
-        } else {
-            pickerLesson.setAttribute('data', JSON.stringify(["肩颈理疗", "流瑜伽", "脊柱保养", "伸展瑜伽", "蜜桃臀", "空中瑜伽", "普拉提", "开肩美背", "纤体瑜伽", "阴瑜伽", "阿斯汤伽", "哈他基础", "臀腿塑形", "腰腹塑形", "椅子瑜伽", "精准正位", "女性保养", "肩髋伸展", "尊巴", "艾扬格", "维密蜜桃臀", "基础阿斯汤", "排毒养颜", "艾扬格瑜伽", "内观流", "伸展流", "开髋流", "核心流", "后弯流"]
-            ));
-        }
-        const pickerTeacher = document.querySelector('#picker-teacher');
-        if (window.JInterface) {
-            pickerTeacher.setAttribute('data', JSON.stringify(JSON.parse(JInterface.executeQuery("select name from coach"))
-                .map(x => x.name)));
-        } else {
-            pickerTeacher.setAttribute('data', JSON.stringify(["欧阳老师", "周琼老师", "汐子老师", "倩倩老师", "细雨老师", "阿MAY老师", "金钰老师"]
-            ));
-        }
-        pickerTeacher.setAttribute('columns', '2');
-        pickerTeacher.setAttribute('title', '老师');
-
-        const pickerPeoples = document.querySelector('#picker-peoples');
-        pickerPeoples.setAttribute('data', JSON.stringify([...new Array(9).keys()].map(x => x + 8)));
-        pickerPeoples.setAttribute('title', '人数');
-
-        const pickerLessonType = document.querySelector('#picker-lesson-type');
-        pickerLessonType.setAttribute('data', JSON.stringify([
-            "团课", "小班"
-        ]));
-        pickerLessonType.setAttribute('columns', '3');
-        pickerLessonType.setAttribute('title', '课程类型');
-
-        const customSubmitBar = document.querySelector('custom-submit-bar');
-        customSubmitBar.addEventListener('close', evt => {
-            history.back();
-        });
-        customSubmitBar.addEventListener('submit', evt => {
-            evt.stopPropagation();
-
-            const openId = 'oQOVx5JMVnD7GOzfovn-64lLe57A';
-            const classType = ((pickerLessonType.selectedItem === '小班') && 1) || ((pickerLessonType.selectedItem === '团课') && 4);
-            const dateTime = '日一二三四五六'.split('').map(x => `周${x}`).indexOf(pickerDate.selectedItem);
-            const lesson = pickerLesson.selectedItem;
-            const peoples = parseInt(pickerPeoples.selectedItem || '0');
-            const startTime = durationToSeconds(pickerStartTime.selectedItem + ":00");
-            const endTime = startTime + 3600;
-            const teacher = pickerTeacher.selectedItem;
-            const start = new Date().setHours(0, 0, 0, 0) / 1000;
-            const endDate = new Date();
-            endDate.setDate(endDate.getDate() + 30);// 365
-            const end = endDate.setHours(0, 0, 0, 0) / 1000;
-
-            /*
-            console.log('openId', openId)
-            console.log('classType', classType)
-            console.log('dateTime', dateTime)
-            console.log('endTime', endTime)
-            console.log('lesson', lesson)
-            console.log('peoples', peoples)
-            console.log('startTime', startTime)
-            console.log('teacher', teacher)
-            console.log('start', start)
-            console.log('end', end)
-            console.log(`select * from insert_lessons('${openId}',${classType},${dateTime},${endTime},'${lesson}',${peoples},${startTime},'${teacher}',to_timestamp(${start}.0+28800)::timestamp without time zone,to_timestamp(${end}.0+28800)::timestamp without time zone)`);
-            */
-
-            if (window.JInterface) {
-                JInterface.executeQuery(`select * from insert_lessons('${openId}',${classType},${dateTime},${endTime},'${lesson}',${peoples},${startTime},'${teacher}',to_timestamp(${start}.0)::timestamp without time zone,to_timestamp(${end}.0)::timestamp without time zone)`);
-                document.getElementById('toast').setAttribute('message','成功');
-            }
-
-        });
-
-    </script>
-    <div style="height: 68px;"></div>
-    <!--
-    <script>
-        (() => {
-            const s = `in_open_id text, in_class_type integer, in_date_time integer, in_end_time integer, in_lesson text, in_peoples integer, in_start_time integer, in_teacher text, in_start timestamp without time zone, in_end timestamp without time zone`.split(',');
-            function substringAfter(string, delimiter, missingDelimiterValue) {
-                const index = string.indexOf(delimiter);
-                if (index === -1) {
-                    return missingDelimiterValue || string;
-                } else {
-                    return string.substring(index + delimiter.length);
-                }
-            }
-            function substringBefore(string, delimiter, missingDelimiterValue) {
-                const index = string.indexOf(delimiter);
-                if (index === -1) {
-                    return missingDelimiterValue || string;
-                } else {
-                    return string.substring(0, index);
-                }
-            }
-            function camel(string) {
-                return string.replaceAll(/[ _-]([a-zA-Z])/g, m => m[1].toUpperCase());
-            }
-            let obj = s.map(x => substringAfter(x, '_'))
-                .map(x => {
-                    const y = camel(substringBefore(x, ' '));
-                    // if (x.endsWith('text')) {
-                    //     return `const ${y} = '';`;
-                    // } else {
-                    //     return `const ${y} = 0;`;
-                    // }
-                    //return `console.log('${y}',${y})`;
-                    if (x.endsWith('text')) {
-                        return `'\${${y}}'`;
-                    } else {
-                        return `\${${y}}`;
-                    }
-                });
-            console.log(obj.join(','));
-        })();
-    </script>
-    -->
-   
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <custom-options bind="lesson" title="课程"></custom-options>
+  <custom-options bind="startTime" title="开课时间"></custom-options>
+  <script src="js/schedule.js"></script>
 </body>
 
 </html>

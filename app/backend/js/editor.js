@@ -101,12 +101,61 @@ function getOptions() {
   names.push(line.substring(start).trim())
   return names;
 }
+function findBlock(textarea) {
+  let start = textarea.selectionStart;
+  let end = textarea.selectionEnd;
+  const strings = textarea.value;
+  if (strings[start] === '\n' && start - 1 > 0) {
+    start--;
+  }
+  let founded = false;
+  while (start > 0) {
+    if (strings[start] == '\n') {
+      let j = start - 1;
+      while (j > 0 && /\s/.test(strings[j])) {
+        if (strings[j] === '\n') {
+          founded = true;
+          break;
+        }
+        j--;
+      }
+    }
+    if (founded) {
+      break
+    }
+    start--;
+  }
+  founded = false;
+  while (end + 1 < strings.length) {
+    if (strings[end] == '\n') {
+      let j = end + 1;
+      while (j + 1 < strings.length && /\s/.test(strings[j])) {
+        if (strings[j] === '\n') {
+          founded = true;
+          break;
+        }
+        j++;
+      }
+    }
+    if (founded) {
+      break
+    }
+    end++;
+  }
+  return [start, end]
+
+}
 async function navigate(evt) {
   switch (evt.detail) {
-    case 'translate':
-      textarea.setRangeText(`\
-          n\ n$ {
+    case 'english':
+      textarea.setRangeText(`\n\n${
             await translate(getLine(), 'en')
+          }
+          `, textarea.selectionStart, textarea.selectionEnd, 'end');
+      break;
+      case 'chinese':
+      textarea.setRangeText(`\n\n${
+            await translate(getLine(), 'zh')
           }
           `, textarea.selectionStart, textarea.selectionEnd, 'end');
       break;
@@ -117,7 +166,7 @@ async function navigate(evt) {
       const customDialogActions = document.createElement('custom-dialog-actions');
       customDialogActions.addEventListener('submit', evt => {
         switch (evt.detail) {
-          case 1:
+          case "0":
             customDialogActions.remove();
             const array = getOptions();
             const buf = [];
@@ -126,6 +175,13 @@ async function navigate(evt) {
               buf.push(`- \`${element}\`：`);
             }
             textarea.setRangeText(`\n\n${buf.join('\n')}`, textarea.selectionStart, textarea.selectionEnd, 'end');
+            break;
+          case "1":
+            customDialogActions.remove();
+            const points = findBlock(textarea);
+            const lines = textarea.value.substring(points[0], points[1]).split('\n')
+              .map(x => `    ${x}`);
+            textarea.setRangeText(`\n\n${lines.join('\n')}`,points[0],points[1], 'end');
             break;
         }
       });

@@ -53,7 +53,9 @@ user-select:none;
     super();
   }
   navigate(e) {
-    this.dispatchEvent(new CustomEvent('submit', {detail:e.currentTarget.dataset.href}));
+    this.dispatchEvent(new CustomEvent('submit', {
+      detail: e.currentTarget.dataset.href
+    }));
   }
   render() {
     return html`${this.data .map((element,index)=>{
@@ -72,7 +74,11 @@ ${element.title}
 `,
       title: "翻译",
       href: "translate"
-    },{
+    }, {
+      path: svg`<path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z"></path>`,
+      title: "菜单",
+      href: "menu"
+    }, {
       path: svg`<path d="M15 9v-3.984h-9.984v3.984h9.984zM12 18.984q1.219 0 2.109-0.891t0.891-2.109-0.891-2.109-2.109-0.891-2.109 0.891-0.891 2.109 0.891 2.109 2.109 0.891zM17.016 3l3.984 3.984v12q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h12z"></path>
 `,
       title: "保存",

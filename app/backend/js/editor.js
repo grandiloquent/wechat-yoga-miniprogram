@@ -83,6 +83,17 @@ async function navigate(evt) {
     case 'save':
       await saveData();
       break;
+    case 'menu':
+      const customDialogActions = document.createElement('custom-dialog-actions');
+      customDialogActions.addEventListener('click', evt => {
+        switch (evt.detail) {
+          case 1:
+            customDialogActions.remove();
+            break;
+        }
+      });
+      document.body.appendChild(customDialogActions);
+      break;
   }
 
 }
@@ -163,7 +174,7 @@ document.addEventListener('keydown', async evt => {
         if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
           tryUploadImageFromClipboard((ok) => {
             const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
-             textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
+            textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
           }, (error) => {
             console.log(error);
             const input = document.createElement('input');
@@ -172,7 +183,7 @@ document.addEventListener('keydown', async evt => {
               const file = input.files[0];
               const imageFile = await uploadImage(file, file.name);
               const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-              textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
+              textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
             });
             input.click();
           });
@@ -183,7 +194,7 @@ document.addEventListener('keydown', async evt => {
             const file = input.files[0];
             const imageFile = await uploadImage(file, file.name);
             const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-             textarea.setRangeText(string,  textarea.selectionStart,  textarea.selectionStart);
+            textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
           });
           input.click();
         }

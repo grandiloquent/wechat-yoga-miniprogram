@@ -25,7 +25,7 @@ async function translate(value, to) {
     console.log(error);
   }
 }
-function getLine(isArray) {
+function getLine() {
   let start = textarea.selectionStart;
   const strings = textarea.value;
 
@@ -39,10 +39,7 @@ function getLine(isArray) {
   while (end - 1 < strings.length && strings[end] != '\n') {
     end++;
   }
-  if (isArray) {
-    return [start, end]
-  }
-  return strings.substring(start, end);
+  return [strings.substring(start, end), start, end]
 }
 const id = new URL(document.URL).searchParams.get('id') || 0;
 async function saveData() {
@@ -74,7 +71,7 @@ async function saveData() {
   }
 }
 function getOptions() {
-  const line = getLine().trim();
+  const line = getLine()[0].trim();
   const names = [];
   let start = 0;
   for (let index = 0; index < line.length; index++) {
@@ -151,16 +148,16 @@ function findBlock(textarea) {
 async function navigate(evt) {
   switch (evt.detail) {
     case 'english':
-      let array = getLine(1);
-      textarea.setRangeText(`\n\n${await translate(getLine(), 'en')
+      let array = getLine();
+      textarea.setRangeText(`\n\n${await translate(array[0], 'en')
         }
-          `, array[0], array[1], 'end');
+          `, array[1], array[2], 'end');
       break;
     case 'chinese':
-      array = getLine(1);
-      textarea.setRangeText(`\n\n${await translate(getLine(), 'zh')
+      array = getLine();
+      textarea.setRangeText(`\n\n${await translate(array[0], 'zh')
         }
-          `, array[0], array[1], 'end');
+          `, array[1], array[2], 'end');
       break;
     case 'save':
       await saveData();

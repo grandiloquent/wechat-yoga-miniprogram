@@ -72,11 +72,7 @@ func main() {
 		QueryJSON(w, db, "select * from v1_admin_lesson_info()")
 	}
 	handlers["/v1/admin/lessons"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		// 跨域时浏览器会先发送一个预检请求
-		if r.Method == "OPTIONS" {
-			return
-		}
+
 		// 待查询课程的起始时间
 		start := r.URL.Query().Get("start")
 		if len(start) == 0 {
@@ -89,13 +85,9 @@ func main() {
 			http.NotFound(w, r)
 			return
 		}
-		// 验证管理员权限
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
 	}
-	handlers["/v1/admin/login"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+	handlers["/v1/login"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -133,26 +125,12 @@ func main() {
 		}
 	}
 	handlers["/v1/admin/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		QueryJSON(w, db, "select * from v1_admin_market()")
 	}
 	handlers["/v1/admin/market/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		InsertNumber(db, w, r, "select * from v1_admin_market_update($1)")
 	}
-	handlers["/v1/admin/note"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+	handlers["/v1/note"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		CrossOrigin(w)
 		if r.Method == "OPTIONS" {
 			return
@@ -171,96 +149,43 @@ func main() {
 			InsertNumber(db, w, r, "select * from v1_admin_note_update($1)")
 		}
 	}
-	handlers["/v1/admin/notes"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
+	handlers["/v1/notes"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_notes()")
 	}
 	handlers["/v1/admin/notice"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.NotFound(w, r)
-			return
-		}
-		if !validToken(db, w, r, secret) {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_admin_notice($1)", id)
 	}
 	handlers["/v1/admin/notice/delete"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.NotFound(w, r)
-			return
-		}
-		if !validToken(db, w, r, secret) {
 			return
 		}
 		QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
 	}
 	handlers["/v1/admin/notice/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		InsertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
 	}
 	handlers["/v1/admin/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		QueryJSON(w, db, "select * from v1_admin_notices()")
 	}
 	handlers["/v1/admin/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
 			http.NotFound(w, r)
 			return
 		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		QueryJSON(w, db, "select * from v1_admin_teacher($1)", id)
 	}
 	handlers["/v1/admin/teacher/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		InsertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
 	}
 	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if !validToken(db, w, r, secret) {
-			return
-		}
 		QueryJSON(w, db, "select * from v1_admin_users()")
 	}
 	handlers["/v1/authorization"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {

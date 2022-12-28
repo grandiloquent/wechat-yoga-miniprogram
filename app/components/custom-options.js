@@ -67,7 +67,6 @@ user-select:none;
     return html`<h2 class="title">${this.title}</h2>
       <div class="layout">
 ${this.data .map((element,index)=>{
-console.log(this.selectedItem,element);
 return html`<div class="item ${this.selectedItem===element?'selected':''}" data-index="${element}" @click=${this.navigate}>${element}</div>`;
 })}
       </div>`;

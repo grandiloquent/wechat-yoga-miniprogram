@@ -174,17 +174,6 @@ func main() {
 	handlers["/v1/admin/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_notices()")
 	}
-	handlers["/v1/admin/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		QueryJSON(w, db, "select * from v1_admin_teacher($1)", id)
-	}
-	handlers["/v1/admin/teacher/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
-	}
 	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_users()")
 	}
@@ -477,6 +466,18 @@ func main() {
 			QueryJSON(w, db, "select * from v1_admin_course($1)", id)
 		} else if r.Method == "POST" {
 			InsertNumber(db, w, r, "select * from v1_admin_course_update($1)")
+		}
+	}
+	handlers["/v1/admin/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_teacher($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
 		}
 	}
 

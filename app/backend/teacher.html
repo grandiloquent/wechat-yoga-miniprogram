@@ -2,49 +2,32 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>教师 - 瑜伽约课微信小程序</title>
-    <link rel="stylesheet" href="teacher.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>老师 - 瑜伽约课微信小程序</title>
+  <link rel="stylesheet" href="css/teacher.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script type="module" src="../components/custom-field.js"></script>
+  <script type="module" src="../components/custom-submit-bar.js"></script>
+  <script src="../components/toast.js"></script>
+
 
 </head>
 
 <body>
-    <custom-header></custom-header>
-    <div style="height: 64px;"></div>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <custom-field bind="nameInput" label="姓名" placeholder="请输入老师姓名"></custom-field>
+  <custom-field bind="phoneInput" label="手机号码" placeholder="请输入老师手机号码"></custom-field>
+  <custom-field bind="introduInput" label="简介" placeholder="请输入关于老师的简单介绍"></custom-field>
 
-    <div style="font-size: 16px;margin: 20px;line-height: 24px;">信息详情</div>
-    <custom-input label="姓名" id="input-name"></custom-input>
-    <custom-input label="电话号码" type="phone" id="input-phone-number"></custom-input>
-    <custom-input label="简介" id="input-introduction"></custom-input>
-    <custom-input label="介绍" type="textarea" id="input-description"></custom-input>
-    <div style="font-size: 16px;margin:0 20px 20px;line-height: 24px;">照片</div>
+  <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-toast bind="toast"></custom-toast>
 
-    <div id="input-thumbnail"
-        style="color: rgb(26,115,232);fill: currentColor;display: flex;align-items: center;justify-content: center;border: 1px solid #dadce0;width: 112px; height: 96px;margin-left: 20px;border-radius: 16px;box-sizing: border-box;overflow: hidden;position: relative;">
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path
-                d="M9.797 14.016q0-1.359 0.938-2.297t2.25-0.938q1.359 0 2.297 0.938t0.938 2.297q0 1.313-0.938 2.25t-2.297 0.938-2.273-0.914-0.914-2.273zM12.984 18.984q2.063 0 3.539-1.453t1.477-3.516-1.477-3.539-3.539-1.477-3.516 1.477-1.453 3.539 1.453 3.516 3.516 1.453zM6 9.984v-3h3v-3h6.984l1.828 2.016h3.188q0.797 0 1.406 0.609t0.609 1.406v12q0 0.797-0.609 1.383t-1.406 0.586h-15.984q-0.797 0-1.406-0.586t-0.609-1.383v-10.031h3zM3 3.984v-3h2.016v3h3v2.016h-3v3h-2.016v-3h-3v-2.016h3z">
-            </path>
-        </svg>
-    </div>
-
-    <script src="js/custom-input.js"></script>
-
-    <script src="js/custom-menu-picker.js"></script>
-    <custom-drawer></custom-drawer>
-    <script src="js/custom-header.js"></script>
-    <script src="js/custom-drawer.js"></script>
-    <div style="height: 88px;"></div>
-    <script src="js/custom-image-viewer.js"></script>
-    <custom-submit-bar></custom-submit-bar>
-    <script src="js/custom-submit-bar.js"></script>
-
-<custom-toast id="toast"></custom-toast>
-  <script src="toast.js"></script>
- 
-  <script src="teacher.js"></script>
+  <script src="js/teacher.js"></script>
 </body>
 
 </html>

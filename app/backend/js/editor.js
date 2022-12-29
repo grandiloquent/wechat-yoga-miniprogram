@@ -245,6 +245,10 @@ function upload() {
   }
 }
 
+function replaceSelectedText(textarea, s) {
+  textarea.setRangeText(s, textarea.selectionStart, textarea.selectionEnd);
+}
+
 function findExtendPosition(editor) {
   const start = editor.selectionStart;
   const end = editor.selectionEnd;
@@ -522,6 +526,19 @@ async function formatStyleLit(textarea) {
   textarea.setRangeText(css, points[0], points[1], "end");
 
 }
+
+function substring(strings, prefix, suffix) {
+  let start = strings.indexOf(prefix);
+  if (start === -1) {
+      return [0, 0]
+  }
+  start += prefix.length;
+  let end = strings.indexOf(suffix, start);
+  if (end === -1) {
+      return [0, 0]
+  }
+  return [start, end]
+}
 function formatComment(editor) {
   let str;
   if (/\.(?:html|xml|wxml)$/.test(path)) {
@@ -609,15 +626,14 @@ async function navigate(evt) {
             break;
           case "3":
             customDialogActions.remove();
-            sortLines();
+            upload();
             break;
           case "4":
             customDialogActions.remove();
-            upload();
+            formatComment(textarea)
             break;
           case "5":
             customDialogActions.remove();
-            formatComment(textarea)
             break;
         }
       });

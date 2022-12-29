@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
 
 <head>
   <meta charset="UTF-8">
@@ -12,15 +12,20 @@
   <script src="../components/toast.js"></script>
   <script type="module" src="../components/custom-submit-bar.js"></script>
   <script type="module" src="../components/custom-field.js"></script>
+  <script type="module" src="../components/custom-textarea.js"></script>
+
 </head>
 
-<body>
+<body style="height:100%">
   <custom-drawer bind="customDrawer"></custom-drawer>
   <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
-  <div style="height: 56px;"></div>
 
-  <custom-field bind="titleInput" label="标题" placeholder="请输入公告标题"></custom-field>
-  <textarea bind="textarea" ></textarea>
+  <div style="display:flex;flex-direction:column;height:100%">
+    <div style="height: 56px;"></div>
+    <custom-field bind="titleInput" label="标题" placeholder="请输入公告标题"></custom-field>
+    <custom-textarea bind="customTextarea" label="内容" placeholder="请输入公告内容" style="flex-grow:1"></custom-textarea>
+    <div style="height: 68px;"></div>
+  </div>
   <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
   <custom-toast bind="toast"></custom-toast>
   <script src="js/shared.js"></script>

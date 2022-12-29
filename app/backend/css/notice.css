@@ -11,14 +11,3 @@ body {
   overflow: initial;
   font-family: 'pingfang SC', 'helvetica neue', arial, 'hiragino sans gb', 'microsoft yahei ui', 'microsoft yahei', simsun, sans-serif;
 }
-
-:focus {
-  outline: none
-}
-
-textarea {
-  padding: 16px;
-  width: 100%;
-  height: 30vh;
-  border: none;
-}

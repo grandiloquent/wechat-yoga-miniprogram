@@ -26,7 +26,7 @@ async function onSubmitBar() {
   const data = {};
   data.id = id;
   data.title = title.value.trim();
-  data.content = textarea.value.trim();
+  data.content = customTextarea.value.trim();
   try {
     const response = await fetch(`${baseUri}/v1/admin/notice/update`, {
       method: 'POST',
@@ -49,7 +49,7 @@ async function render() {
   try {
     obj = await loadData();
     titleInput.value = obj.title;
-    textarea.value = obj.content;
+    customTextarea.value = obj.content;
   } catch (error) {
     console.log(error);
   }

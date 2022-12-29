@@ -463,7 +463,14 @@ function substringAfter(string, delimiter, missingDelimiterValue) {
       return string.substring(index + delimiter.length);
   }
 }
-
+function substringAfterLast(string, delimiter, missingDelimiterValue) {
+  const index = string.lastIndexOf(delimiter);
+  if (index === -1) {
+      return missingDelimiterValue || string;
+  } else {
+      return string.substring(index + delimiter.length);
+  }
+}
 async function formatStyleLit(textarea) {
   let strings;
   if (typeof NativeAndroid !== 'undefined') {
@@ -637,6 +644,9 @@ document.addEventListener('keydown', async evt => {
         jumpPage(textarea);
         evt.preventDefault();
         break;
+        case "i":
+          localStorage.setItem('snippets',textarea.value);
+          break;
     }
   } else if (evt.key === ' ' || evt.keyCode == 229) {
 

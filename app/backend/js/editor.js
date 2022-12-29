@@ -296,6 +296,9 @@ async function navigate(evt) {
     case 'save':
       await saveData();
       break;
+    case "removeLine":
+      await removeLines(textarea);
+      break;
     case 'menu':
       const customDialogActions = document.createElement('custom-dialog-actions');
       customDialogActions.addEventListener('submit', evt => {
@@ -348,3 +351,73 @@ document.addEventListener('keydown', async evt => {
 
   }
 })
+async function removeLines(textarea) {
+  if (textarea.selectionStart !== textarea.selectionEnd) {
+
+    let start = textarea.selectionStart;
+    let end = textarea.selectionEnd;
+
+    while (start > -1) {
+      if (textarea.value[start] === '\n') {
+        let s = [];
+
+        while (start > -1 && /\s/.test(textarea.value[start])) {
+          s.push(textarea.value[start])
+          start--;
+        }
+        if ([...s.join('').matchAll(/\n/g)].length > 2) {
+          break;
+        }
+      }
+      start--;
+    }
+    while (end + 1 < textarea.value.length) {
+      if (textarea.value[end] === '\n') {
+        let s = [];
+
+        while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end])) {
+          s.push(textarea.value[end])
+          end++;
+        }
+        if ([...s.join('').matchAll(/\n/g)].length > 2) {
+          break;
+        }
+      }
+      end++;
+    }
+    start++;
+
+    if (typeof NativeAndroid !== 'undefined') {
+      NativeAndroid.writeText(textarea.value.substring(start, end));
+    } else {
+      await navigator.clipboard.writeText(textarea.value.substring(start, end))
+    }
+    textarea.setRangeText('\n', start, end);
+    textarea.selectionEnd = start;
+  } else {
+    // textarea.value = textarea.value.substring(textarea.selectionEnd);
+    // textarea.selectionStart = 0;
+    // textarea.selectionEnd = 0;
+    // textarea.scrollLeft = 0;
+    // textarea.scrollTop = 0;
+    const p = findExtendPosition(textarea);
+
+    let start = p[0];
+
+    while (start > -1 && /\s/.test(textarea.value[start - 1])) {
+      start--;
+    }
+
+    let end = p[1];
+    while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end + 1])) end++;
+
+    if (typeof NativeAndroid !== 'undefined') {
+      NativeAndroid.writeText(textarea.value.substring(start, end));
+    } else {
+      await navigator.clipboard.writeText(textarea.value.substring(start, end))
+    }
+    textarea.setRangeText('\n\n', start, end + 1);
+    textarea.selectionEnd = start;
+  }
+
+}

@@ -434,6 +434,100 @@ function toBlocks(string) {
   }
   return blocks;
 }
+function substringBeforeLast(string, delimiter, missingDelimiterValue) {
+  const index = string.lastIndexOf(delimiter);
+  if (index === -1) {
+    return missingDelimiterValue || string;
+  } else {
+    return string.substring(0, index);
+  }
+}
+function formattingJavaScript(textarea) {
+  const options = { indent_size: 2, space_in_empty_paren: true }
+
+  let selected = getSelectedString(textarea);
+  let str = selected || textarea.value;
+  let s;
+
+  if (str.indexOf('</html>') !== -1 || str.indexOf('</view>') !== -1
+    || str.startsWith("<div")) {
+    s = html_beautify(str, options);
+  } else if (/\)\s+{/.test(str)) {
+    s = js_beautify(str, options);
+  } else {
+    s = css_beautify(str, options);
+  }
+  //const s = str.indexOf('</html>')!==-1 ? : ;
+  if (selected) {
+    replaceSelectedText(textarea, s)
+  } else {
+    textarea.value = s;
+  }
+}
+function jumpPage(textarea) {
+  const line = getLine(textarea);
+  const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);
+  const path = new URL(window.location).searchParams.get("path");
+  if (!value) {
+    window.open('http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), "."), "_blank");
+    return
+  }
+  const src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(path, "/")}/${value[0]}`)}`;
+  window.open(src, '_blank');
+}
+
+async function formatStyleLit(textarea) {
+  let strings;
+  if (typeof NativeAndroid !== 'undefined') {
+    strings = NativeAndroid.readText()
+  } else {
+    strings = await navigator.clipboard.readText()
+  }
+  const lines = strings.split(';').map(x => x.trim());
+  const properties = lines.filter(x => x.startsWith('--')).map(x => {
+    const pieces = x.split(':');
+    if (pieces.length > 1)
+      return {
+        key: pieces[0].trim(),
+        value: pieces[1].trim()
+      }
+  });
+  const source = lines.filter(x => !x.startsWith('--'))
+    .map(x => {
+
+      return x.replace(/var\([^\)]+\)/g, m => {
+        const key = /--[a-zA-Z0-9-]+/.exec(m)[0];
+        const founded = properties.filter(x => x.key === key);
+        const value = /,([^\)]+)\)/.exec(m);
+        console.log(founded)
+        return founded && founded.length ? founded[0]["value"] : ((value && value[1]) || '')
+      });
+    });
+  const s = source.join(';').replaceAll(/font: \d+ \d+px\/\d+px[^;]+;/g, m => {
+    const r = /font: (\d+) (\d+px)\/(\d+px)[^;]+;/.exec(m);
+    return `font-weight: ${r[1]};font-size: ${r[2]};line-height: ${r[3]};`;
+  });
+  strings = substringAfter(s, "-webkit-tap-highlight-color: transparent;");
+  let points = substring(textarea.value, "css`", "`");
+  if (points[0] === 0 && points[1] === 0) {
+    points = substring(textarea.value, "<style>", "</style>");
+  }
+  let css = textarea.value.substring(points[0], points[1]);
+  let klass = substringAfterLast(css, '}');
+  css = substringBeforeLast(css, '}') + '}'
+  css += `
+  .${klass}{
+  ${strings}
+  }`;
+  const options = { indent_size: 2, space_in_empty_paren: true }
+  css = css_beautify(css, options);
+
+  textarea.setRangeText(`<div class="${klass}">
+</div>`, textarea.selectionStart, textarea.selectionEnd, 'end');
+  textarea.setRangeText(css, points[0], points[1], "end");
+
+}
+
 ///////////////////////////////
 const snippets = JSON.parse(window.localStorage.getItem('snippets'))
 
@@ -542,11 +636,21 @@ document.addEventListener('keydown', async evt => {
         break;
       case 'h':
         replaceSelected(textarea)
-        ev.preventDefault();
+        evt.preventDefault();
+        break;
+      case 'm':
+        textarea.value = textarea.value.split('\n')
+          .map(x => x.trim())
+          .filter(x => x)
+          .join('\n');
+        evt.preventDefault();
+        break
+      case "j":
+        jumpPage(textarea);
+        evt.preventDefault();
         break;
     }
-
-  } else if (ev.key === ' ' || ev.keyCode == 229) {
+  } else if (evt.key === ' ' || evt.keyCode == 229) {
 
     let start = textarea.selectionStart;
     let end = start;
@@ -564,14 +668,35 @@ document.addEventListener('keydown', async evt => {
     if (!value) {
       return;
     }
-    ev.preventDefault();
+    evt.preventDefault();
     textarea.setRangeText(value, start, end, "end");
 
-  } else if (ev.key === "F3") {
+  } else if (evt.key === "F1") {
+    formattingJavaScript(textarea);
+    evt.preventDefault();
+  } else if (evt.key === "F3") {
     translationFunction(textarea);
-    ev.preventDefault();
-  } else if (ev.key === 'F7') {
+    evt.preventDefault();
+  } else if (evt.key === "F2") {
+    const selectedString = getSelectedString(textarea);
+    let k, ss;
+
+    const match = /(<*?[a-zA-Z0-9_-]+) +(style="([^"]+)")/.exec(selectedString);
+    k = match[1]
+    ss = match[3];
+    textarea.value = textarea.value.replace(match[0], `class="${k}"`)
+      .replaceAll(match[2], `class="${k}"`);
+    const dst = k.startsWith('<') ? `${k.slice(1)}{
+      ${ss}
+      }` : `.${k}{
+      ${ss}
+      }`;
+    textarea.value = textarea.value.replace("css`", "css`\n" + dst)
+  } else if (evt.key === 'F6') {
+    formatStyleLit(textarea);
+    evt.preventDefault();
+  } else if (evt.key === 'F7') {
     returnToParentDirectory();
-    ev.preventDefault();
+    evt.preventDefault();
   }
 })

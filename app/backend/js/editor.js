@@ -1,3 +1,4 @@
+
 function showDrawer(evt) {
   evt.stopPropagation();
   customDrawer.setAttribute('expand', 'true');
@@ -243,7 +244,199 @@ function upload() {
     input.click();
   }
 }
+
+function findExtendPosition(editor) {
+  const start = editor.selectionStart;
+  const end = editor.selectionEnd;
+  let string = editor.value;
+  let offsetStart = start;
+  while (offsetStart > 0) {
+    if (!/\s/.test(string[offsetStart - 1]))
+      offsetStart--;
+    else {
+      let os = offsetStart;
+      while (os > 0 && /\s/.test(string[os - 1])) {
+        os--;
+      }
+      if ([...string.substring(offsetStart, os).matchAll(/\n/g)].length > 1) {
+        break;
+      }
+      offsetStart = os;
+    }
+  }
+  let offsetEnd = end;
+  while (offsetEnd < string.length) {
+    if (!/\s/.test(string[offsetEnd + 1])) {
+
+      offsetEnd++;
+    } else {
+
+      let oe = offsetEnd;
+      while (oe < string.length && /\s/.test(string[oe + 1])) {
+        oe++;
+      }
+      if ([...string.substring(offsetEnd, oe + 1).matchAll(/\n/g)].length > 1) {
+        offsetEnd++;
+
+        break;
+      }
+      offsetEnd = oe + 1;
+
+    }
+  }
+  while (offsetStart > 0 && string[offsetStart - 1] !== '\n') {
+    offsetStart--;
+  }
+  // if (/\s/.test(string[offsetEnd])) {
+  //     offsetEnd--;
+  // }
+  return [offsetStart, offsetEnd];
+}
+async function removeLines(textarea) {
+  if (textarea.selectionStart !== textarea.selectionEnd) {
+
+    let start = textarea.selectionStart;
+    let end = textarea.selectionEnd;
+
+    while (start > -1) {
+      if (textarea.value[start] === '\n') {
+        let s = [];
+
+        while (start > -1 && /\s/.test(textarea.value[start])) {
+          s.push(textarea.value[start])
+          start--;
+        }
+        if ([...s.join('').matchAll(/\n/g)].length > 2) {
+          break;
+        }
+      }
+      start--;
+    }
+    while (end + 1 < textarea.value.length) {
+      if (textarea.value[end] === '\n') {
+        let s = [];
+
+        while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end])) {
+          s.push(textarea.value[end])
+          end++;
+        }
+        if ([...s.join('').matchAll(/\n/g)].length > 2) {
+          break;
+        }
+      }
+      end++;
+    }
+    start++;
+
+    if (typeof NativeAndroid !== 'undefined') {
+      NativeAndroid.writeText(textarea.value.substring(start, end));
+    } else {
+      await navigator.clipboard.writeText(textarea.value.substring(start, end))
+    }
+    textarea.setRangeText('\n', start, end);
+    textarea.selectionEnd = start;
+  } else {
+    // textarea.value = textarea.value.substring(textarea.selectionEnd);
+    // textarea.selectionStart = 0;
+    // textarea.selectionEnd = 0;
+    // textarea.scrollLeft = 0;
+    // textarea.scrollTop = 0;
+    const p = findExtendPosition(textarea);
+
+    let start = p[0];
+
+    while (start > -1 && /\s/.test(textarea.value[start - 1])) {
+      start--;
+    }
+
+    let end = p[1];
+    while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end + 1])) end++;
+
+    if (typeof NativeAndroid !== 'undefined') {
+      NativeAndroid.writeText(textarea.value.substring(start, end));
+    } else {
+      await navigator.clipboard.writeText(textarea.value.substring(start, end))
+    }
+    textarea.setRangeText('\n\n', start, end + 1);
+    textarea.selectionEnd = start;
+  }
+
+}
+async function translationFunction(textarea) {
+  const s = getSelectedString(textarea);
+  try {
+    const response = await fetch(`http://kpkpkp.cn/api/trans?q=${encodeURIComponent(s)}&to=en`);
+    const obj = await response.json();
+    const n = camel(obj.sentences[0].trans);
+    textarea.setRangeText(`${n[0].toLowerCase() + n.slice(1)}`, textarea.selectionStart,
+      textarea.selectionEnd)
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+function returnToParentDirectory() {
+  const path = new URL(document.URL).searchParams.get('path');
+  const uri = `/?path=${encodeURIComponent(substringBeforeLast(path, "/"))}&isDir=1`;
+  console.log(uri)
+  window.location.href = uri
+}
+
+function getSelectedString(textarea) {
+  return textarea.value.substring(
+    textarea.selectionStart,
+    textarea.selectionEnd
+  );
+}
+
+
+function replaceSelected(textarea) {
+  // const selectedString = getSelectedString(textarea).trim();
+  // const firstLine = substringBefore(selectedString, "\n").trim().split(' ');
+  // const content = substringAfter(selectedString, "\n").trim();
+  // replaceSelectedText(textarea, content.replaceAll(
+  //   firstLine[0], firstLine[1]
+  // ))
+
+  const points = findBlock(textarea);
+  const start = points[0];
+  const end = points[1];
+
+  let s = textarea.value.substring(start, end).trim();
+  console.log(s)
+
+  const n = substringBefore(s, "\n").trim().split(' ');
+  textarea.setRangeText(`
+${substringAfter(s, '\n').trim().replaceAll(
+    n[0], n[1]
+  )
+    }
+`, start, end, "end")
+
+}
+function toBlocks(string) {
+  let count = 0;
+  let buf = [];
+  const blocks = [];
+  for (let i = 0; i < string.length; i++) {
+    buf.push(string[i])
+    if (string[i] === '{') {
+      count++;
+    } else if (string[i] === '}') {
+      count--;
+      if (count === 0) {
+        blocks.push(buf.join(''))
+        buf = [];
+      }
+    }
+  }
+  return blocks;
+}
 ///////////////////////////////
+const snippets = JSON.parse(window.localStorage.getItem('snippets'))
+
 document.querySelectorAll('[bind]').forEach(element => {
   if (element.getAttribute('bind')) {
     window[element.getAttribute('bind')] = element;
@@ -347,125 +540,38 @@ document.addEventListener('keydown', async evt => {
         evt.preventDefault();
         upload();
         break;
+      case 'h':
+        replaceSelected(textarea)
+        ev.preventDefault();
+        break;
     }
 
-  }
-})
-async function removeLines(textarea) {
-  if (textarea.selectionStart !== textarea.selectionEnd) {
+  } else if (ev.key === ' ' || ev.keyCode == 229) {
 
     let start = textarea.selectionStart;
-    let end = textarea.selectionEnd;
-
-    while (start > -1) {
-      if (textarea.value[start] === '\n') {
-        let s = [];
-
-        while (start > -1 && /\s/.test(textarea.value[start])) {
-          s.push(textarea.value[start])
-          start--;
-        }
-        if ([...s.join('').matchAll(/\n/g)].length > 2) {
-          break;
-        }
-      }
+    let end = start;
+    if (start > -1)
       start--;
-    }
-    while (end + 1 < textarea.value.length) {
-      if (textarea.value[end] === '\n') {
-        let s = [];
-
-        while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end])) {
-          s.push(textarea.value[end])
-          end++;
-        }
-        if ([...s.join('').matchAll(/\n/g)].length > 2) {
-          break;
-        }
-      }
-      end++;
+    while (start > -1 && /[a-zA-Z0-9]+/.test(textarea.value[start])) {
+      start--;
     }
     start++;
-
-    if (typeof NativeAndroid !== 'undefined') {
-      NativeAndroid.writeText(textarea.value.substring(start, end));
-    } else {
-      await navigator.clipboard.writeText(textarea.value.substring(start, end))
+    const key = textarea.value.substring(start, end).trim();
+    if (!key) {
+      return;
     }
-    textarea.setRangeText('\n', start, end);
-    textarea.selectionEnd = start;
-  } else {
-    // textarea.value = textarea.value.substring(textarea.selectionEnd);
-    // textarea.selectionStart = 0;
-    // textarea.selectionEnd = 0;
-    // textarea.scrollLeft = 0;
-    // textarea.scrollTop = 0;
-    const p = findExtendPosition(textarea);
-
-    let start = p[0];
-
-    while (start > -1 && /\s/.test(textarea.value[start - 1])) {
-      start--;
+    const value = snippets[key];
+    if (!value) {
+      return;
     }
+    ev.preventDefault();
+    textarea.setRangeText(value, start, end, "end");
 
-    let end = p[1];
-    while (end + 1 < textarea.value.length && /\s/.test(textarea.value[end + 1])) end++;
-
-    if (typeof NativeAndroid !== 'undefined') {
-      NativeAndroid.writeText(textarea.value.substring(start, end));
-    } else {
-      await navigator.clipboard.writeText(textarea.value.substring(start, end))
-    }
-    textarea.setRangeText('\n\n', start, end + 1);
-    textarea.selectionEnd = start;
+  } else if (ev.key === "F3") {
+    translationFunction(textarea);
+    ev.preventDefault();
+  } else if (ev.key === 'F7') {
+    returnToParentDirectory();
+    ev.preventDefault();
   }
-
-}
-
-function findExtendPosition(editor) {
-  const start = editor.selectionStart;
-  const end = editor.selectionEnd;
-  let string = editor.value;
-  let offsetStart = start;
-  while (offsetStart > 0) {
-      if (!/\s/.test(string[offsetStart - 1]))
-          offsetStart--;
-      else {
-          let os = offsetStart;
-          while (os > 0 && /\s/.test(string[os - 1])) {
-              os--;
-          }
-          if ([...string.substring(offsetStart, os).matchAll(/\n/g)].length > 1) {
-              break;
-          }
-          offsetStart = os;
-      }
-  }
-  let offsetEnd = end;
-  while (offsetEnd < string.length) {
-      if (!/\s/.test(string[offsetEnd + 1])) {
-
-          offsetEnd++;
-      } else {
-
-          let oe = offsetEnd;
-          while (oe < string.length && /\s/.test(string[oe + 1])) {
-              oe++;
-          }
-          if ([...string.substring(offsetEnd, oe + 1).matchAll(/\n/g)].length > 1) {
-              offsetEnd++;
-
-              break;
-          }
-          offsetEnd = oe + 1;
-
-      }
-  }
-  while (offsetStart > 0 && string[offsetStart - 1] !== '\n') {
-      offsetStart--;
-  }
-  // if (/\s/.test(string[offsetEnd])) {
-  //     offsetEnd--;
-  // }
-  return [offsetStart, offsetEnd];
-}
+})

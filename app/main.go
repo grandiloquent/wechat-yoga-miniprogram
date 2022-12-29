@@ -55,6 +55,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+/*以请求连接为键的处理器 */
 	handlers := make(map[string]func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte))
 	handlers["/"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		http.ServeFile(w, r, "./static/index.html")

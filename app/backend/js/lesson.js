@@ -1,5 +1,5 @@
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
-const id = new URL(document.URL).searchParams.get('id') || 174;
+const id = new URL(document.URL).searchParams.get('id') || 787;
 
 async function loadData() {
   const response = await Promise.all([
@@ -7,23 +7,20 @@ async function loadData() {
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")
       }
-    }), fetch(`${baseUri}/v1/admin/lesson/info`, {
-      headers: {
-        "Authorization": window.localStorage.getItem("Authorization")
-      }
-    }), fetch(`${baseUri}/v1/admin/lesson?id=${id}`, {
+    }),  fetch(`${baseUri}/v1/admin/lesson?id=${id}`, {
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")
       }
     })
   ])
-  return response.json();
+  return response;
 }
 async function render() {
   let results;
   try {
     results = await loadData();
-    const obj = results[0];
+    const obj =await results[0].json();
+    console.log(obj, results);
     startTime.data = paddingArray([...new Array(25).keys()].map(x => {
       const m = x * 30 + 60 * 9;
       return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;

@@ -28,7 +28,7 @@ async function onSubmitBar() {
   data.content = customTextarea.value.trim();
   data.slogan = sloganInput.value.trim();
   try {
-    const response = await fetch(`${baseUri}/v1/admin/market/update`, {
+    const response = await fetch(`${baseUri}/v1/admin/market`, {
       method: 'POST',
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")

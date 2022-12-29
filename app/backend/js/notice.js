@@ -28,7 +28,7 @@ async function onSubmitBar() {
   data.title = title.value.trim();
   data.content = customTextarea.value.trim();
   try {
-    const response = await fetch(`${baseUri}/v1/admin/notice/update`, {
+    const response = await fetch(`${baseUri}/v1/admin/notice`, {
       method: 'POST',
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")

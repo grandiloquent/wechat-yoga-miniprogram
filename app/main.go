@@ -70,7 +70,7 @@ func main() {
 		http.NotFound(w, r)
 	}
 	/*
-	   管理员更新课程
+	   管理员更新已排课课程
 	*/
 	handlers["/v1/admin/course"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		if r.Method == "GET" {
@@ -83,6 +83,9 @@ func main() {
 			InsertNumber(db, w, r, "select * from v1_admin_course_update($1)")
 		}
 	}
+	/*
+	   查询课程
+	*/
 	handlers["/v1/admin/lesson"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		id := getId(w, r)
 		if id == "" {
@@ -92,12 +95,21 @@ func main() {
 		// 成功返回Json，失败空字符串
 		QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
 	}
+	/*
+	   查询课程、老师列表
+	*/
 	handlers["/v1/admin/lesson/info"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_lesson_info()")
 	}
+	/*
+	   查询课程名称列表
+	*/
 	handlers["/v1/admin/lesson/names"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_lesson_names()")
 	}
+	/*
+	   查询课程列表
+	*/
 	handlers["/v1/admin/lessons"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		// 待查询课程的起始时间
 		start := getInt("start", w, r)
@@ -112,33 +124,38 @@ func main() {
 
 		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
 	}
+	/*
+	   更新课程
+	*/
 	handlers["/v1/admin/lessons/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		InsertNumber(db, w, r, "select * from v1_admin_lessons_update($1)")
 	}
+	/*
+	   营销
+	*/
 	handlers["/v1/admin/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_market()")
-	}
-	handlers["/v1/admin/market/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_admin_market_update($1)")
+		if r.Method == "GET" {
+			QueryJSON(w, db, "select * from v1_admin_market()")
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_market_update($1)")
+		}
 	}
 	handlers["/v1/admin/notice"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
+		if r.Method == "GET" {
+			id := getId(w, r)
+			if id == "" {
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_notice($1)", id)
+		} else if r.Method == "DELETE" {
+			id := getId(w, r)
+			if id == "" {
+				return
+			}
+			QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
 		}
-		QueryJSON(w, db, "select * from v1_admin_notice($1)", id)
-	}
-	handlers["/v1/admin/notice/delete"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
-	}
-	handlers["/v1/admin/notice/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
 	}
 	handlers["/v1/admin/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_notices()")

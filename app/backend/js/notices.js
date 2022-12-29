@@ -58,7 +58,8 @@ async function submitCloseHandler(evt) {
   console.log(id);
   evt.currentTarget.remove();
   try {
-    const res = await fetch(`${baseUri}/v1/admin/notice/delete?id=${id}`, {
+    const res = await fetch(`${baseUri}/v1/admin/notice?id=${id}`, {
+      method:'DELETE',
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")
       }

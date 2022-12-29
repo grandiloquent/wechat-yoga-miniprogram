@@ -497,7 +497,7 @@ func main() {
 
 	}
 	handlers["/v1/admin/lessons/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_admin_lessons_update()")
+		InsertNumber(db, w, r, "select * from v1_admin_lessons_update($1)")
 	}
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

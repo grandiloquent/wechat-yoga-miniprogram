@@ -80,7 +80,7 @@ function onStartTimeSubmit(evt) {
 
 function onEndTimeSubmit() {}
 
-function onSubmitBar(evt) {
+async function onSubmitBar(evt) {
   if (evt.detail === "1") {
     const data = {
       lesson: lesson.selectedItem,

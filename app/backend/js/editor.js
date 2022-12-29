@@ -442,28 +442,7 @@ function substringBeforeLast(string, delimiter, missingDelimiterValue) {
     return string.substring(0, index);
   }
 }
-function formattingJavaScript(textarea) {
-  const options = { indent_size: 2, space_in_empty_paren: true }
 
-  let selected = getSelectedString(textarea);
-  let str = selected || textarea.value;
-  let s;
-
-  if (str.indexOf('</html>') !== -1 || str.indexOf('</view>') !== -1
-    || str.startsWith("<div")) {
-    s = html_beautify(str, options);
-  } else if (/\)\s+{/.test(str)) {
-    s = js_beautify(str, options);
-  } else {
-    s = css_beautify(str, options);
-  }
-  //const s = str.indexOf('</html>')!==-1 ? : ;
-  if (selected) {
-    replaceSelectedText(textarea, s)
-  } else {
-    textarea.value = s;
-  }
-}
 function jumpPage(textarea) {
   const line = getLine(textarea);
   const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);

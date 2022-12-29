@@ -1,14 +1,4 @@
-document.querySelectorAll('[bind]').forEach(element => {
-  if (element.getAttribute('bind')) {
-    window[element.getAttribute('bind')] = element;
-  }
-  [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
-    if (!attr.value) return;
-    element.addEventListener(attr.nodeName.slice(1), evt => {
-      window[attr.value](evt);
-    });
-  });
-})
+
 customActions.data= [{
         path: ` <path d="M12.984 15v-2.016h-1.969v2.016h1.969zM12.984 11.016v-6h-1.969v6h1.969zM20.016 2.016q0.797 0 1.383 0.586t0.586 1.383v12q0 0.797-0.586 1.406t-1.383 0.609h-14.016l-3.984 3.984v-18q0-0.797 0.586-1.383t1.383-0.586h16.031z"></path>`,
         title: '公告',
@@ -24,10 +14,6 @@ customActions.data= [{
         href: 'courses'
       },
 ]
-function showDrawer(evt) {
-  evt.stopPropagation();
-  customDrawer.setAttribute('expand', 'true');
-}
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/admin/notices`, {

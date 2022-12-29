@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>老师 - 瑜伽约课微信小程序</title>
+  <title>老师</title>
   <link rel="stylesheet" href="css/teacher.css">
   <script type="module" src="../components/custom-header.js"></script>
   <script type="module" src="../components/custom-drawer.js"></script>
@@ -17,18 +17,19 @@
 
 <body>
   <custom-drawer bind="customDrawer"></custom-drawer>
-  <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
+  <custom-header title="老师" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
   <custom-field bind="nameInput" label="姓名" placeholder="请输入老师姓名"></custom-field>
   <div style="padding:10px 16px 10px 8px; ">
     <div style="margin:0 0 10px 8px;font-size:14px;color:rgb(100, 101, 102)">头像</div>
-    <custom-uploader bind="customUploader" ></custom-uploader>
+    <custom-uploader bind="customUploader"></custom-uploader>
   </div>
   <custom-field bind="phoneInput" label="手机号码" placeholder="请输入老师手机号码"></custom-field>
   <custom-field bind="introductionInput" label="简介" placeholder="请输入关于老师的简单介绍"></custom-field>
   <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
   <div style="height: 68px;"></div>
   <custom-toast bind="toast"></custom-toast>
+  <script src="js/shared.js"></script>
   <script src="js/teacher.js"></script>
 </body>
 

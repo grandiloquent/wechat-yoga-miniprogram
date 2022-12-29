@@ -10,13 +10,13 @@
 
 而且，它将公开全部源代码和相应文档，其包括安装步骤、源代码解析、开发经验……，也包括各种最新技术的执行和运用。对开发人员、计算机专业的学生或者对开发小程序和网站有兴趣的人士都有一定的价值。
 
-<div style="display:grid">
-<img src="images/Screenshot_2022-12-29-12-52-48-957_com.tencent.mm.jpg">
+
+<img width="200" src="images/Screenshot_2022-12-29-12-52-48-957_com.tencent.mm.jpg">
 <img src="images/Screenshot_2022-12-29-12-52-52-502_com.tencent.mm.jpg">
 <img src="images/Screenshot_2022-12-29-12-53-05-122_com.tencent.mm.jpg">
 <img src="images/Screenshot_2022-12-29-12-53-18-957_com.tencent.mm.jpg">
 <img src="images/Screenshot_2022-12-29-12-53-28-806_com.tencent.mm.jpg">
-</div>
+
 
 
 ## 开发环境

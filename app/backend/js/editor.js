@@ -458,17 +458,17 @@ function jumpPage(textarea) {
 function substringAfter(string, delimiter, missingDelimiterValue) {
   const index = string.indexOf(delimiter);
   if (index === -1) {
-      return missingDelimiterValue || string;
+    return missingDelimiterValue || string;
   } else {
-      return string.substring(index + delimiter.length);
+    return string.substring(index + delimiter.length);
   }
 }
 function substringAfterLast(string, delimiter, missingDelimiterValue) {
   const index = string.lastIndexOf(delimiter);
   if (index === -1) {
-      return missingDelimiterValue || string;
+    return missingDelimiterValue || string;
   } else {
-      return string.substring(index + delimiter.length);
+    return string.substring(index + delimiter.length);
   }
 }
 async function formatStyleLit(textarea) {
@@ -522,7 +522,17 @@ async function formatStyleLit(textarea) {
   textarea.setRangeText(css, points[0], points[1], "end");
 
 }
-
+function formatComment(editor) {
+  let str;
+  if (/\.(?:html|xml|wxml)$/.test(path)) {
+      str = `<!--\n\n-->`;
+  } else if (/\.(?:sql)$/.test(path)) {
+      str = `-- `;
+  } else {
+      str = `/*\n\n*/`;
+  }
+  editor.setRangeText(str, editor.selectionStart, editor.selectionEnd);
+}
 ///////////////////////////////
 const snippets = JSON.parse(window.localStorage.getItem('snippets'))
 
@@ -605,6 +615,10 @@ async function navigate(evt) {
             customDialogActions.remove();
             upload();
             break;
+          case "5":
+            customDialogActions.remove();
+            formatComment(textarea)
+            break;
         }
       });
       document.body.appendChild(customDialogActions);
@@ -644,9 +658,9 @@ document.addEventListener('keydown', async evt => {
         jumpPage(textarea);
         evt.preventDefault();
         break;
-        case "i":
-          localStorage.setItem('snippets',textarea.value);
-          break;
+      case "i":
+        localStorage.setItem('snippets', textarea.value);
+        break;
     }
   } else if (evt.key === ' ' || evt.keyCode == 229) {
 

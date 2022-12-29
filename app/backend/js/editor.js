@@ -455,6 +455,15 @@ function jumpPage(textarea) {
   window.open(src, '_blank');
 }
 
+function substringAfter(string, delimiter, missingDelimiterValue) {
+  const index = string.indexOf(delimiter);
+  if (index === -1) {
+      return missingDelimiterValue || string;
+  } else {
+      return string.substring(index + delimiter.length);
+  }
+}
+
 async function formatStyleLit(textarea) {
   let strings;
   if (typeof NativeAndroid !== 'undefined') {

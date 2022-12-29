@@ -1,70 +1,88 @@
+let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 const id = new URL(document.URL).searchParams.get('id') || 174;
-const baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : '';
-let expired = false;
-const suspendLesson = document.querySelector('#suspend-lesson');
-const image = document.querySelector('#image');
-const title = document.querySelector('#title');
-const updateLesson = document.getElementById('update-lesson');
-const actions = document.getElementById('actions');
-const subheadText = document.querySelector('#subhead-text');
-const section = document.getElementById('section');
-const popup = document.getElementById('popup');
-const popupButtonBack = document.getElementById('popup-button-back');
-const pickerLesson = document.getElementById('picker-lesson');
-const pickerLessonType = document.getElementById('picker-lesson-type');
-const pickerTeacher = document.getElementById('picker-teacher');
-const pickerStartTime = document.getElementById('picker-start-time');
-const pickerPeoples = document.getElementById('picker-peoples');
-const submit = document.getElementById('submit');
-const popupClose = document.getElementById('popup-close');
-const back = document.getElementById('back');
-//==================//
-suspendLesson.addEventListener('click', suspendLessonHandler);
-updateLesson.addEventListener('click', updateLessonHandler);
-popupButtonBack.addEventListener('click', popupButtonBackHandler);
-popupClose.addEventListener('click', popupCloseHandler);
-back.addEventListener('click', backHandler);
-submit.addEventListener('click', submitHandler);
 
-function deleteBook(student) {}
-
-function submitHandler(evt) {
-  evt.stopPropagation();
-  evt.stopImmediatePropagation();
-  popup.style.display = 'none';
-  const class_type = ((pickerLessonType.selectedItem === '小班') && 1) || ((pickerLessonType.selectedItem === '团课') && 4);
-  const lesson_name = pickerLesson.selectedItem;
-  const peoples = parseInt(pickerPeoples.selectedItem || '0');
-  const start_time = durationToSeconds(pickerStartTime.selectedItem + ":00");
-  const end_time = start_time + 3600;
-  const teacher_name = pickerTeacher.selectedItem;
-  console.log({
-    class_type,
-    lesson_name,
-    peoples,
-    start_time,
-    end_time,
-    teacher_name
-  });
+async function loadData() {
+  const response = await Promise.all([
+    fetch(`${baseUri}/v1/admin/lesson/info`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    }), fetch(`${baseUri}/v1/admin/lesson/info`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    }), fetch(`${baseUri}/v1/admin/lesson?id=${id}`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    })
+  ])
+  return response.json();
+}
+async function render() {
+  let results;
+  try {
+    results = await loadData();
+    const obj = results[0];
+    startTime.data = paddingArray([...new Array(25).keys()].map(x => {
+      const m = x * 30 + 60 * 9;
+      return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
+    }));
+    lesson.data = paddingArray(obj.lessons);
+    lessonType.data = paddingArray([
+      "团课", "小班", "私教"
+    ]);
+    teacher.data = paddingArray(obj.teachers);
+    endTime.data = paddingArray([...new Array(25).keys()].map(x => {
+      const m = x * 30 + 60 * 9;
+      return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
+    }));
+    peoples.data = paddingArray([...new Array(9).keys()].map(x => `${x + 8}`));
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function checkIfLessonAvailable(lesson) {
-  if (lesson.hidden === 1) {
-    return false;
-  }
-  const seconds = new Date().setHours(0, 0, 0, 0) / 1000;
 
-  if (seconds > lesson.date_time) {
-    return false;
+function paddingArray(array) {
+  const dif = array.length % 4;
+  for (let j = 0; j < 4 - dif; j++) {
+    array.push('');
   }
-  return true;
+  return array;
 }
 
-function setStatus() {
-  if (!expired) {
-    return;
-  }
-  actions.classList.add('disabled');
+function formatSeconds(s) {
+  if (isNaN(s)) return '0:00';
+  if (s < 0) s = -s;
+  const time = {
+    hour: Math.floor(s / 3600) % 24,
+    minute: Math.floor(s / 60) % 60,
+  };
+  return Object.entries(time)
+    .filter((val, index) => index || val[1])
+    .map(val => (val[1] + '').padStart(2, '0'))
+    .join(':');
 }
-//==================//
+
+function durationToSeconds(duration) {
+  let result = 0;
+  if (/(\d{1,2}:){1,2}\d{1,2}/.test(duration)) {
+    const pieces = duration.split(':');
+    for (let i = pieces.length - 1; i > -1; i--) {
+      result += Math.pow(60, i) * parseInt(pieces[pieces.length - i - 1]);
+    }
+    return result;
+  }
+  result = parseInt(duration);
+  if (isNaN(result)) {
+    result = 0;
+  }
+  return result;
+}
+
+function onStartTimeSubmit(evt) {
+  endTime.selectedItem = formatSeconds(durationToSeconds(evt.detail + ":00") + 3600);
+}
+
 render();

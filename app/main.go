@@ -109,6 +109,7 @@ func main() {
 		if end == "" {
 			return
 		}
+
 		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
 	}
 	handlers["/v1/admin/lessons/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
@@ -744,7 +745,8 @@ func getInt(key string, w http.ResponseWriter, r *http.Request) string {
 		return ""
 	}
 	for i := 0; i < j; i++ {
-		if j > 57 || j < 48 {
+		if id[i] > 57 || id[i] < 48 {
+			http.Error(w, "Bad Id", http.StatusBadRequest)
 			return ""
 		}
 	}

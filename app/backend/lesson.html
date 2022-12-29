@@ -1,102 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>课程 - 瑜伽约课微信小程序</title>
-  <link rel="stylesheet" href="css/lesson.css">
+  <title>课程</title>
+  <link rel="stylesheet" href="css/notice.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script src="../components/toast.js"></script>
+  <script type="module" src="../components/custom-submit-bar.js"></script>
+  <script type="module" src="../components/custom-options.js"></script>
 
 </head>
 
-<body>
-  <div class="image-container">
-    <div class="button-back">
-      <div class="button-back-image" id="back">
-        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
-          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-        </svg>
-      </div>
-    </div>
-    <img class="image" id="image">
+<body style="height:100%">
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="课程" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <custom-options bind="lesson" title="课程"></custom-options>
+    <custom-options bind="lessonType" title="课程类型"></custom-options>
+    <custom-options bind="teacher" title="老师"></custom-options>
+    <custom-options bind="startTime" @submit="onStartTimeSubmit" title="开课时间"></custom-options>
+    <custom-options bind="endTime" @submit="onEndTimeSubmit" title="下课时间"></custom-options>
+    <custom-options bind="peoples" title="人数"></custom-options>
   </div>
-  <div class="header">
-    <div class="title" id="title">
-      其他
-    </div>
-    <div class="subhead">
-      <div class="subhead-text" id="subhead-text"></div>
-    </div>
-  </div>
-  <div class="actions" id="actions">
-    <div class="action" id="suspend-lesson">
-      <div class="action-image">
-        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" >
-          <path d="M0 0h24v24H0V0z" fill="none" />
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-        </svg>
-      </div>
-      <div class="action-text">
-        停课
-      </div>
-    </div>
-    <div class="action" id="update-lesson">
-      <div class="action-image">
-        <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class=" NMm5M">
-          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
-          </path>
-        </svg>
-      </div>
-      <div class="action-text">
-        修改
-      </div>
-    </div>
-  </div>
-  <div class="section">
-    学员
-  </div>
-  <div id="section">
-  </div>
-  <custom-drawer></custom-drawer>
-  <div class="bottom-space"></div>
-
-  <div class="popup" id="popup" style="display:none;">
-    <!-- height: 76px;  style=" display:none; "-->
-    <div class=" popup-header">
-    <div class="popup-button-back" id="popup-button-back">
-      <svg width="24" height="24" viewBox="0 0 24 24" focusable="false">
-        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
-        </path>
-      </svg>
-    </div>
-    <div class="popup-header-content">
-      <div class="popup-header-title">修改</div>
-      <div style="font-size: 14px;line-height: 20px;color: #5f6368;"></div>
-    </div>
-  </div>
-  <div class="popup-content">
-    <custom-menu-picker id="picker-lesson"></custom-menu-picker>
-    <custom-menu-picker id="picker-lesson-type"></custom-menu-picker>
-    <custom-menu-picker id="picker-teacher"></custom-menu-picker>
-    <custom-menu-picker id="picker-start-time"></custom-menu-picker>
-    <custom-menu-picker id="picker-peoples"></custom-menu-picker>
-  </div>
-  <div class="popup-footer">
-    <div class="popup-buttons">
-      <div class="popup-button" id="popup-close">
-        取消
-      </div>
-      <div class="popup-button" id="submit">
-        确认
-      </div>
-    </div>
-  </div>
-  </div>
-  <script src="js/custom-dialog.js"></script>
-  <script src="js/lesson.utils.js"></script>
+  <div style="height:68px"></div>
+  <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-toast bind="toast"></custom-toast>
+  <script src="js/shared.js"></script>
   <script src="js/lesson.js"></script>
-  <script src="js/custom-menu-picker.js"></script>
 </body>
 
 </html>

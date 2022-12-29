@@ -14,3 +14,8 @@ document.querySelectorAll('[bind]').forEach(element => {
   });
 })
 document.title = `${document.title} - ${SETTINGS.title}`;
+
+function showDrawer(evt) {
+  evt.stopPropagation();
+  customDrawer.setAttribute('expand', 'true');
+}

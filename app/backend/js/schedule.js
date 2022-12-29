@@ -1,9 +1,5 @@
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 
-function showDrawer(evt) {
-  evt.stopPropagation();
-  customDrawer.setAttribute('expand', 'true');
-}
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
     headers: {

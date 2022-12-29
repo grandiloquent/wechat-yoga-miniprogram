@@ -192,45 +192,7 @@ function tryUploadImageFromClipboard(success, error) {
     }
   });
 }
-async function navigate(evt) {
-  switch (evt.detail) {
-    case 'english':
-      let array = getLine();
-      textarea.setRangeText(`\n\n${await translate(array[0], 'en')
-        }
-          `, array[1], array[2], 'end');
-      break;
-    case 'chinese':
-      let array1 = getLine();
-      textarea.setRangeText(`\n\n${await translate(array1[0], 'zh')
-        }
-          `, array1[1], array1[2], 'end');
-      break;
-    case 'save':
-      await saveData();
-      break;
-    case 'menu':
-      const customDialogActions = document.createElement('custom-dialog-actions');
-      customDialogActions.addEventListener('submit', evt => {
-        switch (evt.detail) {
-          case "0":
-            customDialogActions.remove();
-            formatOptions();
-            break;
-          case "1":
-            customDialogActions.remove();
-            increaseIndent();
-            break;
-          case "2":
-            customDialogActions.remove();
-            sortLines();
-            break;
-        }
-      });
-      document.body.appendChild(customDialogActions);
-      break;
-  }
-}
+
 function increaseIndent() {
   const points = findBlock(textarea);
   const lines = textarea.value.substring(points[0], points[1]).split('\n')
@@ -251,6 +213,35 @@ function sortLines() {
   const lines = textarea.value.substring(points[0], points[1]).split('\n')
     .sort((x, y) => x.localeCompare(y));
   textarea.setRangeText(`\n\n${lines.join('\n')}`, points[0], points[1], 'end');
+}
+function upload() {
+  if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
+    tryUploadImageFromClipboard((ok) => {
+      const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
+      textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
+    }, (error) => {
+      console.log(error);
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.addEventListener('change', async ev => {
+        const file = input.files[0];
+        const imageFile = await uploadImage(file, file.name);
+        const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
+        textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
+      });
+      input.click();
+    });
+  } else {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.addEventListener('change', async ev => {
+      const file = input.files[0];
+      const imageFile = await uploadImage(file, file.name);
+      const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
+      textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
+    });
+    input.click();
+  }
 }
 ///////////////////////////////
 document.querySelectorAll('[bind]').forEach(element => {
@@ -288,7 +279,53 @@ customBottomBar.data = [{
   title: "保存",
   href: "save"
 }]
-
+async function navigate(evt) {
+  switch (evt.detail) {
+    case 'english':
+      let array = getLine();
+      textarea.setRangeText(`\n\n${await translate(array[0], 'en')
+        }
+          `, array[1], array[2], 'end');
+      break;
+    case 'chinese':
+      let array1 = getLine();
+      textarea.setRangeText(`\n\n${await translate(array1[0], 'zh')
+        }
+          `, array1[1], array1[2], 'end');
+      break;
+    case 'save':
+      await saveData();
+      break;
+    case 'menu':
+      const customDialogActions = document.createElement('custom-dialog-actions');
+      customDialogActions.addEventListener('submit', evt => {
+        switch (evt.detail) {
+          case "0":
+            customDialogActions.remove();
+            formatOptions();
+            break;
+          case "1":
+            customDialogActions.remove();
+            increaseIndent();
+            break;
+          case "2":
+            customDialogActions.remove();
+            sortLines();
+            break;
+          case "3":
+            customDialogActions.remove();
+            sortLines();
+            break;
+          case "4":
+            customDialogActions.remove();
+            upload();
+            break;
+        }
+      });
+      document.body.appendChild(customDialogActions);
+      break;
+  }
+}
 const id = new URL(document.URL).searchParams.get('id') || 0;
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 render();
@@ -305,33 +342,7 @@ document.addEventListener('keydown', async evt => {
         break
       case 'u':
         evt.preventDefault();
-        if (window.location.protocol === 'https:' || window.location.protocol === 'http:') {
-          tryUploadImageFromClipboard((ok) => {
-            const string = `![](https://static.lucidu.cn/images/${ok})\n\n`;
-            textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
-          }, (error) => {
-            console.log(error);
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.addEventListener('change', async ev => {
-              const file = input.files[0];
-              const imageFile = await uploadImage(file, file.name);
-              const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-              textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
-            });
-            input.click();
-          });
-        } else {
-          const input = document.createElement('input');
-          input.type = 'file';
-          input.addEventListener('change', async ev => {
-            const file = input.files[0];
-            const imageFile = await uploadImage(file, file.name);
-            const string = `![](https://static.lucidu.cn/images/${imageFile})\n\n`;
-            textarea.setRangeText(string, textarea.selectionStart, textarea.selectionStart);
-          });
-          input.click();
-        }
+        upload();
         break;
     }
 

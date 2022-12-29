@@ -2,7 +2,7 @@ import {
   LitElement,
   html,
   css
-} from './lit-core.min.js';
+} from 'https://cdn.jsdelivr.net/gh/lit/dist@2/core/lit-core.min.js';
 export class CustomDialogActions extends LitElement {
   static properties = {
     data: {}
@@ -64,7 +64,7 @@ display:none;
 
   constructor() {
     super();
-    this.data = ["参数列表","缩进","排序行"];
+    this.data = ["参数列表","缩进","排序行","上传图片"];
   }
   close() {
     this.remove();

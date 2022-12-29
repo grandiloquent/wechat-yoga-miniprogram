@@ -222,7 +222,7 @@ function formatWeather(obj) {
     "7": "西北风",
     "8": "北风",
     "9": "旋转风"
-  } [obj['wind_direction']] + obj['wind_power'] + "级"
+  }[obj['wind_direction']] + obj['wind_power'] + "级"
   // obj['weather'] + obj['degree'] + '° • ' + { "0": "微风", "1": "东北风", "2": "东风", "3": "东南风", "4": "南风", "5": "西南风", "6": "西风", "7": "西北风", "8": "北风", "9": "旋转风" }[obj['wind_direction']] + obj['wind_power'] + "级" + " • 湿度" + obj['humidity'] + "%"
 }
 
@@ -246,7 +246,10 @@ function getOpenId(host) {
     wx.login({
       success: async response => {
         try {
-          const res = await request(`${host}/v1/authorization?code=${response.code}`)
+          const res = await request(`${host}/v1/authorization`, {
+            method: 'POST',
+            data: `${response.code}`
+          })
           resolve(res.data.openid);
         } catch (error) {
           reject(error)
@@ -528,11 +531,11 @@ function uploadFile(url, filePath) {
 
 function formatLessonShortDate(lesson) {
   const t = new Date(lesson.date_time * 1000);
-  return `${t.getMonth()+1}月${t.getDate()}日`;
+  return `${t.getMonth() + 1}月${t.getDate()}日`;
 }
 // 将秒钟转换为更通简的时间格式（9:30）
 function formatDuration(ms) {
-// 先取余减掉小时，然后计算分钟
+  // 先取余减掉小时，然后计算分钟
   var minutes = ms % 3600 / 60
   if (minutes < 10) {
     minutes = "0" + minutes;
@@ -568,6 +571,6 @@ module.exports = {
   timeago,
   uploadFile,
   formatLessonShortDate,
-formatDuration
+  formatDuration
 }
 // const utils = require('../../utils');

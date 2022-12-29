@@ -3,7 +3,6 @@ const utils = require('utils');
 
 App({
   async onLaunch() {
-
     //await showMessageModal(wx.getSystemInfoSync().SDKVersion)
 
     // 更新小程序

@@ -178,7 +178,17 @@ func main() {
 		QueryJSON(w, db, "select * from v1_admin_users()")
 	}
 	handlers["/v1/authorization"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		code := r.URL.Query().Get("code")
+		var code string
+		if r.Method == "GET" {
+			code = r.URL.Query().Get("code")
+
+		} else {
+			buf, err := io.ReadAll(r.Body)
+			if CheckError(w, err) {
+				return
+			}
+			code = string(buf)
+		}
 		res, err := http.Get(authUrl + code)
 		if err != nil {
 			writeError(w, err)

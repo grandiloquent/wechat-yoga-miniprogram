@@ -1,14 +1,15 @@
-function setHeader() {
-  const customHeader = document.querySelector('custom-header');
-  customHeader.setAttribute('title', "公告");
-  [...document.querySelectorAll('[data-href]')]
-  .forEach(x => {
-    x.addEventListener('click', evt => {
-      window.location = evt.currentTarget.dataset.href;
-    });
-  });
+customBottomBar.data = [{
+  path: `<path d="M18.984 12.984h-6v6h-1.969v-6h-6v-1.969h6v-6h1.969v6h6v1.969z"></path>`,
+  title: "新建",
+  href: "notice"
+}]
+async function navigate(evt) {
+  switch (evt.detail) {
+    case 'notice':
+location="./notice"
+      break;
+  }
 }
-
 function appendChild(parent, textContent, className) {
   const div = document.createElement('div');
   className && (div.className = className);
@@ -16,7 +17,7 @@ function appendChild(parent, textContent, className) {
   parent.appendChild(div);
   return div;
 }
-setHeader();
+
 const wrapper = document.querySelector('.wrapper');
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {

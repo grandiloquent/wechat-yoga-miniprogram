@@ -378,7 +378,8 @@ func main() {
 					http.NotFound(w, r)
 					return
 				}
-			} else if strings.HasSuffix(fh.Filename, ".jpg") {
+				// if strings.HasSuffix(fh.Filename, ".jpg")
+			} else {
 				err = jpeg.Encode(output, m, nil)
 				if err != nil {
 					_ = output.Close()

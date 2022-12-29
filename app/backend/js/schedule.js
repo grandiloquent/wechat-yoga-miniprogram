@@ -99,7 +99,7 @@ async function onSubmitBar(evt) {
         },
         body: JSON.stringify(data)
       });
-      const obj = await response.json();
+      const obj = await response.text();
     } catch (error) {
       console.log(error);
     }

@@ -64,7 +64,7 @@ display:none;
 
   constructor() {
     super();
-    this.data = ["参数列表","缩进"];
+    this.data = ["参数列表","缩进","排序行"];
   }
   close() {
     this.remove();

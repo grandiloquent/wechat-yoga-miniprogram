@@ -3,7 +3,10 @@
   <view style="padding:24rpx 32rpx;box-shadow: 0 2rpx 4rpx 0 rgba(60,64,67,.3),0 4rpx 12rpx 4rpx rgba(60,64,67,.15);display:flex;align-items: center;justify-content: center;border-radius:12rpx;background:rgb(60,176,53);color:#fff;width:50vw;position:fixed;left:50%;top:30%;transform: translate(-50%, -50%);font-szie:48rpx;display:none">
     约课
   </view>
-
+<!--
+如果没有找到用户特定日期的课程
+显示相应的直觉反馈和约课的快捷链接
+-->
   <view  wx:if="{{!lessons}}" style="padding:60rpx 32rpx;font-size:32rpx;display:flex;align-items: center;justify-content: center;">
     未找到相关课程，您是否立即<text style="color:#4285f4;"  bindtap="navigate" data-tab="/pages/index/index">预约课程</text>。
   </view>

@@ -40,11 +40,17 @@ func main() {
 	if len(authUrl) == 0 {
 		log.Fatal("Auth url cant be empty!")
 	}
+	/*
+	   用于计算登录令牌的长度为32的字符串
+	*/
 	secretString := os.Getenv("SECRET")
 	if len(secretString) == 0 {
 		log.Fatal("Secret cant be empty")
 	}
 	secret := []byte(secretString)
+	/*
+	   连接 PostgreSQL 数据库
+	*/
 	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		log.Fatal(err)
@@ -694,7 +700,13 @@ func CrossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "authorization")
 }
 
-// 使用通过环境变量传入键
+/*
+使用通过环境变量传入的密钥
+计算用户Id加时间戳的Hash值
+然后将Hash值和它的字符串组合成令牌
+当客户端发送回令牌时
+即可通过重新计算验证令牌的合法性
+*/
 func createToken(secret []byte, id string) ([]byte, error) {
 	s := fmt.Sprintf("%s-%d", id, time.Now().Unix())
 	buf, err := HmacSha256(secret, s)
@@ -708,35 +720,9 @@ func createToken(secret []byte, id string) ([]byte, error) {
 	return dst, nil
 }
 
-var Secret = []byte{161, 219, 25, 253, 28, 70, 147, 43, 68, 17, 168, 75, 89, 233, 117, 116, 224, 230, 127, 165, 60, 187, 219, 70, 136, 54, 148, 244, 27, 121, 235, 73}
-
-func validCookie(db *sql.DB, w http.ResponseWriter, r *http.Request) bool {
-	id := CalculateToken(r)
-	if len(id) > 0 {
-		QueryJSON(w, db, "select * from _query_userinfo_profile($1)", id)
-		return true
-	}
-	return false
-}
-func CalculateToken(r *http.Request) string {
-	id, err := r.Cookie("Id")
-	if err != nil {
-		return ""
-	}
-	token, err := r.Cookie("Token")
-	if err != nil {
-		return ""
-	}
-	session, err := HmacSha256(Secret, id.Value)
-	if err != nil {
-		return ""
-	}
-	if token.Value == base64.StdEncoding.EncodeToString(session) {
-
-		return id.Value
-	}
-	return ""
-}
+/*
+测试文件是否存在
+*/
 func FileExists(name string) bool {
 	_, err := os.Stat(name)
 	if err == nil {

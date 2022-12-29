@@ -18,7 +18,7 @@ phone_number.addEventListener('click', evt => {
 
 
 async function submitUserInformation(data) {
-  const response = await fetch(`${baseUri}/v1/admin/login`, {
+  const response = await fetch(`${baseUri}/v1/login`, {
     method: 'POST',
     body: data
   });

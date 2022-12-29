@@ -339,12 +339,16 @@ func main() {
 				http.NotFound(w, r)
 				return
 			}
-			originalImage, _, err := image.Decode(f)
-			if err != nil {
+			var originalImage image.Image
+			if strings.HasSuffix(fh.Filename, ".png") {
 				originalImage, err = png.Decode(f)
+			} else if strings.HasSuffix(fh.Filename, ".jpg") {
+				originalImage, err = jpeg.Decode(f)
+			} else {
+				originalImage, _, err = image.Decode(f)
 			}
+
 			if err != nil {
-				fmt.Println(err)
 				http.NotFound(w, r)
 				return
 			}
@@ -364,16 +368,23 @@ func main() {
 			}
 			output, err := os.Create(fullName)
 			if err != nil {
-				fmt.Println(err)
 				http.NotFound(w, r)
 				return
 			}
-			err = jpeg.Encode(output, m, nil)
-			if err != nil {
-				_ = output.Close()
-				fmt.Println(err)
-				http.NotFound(w, r)
-				return
+			if strings.HasSuffix(fh.Filename, ".png") {
+				err = png.Encode(output, m)
+				if err != nil {
+					_ = output.Close()
+					http.NotFound(w, r)
+					return
+				}
+			} else if strings.HasSuffix(fh.Filename, ".jpg") {
+				err = jpeg.Encode(output, m, nil)
+				if err != nil {
+					_ = output.Close()
+					http.NotFound(w, r)
+					return
+				}
 			}
 			_ = output.Close()
 			_, _ = w.Write([]byte(fileName))

@@ -16,7 +16,7 @@ export class CustomDrawer extends LitElement {
   position: fixed;
   top: 0;
   bottom: 0;
-  z-index: 990;
+  z-index: 992;
   will-change: visibility;
   display: flex;
   flex-direction: column;
@@ -25,6 +25,10 @@ export class CustomDrawer extends LitElement {
 
   constructor() {
     super();
+    this.data = [{
+      name: "首页",
+      href: "/backend/index"
+    }];
   }
   show() {
     this.expand = true;
@@ -51,9 +55,7 @@ export class CustomDrawer extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    this.data = [{
-      name: "首页",href:"/"
-    }];
+
   }
   disconnectedCallback() {}
 }

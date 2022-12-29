@@ -421,3 +421,51 @@ async function removeLines(textarea) {
   }
 
 }
+
+function findExtendPosition(editor) {
+  const start = editor.selectionStart;
+  const end = editor.selectionEnd;
+  let string = editor.value;
+  let offsetStart = start;
+  while (offsetStart > 0) {
+      if (!/\s/.test(string[offsetStart - 1]))
+          offsetStart--;
+      else {
+          let os = offsetStart;
+          while (os > 0 && /\s/.test(string[os - 1])) {
+              os--;
+          }
+          if ([...string.substring(offsetStart, os).matchAll(/\n/g)].length > 1) {
+              break;
+          }
+          offsetStart = os;
+      }
+  }
+  let offsetEnd = end;
+  while (offsetEnd < string.length) {
+      if (!/\s/.test(string[offsetEnd + 1])) {
+
+          offsetEnd++;
+      } else {
+
+          let oe = offsetEnd;
+          while (oe < string.length && /\s/.test(string[oe + 1])) {
+              oe++;
+          }
+          if ([...string.substring(offsetEnd, oe + 1).matchAll(/\n/g)].length > 1) {
+              offsetEnd++;
+
+              break;
+          }
+          offsetEnd = oe + 1;
+
+      }
+  }
+  while (offsetStart > 0 && string[offsetStart - 1] !== '\n') {
+      offsetStart--;
+  }
+  // if (/\s/.test(string[offsetEnd])) {
+  //     offsetEnd--;
+  // }
+  return [offsetStart, offsetEnd];
+}

@@ -1,10 +1,9 @@
-
+let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 
 function showDrawer(evt) {
   evt.stopPropagation();
   customDrawer.setAttribute('expand', 'true');
 }
-let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
     headers: {
@@ -14,10 +13,6 @@ async function loadData() {
   return response.json();
 }
 async function render() {
-
-
-
-
   let obj;
   try {
     obj = await loadData();
@@ -35,12 +30,12 @@ async function render() {
       const m = x * 30 + 60 * 9;
       return `${m / 60 | 0}:${(m % 60).toString().padEnd(2, '0')}`;
     }));
-    peoples.data = paddingArray([...new Array(9).keys()].map(x => x + 8));
+    peoples.data = paddingArray([...new Array(9).keys()].map(x => `${x + 8}`));
   } catch (error) {
-
+    console.log(error);
   }
 }
-render();
+
 
 function paddingArray(array) {
   const dif = array.length % 4;
@@ -83,20 +78,34 @@ function onStartTimeSubmit(evt) {
   endTime.selectedItem = formatSeconds(durationToSeconds(evt.detail + ":00") + 3600);
 }
 
+function onEndTimeSubmit() {}
+
 function onSubmitBar(evt) {
   if (evt.detail === "1") {
     const data = {
       lesson: lesson.selectedItem,
       class_type: ((lessonType.selectedItem === '小班') && 1) || ((lessonType.selectedItem === '私教') && 2) || ((lessonType.selectedItem === '团课') && 4),
-      peoples: parseInt(pickerPeoples.selectedItem || '0'),
+      peoples: parseInt(peoples.selectedItem || '0'),
       start_time: durationToSeconds(startTime.selectedItem + ":00"),
       end_time: durationToSeconds(endTime.selectedItem + ":00"),
-      teacher: lesson.selectedItem
+      teacher: teacher.selectedItem,
+      date_time: '日一二三四五六'.split('').map(x => `周${x}`).indexOf(dateTime.selectedItem)
     }
-    console.log(data);
+    try {
+      const response = await fetch(`${baseUri}/v1/admin/lessons/update`, {
+        method: 'POST',
+        headers: {
+          "Authorization": window.localStorage.getItem("Authorization")
+        },
+        body: JSON.stringify(data)
+      });
+      const obj = await response.json();
+    } catch (error) {
+      console.log(error);
+    }
     toast.setAttribute('message', '成功');
-
   } else {
     history.back();
   }
 }
+render();

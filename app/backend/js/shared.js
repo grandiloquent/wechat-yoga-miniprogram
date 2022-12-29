@@ -1,6 +1,7 @@
 const SETTINGS = {
-    title: '瑜伽约课微信小程序'
+  title: '瑜伽约课微信小程序'
 };
+
 document.querySelectorAll('[bind]').forEach(element => {
   if (element.getAttribute('bind')) {
     window[element.getAttribute('bind')] = element;

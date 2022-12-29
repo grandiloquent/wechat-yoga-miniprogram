@@ -26,6 +26,22 @@ SET row_security = off;
 ALTER SCHEMA public OWNER TO postgres;
 
 --
+-- Name: check_user_password(text, text); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.check_user_password(in_phone_number text, in_password text) RETURNS integer
+    LANGUAGE sql
+    AS $$
+select id
+from userinfo
+where phone_number = in_phone_number
+  and password = in_password;
+$$;
+
+
+ALTER FUNCTION public.check_user_password(in_phone_number text, in_password text) OWNER TO psycho;
+
+--
 -- Name: seconds(); Type: FUNCTION; Schema: public; Owner: psycho
 --
 
@@ -62,6 +78,58 @@ $$;
 
 
 ALTER FUNCTION public.unix() OWNER TO psycho;
+
+--
+-- Name: v1_admin_course(integer); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.v1_admin_course(in_id integer) RETURNS json
+    LANGUAGE sql
+    AS $$
+select row_to_json(t)
+from (
+         select *
+         from lesson
+         where in_id = 1
+         limit 1) as t
+$$;
+
+
+ALTER FUNCTION public.v1_admin_course(in_id integer) OWNER TO psycho;
+
+--
+-- Name: v1_admin_course_update(json); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.v1_admin_course_update(obj json) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    result_id integer=0;
+    seconds   bigint;
+BEGIN
+    select floor(extract(epoch from now())) into seconds;
+    insert into lesson(id, description, image, name, creation_time, updated_time)
+    values (coalesce(NULLIF((obj ->> 'id')::int, 0), coalesce((select max(id) from lesson), 0) + 1),
+            obj ->> 'description',
+            obj ->> 'image',
+            obj ->> 'name'
+               , coalesce(NULLIF((obj ->> 'create_at')::bigint, 0), seconds),
+            coalesce(NULLIF((obj ->> 'update_at')::bigint, 0), seconds))
+    ON CONFLICT (id) DO update
+        set description   = coalesce(obj ->> 'description', lesson.description),
+            image         = coalesce(obj ->> 'image', lesson.image),
+            name          = coalesce(obj ->> 'name', lesson.name)
+                ,
+            creation_time = coalesce(NULLIF((obj ->> 'creation_time')::bigint, 0), lesson.creation_time),
+            updated_time  = seconds
+    returning id into result_id;
+    RETURN result_id;
+END;
+$$;
+
+
+ALTER FUNCTION public.v1_admin_course_update(obj json) OWNER TO psycho;
 
 --
 -- Name: v1_admin_lesson(integer); Type: FUNCTION; Schema: public; Owner: psycho
@@ -132,6 +200,22 @@ $$;
 ALTER FUNCTION public.v1_admin_lesson_info() OWNER TO psycho;
 
 --
+-- Name: v1_admin_lesson_names(); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.v1_admin_lesson_names() RETURNS json
+    LANGUAGE sql
+    AS $$
+select json_agg(t)
+from (
+         select id, name
+         from lesson) as t
+$$;
+
+
+ALTER FUNCTION public.v1_admin_lesson_names() OWNER TO psycho;
+
+--
 -- Name: v1_admin_lessons(integer, integer, integer); Type: FUNCTION; Schema: public; Owner: psycho
 --
 
@@ -164,6 +248,54 @@ $$;
 
 
 ALTER FUNCTION public.v1_admin_lessons(input_start_time integer, input_end_time integer, input_class_type integer) OWNER TO psycho;
+
+--
+-- Name: v1_admin_lessons_update(json); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.v1_admin_lessons_update(obj json) RETURNS integer
+    LANGUAGE plpgsql
+    AS $$
+declare
+    v_class_type integer;
+    v_start_time integer;
+    v_end_time   integer;
+    v_lesson_id  integer;
+    v_teacher_id integer;
+    v_date_time  bigint;
+    v_peoples    integer;
+    v_count      integer;
+    v_week       integer;
+    v_start      bigint;
+    v_end        bigint;
+BEGIN
+
+    -- 团课 4 私教 2 小班 1
+    v_class_type = coalesce(nullif((obj ->> 'class_type')::integer, 0), 4);
+    v_start_time = coalesce(nullif((obj ->> 'start_time')::integer, 0), 0);
+    v_end_time = coalesce(nullif((obj ->> 'end_time')::integer, 0), 0);
+    v_peoples = coalesce(nullif((obj ->> 'peoples')::bigint, 0), 0);
+    v_week = coalesce(nullif((obj ->> 'date_time')::integer, 0), 0);
+    v_start = (select extract(epoch from current_date) - 8 * 3600);
+    v_end = (select extract(epoch from current_date + interval '1 year') - 8 * 3600);
+    select id into v_lesson_id from lesson where name = obj ->> 'lesson' limit 1;
+    select id into v_teacher_id from coach where name = obj ->> 'teacher' limit 1;
+    for v_date_time in
+        SELECT extract(epoch from days AT TIME ZONE 'CCT')
+        FROM generate_series(to_timestamp(v_start), to_timestamp(v_end), '1 day' :: interval) AS days
+        where EXTRACT(dow FROM days) = v_week
+        loop
+            insert into course(class_type, lesson_id, date_time, end_time, peoples, start_time, teacher_id,
+                               creation_time, updated_time)
+            values (v_class_type, v_lesson_id, v_date_time- 8 * 3600, v_end_time, v_peoples, v_start_time,
+                    v_teacher_id,(select unix()), (select unix()));
+        end loop;
+    return v_count;
+end;
+$$;
+
+
+ALTER FUNCTION public.v1_admin_lessons_update(obj json) OWNER TO psycho;
 
 --
 -- Name: v1_admin_market(); Type: FUNCTION; Schema: public; Owner: psycho
@@ -444,6 +576,22 @@ $$;
 ALTER FUNCTION public.v1_admin_teacher_update(obj json) OWNER TO psycho;
 
 --
+-- Name: v1_admin_teachers(); Type: FUNCTION; Schema: public; Owner: psycho
+--
+
+CREATE FUNCTION public.v1_admin_teachers() RETURNS json
+    LANGUAGE sql
+    AS $$
+select json_agg(t)
+from (
+         select *
+         from coach) as t
+$$;
+
+
+ALTER FUNCTION public.v1_admin_teachers() OWNER TO psycho;
+
+--
 -- Name: v1_admin_users(); Type: FUNCTION; Schema: public; Owner: psycho
 --
 
@@ -618,34 +766,34 @@ ALTER FUNCTION public.v1_booked_query(in_open_id text, in_start integer, in_end 
 
 CREATE FUNCTION public.v1_booking_query(input_date_time integer, input_open_id text, input_class_type integer) RETURNS json
     LANGUAGE sql
-    AS $$
-select json_agg(t)
-from (
-        select course.id                                 as course_id,
-                        course.peoples,
-                        (select count(reservation.id)
-                         from reservation
-                         where reservation.course_id = course.id) as count,
-                        (select reservation.id
-                         from reservation
-                                  join "user" u on u.id = reservation.user_id
-                         where u.open_id = input_open_id
-                           and reservation.course_id = course.id
-                         limit 1)                                 as reservation_id,
-                        course.start_time,
-                        course.end_time,
-                        course.date_time,
-                        l.name                                    as lesson_name,
-                        c.name                                    as teacher_name,
-                        c.thumbnail
-                 from course
-                          join coach c on course.teacher_id = c.id
-                          join lesson l on l.id = course.lesson_id
-                 where course.hidden <> 1
-                   and course.date_time = input_date_time
-                   and course.class_type & input_class_type = course.class_type
-
-     ) as t
+    AS $$
+select json_agg(t)
+from (
+        select course.id                                 as course_id,
+                        course.peoples,
+                        (select count(reservation.id)
+                         from reservation
+                         where reservation.course_id = course.id) as count,
+                        (select reservation.id
+                         from reservation
+                                  join "user" u on u.id = reservation.user_id
+                         where u.open_id = input_open_id
+                           and reservation.course_id = course.id
+                         limit 1)                                 as reservation_id,
+                        course.start_time,
+                        course.end_time,
+                        course.date_time,
+                        l.name                                    as lesson_name,
+                        c.name                                    as teacher_name,
+                        c.thumbnail
+                 from course
+                          join coach c on course.teacher_id = c.id
+                          join lesson l on l.id = course.lesson_id
+                 where nullif(course.hidden,0) is null
+                   and course.date_time = input_date_time
+                   and course.class_type & input_class_type = course.class_type
+
+     ) as t
 $$;
 
 
@@ -980,35 +1128,35 @@ ALTER FUNCTION public.v1_user_check(in_open_id text) OWNER TO psycho;
 
 CREATE FUNCTION public.v1_user_update(obj json) RETURNS integer
     LANGUAGE plpgsql
-    AS $$
-DECLARE
-    result_id integer=0;
-    seconds   bigint;
-BEGIN
-    select floor(extract(epoch from now())) into seconds;
-    insert into "user" (id, address, avatar_url, gender, name, nick_name, note, open_id, phone, user_type,
-                        creation_time, updated_time)
-    values (coalesce(NULLIF((obj ->> 'id')::int, 0), coalesce((select max(id) from "user"), 0) + 1),
-            obj ->> 'address', obj ->> 'avatar_url', (obj ->> 'gender')::integer, obj ->> 'name', obj ->> 'nick_name',
-            obj ->> 'note', obj ->> 'open_id', obj ->> 'phone', (obj ->> 'user_type')::integer
-               , coalesce(NULLIF((obj ->> 'create_at')::bigint, 0), seconds),
-            coalesce(NULLIF((obj ->> 'update_at')::bigint, 0), seconds))
-    ON CONFLICT (open_id) DO update
-        set address= coalesce(obj ->> 'address', "user".address),
-            avatar_url= coalesce(obj ->> 'avatar_url', "user".avatar_url),
-            gender= coalesce(NULLIF((obj ->> 'gender')::integer, 0), "user".gender),
-            name= coalesce(obj ->> 'name', "user".name),
-            nick_name= coalesce(obj ->> 'nick_name', "user".nick_name),
-            note= coalesce(obj ->> 'note', "user".note),
-            open_id= coalesce(obj ->> 'open_id', "user".open_id),
-            phone= coalesce(obj ->> 'phone', "user".phone),
-            user_type= coalesce(NULLIF((obj ->> 'user_type')::integer, 0), "user".user_type)
-                ,
-            creation_time = coalesce(NULLIF((obj ->> 'creation_time')::bigint, 0), "user".creation_time),
-            updated_time = seconds
-    returning id into result_id;
-    RETURN result_id;
-END;
+    AS $$
+DECLARE
+    result_id integer=0;
+    seconds   bigint;
+BEGIN
+    select floor(extract(epoch from now())) into seconds;
+    insert into "user" (id, address, avatar_url, gender, name, nick_name, note, open_id, phone, user_type,
+                        creation_time, updated_time)
+    values (coalesce(NULLIF((obj ->> 'id')::int, 0), coalesce((select max(id) from "user"), 0) + 1),
+            obj ->> 'address', obj ->> 'avatar_url', (obj ->> 'gender')::integer, obj ->> 'name', coalesce(obj ->> 'nick_name',''),
+            obj ->> 'note', obj ->> 'open_id', obj ->> 'phone', (obj ->> 'user_type')::integer
+               , coalesce(NULLIF((obj ->> 'create_at')::bigint, 0), seconds),
+            coalesce(NULLIF((obj ->> 'update_at')::bigint, 0), seconds))
+    ON CONFLICT (open_id) DO update
+        set address= coalesce(obj ->> 'address', "user".address),
+            avatar_url= coalesce(obj ->> 'avatar_url', "user".avatar_url),
+            gender= coalesce(NULLIF((obj ->> 'gender')::integer, 0), "user".gender),
+            name= coalesce(obj ->> 'name', "user".name),
+            nick_name= coalesce(obj ->> 'nick_name', "user".nick_name),
+            note= coalesce(obj ->> 'note', "user".note),
+            open_id= coalesce(obj ->> 'open_id', "user".open_id),
+            phone= coalesce(obj ->> 'phone', "user".phone),
+            user_type= coalesce(NULLIF((obj ->> 'user_type')::integer, 0), "user".user_type)
+                ,
+            creation_time = coalesce(NULLIF((obj ->> 'creation_time')::bigint, 0), "user".creation_time),
+            updated_time = seconds
+    returning id into result_id;
+    RETURN result_id;
+END;
 $$;
 
 
@@ -1043,44 +1191,6 @@ ALTER FUNCTION public.v1_user_user(in_id text) OWNER TO psycho;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: access_record; Type: TABLE; Schema: public; Owner: psycho
---
-
-CREATE TABLE public.access_record (
-    id integer NOT NULL,
-    uri text NOT NULL,
-    open_id text NOT NULL,
-    ip text,
-    creation_time bigint NOT NULL,
-    updated_time bigint NOT NULL
-);
-
-
-ALTER TABLE public.access_record OWNER TO psycho;
-
---
--- Name: access_record_id_seq; Type: SEQUENCE; Schema: public; Owner: psycho
---
-
-CREATE SEQUENCE public.access_record_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.access_record_id_seq OWNER TO psycho;
-
---
--- Name: access_record_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: psycho
---
-
-ALTER SEQUENCE public.access_record_id_seq OWNED BY public.access_record.id;
-
 
 --
 -- Name: announcement; Type: TABLE; Schema: public; Owner: psycho
@@ -1739,13 +1849,6 @@ ALTER SEQUENCE public.vip_card_id_seq OWNED BY public.vip_card.id;
 
 
 --
--- Name: access_record id; Type: DEFAULT; Schema: public; Owner: psycho
---
-
-ALTER TABLE ONLY public.access_record ALTER COLUMN id SET DEFAULT nextval('public.access_record_id_seq'::regclass);
-
-
---
 -- Name: announcement id; Type: DEFAULT; Schema: public; Owner: psycho
 --
 
@@ -1855,14 +1958,6 @@ ALTER TABLE ONLY public.userinfo ALTER COLUMN id SET DEFAULT nextval('public.use
 --
 
 ALTER TABLE ONLY public.vip_card ALTER COLUMN id SET DEFAULT nextval('public.vip_card_id_seq'::regclass);
-
-
---
--- Name: access_record access_record_pkey; Type: CONSTRAINT; Schema: public; Owner: psycho
---
-
-ALTER TABLE ONLY public.access_record
-    ADD CONSTRAINT access_record_pkey PRIMARY KEY (id);
 
 
 --

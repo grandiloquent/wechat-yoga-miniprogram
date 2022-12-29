@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>课程 - 瑜伽约课微信小程序</title>
+  <title>课程</title>
   <link rel="stylesheet" href="css/lessons.css">
   <script type="module" src="../components/custom-header.js"></script>
   <script type="module" src="../components/custom-drawer.js"></script>
@@ -13,18 +13,16 @@
 </head>
 
 <body>
-   <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-drawer bind="customDrawer"></custom-drawer>
   <custom-header title="课程" bind @submit="showDrawer" flat="true"></custom-header>
   <div style="height: 56px;"></div>
-
-  <custom-drawer></custom-drawer>
 
   <custom-filter></custom-filter>
   <div id="layout" style="padding: 16px 16px 56px;">
   </div>
   <script src="js/custom-filter.js"></script>
   <script src="js/custom-mini-item.js"></script>
-
+  <script src="js/shared.js"></script>
   <script src="js/lessons.js"></script>
 </body>
 

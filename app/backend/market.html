@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height:100%">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>营销</title>
-  <link rel="stylesheet" href="market.css">
-  <script src="js/custom-input.js"></script>
+  <link rel="stylesheet" href="css/market.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script src="../components/toast.js"></script>
+  <script type="module" src="../components/custom-submit-bar.js"></script>
+  <script type="module" src="../components/custom-field.js"></script>
+  <script type="module" src="../components/custom-textarea.js"></script>
+
 </head>
 
-<body>
-  <custom-header>
-    <custom-drawer></custom-drawer>
-  </custom-header>
-  <div style="height: 64px;"></div>
-  <div class="wrapper">
+<body style="height:100%">
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="营销" bind @submit="showDrawer"></custom-header>
 
-    <custom-input label="标题" class="title" style="width: 100%;"></custom-input>
-    <custom-input label="标语" class="slogan" style="width: 100%;"></custom-input>
-    <custom-input label="内容" type="textarea" class="content" style="width: 100%;"></custom-input>
-    <custom-submit-bar class="submit"></custom-submit-bar>
+  <div style="display:flex;flex-direction:column;height:100%">
+    <div style="height: 56px;"></div>
+    <custom-field bind="titleInput" label="标题" placeholder="请输入营销标题"></custom-field>
+    <custom-field bind="sloganInput" label="标语" placeholder="请输入营销标语"></custom-field>
+    <custom-textarea bind="customTextarea" label="内容" placeholder="请输入营销内容" style="flex-grow:1"></custom-textarea>
+    <div style="height: 68px;"></div>
   </div>
-  <custom-toast id="toast"></custom-toast>
-  <script src="toast.js"></script>
-  <script src="js/custom-drawer.js"></script>
-  <script src="js/custom-submit-bar.js"></script>
-  <script src="js/custom-header.js"></script>
+  <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-toast bind="toast"></custom-toast>
+
   <script src="js/shared.js"></script>
   <script src="js/market.js"></script>
 </body>

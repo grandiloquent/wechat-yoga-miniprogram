@@ -21,7 +21,7 @@ function getLine() {
 }
 async function translate(value, to) {
   try {
-    const response = await fetch(`http://kpkpkp.cn/api/trans?q=${encodeURIComponent(value.trim())}&to=${to}`);
+    const response = await fetch(`${window.location.protocol}//kpkpkp.cn/api/trans?q=${encodeURIComponent(value.trim())}&to=${to}`);
     const obj = await response.json();
     return obj.sentences.map((element, index) => {
       return element.trans;
@@ -530,25 +530,40 @@ async function formatStyleLit(textarea) {
 function substring(strings, prefix, suffix) {
   let start = strings.indexOf(prefix);
   if (start === -1) {
-      return [0, 0]
+    return [0, 0]
   }
   start += prefix.length;
   let end = strings.indexOf(suffix, start);
   if (end === -1) {
-      return [0, 0]
+    return [0, 0]
   }
   return [start, end]
 }
 function formatComment(editor) {
   let str;
   if (/\.(?:html|xml|wxml)$/.test(path)) {
-      str = `<!--\n\n-->`;
+    str = `<!--\n\n-->`;
   } else if (/\.(?:sql)$/.test(path)) {
-      str = `-- `;
+    str = `-- `;
   } else {
-      str = `/*\n\n*/`;
+    str = `/*\n\n*/`;
   }
   editor.setRangeText(str, editor.selectionStart, editor.selectionEnd);
+}
+async function pasteCode() {
+  let strings;
+  if (typeof NativeAndroid !== 'undefined') {
+    strings = NativeAndroid.readText()
+  } else {
+    strings = await navigator.clipboard.readText()
+  }
+  textarea.setRangeText(`
+  
+\`\`\`pgsql
+${strings}
+\`\`\`
+
+`, textarea.selectionStart, textarea.selectionEnd, 'end');
 }
 ///////////////////////////////
 const snippets = JSON.parse(window.localStorage.getItem('snippets'))
@@ -634,6 +649,7 @@ async function navigate(evt) {
             break;
           case "5":
             customDialogActions.remove();
+            pasteCode();
             break;
         }
       });

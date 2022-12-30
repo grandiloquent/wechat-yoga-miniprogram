@@ -575,20 +575,6 @@ func main() {
 			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
 		}
 	}
-	/*
-
-		create function v1_admin_card(in_id integer) returns json
-			language sql
-		as
-		$$
-		select row_to_json(t)
-		from (
-				 select *
-				 from card
-				 where in_id = 1
-				 limit 1) as t
-		$$;
-	*/
 
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

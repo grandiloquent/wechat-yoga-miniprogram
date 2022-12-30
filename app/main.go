@@ -537,6 +537,27 @@ func main() {
 		}
 		QueryJSON(w, db, "select * from v1_user_user($1)", openId)
 	}
+	handlers["/v1/snippet"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_snippet($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from update_snippet($1)")
+		} else if r.Method == "PUT" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryInt(w, db, "select * from v1_snippet_hit($1)", id)
+		}
+	}
+
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/v1/admin/") {

@@ -467,6 +467,14 @@ function substringAfter(string, delimiter, missingDelimiterValue) {
     return string.substring(index + delimiter.length);
   }
 }
+function substringBefore(string, delimiter, missingDelimiterValue) {
+  const index = string.indexOf(delimiter);
+  if (index === -1) {
+    return missingDelimiterValue || string;
+  } else {
+    return string.substring(0,index);
+  }
+}
 function substringAfterLast(string, delimiter, missingDelimiterValue) {
   const index = string.lastIndexOf(delimiter);
   if (index === -1) {
@@ -566,7 +574,6 @@ ${strings}
 `, textarea.selectionStart, textarea.selectionEnd, 'end');
 }
 ///////////////////////////////
-const snippets = JSON.parse(window.localStorage.getItem('snippets'))
 
 document.querySelectorAll('[bind]').forEach(element => {
   if (element.getAttribute('bind')) {
@@ -691,7 +698,19 @@ document.addEventListener('keydown', async evt => {
         evt.preventDefault();
         break;
       case "i":
-        localStorage.setItem('snippets', textarea.value);
+        try {
+          const strings = textarea.value.trim();
+          const response = await fetch(`${baseUri}/v1/snippet`, {
+            method: "POST",
+            body: JSON.stringify({
+              key: substringBefore(strings, "\n"),
+              value: substringAfter(strings, "\n")
+            })
+          });
+          await response.text();
+        } catch (error) {
+          console.log(error);
+        }
         break;
 
     }
@@ -709,12 +728,18 @@ document.addEventListener('keydown', async evt => {
     if (!key) {
       return;
     }
-    const value = snippets[key];
-    if (!value) {
-      return;
+    try {
+      const response = await fetch(`${baseUri}/v1/snippet?id=${key}`);
+      const value = await response.json();
+      evt.preventDefault();
+      textarea.setRangeText(value.value, start, end, "end");
+      await fetch(`${baseUri}/v1/snippet?id=${key}`, {
+        method: 'PUT'
+      });
+    } catch (error) {
+      console.log(error);
     }
-    evt.preventDefault();
-    textarea.setRangeText(value, start, end, "end");
+
 
   } else if (evt.key === "F1") {
     formattingJavaScript(textarea);

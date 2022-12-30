@@ -64,7 +64,7 @@ display:none;
 
   constructor() {
     super();
-    this.data = ["参数列表","缩进","排序行","上传图片","注释","代码段"];
+    this.data = ["参数列表","缩进","排序行","上传图片","注释","代码块","代码段"];
   }
   close() {
     this.remove();

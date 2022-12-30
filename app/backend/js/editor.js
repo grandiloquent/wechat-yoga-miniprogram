@@ -472,7 +472,7 @@ function substringBefore(string, delimiter, missingDelimiterValue) {
   if (index === -1) {
     return missingDelimiterValue || string;
   } else {
-    return string.substring(0,index);
+    return string.substring(0, index);
   }
 }
 function substringAfterLast(string, delimiter, missingDelimiterValue) {
@@ -573,6 +573,21 @@ ${strings}
 
 `, textarea.selectionStart, textarea.selectionEnd, 'end');
 }
+async function insertSnippet() {
+  try {
+    const strings = textarea.value.trim();
+    const response = await fetch(`${baseUri}/v1/snippet`, {
+      method: "POST",
+      body: JSON.stringify({
+        key: substringBefore(strings, "\n"),
+        value: substringAfter(strings, "\n")
+      })
+    });
+    await response.text();
+  } catch (error) {
+    console.log(error);
+  }
+}
 ///////////////////////////////
 
 document.querySelectorAll('[bind]').forEach(element => {
@@ -658,6 +673,10 @@ async function navigate(evt) {
             customDialogActions.remove();
             pasteCode();
             break;
+          case "6":
+            customDialogActions.remove();
+            insertSnippet();
+            break;
         }
       });
       document.body.appendChild(customDialogActions);
@@ -698,19 +717,7 @@ document.addEventListener('keydown', async evt => {
         evt.preventDefault();
         break;
       case "i":
-        try {
-          const strings = textarea.value.trim();
-          const response = await fetch(`${baseUri}/v1/snippet`, {
-            method: "POST",
-            body: JSON.stringify({
-              key: substringBefore(strings, "\n"),
-              value: substringAfter(strings, "\n")
-            })
-          });
-          await response.text();
-        } catch (error) {
-          console.log(error);
-        }
+        insertSnippet();
         break;
 
     }

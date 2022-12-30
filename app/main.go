@@ -87,13 +87,17 @@ func main() {
 	   查询课程
 	*/
 	handlers["/v1/admin/lesson"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		id := getId(w, r)
-		if id == "" {
-			return
+		if r.Method == "GET" {
+			id := getId(w, r)
+			if id == "" {
+				return
+			}
+			// 通过调用数据库自定义函数进行查询操作
+			// 成功返回Json，失败空字符串
+			QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_lesson_update($1)")
 		}
-		// 通过调用数据库自定义函数进行查询操作
-		// 成功返回Json，失败空字符串
-		QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
 	}
 	/*
 	   查询课程、老师列表

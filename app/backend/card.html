@@ -21,8 +21,7 @@
   <custom-header title="会员卡" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
   <custom-field bind="titleInput" @submit="onNameInput" label="名称" placeholder="请输入会员卡名称"></custom-field>
-  <custom-field bind="cardTypeInput" disabled="true" @tap="onCardTypeTap" label="名称" placeholder="请输入会员卡名称"></custom-field>
-
+  <custom-field bind="cardTypeInput" @tap="onCardTypeTap" label="类型" placeholder="请输入会员卡类型"></custom-field>
 
   <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
   <custom-toast bind="toast"></custom-toast>

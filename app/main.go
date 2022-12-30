@@ -557,6 +557,38 @@ func main() {
 			QueryInt(w, db, "select * from v1_snippet_hit($1)", id)
 		}
 	}
+	handlers["/v1/admin/card"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			action := r.URL.Query().Get("action")
+			if action == "1" {
+				QueryJSON(w, db, "select * from v1_admin_cards()")
+				return
+			}
+			id := r.URL.Query().Get("id")
+
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_card($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
+		}
+	}
+	/*
+
+		create function v1_admin_card(in_id integer) returns json
+			language sql
+		as
+		$$
+		select row_to_json(t)
+		from (
+				 select *
+				 from card
+				 where in_id = 1
+				 limit 1) as t
+		$$;
+	*/
 
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

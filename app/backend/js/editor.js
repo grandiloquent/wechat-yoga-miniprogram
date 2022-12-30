@@ -693,6 +693,7 @@ document.addEventListener('keydown', async evt => {
       case "i":
         localStorage.setItem('snippets', textarea.value);
         break;
+
     }
   } else if (evt.key === ' ' || evt.keyCode == 229) {
 
@@ -723,6 +724,14 @@ document.addEventListener('keydown', async evt => {
     evt.preventDefault();
   } else if (evt.key === "F2") {
     const selectedString = getSelectedString(textarea);
+    if (selectedString === '') {
+      const reg = /(?<=css`)[^`]+(?=`)/;
+      const match = reg.exec(textarea.value);
+      let str = match[0].replaceAll(/[\r\n]+/g, '');
+      str = str.replaceAll(/((?<=[;{}:,])\s+)|(\s+(?=[{]))/g, '');
+      textarea.value = textarea.value.replace(match[0], str);
+      return;
+    }
     let k, ss;
 
     const match = /(<*?[a-zA-Z0-9_-]+) +(style="([^"]+)")/.exec(selectedString);

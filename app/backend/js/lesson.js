@@ -81,6 +81,32 @@ function durationToSeconds(duration) {
 function onStartTimeSubmit(evt) {
   endTime.selectedItem = formatSeconds(durationToSeconds(evt.detail + ":00") + 3600);
 }
-
+async function onSubmitBar(evt) {
+  if (evt.detail === "1") {
+    const data = {
+      lesson: lesson.selectedItem,
+      class_type: ((lessonType.selectedItem === '小班') && 1) || ((lessonType.selectedItem === '私教') && 2) || ((lessonType.selectedItem === '团课') && 4),
+      peoples: parseInt(peoples.selectedItem || '0'),
+      start_time: durationToSeconds(startTime.selectedItem + ":00"),
+      end_time: durationToSeconds(endTime.selectedItem + ":00"),
+      teacher: teacher.selectedItem
+    }
+    try {
+      const response = await fetch(`${baseUri}/v1/admin/lesson`, {
+        method: 'POST',
+        headers: {
+          "Authorization": window.localStorage.getItem("Authorization")
+        },
+        body: JSON.stringify(data)
+      });
+      const obj = await response.text();
+    } catch (error) {
+      console.log(error);
+    }
+    toast.setAttribute('message', '成功');
+  } else {
+    history.back();
+  }
+}
 render();
-// /v1/admin/lesson
+// 

@@ -1,13 +1,25 @@
 function renderMarkdown(obj) {
-  wrapper.innerHTML = markdownit({
+  const md = markdownit({
     html: true,
     linkify: true,
-    typographer: true
-  }).render(obj);
+    typographer: true,
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return '<pre class="hljs"><code>' +
+            hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
+            '</code></pre>';
+        } catch (__) { }
+      }
+
+      return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+    }
+  });
+  wrapper.innerHTML = md.render(obj);
 }
 const wrapper = document.querySelector('.markdown');
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
-const id = new URL(document.URL).searchParams.get('id') || '1';
+const id = new URL(document.URL).searchParams.get('id') || '4';
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/note?id=${id}`)
   return response.json();

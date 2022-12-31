@@ -53,7 +53,15 @@ padding:0 16px;
 margin-bottom:12px;
 border:1px solid rgb(207, 217, 222);
 font-size:15px;
-
+line-height:20px;
+min-height:36px;
+min-width:36px;
+font-weight:700;
+border-radius:999px;
+display:flex;align-items: center;justify-content: center;flex-direction: column; 
+}
+.info{
+margin:4px 0 12px;
 }
 `;
   constructor() {
@@ -74,8 +82,10 @@ font-size:15px;
       <div style="padding-bottom:100%"></div><img style="" src="https://pbs.twimg.com/profile_images/1608660876588126211/p07qcxpF_200x200.jpg">
     </div>
     <div class="button">编辑</div>
-  </div>
-</div>`;
+  </div> 
+</div>
+<div class="info"  >
+</div> `;
   }
   connectedCallback() {
     super.connectedCallback();

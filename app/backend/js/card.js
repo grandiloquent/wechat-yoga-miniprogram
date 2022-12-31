@@ -13,8 +13,10 @@ async function render() {
   let obj;
   try {
     obj = await loadData();
-    nameInput.value = obj.name;
-  } catch (error) {}
+    titleInput.value = obj.title;
+  } catch (error) {
+console.log(error); 
+}
 }
 render();
 
@@ -24,10 +26,10 @@ function onNameInput(evt) {
 async function onSubmitBar(evt) {
   if (evt.detail === "1") {
     const data = {
-      name: titleInput.value
+      title: titleInput.value
     }
     if (id) {
-      data.id = id;
+      data.id = parseInt(id);
     }
     try {
       const response = await fetch(`${baseUri}/v1/admin/card`, {

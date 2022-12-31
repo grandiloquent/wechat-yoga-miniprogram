@@ -24,7 +24,3 @@ async function render() {
   } catch (error) {}
 }
 render();
-
-function onNameInput(evt) {
-  console.log(evt.detail);
-}

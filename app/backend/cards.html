@@ -10,7 +10,10 @@
   <script type="module" src="../components/custom-header.js"></script>
   <script type="module" src="../components/custom-drawer.js"></script>
   <script src="../components/toast.js"></script>
- <script type="module" src="../components/custom-bottom-bar.js"></script>
+  <script type="module" src="../components/custom-bottom-bar.js"></script>
+  <script type="module" src="../components/custom-cards.js"></script>
+
+
 
 </head>
 
@@ -18,6 +21,8 @@
   <custom-drawer bind="customDrawer"></custom-drawer>
   <custom-header title="会员卡" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
+  <custom-cards bind="customCards"></custom-cards>
+  <div style="height: 49px;"></div>
   <custom-bottom-bar bind="customBottomBar" @submit="navigate"></custom-bottom-bar>
   <custom-toast bind="toast"></custom-toast>
   <script src="js/shared.js"></script>

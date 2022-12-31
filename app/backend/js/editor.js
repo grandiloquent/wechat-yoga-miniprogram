@@ -576,7 +576,7 @@ ${strings}
 async function insertSnippet() {
   try {
     const strings = textarea.value.trim();
-    const response = await fetch(`${baseUri}/v1/snippet`, {
+    const response = await fetch(`${window.location.protocol}//lucidu.cn/v1/snippet`, {
       method: "POST",
       body: JSON.stringify({
         key: substringBefore(strings, "\n"),
@@ -736,11 +736,11 @@ document.addEventListener('keydown', async evt => {
       return;
     }
     try {
-      const response = await fetch(`${baseUri}/v1/snippet?id=${key}`);
+      const response = await fetch(`${window.location.protocol}//lucidu.cn/v1/snippet?id=${key}`);
       const value = await response.json();
       evt.preventDefault();
       textarea.setRangeText(value.value, start, end, "end");
-      await fetch(`${baseUri}/v1/snippet?id=${key}`, {
+      await fetch(`${window.location.protocol}//lucidu.cn/v1/snippet?id=${key}`, {
         method: 'PUT'
       });
     } catch (error) {

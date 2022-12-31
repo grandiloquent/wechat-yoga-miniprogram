@@ -25,7 +25,7 @@
 
   <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
   <custom-toast bind="toast"></custom-toast>
-  <custom-action-sheet bind="customActionSheet" @submit=""></custom-action-sheet>
+  <custom-action-sheet title="选择会员卡类型" bind="customActionSheet" @close="onClose" style="display:none" @item="onItem"></custom-action-sheet>
   <script src="js/shared.js"></script>
   <script src="js/card.js"></script>
 </body>

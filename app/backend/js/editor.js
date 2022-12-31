@@ -588,6 +588,30 @@ async function insertSnippet() {
     console.log(error);
   }
 }
+function insertLitProperty() {
+  const s = getSelectedString(textarea);
+  replaceSelectedText(textarea, `\${this.${s}}`)
+  let str = textarea.value;
+  str = str.replace(`static properties = {`, `static properties = {\n${s}:{},\n`);
+  str = str.replace(`super();`, `super();\nthis.${s}=null;\n`);
+  textarea.value = str;
+
+}
+function insertLitHandler() {
+  const s = getSelectedString(textarea);
+  replaceSelectedText(textarea, `@click=\${this._${s}}`)
+  let str = textarea.value;
+  str = str.replace(`render()`, `_${s}(evt){
+    evt.stopPropagation();
+    this.style.display = "none";
+    const index = evt.currentTarget.dataset.index;
+    this.dispatchEvent(new CustomEvent('${s}', {
+      detail: index
+    }));
+  }\nrender()`);
+ 
+  textarea.value = str;
+}
 ///////////////////////////////
 
 document.querySelectorAll('[bind]').forEach(element => {
@@ -720,6 +744,7 @@ document.addEventListener('keydown', async evt => {
         insertSnippet();
         break;
 
+
     }
   } else if (evt.key === ' ' || evt.keyCode == 229) {
 
@@ -782,6 +807,12 @@ document.addEventListener('keydown', async evt => {
     evt.preventDefault();
   } else if (evt.key === 'F7') {
     returnToParentDirectory();
+    evt.preventDefault();
+  } else if (evt.key === "F4") {
+    insertLitHandler();
+    evt.preventDefault();
+  } else if (evt.key === "F5") {
+    insertLitProperty();
     evt.preventDefault();
   }
 })

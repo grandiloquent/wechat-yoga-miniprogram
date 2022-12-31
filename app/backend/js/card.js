@@ -15,8 +15,8 @@ async function render() {
     obj = await loadData();
     titleInput.value = obj.title;
   } catch (error) {
-console.log(error); 
-}
+    console.log(error);
+  }
 }
 render();
 
@@ -50,5 +50,13 @@ async function onSubmitBar(evt) {
 }
 
 function onCardTypeTap(evt) {
+  customActionSheet.removeAttribute('style');
+}
+async function onClose(evt) {
   console.log(evt);
 }
+
+function onItem(evt) {
+  console.log(evt);
+}
+customActionSheet.data = ["期卡", "次卡"]

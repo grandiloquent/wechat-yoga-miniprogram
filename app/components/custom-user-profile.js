@@ -37,33 +37,51 @@ export class CustomUserProfile extends LitElement {
   margin-top: -15%;
   min-width: 48px;
   width: 25%;
-position:relative;
-}.avatar>img{
-position: absolute;
-top: 0;
-left: 0;
-background:#fff;
-width:100%;
-height:100%;
-border-radius:50%;
-box-shadow:rgb(0 0 0 / 3%) 0px 0px 2px inset;
+  position: relative;
 }
-.button{
-padding:0 16px;
-margin-bottom:12px;
-border:1px solid rgb(207, 217, 222);
-font-size:15px;
-line-height:20px;
-min-height:36px;
-min-width:36px;
-font-weight:700;
-border-radius:999px;
-display:flex;align-items: center;justify-content: center;flex-direction: column; 
+
+.avatar>img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: rgb(0 0 0 / 3%) 0px 0px 2px inset;
 }
-.info{
-margin:4px 0 12px;
+
+.button {
+  padding: 0 16px;
+  margin-bottom: 12px;
+  border: 1px solid rgb(207, 217, 222);
+  font-size: 15px;
+  line-height: 20px;
+  min-height: 36px;
+  min-width: 36px;
+  font-weight: 700;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
-`;
+
+.info {
+  margin: 4px 0 12px;
+}
+
+.nick-name {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: rgb(15, 20, 25);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin-bottom: 12px;
+}`;
   constructor() {
     super();
     this.data = [];
@@ -82,10 +100,13 @@ margin:4px 0 12px;
       <div style="padding-bottom:100%"></div><img style="" src="https://pbs.twimg.com/profile_images/1608660876588126211/p07qcxpF_200x200.jpg">
     </div>
     <div class="button">编辑</div>
-  </div> 
+  </div>
+  <div class="info">
+    <div class="nick-name">nick_name</div>
+  </div>
+<div class="subtitle">
 </div>
-<div class="info"  >
-</div> `;
+</div>`;
   }
   connectedCallback() {
     super.connectedCallback();

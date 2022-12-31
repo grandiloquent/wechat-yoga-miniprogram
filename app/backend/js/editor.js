@@ -580,7 +580,8 @@ async function insertSnippet() {
       method: "POST",
       body: JSON.stringify({
         key: substringBefore(strings, "\n"),
-        value: substringAfter(strings, "\n")
+        value: substringAfter(strings, "\n"),
+        language: 'javascript'
       })
     });
     await response.text();
@@ -609,7 +610,7 @@ function insertLitHandler() {
       detail: index
     }));
   }\nrender()`);
- 
+
   textarea.value = str;
 }
 ///////////////////////////////
@@ -752,7 +753,7 @@ document.addEventListener('keydown', async evt => {
     let end = start;
     if (start > -1)
       start--;
-    while (start > -1 && /[a-zA-Z0-9]+/.test(textarea.value[start])) {
+    while (start > -1 && /[a-zA-Z0-9-]+/.test(textarea.value[start])) {
       start--;
     }
     start++;

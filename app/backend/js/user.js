@@ -2,7 +2,7 @@
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 const id = new URL(document.URL).searchParams.get('id');
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/?id=${id}`, {
+  const response = await fetch(`${baseUri}/v1/admin/user?id=${id}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }
@@ -14,7 +14,7 @@ async function render() {
   let obj;
   try {
     obj = await loadData();
-    nameInput.value = obj.name;
+    customUserProfile.data = obj;
   } catch (error) {}
 }
 render();

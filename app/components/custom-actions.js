@@ -10,45 +10,7 @@ export class CustomActions extends LitElement {
       state: true
     },
   };
-  static styles = css`
-.item-name {
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 20px;
-  margin: 12px 4px 0;
-  color: #3c4043;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  vertical-align: top;
-  white-space: normal;
-}
-
-.item-image {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #dadce0;
-  border-radius: 999rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  fill: currentColor;
-  color: #70757a;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.wrapper {
-  margin: 16px 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  row-gap: 16px;
-}`;
+  static styles = css`.item-name{font-size:14px;font-weight:500;line-height:20px;margin:12px 4px 0;color:#3c4043;text-align:center;overflow:hidden;text-overflow:ellipsis;vertical-align:top;white-space:normal;}.item-image{width:40px;height:40px;border:1px solid #dadce0;border-radius:999rem;display:flex;align-items:center;justify-content:center;fill:currentColor;color:#70757a;}.item{display:flex;align-items:center;justify-content:center;flex-direction:column;}.wrapper{margin:16px 20px;display:grid;grid-template-columns:repeat(5,1fr);row-gap:16px;cursor:pointer;}`;
 
   constructor() {
     super();

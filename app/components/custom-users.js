@@ -15,13 +15,20 @@ padding:0 16px;
     super();
   }
 
+  _tap(evt) {
+    evt.stopPropagation();
+
+    const index = evt.currentTarget.dataset.index;
+    console.log(evt);
+    window.location = `./user?id=${index}`;
+  }
   render() {
 
     return html`
 <div class="wrapper">
 ${this.data .map((element,index)=>{
 element.timeago=timeAgo(element.lasted*1000)
-return html`<custom-user-item .data="${element}"></custom-user-item>`;
+return html`<custom-user-item .data="${element}" data-index=${element.id} @click=${this._tap}></custom-user-item>`;
 }) }
 </div>
 `;

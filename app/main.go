@@ -575,6 +575,18 @@ func main() {
 			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
 		}
 	}
+	handlers["/v1/admin/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_user($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_user($1)")
+		}
+	}
 
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

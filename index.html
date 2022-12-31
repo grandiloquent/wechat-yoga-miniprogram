@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 
 </head>
 
 <body>
-    <textarea style="width: 300px; height: 300px;">import {
+  <textarea style="width: 300px; height: 300px;">import {
         LitElement,
         html,
         css
@@ -127,75 +127,80 @@
       <custom-date-picker bind @submit=""></custom-date-picker>
                                                -->
                                            */</textarea>
-    <script>
-        function getLine() {
-            let start = textarea.selectionStart;
-            const strings = textarea.value;
+  <script>
+    function getLine() {
+      let start = textarea.selectionStart;
+      const strings = textarea.value;
 
-            if (strings[start] === '\n' && start - 1 > 0) {
-                start--;
-            }
-            while (start > 0 && strings[start] != '\n') {
-                start--;
-            }
+      if (strings[start] === '\n' && start - 1 > 0) {
+        start--;
+      }
+      while (start > 0 && strings[start] != '\n') {
+        start--;
+      }
+      let end = textarea.selectionEnd;
+      while (end - 1 < strings.length && strings[end] != '\n') {
+        end++;
+      }
+      return strings.substring(start, end);
+    }
+    const textarea = document.querySelector('textarea');
+    document.addEventListener('keydown', evt => {
+      if (evt.key === 'F1') {
+        evt.preventDefault();
+        const reg = /(?<=css`)[^`]+(?=`)/;
+        const match = reg.exec(textarea.value);
+        let str = match[0].replaceAll(/[\r\n]+/g, '');
+        str = str.replaceAll(/((?<=[;{}:,])\s+)|(\s+(?=[{]))/g, '');
+        textarea.value = textarea.value.replace(match[0], str);
+      }
+    })
+
+
+    /*
+    let start = textarea.selectionStart;
             let end = textarea.selectionEnd;
-            while (end - 1 < strings.length && strings[end] != '\n') {
+            while (start > 0) {
+                if (/\s/.test(textarea.value[start])) {
+                    let j = 0;
+                    while (start > 0 && /\s/.test(textarea.value[start])) {
+                        if (textarea.value[start] === '\n') {
+                            j++;
+                        }
+                        start--;
+                    }
+                    if (j > 2) {
+                        break;
+                    }
+                }
+                start--;
+            }
+            start++;
+            while (end < textarea.value.length) {
+                if (/\s/.test(textarea.value[end])) {
+                    let j = 0;
+                    while (end < textarea.value.length > 0 && /\s/.test(textarea.value[end])) {
+                        if (textarea.value[end] === '\n') {
+                            j++;
+                        }
+                        end++;
+                    }
+                    if (j > 2) {
+                        break;
+                    }
+                }
                 end++;
             }
-            return strings.substring(start, end);
-        }
-        const textarea = document.querySelector('textarea');
-        document.addEventListener('keydown', evt => {
-            if (evt.key === 'F1') {
-                evt.preventDefault();
-                const reg = /(?<=css`)[^`]+(?=`)/;
-                const match = reg.exec(textarea.value);
-                let str = match[0].replaceAll(/[\r\n]+/g, '');
-                str = str.replaceAll(/((?<=[;{}:,])\s+)|(\s+(?=[{]))/g, '');
-                textarea.value = textarea.value.replace(match[0], str);
-            }
-        })
+            console.log(start,end, textarea.value.substring(start,end))
+    */
 
-
-        /*
-        let start = textarea.selectionStart;
-                let end = textarea.selectionEnd;
-                while (start > 0) {
-                    if (/\s/.test(textarea.value[start])) {
-                        let j = 0;
-                        while (start > 0 && /\s/.test(textarea.value[start])) {
-                            if (textarea.value[start] === '\n') {
-                                j++;
-                            }
-                            start--;
-                        }
-                        if (j > 2) {
-                            break;
-                        }
-                    }
-                    start--;
-                }
-                start++;
-                while (end < textarea.value.length) {
-                    if (/\s/.test(textarea.value[end])) {
-                        let j = 0;
-                        while (end < textarea.value.length > 0 && /\s/.test(textarea.value[end])) {
-                            if (textarea.value[end] === '\n') {
-                                j++;
-                            }
-                            end++;
-                        }
-                        if (j > 2) {
-                            break;
-                        }
-                    }
-                    end++;
-                }
-                console.log(start,end, textarea.value.substring(start,end))
-        */
-
-
-    </script>
+const svg=document.createElementNS('http://www.w3.org/2000/svg','svg')
+  </script>
 </body>
 
 </html>
+
+<div style="width: 24px;height: 24px;fill: currentColor;color: #333;display:flex;align-items: center;justify-content: center;margin-right: 16px;">
+
+</div>
+

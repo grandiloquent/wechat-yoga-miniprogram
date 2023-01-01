@@ -621,7 +621,7 @@ function insertLitHandler() {
     evt.stopPropagation();
     this.style.display = "none";
     const index = evt.currentTarget.dataset.index;
-    this.dispatchEvent(new CustomEvent('${s}', {
+    this.dispatchEvent(new CustomEvent('submit', {
       detail: index
     }));
   }\nrender()`);

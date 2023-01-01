@@ -26,10 +26,8 @@ async function render() {
     customUserProfile.data = obj;
     const now = new Date();
     const dateInSeconds = now.setHours(0, 0, 0, 0) / 1000; // 86400
-    let lessons = await loadLessons(dateInSeconds - 86400 - 365, dateInSeconds + 86400 + 365);
-
-    console.log(lessons);
-    if (!lessons)
+    let lessons = await loadLessons(dateInSeconds, dateInSeconds + 86400);
+    if (lessons)
       customUserLessons.data = lessons;
   } catch (error) {
     console.log(error);
@@ -64,4 +62,45 @@ async function onSubmitBar(evt) {
   } else {
     history.back();
   }
+}
+
+async function onCustomUserLessons(evt) {
+  console.log(evt);
+  const now = new Date();
+  const dateInSeconds = now.setHours(0, 0, 0, 0) / 1000;
+  let start, end;
+  try {
+    switch (evt.detail) {
+      case "0":
+        start = dateInSeconds;
+        end = dateInSeconds + 86400;
+        break;
+      case "1":
+        start = dateInSeconds + 86400;
+        end = dateInSeconds + 86400 * 2;
+        break;
+      case "2":
+        start = dateInSeconds;
+        end = dateInSeconds + 86400 * 14;
+        break;
+      case "3":
+        start = dateInSeconds - 86400 * 30;
+        end = dateInSeconds;
+        break;
+      case "4":
+        start = dateInSeconds - 86400 * 365;
+        end = dateInSeconds;
+        break;
+      case "5":
+        start = 0;
+        end = dateInSeconds;
+        break;
+    }
+    let lessons = await loadLessons(start, end);
+    if (lessons)
+      customUserLessons.data = lessons;
+  } catch (error) {
+    customUserLessons.data = [];
+  }
+
 }

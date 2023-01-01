@@ -9,9 +9,9 @@ export class CustomUserLessons extends LitElement {
   };
   static styles = css`.wrapper {
   max-width: 1024px;
-  margin: auto;
+  margin: -4px auto 0;
   position: relative;
-  padding: 8px 16px 16px 16px;
+  padding: 0 16px 16px 16px;
 }
 
 .item {
@@ -78,7 +78,7 @@ export class CustomUserLessons extends LitElement {
 }`;
   constructor() {
     super();
-    this.data = [""];
+    this.data = [];
   }
   navigate(evt) {
     const index = evt.currentTarget.dataset.index;
@@ -94,14 +94,16 @@ return html`<div class="item" data-index="${index}">
     <div class="left">
       <div class="top">
         <div class="top-left">
+${((element.class_type===1&&'小班')||(element.class_type===2&&'私教')||(element.class_type===4&&'团课'))}
         </div>
         <div class="top-right">
         </div>
       </div>
       <div class="bottom">
+${element.lesson_name}
       </div>
     </div>
-    <img class="right">
+    <img class="right" src="${SETTINGS.cdn}/images/${element.thumbnail}">
   </div>
 </div>`;
 })} 

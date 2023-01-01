@@ -16,17 +16,18 @@ export class CustomUserOptions extends LitElement {
 
     this.data = ["今天", "明天", "近 14 天", "过去 1 月", "过去 1 年", "全部"];
   }
-  navigate(evt) {
+  _item(evt) {
+    evt.stopPropagation();
     const index = evt.currentTarget.dataset.index;
+    this.selectedIndex = parseInt(index);
     this.dispatchEvent(new CustomEvent('submit', {
       detail: index
     }));
   }
-
   render() {
     return html`<div class="wrapper">
 ${this.data .map((element,index)=>{
-return html`<div class="item ${this.selectedIndex===index?'selected':''}" data-index="${index}" >${element}</div>`;
+return html`<div class="item ${this.selectedIndex===index?'selected':''}" data-index="${index}" @click=${this._item }>${element}</div>`;
 })} 
 </div>`;
   }

@@ -1,5 +1,6 @@
 const SETTINGS = {
-  title: '瑜伽约课微信小程序'
+  title: '瑜伽约课微信小程序',
+  cdn: "https://static.lucidu.cn"
 };
 
 document.querySelectorAll('[bind]').forEach(element => {

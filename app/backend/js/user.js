@@ -65,7 +65,6 @@ async function onSubmitBar(evt) {
 }
 
 async function onCustomUserLessons(evt) {
-  console.log(evt);
   const now = new Date();
   const dateInSeconds = now.setHours(0, 0, 0, 0) / 1000;
   let start, end;

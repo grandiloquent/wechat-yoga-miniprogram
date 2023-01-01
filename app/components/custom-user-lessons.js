@@ -89,6 +89,7 @@ export class CustomUserLessons extends LitElement {
   render() {
     return html`<div class="wrapper">
 ${this.data .map((element,index)=>{
+const dateString=new Date(element.date_time*1000);
 return html`<div class="item" data-index="${index}">
   <div class="item-wrapper">
     <div class="left">
@@ -97,6 +98,7 @@ return html`<div class="item" data-index="${index}">
 ${((element.class_type===1&&'小班')||(element.class_type===2&&'私教')||(element.class_type===4&&'团课'))}
         </div>
         <div class="top-right">
+${dateString.getMonth()+1}月${dateString.getDate()}日 ${formatSeconds(element.start_time)}
         </div>
       </div>
       <div class="bottom">
@@ -120,3 +122,16 @@ customElements.define('custom-user-lessons', CustomUserLessons);
 <custom-user-lessons bind @submit=""></custom-user-lessons>
                                          -->
                                      */
+
+function formatSeconds(s) {
+  if (isNaN(s)) return '0:00';
+  if (s < 0) s = -s;
+  const time = {
+    hour: Math.floor(s / 3600) % 24,
+    minute: Math.floor(s / 60) % 60,
+  };
+  return Object.entries(time)
+    .filter((val, index) => index || val[1])
+    .map(val => (val[1] + '').padStart(2, '0'))
+    .join(':');
+}

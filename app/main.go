@@ -24,6 +24,7 @@ import (
 	// 第三方 PostgreSQL 数据库客户端
 	_ "github.com/lib/pq"
 	"github.com/nfnt/resize"
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -55,6 +56,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	c := cron.New()
+	c.AddFunc("0 30 8 * * *", func() {
+		log.Println("执行定时任务")
+
+	})
+	c.Start()
 	/*以请求连接为键的处理器 */
 	handlers := make(map[string]func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte))
 	/*

@@ -12,6 +12,7 @@
   <script src="../components/toast.js"></script>
   <script type="module" src="../components/custom-user-profile.js"></script>
   <script type="module" src="../components/custom-user-options.js"></script>
+  <script type="module" src="../components/custom-user-lessons.js"></script>
 </head>
 
 <body>
@@ -19,7 +20,9 @@
   <custom-header title="用户" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
   <custom-user-profile bind="customUserProfile" @submit=""></custom-user-profile>
+  <div style="height: 8px;"></div>
   <custom-user-options bind="customUserOptions" @submit=""></custom-user-options>
+  <custom-user-lessons bind="customUserLessons" @submit=""></custom-user-lessons>
   <custom-toast bind="toast"></custom-toast>
   <script src="js/shared.js"></script>
   <script src="js/user.js"></script>

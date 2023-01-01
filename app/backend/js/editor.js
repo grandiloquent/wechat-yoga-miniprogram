@@ -519,19 +519,34 @@ async function formatStyleLit(textarea) {
   if (points[0] === 0 && points[1] === 0) {
     points = substring(textarea.value, "<style>", "</style>");
   }
-  let css = textarea.value.substring(points[0], points[1]);
-  let klass = substringAfterLast(css, '}');
-  css = substringBeforeLast(css, '}') + '}'
-  css += `
-  .${klass}{
-  ${strings}
-  }`;
-  const options = { indent_size: 2, space_in_empty_paren: true }
-  css = css_beautify(css, options);
+  let css = textarea.value.substring(points[0], points[1]).trim();
+  if (css) {
+    let klass = substringAfterLast(css, '}');
+    css = substringBeforeLast(css, '}') + '}'
+    css += `
+    .${klass}{
+    ${strings}
+    }`;
+    const options = { indent_size: 2, space_in_empty_paren: true }
+    css = css_beautify(css, options);
+    textarea.setRangeText(`<div class="${klass}">
+  </div>`, textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.setRangeText(css, points[0], points[1], "end");
 
-  textarea.setRangeText(`<div class="${klass}">
-</div>`, textarea.selectionStart, textarea.selectionEnd, 'end');
-  textarea.setRangeText(css, points[0], points[1], "end");
+  } else {
+    let klass = "wrapper";
+    css += `
+    .${klass}{
+    ${strings}
+    }`;
+    const options = { indent_size: 2, space_in_empty_paren: true }
+    css = css_beautify(css, options);
+    textarea.setRangeText(`<div class="${klass}">
+  </div>`, textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.setRangeText(css, points[0], points[1], "end");
+  }
+
+
 
 }
 

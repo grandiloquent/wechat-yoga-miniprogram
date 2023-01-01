@@ -582,6 +582,21 @@ func main() {
 				http.NotFound(w, r)
 				return
 			}
+			action := r.URL.Query().Get("action")
+			if action == "1" {
+				// 待查询课程的起始时间
+				start := getInt("start", w, r)
+				if start == "" {
+					return
+				}
+				// 待查询课程的结束时间
+				end := getInt("end", w, r)
+				if end == "" {
+					return
+				}
+				QueryJSON(w, db, "select * v1_admin_user_lessons($1)", id, start, end)
+				return
+			}
 			QueryJSON(w, db, "select * from v1_admin_user($1)", id)
 		} else if r.Method == "POST" {
 			InsertNumber(db, w, r, "select * from v1_admin_user($1)")

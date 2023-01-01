@@ -594,7 +594,7 @@ func main() {
 				if end == "" {
 					return
 				}
-				QueryJSON(w, db, "select * v1_admin_user_lessons($1)", id, start, end)
+				QueryJSON(w, db, "select * v1_admin_user_lessons($1,$2,$3)", id, start, end)
 				return
 			}
 			QueryJSON(w, db, "select * from v1_admin_user($1)", id)

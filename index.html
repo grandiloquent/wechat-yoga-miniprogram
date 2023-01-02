@@ -194,13 +194,25 @@
             console.log(start,end, textarea.value.substring(start,end))
     */
 
-const svg=document.createElementNS('http://www.w3.org/2000/svg','svg')
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  </script>
+  <script>
+      (() => {
+        function getDatePart() {
+          const d = new Date();
+          const seconds = d.getTime() / 1000 | 0;
+          hoursInSeconds = (seconds - d.getTimezoneOffset() * 60) % (3600 * 24);
+          console.log(seconds - hoursInSeconds);
+        }
+        getDatePart();
+
+      })()
   </script>
 </body>
 
 </html>
 
-<div style="width: 24px;height: 24px;fill: currentColor;color: #333;display:flex;align-items: center;justify-content: center;margin-right: 16px;">
+<div
+  style="width: 24px;height: 24px;fill: currentColor;color: #333;display:flex;align-items: center;justify-content: center;margin-right: 16px;">
 
 </div>
-

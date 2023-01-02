@@ -129,9 +129,14 @@ body {
 .item-title {
   font-size: 14px;
   color: rgb(32, 33, 36);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 16px
 }
 
 .item-subtitle {
   font-size: 12px;
   color: #5f6368;
+  flex-shrink: 0;
 }

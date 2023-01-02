@@ -22,9 +22,10 @@ import (
 	"time"
 
 	// 第三方 PostgreSQL 数据库客户端
+	"yg/cron"
+
 	_ "github.com/lib/pq"
 	"github.com/nfnt/resize"
-	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -56,10 +57,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//bj, _ := time.LoadLocation("Asia/Chongqing")
+	// cron.WithLocation(bj)
 	c := cron.New()
-	c.AddFunc("0 30 8 * * *", func() {
+	// 0 5 10 ? * * *
+	c.AddFunc("22 10 * * *", func() {
+		fmt.Printf("----------")
 		log.Println("执行定时任务")
-
 	})
 	c.Start()
 	/*以请求连接为键的处理器 */

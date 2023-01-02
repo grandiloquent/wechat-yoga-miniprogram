@@ -614,6 +614,56 @@ func main() {
 		}
 	}
 
+	handlers["/v1/sql"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		q := r.URL.Query().Get("q")
+		if len(q) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+		CrossOrigin(w)
+		// 如果请求头包含敏感信息浏览器会发送请求预检
+		if r.Method == "OPTIONS" {
+			return
+		}
+
+		// 验证权限
+		// secret 是用于计算Hash的长度为32的字节数组
+		if !validToken(db, w, r, secret) {
+			return
+		}
+		rows, err := db.Query(q)
+		if CheckError(w, err) {
+			return
+		}
+
+		arrayResult := make([][]interface{}, 0)
+		columns, _ := rows.Columns()
+		colTypes, _ := rows.ColumnTypes()
+		colCount := len(columns)
+
+		for rows.Next() {
+			rowTemplate := make([]interface{}, colCount)
+			rowValues := make([]interface{}, colCount)
+
+			for i := range colTypes {
+				rowTemplate[i] = &rowValues[i]
+			}
+			err = rows.Scan(rowTemplate...)
+			if CheckError(w, err) {
+				return
+			}
+			arrayResult = append(arrayResult, rowValues)
+		}
+
+		var buf []byte
+		buf, err = json.Marshal(arrayResult)
+		if CheckError(w, err) {
+			return
+		}
+		w.Write(buf)
+
+	}
+
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8081", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/v1/admin/") {

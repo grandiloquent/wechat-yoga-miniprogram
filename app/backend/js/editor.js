@@ -628,6 +628,72 @@ function insertLitHandler() {
 
   textarea.value = str;
 }
+
+async function executeSQL() {
+  let strings;
+  if (typeof NativeAndroid !== 'undefined') {
+    strings = NativeAndroid.readText()
+  } else {
+    strings = await navigator.clipboard.readText()
+  }
+  const response = await fetch(`${window.location.protocol}//lucidu.cn/v1/sql?q=${encodeURIComponent(strings)}`, {
+    headers: {
+      "Authorization": window.localStorage.getItem("Authorization")
+    }
+  })
+
+  const json = await response.json();
+  let s;
+  if (json.length === 1 && json[0].length === 1 && (json[0] + '').endsWith('=')) {
+    s = atob(json[0][0])
+  }
+  else {
+    s = JSON.stringify(json, '', '\t');
+  }
+  textarea.setRangeText(s,
+    textarea.selectionStart,
+    textarea.selectionEnd,
+    'end')
+}
+async function evalCode() {
+  let strings;
+  if (typeof NativeAndroid !== 'undefined') {
+    strings = NativeAndroid.readText()
+  } else {
+    strings = await navigator.clipboard.readText()
+  }
+
+  let s = eval(strings);
+
+  textarea.setRangeText(s,
+    textarea.selectionStart,
+    textarea.selectionEnd,
+    'end')
+};
+async function translateChinese() {
+  let array1 = getLine();
+  textarea.setRangeText(`\n\n${await translate(array1[0], 'zh')
+    }
+          `, array1[1], array1[2], 'end');
+}
+async function formatCode() {
+  const s = getSelectedString(textarea).trim();
+  if (s) {
+    textarea.setRangeText(`\`${s}\``, textarea.selectionStart, textarea.selectionEnd, 'end');
+  } else {
+    let strings;
+    if (typeof NativeAndroid !== 'undefined') {
+      strings = NativeAndroid.readText()
+    } else {
+      strings = await navigator.clipboard.readText()
+    }
+    textarea.setRangeText(`
+\`\`\`pgsql
+${strings}
+\`\`\`
+`, textarea.selectionStart, textarea.selectionEnd, 'end');
+  }
+}
 ///////////////////////////////
 
 document.querySelectorAll('[bind]').forEach(element => {
@@ -642,10 +708,10 @@ document.querySelectorAll('[bind]').forEach(element => {
   });
 })
 customBottomBar.data = [{
-  path: `<path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z"></path>
-`,
-  title: "中文",
-  href: "chinese"
+  path: `<path d="M14.578 16.594l4.641-4.594-4.641-4.594 1.406-1.406 6 6-6 6zM9.422 16.594l-1.406 1.406-6-6 6-6 1.406 1.406-4.641 4.594z"></path>
+  `,
+  title: "代码",
+  href: "code"
 }, {
   path: `<path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z"></path>
 `,
@@ -673,11 +739,8 @@ async function navigate(evt) {
         }
           `, array[1], array[2], 'end');
       break;
-    case 'chinese':
-      let array1 = getLine();
-      textarea.setRangeText(`\n\n${await translate(array1[0], 'zh')
-        }
-          `, array1[1], array1[2], 'end');
+    case 'code':
+      formatCode();
       break;
     case 'save':
       await saveData();
@@ -687,7 +750,7 @@ async function navigate(evt) {
       break;
     case 'menu':
       const customDialogActions = document.createElement('custom-dialog-actions');
-      customDialogActions.addEventListener('submit', evt => {
+      customDialogActions.addEventListener('submit',async evt => {
         switch (evt.detail) {
           case "0":
             customDialogActions.remove();
@@ -716,6 +779,14 @@ async function navigate(evt) {
           case "6":
             customDialogActions.remove();
             insertSnippet();
+            break;
+          case "7":
+            customDialogActions.remove();
+            executeSQL();
+            break;
+          case "8":
+            customDialogActions.remove();
+            await translateChinese();
             break;
         }
       });
@@ -839,5 +910,13 @@ document.addEventListener('keydown', async evt => {
   } else if (evt.key === "F5") {
     insertLitProperty();
     evt.preventDefault();
+  } else if (evt.key === "F8") {
+    executeSQL();
+    evt.preventDefault();
+  } else if (evt.key === "F9") {
+    evalCode();
+    evt.preventDefault();
   }
+
+
 })

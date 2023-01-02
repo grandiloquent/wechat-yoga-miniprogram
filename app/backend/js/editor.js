@@ -726,6 +726,8 @@ async function navigate(evt) {
 const id = new URL(document.URL).searchParams.get('id') || 0;
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 render();
+const path = new URL(document.URL).searchParams.get('path');
+
 document.addEventListener('keydown', async evt => {
   if (evt.ctrlKey) {
     switch (evt.key) {
@@ -758,12 +760,19 @@ document.addEventListener('keydown', async evt => {
         break;
       case "i":
         insertSnippet();
+        evt.preventDefault();
+        break;
+      case "p":
+        pasteCode();
+        evt.preventDefault();
         break;
 
 
     }
   } else if (evt.key === ' ' || evt.keyCode == 229) {
-
+    if (!path) {
+      return;
+    }
     let start = textarea.selectionStart;
     let end = start;
     if (start > -1)

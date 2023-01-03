@@ -53,10 +53,10 @@ export class CustomDatePicker extends LitElement {
     this.selectedDate = this.data[0].getTime();
   }
   close() {
-    this.remove();
+    this.style.display = "none";
   }
-  submit() {
-    this.remove();
+  _submit() {
+    this.style.display = "none";
     this.dispatchEvent(new CustomEvent('submit', {
       detail: this.selectedDate
     }));

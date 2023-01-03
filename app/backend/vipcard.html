@@ -13,6 +13,8 @@
   <script type="module" src="../components/custom-submit-bar.js"></script>
   <script src="../components/toast.js"></script>
   <script type="module" src="../components/custom-date-picker.js"></script>
+  <script type="module" src="../components/custom-action-sheet.js"></script>
+
 </head>
 
 <body>
@@ -20,9 +22,14 @@
   <custom-header title="会员卡" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
 
-  <custom-date-picker bind="customDatePicker" @submit="" style="display:none" ></custom-date-picker>
-  <custom-field bind="nameInput" @submit="onNameInput" label="课程名称" placeholder="请输入课程名称"></custom-field>
+  <custom-date-picker bind="startDateDatePicker" @submit="onStartDateDatePicker" style="display:none"></custom-date-picker>
+
+  <custom-field bind="userInput" label="会员" disabled="true"></custom-field>
+
+  <custom-field bind="cardIdInput" @tap="onCardIdInput" label="会员卡" placeholder="请选择会员卡" disabled="true"></custom-field>
+  <custom-field bind="startDateInput" @tap="onStartDateInput" label="生效日期" placeholder="请选择生效日期" disabled="true"></custom-field>
   <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-action-sheet bind="cardIdActionSheet" @item="onCardIdActionSheet" style="display:none"></custom-action-sheet>
   <custom-toast bind="toast"></custom-toast>
   <script src="js/shared.js"></script>
   <script src="js/vipcard.js"></script>

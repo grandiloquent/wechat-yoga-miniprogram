@@ -80,6 +80,23 @@ func main() {
 	handlers["/favicon.ico"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		http.NotFound(w, r)
 	}
+	handlers["/v1/admin/card"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			action := r.URL.Query().Get("action")
+			if action == "1" {
+				QueryJSON(w, db, "select * from v1_admin_cards()")
+				return
+			}
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_card($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
+		}
+	}
 	/*
 	   管理员更新已排课课程
 	*/
@@ -136,7 +153,6 @@ func main() {
 		if end == "" {
 			return
 		}
-
 		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
 	}
 	/*
@@ -189,6 +205,33 @@ func main() {
 	}
 	handlers["/v1/admin/teachers"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_teachers()")
+	}
+	handlers["/v1/admin/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			action := r.URL.Query().Get("action")
+			if action == "1" {
+				// 待查询课程的起始时间
+				start := getInt("start", w, r)
+				if start == "" {
+					return
+				}
+				// 待查询课程的结束时间
+				end := getInt("end", w, r)
+				if end == "" {
+					return
+				}
+				QueryJSON(w, db, "select * from v1_admin_user_lessons($1,$2,$3)", id, start, end)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_user($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_user($1)")
+		}
 	}
 	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_admin_users()")
@@ -477,6 +520,69 @@ func main() {
 	handlers["/v1/slideshow/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_slideshow_home()")
 	}
+	handlers["/v1/snippet"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		CrossOrigin(w)
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_snippet($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from update_snippet($1)")
+		} else if r.Method == "PUT" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryInt(w, db, "select * from v1_snippet_hit($1)", id)
+		}
+	}
+	handlers["/v1/sql"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		q := r.URL.Query().Get("q")
+		if len(q) == 0 {
+			http.NotFound(w, r)
+			return
+		}
+		CrossOrigin(w)
+		// 如果请求头包含敏感信息浏览器会发送请求预检
+		if r.Method == "OPTIONS" {
+			return
+		}
+		// 验证权限
+		// secret 是用于计算Hash的长度为32的字节数组
+		if !validToken(db, w, r, secret) {
+			return
+		}
+		rows, err := db.Query(q)
+		if CheckError(w, err) {
+			return
+		}
+		arrayResult := make([][]interface{}, 0)
+		columns, _ := rows.Columns()
+		colTypes, _ := rows.ColumnTypes()
+		colCount := len(columns)
+		for rows.Next() {
+			rowTemplate := make([]interface{}, colCount)
+			rowValues := make([]interface{}, colCount)
+			for i := range colTypes {
+				rowTemplate[i] = &rowValues[i]
+			}
+			err = rows.Scan(rowTemplate...)
+			if CheckError(w, err) {
+				return
+			}
+			arrayResult = append(arrayResult, rowValues)
+		}
+		var buf []byte
+		buf, err = json.Marshal(arrayResult)
+		if CheckError(w, err) {
+			return
+		}
+		w.Write(buf)
+	}
 	handlers["/v1/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
@@ -547,121 +653,6 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_user_user($1)", openId)
-	}
-	handlers["/v1/snippet"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_snippet($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from update_snippet($1)")
-		} else if r.Method == "PUT" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryInt(w, db, "select * from v1_snippet_hit($1)", id)
-		}
-	}
-	handlers["/v1/admin/card"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			action := r.URL.Query().Get("action")
-			if action == "1" {
-				QueryJSON(w, db, "select * from v1_admin_cards()")
-				return
-			}
-			id := r.URL.Query().Get("id")
-
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_card($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
-		}
-	}
-	handlers["/v1/admin/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			action := r.URL.Query().Get("action")
-			if action == "1" {
-				// 待查询课程的起始时间
-				start := getInt("start", w, r)
-				if start == "" {
-					return
-				}
-				// 待查询课程的结束时间
-				end := getInt("end", w, r)
-				if end == "" {
-					return
-				}
-				QueryJSON(w, db, "select * from v1_admin_user_lessons($1,$2,$3)", id, start, end)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_user($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_user($1)")
-		}
-	}
-
-	handlers["/v1/sql"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		q := r.URL.Query().Get("q")
-		if len(q) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		CrossOrigin(w)
-		// 如果请求头包含敏感信息浏览器会发送请求预检
-		if r.Method == "OPTIONS" {
-			return
-		}
-
-		// 验证权限
-		// secret 是用于计算Hash的长度为32的字节数组
-		if !validToken(db, w, r, secret) {
-			return
-		}
-		rows, err := db.Query(q)
-		if CheckError(w, err) {
-			return
-		}
-
-		arrayResult := make([][]interface{}, 0)
-		columns, _ := rows.Columns()
-		colTypes, _ := rows.ColumnTypes()
-		colCount := len(columns)
-
-		for rows.Next() {
-			rowTemplate := make([]interface{}, colCount)
-			rowValues := make([]interface{}, colCount)
-
-			for i := range colTypes {
-				rowTemplate[i] = &rowValues[i]
-			}
-			err = rows.Scan(rowTemplate...)
-			if CheckError(w, err) {
-				return
-			}
-			arrayResult = append(arrayResult, rowValues)
-		}
-
-		var buf []byte
-		buf, err = json.Marshal(arrayResult)
-		if CheckError(w, err) {
-			return
-		}
-		w.Write(buf)
-
 	}
 
 	// 启动服务器并侦听 8081 端口

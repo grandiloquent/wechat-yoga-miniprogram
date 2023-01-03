@@ -14,13 +14,23 @@ async function render() {
   try {
     obj = await loadData();
     customLesson.data = obj;
+    customLesson.expired = !checkIfLessonAvailable(obj);
   } catch (error) {}
 }
 render();
 
 
-async function onCustomLessonSubmit(evt){
+async function onCustomLessonSubmit(evt) {
   switch (evt.detail) {
+    case 1: {
+      customDialog.message = "您确定要停课吗？"
+      customDialog.removeAttribute('style');
+      break;
+    }
+    case 2: {
+      window.location = `./updateLesson?id=${id}&returnUrl=${encodeURIComponent(`/lesson?id=${id}`)}`
+      break;
+    }
     case 3: {
       const returnUrl = new URL(document.URL).searchParams.get('returnUrl');
       if (returnUrl) {
@@ -56,4 +66,16 @@ async function onSubmitBar(evt) {
   } else {
     history.back();
   }
+}
+ 
+function checkIfLessonAvailable(lesson) {
+  if (lesson.hidden && lesson.hidden === 1) {
+    return false;
+  }
+  const d = new Date();
+  const seconds = new Date(d).setHours(0, 0, 0, 0) / 1000;
+  if (seconds > lesson.date_time || ((d.getHours() * 3600 +d.getMinutes() * 60) > lesson.start_time - 3600)) {
+    return false;
+  }
+  return true;
 }

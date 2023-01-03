@@ -99,7 +99,7 @@ Page({
       const item = evt.detail;
       if (item.mode & 6) {
         await this.unbook(item)
-      } else if (item.mode & 8) {
+      } else if (((item.mode & 8)||(item.mode & 128))) {
         await this.book(item)
       }
     },

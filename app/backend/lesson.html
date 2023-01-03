@@ -11,6 +11,9 @@
   <script type="module" src="../components/custom-drawer.js"></script>
   <script src="../components/toast.js"></script>
   <script type="module" src="../components/custom-lesson.js"></script>
+  <script type="module" src="../components/custom-dialog.js"></script>
+
+
 </head>
 
 <body>
@@ -20,6 +23,7 @@
 
   <custom-lesson bind="customLesson" @submit="onCustomLessonSubmit"></custom-lesson>
   <custom-toast bind="toast"></custom-toast>
+  <custom-dialog bind="customDialog" @submit="" title="询问" style="display: none;"></custom-dialog>
   <script src="js/shared.js"></script>
   <script src="js/lesson.js"></script>
 </body>

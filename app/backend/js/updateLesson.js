@@ -115,14 +115,24 @@ async function onSubmitBar(evt) {
       }
       const obj = await response.text();
       toast.setAttribute('message', '成功');
+      back();
     } catch (error) {
       console.log(error);
       toast.setAttribute('message', '错误');
     }
 
   } else {
-    history.back();
+    back()
   }
 }
 render();
 // 
+
+function back() {
+  const returnUrl = new URL(document.URL).searchParams.get('returnUrl');
+  if (returnUrl) {
+    window.location = returnUrl;
+  } else {
+    history.back();
+  }
+}

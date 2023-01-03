@@ -18,10 +18,10 @@ Component({
     async attached() {
 
     },
-    detached: function() {},
+    detached: function () { },
   },
   observers: {
-    'item': function(item) {
+    'item': function (item) {
       this.setData({
         lesson: process(item)
       })
@@ -45,19 +45,21 @@ Component({
 
 
 function process(item) {
-  item.time = `${utils. formatDuration(item.start_time)}-${utils.formatDuration(item.end_time)}`;
+  item.time = `${utils.formatDuration(item.start_time)}-${utils.formatDuration(item.end_time)}`;
   if ((item.mode & 1)) {
     item.label = "已完成"
   } else if ((item.mode & 2)) {
     item.label = "取消预约"
-  }else if ((item.mode & 8)) {
+  } else if ((item.mode & 8)) {
     item.label = "预约"
-  }else if ((item.mode & 16)) {
+  } else if ((item.mode & 16)) {
     item.label = "准备上课"
-  }else if ((item.mode & 32)) {
+  } else if ((item.mode & 32)) {
     item.label = "正在上课"
-  }else if ((item.mode & 128)) {
-    item.label = "已满额"
+  } else if ((item.mode & 128)) {
+    item.label = "候补"
+  } else if ((item.mode & 256)) {
+    item.label = "已取消"
   }
 
   return item;

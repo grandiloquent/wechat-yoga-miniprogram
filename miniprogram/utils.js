@@ -405,7 +405,8 @@ function request(url, arg) {
 }
 
 function setLessonStatus(lessons, throttleHours, minutesLimit) {
-  // 128 已满额
+  // 256 已取消
+  // 128 候补
   // 64 已签到
   // 32 正在上课
   // 16 准备开课
@@ -421,11 +422,12 @@ function setLessonStatus(lessons, throttleHours, minutesLimit) {
     // if (i === 1) {
     //   const nn = new Date();
     //   nn.setHours(0, 0, 0, 0);
-    //   lessons[i].dateTime = nn.getTime() / 1000;
-    //   lessons[i].startTime = parseDuration("14:00")
-    //   lessons[i].endTime = lessons[i].startTime + 3600
-    //   lessons[i].peoples = 6;
+    //   lessons[i].date_time = nn.getTime() / 1000;
+    //   lessons[i].start_time = parseDuration("18:00")
+    //   lessons[i].end_time = lessons[i].start_time + 3600
+    //   lessons[i].peoples = 1;
     //   lessons[i].reservationId = 1;
+    //   lessons[i].count = 1;
     // }
     if (checkIfLessonExpired(todayTimestamp, lessons[i], currentSeconds)) {
       continue;
@@ -437,11 +439,21 @@ function setLessonStatus(lessons, throttleHours, minutesLimit) {
       continue;
     }
     if (todayTimestamp === lessons[i].date_time) {
+
+      if (((lessons[i].start_time > currentSeconds && lessons[i].start_time - currentSeconds < minutesLimit * 60)
+      ) && lessons[i].hidden === -1) {
+        lessons[i].mode = 256;
+        continue;
+      }
       if (lessons[i].start_time > currentSeconds && lessons[i].start_time - currentSeconds < minutesLimit * 60) {
         lessons[i].mode = 16;
         continue;
       }
       if (currentSeconds >= lessons[i].start_time && currentSeconds <= lessons[i].end_time) {
+        if (lessons[i].hidden === -1) {
+          lessons[i].mode = 1;
+          continue;
+        }
         lessons[i].mode = 32;
         continue;
       }
@@ -449,6 +461,11 @@ function setLessonStatus(lessons, throttleHours, minutesLimit) {
     lessons[i].mode |= 8;
   }
 }
+function parseDuration(string) {
+  const match = /(\d+):(\d+)/.exec(string);
+  return parseInt(match[1]) * 60 * 60 + parseInt(match[2]) * 60
+}
+
 // 简化显示真机调试信息
 async function showMessageModal(content) {
   return new Promise((resolve, reject) => {

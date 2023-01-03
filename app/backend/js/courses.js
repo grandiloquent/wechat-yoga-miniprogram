@@ -49,7 +49,7 @@ render();
 async function navigate(evt) {
   switch (evt.detail) {
     case 'course':
-location="./course"
+      location = "./course"
       break;
   }
 }

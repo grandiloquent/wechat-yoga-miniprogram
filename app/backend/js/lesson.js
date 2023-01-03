@@ -18,8 +18,19 @@ async function render() {
 }
 render();
 
-function onNameInput(evt) {
-  console.log(evt.detail);
+
+async function onCustomLessonSubmit(evt){
+  switch (evt.detail) {
+    case 3: {
+      const returnUrl = new URL(document.URL).searchParams.get('returnUrl');
+      if (returnUrl) {
+        window.location = returnUrl;
+      } else {
+        history.back();
+      }
+      break;
+    }
+  }
 }
 async function onSubmitBar(evt) {
   if (evt.detail === "1") {

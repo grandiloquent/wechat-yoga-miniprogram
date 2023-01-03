@@ -382,7 +382,6 @@ async function translationFunction(textarea) {
 
 
 function returnToParentDirectory() {
-  const path = new URL(document.URL).searchParams.get('path');
   const uri = `/?path=${encodeURIComponent(substringBeforeLast(path, "/"))}&isDir=1`;
   console.log(uri)
   window.location.href = uri
@@ -450,7 +449,6 @@ function substringBeforeLast(string, delimiter, missingDelimiterValue) {
 function jumpPage(textarea) {
   const line = getLine(textarea);
   const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);
-  const path = new URL(window.location).searchParams.get("path");
   if (!value) {
     window.open('http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), "."), "_blank");
     return
@@ -694,6 +692,18 @@ ${strings}
 `, textarea.selectionStart, textarea.selectionEnd, 'end');
   }
 }
+
+function insertComment(){
+  let str;
+  if (/\.(?:html|xml|wxml)$/.test(path)) {
+      str = `<!--\n\n-->`;
+  } else if (/\.(?:sql)$/.test(path)) {
+      str = `-- `;
+  } else {
+      str = `/*\n\n*/`;
+  }
+  textarea.setRangeText(str, textarea.selectionStart, textarea.selectionEnd,"end");
+}
 ///////////////////////////////
 
 document.querySelectorAll('[bind]').forEach(element => {
@@ -707,32 +717,41 @@ document.querySelectorAll('[bind]').forEach(element => {
     });
   });
 })
-customBottomBar.data = [{
-  path: `<path d="M14.578 16.594l4.641-4.594-4.641-4.594 1.406-1.406 6 6-6 6zM9.422 16.594l-1.406 1.406-6-6 6-6 1.406 1.406-4.641 4.594z"></path>
+customBottomBar.data = [
+  {
+    path: `<path d="M17.016 11.016v-2.016h-4.031v-3.984h-1.969v3.984h-4.031v2.016h4.031v3.984h1.969v-3.984h4.031zM21.984 3.984v18l-3.984-3.984h-14.016q-0.797 0-1.383-0.609t-0.586-1.406v-12q0-0.797 0.586-1.383t1.383-0.586h16.031q0.797 0 1.383 0.586t0.586 1.383z"></path>
+    `,
+    title: "评论",
+    href: "comment"
+  },
+  {
+    path: `<path d="M14.578 16.594l4.641-4.594-4.641-4.594 1.406-1.406 6 6-6 6zM9.422 16.594l-1.406 1.406-6-6 6-6 1.406 1.406-4.641 4.594z"></path>
   `,
-  title: "代码",
-  href: "code"
-}, {
-  path: `<path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z"></path>
+    title: "代码",
+    href: "code"
+  }, {
+    path: `<path d="M21.516 20.484v-13.969q0-0.422-0.305-0.727t-0.727-0.305h-9.047l1.313 3.797h1.453v-1.266h1.266v1.266h4.547v1.313h-1.922q-0.703 2.344-2.391 4.219l3.281 3.281-0.938 0.891-3.094-3.094 1.031 3.094-1.969 2.531h6.469q0.422 0 0.727-0.305t0.305-0.727zM13.172 10.594l0.797 2.344 0.844 1.125q1.453-1.594 2.063-3.469h-3.703zM6.984 15.984q2.156 0 3.492-1.359t1.336-3.516q0-0.047-0.141-1.031h-4.688v1.734h2.953q-0.094 0.891-0.844 1.641t-2.109 0.75q-1.313 0-2.227-0.938t-0.914-2.25q0-1.359 0.914-2.297t2.227-0.938q1.266 0 2.063 0.797l1.313-1.266q-1.453-1.313-3.375-1.313-2.063 0-3.516 1.477t-1.453 3.539 1.453 3.516 3.516 1.453zM21 3.984q0.797 0 1.406 0.609t0.609 1.406v15q0 0.797-0.609 1.406t-1.406 0.609h-9l-0.984-3h-8.016q-0.797 0-1.406-0.609t-0.609-1.406v-15q0-0.797 0.609-1.406t1.406-0.609h6.984l1.031 3h9.984z"></path>
 `,
-  title: "英文",
-  href: "english"
-}, {
-  path: `<path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>  `,
-  title: "删除",
-  href: "removeLine"
-}, {
-  path: `<path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z"></path>`,
-  title: "菜单",
-  href: "menu"
-}, {
-  path: `<path d="M15 9v-3.984h-9.984v3.984h9.984zM12 18.984q1.219 0 2.109-0.891t0.891-2.109-0.891-2.109-2.109-0.891-2.109 0.891-0.891 2.109 0.891 2.109 2.109 0.891zM17.016 3l3.984 3.984v12q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h12z"></path>
+    title: "英文",
+    href: "english"
+  }, {
+    path: `<path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>  `,
+    title: "删除",
+    href: "removeLine"
+  }, {
+    path: `<path d="M3 6h18v2.016h-18v-2.016zM3 12.984v-1.969h18v1.969h-18zM3 18v-2.016h18v2.016h-18z"></path>`,
+    title: "菜单",
+    href: "menu"
+  }, {
+    path: `<path d="M15 9v-3.984h-9.984v3.984h9.984zM12 18.984q1.219 0 2.109-0.891t0.891-2.109-0.891-2.109-2.109-0.891-2.109 0.891-0.891 2.109 0.891 2.109 2.109 0.891zM17.016 3l3.984 3.984v12q0 0.797-0.609 1.406t-1.406 0.609h-13.969q-0.844 0-1.43-0.586t-0.586-1.43v-13.969q0-0.844 0.586-1.43t1.43-0.586h12z"></path>
 `,
-  title: "保存",
-  href: "save"
-}]
+    title: "保存",
+    href: "save"
+  }]
 async function navigate(evt) {
   switch (evt.detail) {
+    case "comment":
+      break;
     case 'english':
       let array = getLine();
       textarea.setRangeText(`\n\n${await translate(array[0], 'en')
@@ -750,7 +769,7 @@ async function navigate(evt) {
       break;
     case 'menu':
       const customDialogActions = document.createElement('custom-dialog-actions');
-      customDialogActions.addEventListener('submit',async evt => {
+      customDialogActions.addEventListener('submit', async evt => {
         switch (evt.detail) {
           case "0":
             customDialogActions.remove();
@@ -797,7 +816,6 @@ async function navigate(evt) {
 const id = new URL(document.URL).searchParams.get('id') || 0;
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 render();
-const path = new URL(document.URL).searchParams.get('path');
 
 document.addEventListener('keydown', async evt => {
   if (evt.ctrlKey) {

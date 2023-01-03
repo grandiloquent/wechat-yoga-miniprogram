@@ -603,7 +603,7 @@ async function insertSnippet() {
   }
 }
 function insertLitProperty() {
-  const s = getSelectedString(textarea);
+  const s = getSelectedString(textarea).trim();
   replaceSelectedText(textarea, `\${this.${s}}`)
   let str = textarea.value;
   str = str.replace(`static properties = {`, `static properties = {\n${s}:{},\n`);
@@ -612,7 +612,7 @@ function insertLitProperty() {
 
 }
 function insertLitHandler() {
-  const s = getSelectedString(textarea);
+  const s = getSelectedString(textarea).trim();
   replaceSelectedText(textarea, `@click=\${this._${s}}`)
   let str = textarea.value;
   str = str.replace(`render()`, `_${s}(evt){

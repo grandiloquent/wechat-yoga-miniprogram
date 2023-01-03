@@ -693,16 +693,16 @@ ${strings}
   }
 }
 
-function insertComment(){
+function insertComment() {
   let str;
   if (/\.(?:html|xml|wxml)$/.test(path)) {
-      str = `<!--\n\n-->`;
+    str = `<!--\n\n-->`;
   } else if (/\.(?:sql)$/.test(path)) {
-      str = `-- `;
+    str = `-- `;
   } else {
-      str = `/*\n\n*/`;
+    str = `/*\n\n*/`;
   }
-  textarea.setRangeText(str, textarea.selectionStart, textarea.selectionEnd,"end");
+  textarea.setRangeText(str, textarea.selectionStart, textarea.selectionEnd, "end");
 }
 ///////////////////////////////
 
@@ -901,6 +901,12 @@ document.addEventListener('keydown', async evt => {
       let str = match[0].replaceAll(/[\r\n]+/g, '');
       str = str.replaceAll(/((?<=[;{}:,])\s+)|(\s+(?=[{]))/g, '');
       textarea.value = textarea.value.replace(match[0], str);
+      str = textarea.value;
+      let points = substring(textarea.value, 'html`', 'connectedCallback()');
+      let contents = textarea.value.substring(points[0], points[1]);
+      contents = substringBeforeLast(contents, "`");
+      const options = { indent_size: 2, space_in_empty_paren: true }
+      textarea.value = textarea.value.replace(contents, html_beautify(contents, options));
       return;
     }
     let k, ss;

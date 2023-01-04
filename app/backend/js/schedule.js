@@ -96,6 +96,7 @@ async function onSubmitBar(evt) {
         body: JSON.stringify(data)
       });
       const obj = await response.text();
+      window.location = './lessons';
     } catch (error) {
       console.log(error);
     }

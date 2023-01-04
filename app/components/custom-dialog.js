@@ -27,6 +27,13 @@ export class CustomDialog extends LitElement {
       detail: 1
     }));
   }
+_submit(evt){
+    evt.stopPropagation();
+    this.style.display = "none";
+    this.dispatchEvent(new CustomEvent('submit', {
+      detail: 2
+    }));
+  }
 render() {
     return html`<div class="wrapper">
   <div class="dialog">
@@ -38,7 +45,7 @@ render() {
       <div class="button" @click=${this._close}>
         取消
       </div>
-      <div class="button disabled">
+      <div class="button disabled" @click=${this._submit}>
         确定
       </div>
     </div>

@@ -60,10 +60,38 @@ func main() {
 	//bj, _ := time.LoadLocation("Asia/Chongqing")
 	// cron.WithLocation(bj)
 	c := cron.New()
-	// 0 5 10 ? * * *
-	c.AddFunc("22 10 * * *", func() {
-		fmt.Printf("----------")
-		log.Println("执行定时任务")
+
+	c.AddFunc("0 8 * * *", func() {
+		_, err := db.Exec("select * check_today_lessons()")
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		log.Println("检查今日课程")
+	})
+	c.AddFunc("0 9 * * *", func() {
+		_, err := db.Exec("select * check_vip_card_status()")
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		log.Println("检查会员卡")
+	})
+	c.AddFunc("30 6 * * *", func() {
+		_, err := db.Exec("select * check_today_lessons()")
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		log.Println("检查今日课程")
+	})
+	c.AddFunc("30 7 * * *", func() {
+		_, err := db.Exec("select * check_vip_card_status()")
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		log.Println("检查会员卡")
 	})
 	c.Start()
 	/*以请求连接为键的处理器 */
@@ -118,6 +146,15 @@ func main() {
 		if r.Method == "GET" {
 			id := getId(w, r)
 			if id == "" {
+				return
+			}
+			action := r.URL.Query().Get("action")
+			if action == "1" {
+				QueryInt(w, db, "select * from v1_admin_lesson_update_status($1,$2)", id, 1)
+				return
+			}
+			if action == "2" {
+				QueryInt(w, db, "select * from v1_admin_lesson_update_status($1,$2)", id, 0)
 				return
 			}
 			// 通过调用数据库自定义函数进行查询操作
@@ -653,6 +690,18 @@ func main() {
 			return
 		}
 		QueryJSON(w, db, "select * from v1_user_user($1)", openId)
+	}
+	handlers["/v1/admin/vipcard"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		if r.Method == "GET" {
+			id := r.URL.Query().Get("id")
+			if len(id) == 0 {
+				http.NotFound(w, r)
+				return
+			}
+			QueryJSON(w, db, "select * from v1_admin_vipcard($1)", id)
+		} else if r.Method == "POST" {
+			InsertNumber(db, w, r, "select * from v1_admin_vipcard_update($1)")
+		}
 	}
 
 	// 启动服务器并侦听 8081 端口

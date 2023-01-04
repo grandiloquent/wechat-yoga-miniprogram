@@ -367,19 +367,22 @@ async function removeLines(textarea) {
 
 }
 async function translationFunction(textarea) {
-  const s = getSelectedString(textarea);
+  const points = getLine();
+  const s = points[0];
   try {
     const response = await fetch(`http://kpkpkp.cn/api/trans?q=${encodeURIComponent(s)}&to=en`);
     const obj = await response.json();
     const n = camel(obj.sentences[0].trans);
-    textarea.setRangeText(`${n[0].toLowerCase() + n.slice(1)}`, textarea.selectionStart,
-      textarea.selectionEnd)
+    textarea.setRangeText(`${n[0].toLowerCase() + n.slice(1)}`, points[1], points[2], 'end')
 
   } catch (error) {
     console.log(error);
   }
 }
 
+function camel(string) {
+  return string.replaceAll(/[ _-]([a-zA-Z])/g, m => m[1].toUpperCase());
+}
 
 function returnToParentDirectory() {
   const uri = `/?path=${encodeURIComponent(substringBeforeLast(path, "/"))}&isDir=1`;
@@ -449,12 +452,20 @@ function substringBeforeLast(string, delimiter, missingDelimiterValue) {
 function jumpPage(textarea) {
   const line = getLine(textarea);
   const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);
+  let src;
   if (!value) {
-    window.open('http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), "."), "_blank");
+    if (path.endsWith(".html")) {
+      src = 'http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), ".");
+    } else {
+      src = substringBeforeLast(path, ".");
+      src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(substringBeforeLast(src, "/"), "/")}/${substringAfterLast(src, "/")}.html`)}`;
+    }
+    window.open(src);
     return
   }
-  const src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(path, "/")}/${value[0]}`)}`;
-  window.open(src, '_blank');
+
+  src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(path, "/")}/${value[0]}`)}`;
+  window.open(src);
 }
 
 function substringAfter(string, delimiter, missingDelimiterValue) {
@@ -751,6 +762,7 @@ customBottomBar.data = [
 async function navigate(evt) {
   switch (evt.detail) {
     case "comment":
+      insertComment();
       break;
     case 'english':
       let array = getLine();

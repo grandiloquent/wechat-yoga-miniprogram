@@ -1,5 +1,3 @@
-let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
-const id = new URL(document.URL).searchParams.get('id');
 async function loadData() {
   const response = await fetch(`${baseUri}/v1/admin/lesson?id=${id}`, {
     headers: {
@@ -8,6 +6,7 @@ async function loadData() {
   })
   return response.json();
 }
+
 async function render() {
   if (!id) return;
   let obj;
@@ -15,16 +14,49 @@ async function render() {
     obj = await loadData();
     customLesson.data = obj;
     customLesson.expired = !checkIfLessonAvailable(obj);
+    suspended = checkIfLessonSuspended(obj);
+    customLesson.suspended = suspended;
   } catch (error) {}
 }
-render();
+/*
+hidden =  -1 预约人数不足停课
+hidden = 1 停课
+*/
+async function suspendClasses(action) {
+  try {
+    const response = await fetch(`${baseUri}/v1/admin/lesson?id=${id}&action=${action||1}`, {
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    });
+    if (response.status > 399 || response.status < 200) {
+      throw new Error(response.statusText);
+    }
+    const obj = await response.text();
+    console.log(obj);
+    location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+}
+//------------------------------------------------
 
+let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+const id = new URL(document.URL).searchParams.get('id');
+let suspended;
+
+render();
 
 async function onCustomLessonSubmit(evt) {
   switch (evt.detail) {
     case 1: {
-      customDialog.message = "您确定要停课吗？"
+      customDialog.message = suspended ? "您确定要开课吗？" : "您确定要停课吗？"
       customDialog.removeAttribute('style');
+      customDialog.onsubmit = async evt => {
+        if (evt.detail === 2) {
+          suspendClasses(suspended ? 2 : 1)
+        }
+      }
       break;
     }
     case 2: {
@@ -51,7 +83,11 @@ async function onSubmitBar(evt) {
       data.id = id;
     }
     try {
-      const response = await fetch(`${baseUri}/v1/admin/`, {
+      const response = await fetch(`
+          $ {
+            baseUri
+          }
+          /v1/admin / `, {
         method: 'POST',
         headers: {
           "Authorization": window.localStorage.getItem("Authorization")
@@ -67,14 +103,18 @@ async function onSubmitBar(evt) {
     history.back();
   }
 }
- 
-function checkIfLessonAvailable(lesson) {
+
+function checkIfLessonSuspended(lesson) {
   if (lesson.hidden && lesson.hidden === 1) {
-    return false;
+    return true;
   }
+  return false;
+}
+
+function checkIfLessonAvailable(lesson) {
   const d = new Date();
   const seconds = new Date(d).setHours(0, 0, 0, 0) / 1000;
-  if (seconds > lesson.date_time || ((d.getHours() * 3600 +d.getMinutes() * 60) > lesson.start_time - 3600)) {
+  if (seconds > lesson.date_time || ((d.getHours() * 3600 + d.getMinutes() * 60) > lesson.start_time - 3600)) {
     return false;
   }
   return true;

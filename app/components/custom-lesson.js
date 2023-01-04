@@ -5,6 +5,8 @@ import {
 } from './lit-core.min.js';
 export class CustomLesson extends LitElement {
   static properties = {
+    suspended: {},
+
     expired: {},
 
     path: {},
@@ -132,6 +134,8 @@ color:#909090;
 }`;
   constructor() {
     super();
+    this.suspended = false;
+
     this.expired = false;
 
     this.path = `M12 20.016q1.828 0 3.516-0.984l-9.563-9.563q-0.938 1.594-0.938 3.516 0 2.906 2.039 4.969t4.945 2.063zM3 3.984l17.766 17.766-1.266 1.266-2.531-2.531q-2.344 1.5-4.969 1.5-3.75 0-6.375-2.648t-2.625-6.352q0-1.125 0.445-2.602t1.055-2.367l-2.766-2.766zM11.016 9.422v-1.406h1.969v3.422zM15 0.984v2.016h-6v-2.016h6zM19.031 4.547l1.406 1.406-1.406 1.453q1.969 2.484 1.969 5.578v0.047q0 1.125-0.445 2.578t-1.055 2.344l-1.453-1.453q0.938-1.594 0.938-3.516 0-2.906-2.039-4.945t-4.945-2.039q-1.875 0-3.469 0.938l-1.5-1.453q2.391-1.5 4.969-1.5 1.313 0 2.953 0.586t2.672 1.383z`;
@@ -148,7 +152,7 @@ color:#909090;
     }));
   }
   _lessonUpdate(evt) {
-    if (this.expired) {
+    if (this.expired || this.suspended) {
       return;
     }
     evt.stopPropagation();
@@ -189,13 +193,13 @@ color:#909090;
   </div>
 </div>
 <div class="buttons">
-  <div class="button  ${this.expired?'disabled':''}" @click=${this._lessonStatus}>
+  <div class="button  ${this.expired || this.suspended?'disabled':''}" @click=${this._lessonStatus}>
     <svg width="20" height="20" viewBox="0 0 24 24" focusable="false">
       <path d="${this.path}"></path>
     </svg>
     <div>停课</div>
   </div>
-  <div class="button  ${this.expired?'disabled':''}" @click=${this._lessonUpdate}>
+  <div class="button  ${this.expired || this.suspended?'disabled':''}" @click=${this._lessonUpdate}>
     <svg width="20" height="20" viewBox="0 0 24 24" focusable="false">
       <path d="M20.719 7.031l-1.828 1.828-3.75-3.75 1.828-1.828q0.281-0.281 0.703-0.281t0.703 0.281l2.344 2.344q0.281 0.281 0.281 0.703t-0.281 0.703zM3 17.25l11.063-11.063 3.75 3.75-11.063 11.063h-3.75v-3.75z"></path>
     </svg>

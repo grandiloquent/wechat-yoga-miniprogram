@@ -665,18 +665,14 @@ async function executeSQL() {
     'end')
 }
 async function evalCode() {
-  let strings;
-  if (typeof NativeAndroid !== 'undefined') {
-    strings = NativeAndroid.readText()
-  } else {
-    strings = await navigator.clipboard.readText()
-  }
+  const p = getLine();
+  let strings = p[0];
 
   let s = eval(strings);
 
   textarea.setRangeText(s,
-    textarea.selectionStart,
-    textarea.selectionEnd,
+    p[2],
+    p[2],
     'end')
 };
 async function translateChinese() {
@@ -819,6 +815,10 @@ async function navigate(evt) {
             customDialogActions.remove();
             await translateChinese();
             break;
+          case "9":
+            customDialogActions.remove();
+            evalCode();
+            break;
         }
       });
       document.body.appendChild(customDialogActions);
@@ -828,6 +828,7 @@ async function navigate(evt) {
 const id = new URL(document.URL).searchParams.get('id') || 0;
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 render();
+
 
 document.addEventListener('keydown', async evt => {
   if (evt.ctrlKey) {

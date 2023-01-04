@@ -95,12 +95,16 @@ async function onSubmitBar(evt) {
         },
         body: JSON.stringify(data)
       });
+      if (response.status > 399 || response.status < 200) {
+        throw new Error(response.statusText);
+      }
       const obj = await response.text();
-      window.location = './lessons';
+      toast.setAttribute('message', '成功');
     } catch (error) {
       console.log(error);
+      toast.setAttribute('message', '错误');
     }
-    toast.setAttribute('message', '成功');
+
   } else {
     history.back();
   }

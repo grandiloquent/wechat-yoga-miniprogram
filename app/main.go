@@ -57,10 +57,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+/*
+自动化任务
+*/
 	//bj, _ := time.LoadLocation("Asia/Chongqing")
 	// cron.WithLocation(bj)
 	c := cron.New()
-
+/*
+每天 8 点检查当日的课程
+自动取消约课人数不足3人的课程，将hidden字段设置为 -1
+并且将该课程的预约 fulfill 设置为 -1
+*/
 	c.AddFunc("0 8 * * *", func() {
 		_, err := db.Exec("select * check_today_lessons()")
 		if err != nil {
@@ -69,6 +76,9 @@ func main() {
 		}
 		log.Println("检查今日课程")
 	})
+/*
+每天 9 点检查会员卡
+*/
 	c.AddFunc("0 9 * * *", func() {
 		_, err := db.Exec("select * check_vip_card_status()")
 		if err != nil {

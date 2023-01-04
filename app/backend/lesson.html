@@ -13,15 +13,16 @@
   <script type="module" src="../components/custom-lesson.js"></script>
   <script type="module" src="../components/custom-dialog.js"></script>
 
-
+  <script type="module" src="../components/custom-lesson-items.js"></script>
 </head>
 
 <body>
   <custom-drawer bind="customDrawer"></custom-drawer>
   <custom-header title="课程" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
-
   <custom-lesson bind="customLesson" @submit="onCustomLessonSubmit"></custom-lesson>
+
+  <custom-lesson-items bind="customLessonItems" @submit=""></custom-lesson-items>
   <custom-toast bind="toast"></custom-toast>
   <custom-dialog bind="customDialog" @submit="" title="询问" style="display: none;"></custom-dialog>
   <script src="js/shared.js"></script>

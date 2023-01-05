@@ -22,3 +22,5 @@ app/assets/*.exe
 server/nginx*.conf
 server/Yoga.service
 app/assets/dataSourceName.txt
+server/Nginx
+server/Extension

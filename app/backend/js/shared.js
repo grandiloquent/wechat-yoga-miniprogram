@@ -1,5 +1,5 @@
 const SETTINGS = {
-  title: '瑜伽约课微信小程序',
+  title: '晨蕴瑜伽',
   cdn: "https://static.lucidu.cn"
 };
 

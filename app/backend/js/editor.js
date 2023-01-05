@@ -590,11 +590,11 @@ async function pasteCode() {
     strings = await navigator.clipboard.readText()
   }
   textarea.setRangeText(`
-  
 \`\`\`pgsql
-${strings}
-\`\`\`
 
+${strings}
+
+\`\`\`
 `, textarea.selectionStart, textarea.selectionEnd, 'end');
 }
 async function insertSnippet() {
@@ -817,6 +817,10 @@ async function navigate(evt) {
             customDialogActions.remove();
             evalCode();
             break;
+          case "10":
+            customDialogActions.remove();
+            preview();
+            break;
         }
       });
       document.body.appendChild(customDialogActions);
@@ -826,8 +830,9 @@ async function navigate(evt) {
 const id = new URL(document.URL).searchParams.get('id') || 0;
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 render();
-
-
+function preview() {
+  window.open(`article.html?id=${id}`, '_blank')
+}
 document.addEventListener('keydown', async evt => {
   if (evt.ctrlKey) {
     switch (evt.key) {
@@ -863,13 +868,17 @@ document.addEventListener('keydown', async evt => {
         evt.preventDefault();
         break;
       case "p":
+        preview();
+        evt.preventDefault();
+        break;
+      case "o":
         pasteCode();
         evt.preventDefault();
         break;
       case 'c':
         if (textarea.selectionStart === textarea.selectionEnd) {
           const p = findBlock(textarea);
-          await navigator.clipboard.writeText(textarea.value.substring(p[0],p[1]))
+          await navigator.clipboard.writeText(textarea.value.substring(p[0], p[1]))
           evt.preventDefault();
         }
         break;

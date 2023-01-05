@@ -45,7 +45,7 @@
     "ignoreUploadUnusedFiles": true,
     "useStaticServer": true
   },
-  "appid": "wx756107e67e7781c4",
+  "appid": "wx915afa9083177059",
   "projectname": "Yoga",
   "libVersion": "2.20.1",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",

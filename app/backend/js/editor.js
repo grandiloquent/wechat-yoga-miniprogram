@@ -639,12 +639,10 @@ function insertLitHandler() {
 }
 
 async function executeSQL() {
-  let strings;
-  if (typeof NativeAndroid !== 'undefined') {
-    strings = NativeAndroid.readText()
-  } else {
-    strings = await navigator.clipboard.readText()
-  }
+  const p = findBlock(textarea);
+  let strings = textarea.value.substring(p[0], p[1]);
+
+  console.log(strings)
   const response = await fetch(`${window.location.protocol}//lucidu.cn/v1/sql?q=${encodeURIComponent(strings)}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
@@ -660,18 +658,18 @@ async function executeSQL() {
     s = JSON.stringify(json, '', '\t');
   }
   textarea.setRangeText(s,
-    textarea.selectionStart,
-    textarea.selectionEnd,
+    p[1],
+    p[1],
     'end')
 }
 async function evalCode() {
-  const p = getLine();
-  let strings = p[0];
+  const p = findBlock(textarea);
+  let strings = textarea.value.substring(p[0], p[1]);
 
   let s = eval(strings);
 
   textarea.setRangeText(s,
-    p[2],
+    p[1],
     p[2],
     'end')
 };
@@ -867,6 +865,13 @@ document.addEventListener('keydown', async evt => {
       case "p":
         pasteCode();
         evt.preventDefault();
+        break;
+      case 'c':
+        if (textarea.selectionStart === textarea.selectionEnd) {
+          const p = findBlock(textarea);
+          await navigator.clipboard.writeText(textarea.value.substring(p[0],p[1]))
+          evt.preventDefault();
+        }
         break;
 
 

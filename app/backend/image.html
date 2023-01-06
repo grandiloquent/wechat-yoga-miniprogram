@@ -5,63 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #81C784;
-            height: 131px;
-            margin: 12px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 22px;
-            flex-direction: column;
-        }
-
-        .week {
-            background-color: #4DD0E1;
-            font-size: 24px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 36px;
-            height: 83px;
-            border-radius: 50%;
-            box-shadow: 0px 1px 2px 0px rgb(60 64 67 / 30%), 0px 2px 6px 2px rgb(60 64 67 / 15%);
-        }
-        img{
-            max-width: 100%;
-        }
-    </style>
-
-
+    <title>课表</title>
+    <link rel="stylesheet" href="css/image.css">
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.2/dist/html-to-image.js"></script>
 </head>
 
 <body>
-    <!-- <div style="overflow: auto;">
-        <div id="my-node" style="
-        width: 1336px;
-        height: 950px;
-        padding: 0 48px;
-        box-sizing: border-box;
-        background-color: #fff;
-        ">
-            <div style="
-        display: grid;
-        grid-template-columns: repeat(8,1fr);
-        ">
-                <div style="
-        grid-column: 1 / -1;
-        font-size: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height:120px;
-        ">
-                    晨蕴瑜伽普拉提课程表
+
+    <div class="wrapper">
+        <div id="my-node" class="main">
+            <div class="grid">
+                <div class="title">
+                    晨蕴瑜伽•普拉提课程表
                 </div>
 
                 <div></div>
@@ -101,7 +56,7 @@
                 <div class="item">9:00</div>
 
                 <div style="display:flex;align-items: center;justify-content: center;
-                font-size: 24px;
+                font-size: 22px;
                 ">19:30-20:30</div>
                 <div class="item">9:00</div>
                 <div class="item">9:00</div>
@@ -111,47 +66,37 @@
                 <div class="item">9:00</div>
                 <div class="item">9:00</div>
 
-                <div style="display:flex;align-items: center;justify-content: center;
-                font-size: 24px;
-                ">19:30-20:30</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div class="item">9:00</div>
-                <div></div>
+                
                 <div style="
                 grid-column: 2/7;
                 font-size: 22px;
                 ">
-            <div>备注</div>  
-            <ol>
-                <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
-                <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
-                <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
+                    <div>备注</div>
+                    <ol>
+                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
+                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
+                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
 
-            </ol>  
-            </div>
+                    </ol>
+                </div>
             </div>
         </div>
-    </div> -->
-     
-    <script>
-        // var node = document.getElementById('my-node');
+    </div>
 
-        // html-to-image.js
-        // htmlToImage.toJpeg(node)
-        //     .then(function (dataUrl) {
-        //         node.remove();
-        //         var img = new Image();
-        //         img.src = dataUrl;
-        //         document.body.appendChild(img);
-        //     })
-        //     .catch(function (error) {
-        //         console.error('oops, something went wrong!', error);
-        //     });
+    <script>
+       
+var node = document.getElementById('my-node');
+
+        htmlToImage.toJpeg(node)
+            .then(function (dataUrl) {
+                node.remove();
+                var img = new Image();
+                img.src = dataUrl;
+                document.body.appendChild(img);
+            })
+            .catch(function (error) {
+                console.error('oops, something went wrong!', error);
+            });
     </script>
 </body>
 

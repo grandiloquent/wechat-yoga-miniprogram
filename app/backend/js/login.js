@@ -30,7 +30,12 @@ async function submit(evt) {
     const data = collectUserInformation();
     const obj = await submitUserInformation(data);
     cacheLoginToken(obj)
-    toast.setAttribute('message', '成功');
+    const returnUrl = new URL(window.location).searchParams.get("returnUrl");
+    console.log(returnUrl);
+    if (returnUrl)
+      window.location = returnUrl;
+    else
+      history.back();
   } catch (error) {
     toast.setAttribute('message', `错误${error.messaage}`);
     console.log(error);

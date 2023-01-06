@@ -668,9 +668,9 @@ async function evalCode() {
 
   let s = eval(strings);
 
-  textarea.setRangeText(s,
+  textarea.setRangeText(`=${s}`,
     p[1],
-    p[2],
+    p[1],
     'end')
 };
 async function translateChinese() {

@@ -69,7 +69,7 @@ async function render(start, end) {
     customMiniItem.style.width = '100%'
     layout.appendChild(customMiniItem);
 
-    customMiniItem.setAttribute("image", `https://lucidu.cn/images/${lesson.thumbnail}`);
+    customMiniItem.setAttribute("image", `${SETTINGS.cdn}/images/${lesson.thumbnail}`);
     customMiniItem.setAttribute("title", lesson.lesson_name);
 
     let dif = parseInt(lesson.peoples) - parseInt(lesson.count);

@@ -7,7 +7,7 @@ export class CustomLessonItems extends LitElement {
   static properties = {
     data: {}
   };
-  static styles = css`.wrapper{padding:0 16px;}.item{border-radius:8px;display:flex;border:1px solid #dadce0;overflow:hidden;}.item.shadow{box-shadow:0 1px 6px 0 rgba(0,0,0,.16);}.img{border:none;display:inline-block;border-radius:8px 0 0 8px;flex:0 0 auto;height:130px;width:130px;}.right{background-color:#fff;display:flex;flex-direction:column;padding:12px 16px 10px;width:calc(100% - 100px - 16px*2);}.title{font-weight:400;font-size:16px;line-height:20px;letter-spacing:.1px;color:#202124;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 0 2px 0;}.subtitle-wrapper{font-weight:400;font-size:12px;line-height:16px;letter-spacing:.3px;color:#70757a;}.subtitle{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.subtitle:last-child{padding:2px 0;}.label{align-items:center;display:flex;gap:4px;margin-top:auto;}.label-left{font-weight:400;font-size:12px;line-height:16px;letter-spacing:.3px;color:#70757a;padding:2px 0;}.label-right{font-weight:500;font-size:14px;line-height:20px;letter-spacing:.25px;color:#202124;margin-left:auto;}`;
+  static styles = css`.wrapper{padding:16px;gap:16px;display:flex;flex-direction:column;}.item{border-radius:8px;display:flex;border:1px solid #dadce0;overflow:hidden;}.item.shadow{box-shadow:0 1px 6px 0 rgba(0,0,0,.16);}.img{border:none;display:inline-block;border-radius:8px 0 0 8px;flex:0 0 auto;height:130px;width:130px;}.right{background-color:#fff;display:flex;flex-direction:column;padding:12px 16px 10px;width:calc(100% - 100px - 16px*2);}.title{font-weight:400;font-size:16px;line-height:20px;letter-spacing:.1px;color:#202124;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 0 2px 0;}.subtitle-wrapper{font-weight:400;font-size:12px;line-height:16px;letter-spacing:.3px;color:#70757a;}.subtitle{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.subtitle:last-child{padding:2px 0;}.label{align-items:center;display:flex;gap:4px;margin-top:auto;}.label-left{font-weight:400;font-size:12px;line-height:16px;letter-spacing:.3px;color:#70757a;padding:2px 0;}.label-right{font-weight:500;font-size:14px;line-height:20px;letter-spacing:.25px;color:#202124;margin-left:auto;}`;
   constructor() {
     super();
     this.data = [];
@@ -20,14 +20,12 @@ export class CustomLessonItems extends LitElement {
   }
   render() {
     return html`<div class="wrapper">
-  ${ this.data.length?this.data.map((element,index)=>{
-  return html`<div class="item">
-    <div class="img">
-    </div>
+  ${this.data.length ? this.data.map((element, index) => {
+      console.log(element);
+      return html`<div class="item">
+    <img class="img" src=${element.avatar_url}>
     <div class="right">
-      <div class="title">
-        瑜伽
-      </div>
+      <div class="title">${element.nick_name}</div>
       <div class="subtitle-wrapper">
         <div class="subtitle">
           周琼
@@ -43,11 +41,11 @@ export class CustomLessonItems extends LitElement {
     </div>
   </div>
 </div>`;
-}):html`<div style="display:flex;align-items: center;justify-content: center;flex-direction: column;height:30vh;font-size: 14px;">没有找到相关预约</div>`}</div>`;
-}
-connectedCallback() {
-  super.connectedCallback();
-}
+    }) : html`<div style="display:flex;align-items: center;justify-content: center;flex-direction: column;height:30vh;font-size: 14px;">没有找到相关预约</div>`}</div>`;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+  }
 }
 customElements.define('custom-lesson-items', CustomLessonItems);
 /*

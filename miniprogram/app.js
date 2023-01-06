@@ -52,13 +52,13 @@ App({
   },
   globalData: {
     openid: null,
-    // https://lucidu.cn
-    // http://localhost:8081
+    // https://chenyunyoga.cn
+    // http://localhost:8082
     // 后端服务器的域名，该域名必须备案，且必须登录小程序官网，将该域名加入可合法请求的域名列表
-    host: 'https://lucidu.cn',
+    host: 'https://chenyunyoga.cn',
     // CDN加速的地址
-    staticHost: 'https://static.lucidu.cn',
-    title: '瑜伽约课工具'
+    staticHost: 'https://chenyunyoga.cn',
+    title: '晨蕴瑜伽'
   },
 });
 ;

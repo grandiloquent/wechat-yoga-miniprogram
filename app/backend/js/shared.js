@@ -1,6 +1,6 @@
 const SETTINGS = {
   title: '晨蕴瑜伽',
-  cdn: "https://static.lucidu.cn"
+  cdn: "https://chenyunyoga.cn"
 };
 
 document.querySelectorAll('[bind]').forEach(element => {

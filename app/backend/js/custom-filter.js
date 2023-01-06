@@ -125,7 +125,7 @@ class CustomFilter extends HTMLElement {
         x.addEventListener('click', evt => {
           if (!evt.currentTarget.classList.contains('selected')) {
             [...this.root.querySelectorAll('.selected')]
-            .forEach(x=>x.classList.remove('selected'))
+              .forEach(x => x.classList.remove('selected'))
             evt.currentTarget.classList.add('selected');
             this.dispatchEvent(new CustomEvent('submit', {
               detail: key

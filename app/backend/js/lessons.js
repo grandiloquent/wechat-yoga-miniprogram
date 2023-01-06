@@ -1,4 +1,7 @@
 
+/*
+Set the time range for querying courses
+*/
 function filterHandler(evt) {
   if (!evt.detail) return;
   if (evt.detail <= 4) {
@@ -10,13 +13,15 @@ function filterHandler(evt) {
   }
 }
 async function loadLessonsData(start, end) {
-  console.log(window.localStorage.getItem("Authorization"))
-  const res = await fetch(`${baseUri}/v1/admin/lessons?start=${start}&end=${end}`, {
+  const response = await fetch(`${baseUri}/v1/admin/lessons?start=${start}&end=${end}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }
   });
-  return await res.json();
+  if (response.status > 399 || response.status < 200) {
+    throw new Error(`${response.status}: ${response.statusText}`)
+  }
+  return await response.json();
 }
 
 function navigateToLessonHandler(evt) {
@@ -41,16 +46,12 @@ function formatLessonDateTime(lesson) {
   const date = new Date(lesson.date_time * 1000);
   return `周${'日一二三四五六'[date.getDay()]} ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}`
 }
-const baseUri = window.location.host === '127.0.0.1:5500' ? 'http://127.0.0.1:8081' : '';
+const baseUri = window.location.host === '127.0.0.1:5500' ? SETTINGS.host : '';
 
-const layout = document.querySelector('#layout');
-const customFilter = document.querySelector('custom-filter');
 
 
 const date = new Date().setHours(0, 0, 0, 0) / 1000;
 render(date, date + 86400);
-
-customFilter.addEventListener('submit', filterHandler);
 // 加载课程数据
 
 async function render(start, end) {
@@ -60,9 +61,12 @@ async function render(start, end) {
   try {
     obj = await loadLessonsData(start, end);
   } catch (error) {
-
+    console.log(error);
   }
-  if (!obj) return;
+  if (!obj) {
+    layout.innerHTML = `<div>假日请注意休息</div>`;
+    return;
+  }
   sortLessons(obj);
   obj.forEach((lesson, index) => {
     const customMiniItem = document.createElement('custom-mini-item');

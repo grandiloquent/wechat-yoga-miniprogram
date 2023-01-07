@@ -709,6 +709,35 @@ function insertComment() {
   }
   textarea.setRangeText(str, textarea.selectionStart, textarea.selectionEnd, "end");
 }
+
+async function insertLink() {
+  let str;
+  let url = await navigator.clipboard.readText();
+  try {
+    const response = await fetch(`/api/title?url=${encodeURIComponent(url)}`);
+    if (response.status > 399 || response.status < 200) {
+      throw new Error(`${response.status}: ${response.statusText}`)
+    }
+    const results = await response.text();
+    str = `- [${results}](${url})`
+  } catch (error) {
+    console.log(error);
+    str = `- [${getSelectedString(textarea)}](${url})`
+  }
+  await textarea.setRangeText(str, textarea.selectionStart, textarea.selectionEnd, 'end');
+
+}
+
+function findAndReplaceHandler() {
+
+  textarea.value =
+    textarea.value.replaceAll(customDialogReplace.find, customDialogReplace.replace);
+}
+
+function findAndReplace() {
+  customDialogReplace.removeAttribute('style');
+}
+
 ///////////////////////////////
 
 document.querySelectorAll('[bind]').forEach(element => {
@@ -821,6 +850,14 @@ async function navigate(evt) {
             customDialogActions.remove();
             preview();
             break;
+          case "11":
+            customDialogActions.remove();
+            insertLink();
+            break;
+          case "12":
+            customDialogActions.remove();
+            findAndReplace();
+            break;
         }
       });
       document.body.appendChild(customDialogActions);
@@ -842,7 +879,8 @@ document.addEventListener('keydown', async evt => {
         break
       case 'l':
         evt.preventDefault();
-        await textarea.setRangeText(`[${textarea.value.substring(textarea.selectionStart, textarea.selectionEnd)}](${await navigator.clipboard.readText()})`, textarea.selectionStart, textarea.selectionEnd, 'end');
+        await insertLink();
+
         break
       case 'u':
         evt.preventDefault();

@@ -69,7 +69,7 @@ func main() {
 	   并且将该课程的预约 fulfill 设置为 -1
 	*/
 	c.AddFunc("0 8 * * *", func() {
-		_, err := db.Exec("select * check_today_lessons()")
+		_, err := db.Exec("select * from check_today_lessons()")
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -80,7 +80,7 @@ func main() {
 	   每天 9 点检查会员卡
 	*/
 	c.AddFunc("0 9 * * *", func() {
-		_, err := db.Exec("select * check_vip_card_status()")
+		_, err := db.Exec("select * from check_vip_card_status()")
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -88,7 +88,7 @@ func main() {
 		log.Println("检查会员卡")
 	})
 	c.AddFunc("30 6 * * *", func() {
-		_, err := db.Exec("select * check_today_lessons()")
+		_, err := db.Exec("select * from check_today_lessons()")
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -96,7 +96,7 @@ func main() {
 		log.Println("检查今日课程")
 	})
 	c.AddFunc("30 7 * * *", func() {
-		_, err := db.Exec("select * check_vip_card_status()")
+		_, err := db.Exec("select * from check_vip_card_status()")
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -251,9 +251,6 @@ func main() {
 		}
 	}
 	handlers["/v1/admin/teachers"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_teachers()")
-	}
-	handlers["/v1/admin/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		if r.Method == "GET" {
 			id := r.URL.Query().Get("id")
 			if len(id) == 0 {
@@ -711,6 +708,20 @@ func main() {
 			QueryJSON(w, db, "select * from v1_admin_vipcard($1)", id)
 		} else if r.Method == "POST" {
 			InsertNumber(db, w, r, "select * from v1_admin_vipcard_update($1)")
+		}
+	}
+
+	handlers["/v1/admin/weeks"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+		switch r.Method {
+		case "GET":
+			QueryJSON(w, db, "select * from v1_admin_weeks()")
+			break
+		// case "POST":
+		// 	InsertNumber(db, w, r, "select * from v1_admin_()")
+		// 	break
+		default:
+			http.NotFound(w, r)
+			break
 		}
 	}
 

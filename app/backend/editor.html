@@ -15,7 +15,7 @@
   <script type="module" src="../components/custom-bottom-bar.js"></script>
   <script type="module" src="../components/custom-dialog-actions.js"></script>
   <script src="../components/toast.js"></script>
-
+  <script type="module" src="../components/custom-dialog-replace.js"></script>
 </head>
 
 <body>
@@ -25,6 +25,7 @@
   <textarea bind="textarea"></textarea>
   <custom-bottom-bar bind="customBottomBar" @submit="navigate"></custom-bottom-bar>
   <custom-toast id="toast"></custom-toast>
+  <custom-dialog-replace bind="customDialogReplace" @submit="findAndReplaceHandler" style="display: none;"></custom-dialog-replace>
   <script src="js/editor.js"></script>
   <script>
     function formattingJavaScript(textarea) {

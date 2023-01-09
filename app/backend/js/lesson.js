@@ -130,9 +130,10 @@ function checkIfLessonAvailable(lesson) {
 function deleteHandler(evt) {
   customDialog.message = `您确定要删除 "${evt.detail.name}" 的预约吗？`
   customDialog.removeAttribute('style');
-  customDialog.onsubmit = async evt => {
-    if (evt.detail === 2) {
+  customDialog.onsubmit = async e => {
+    if (e.detail === 2) {
       await deleteUserBooked(evt.detail.id);
+      await render();
     }
   }
 }

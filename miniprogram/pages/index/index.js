@@ -19,24 +19,24 @@ Page({
     // 设置底部工具栏
     this.getTabBar().setData({
       items: [{
-          name: "首页",
-          // 图标的路径
-          src: "home",
-          // 导航的页面
-          href: "index"
-        }, {
-          name: "约课",
-          src: "book",
-          href: "booking"
-        }, {
-          name: "已约",
-          src: "booked",
-          href: "booked"
-        }, {
-          name: "我的",
-          src: "user",
-          href: "user"
-        }
+        name: "首页",
+        // 图标的路径
+        src: "home",
+        // 导航的页面
+        href: "index"
+      }, {
+        name: "约课",
+        src: "book",
+        href: "booking"
+      }, {
+        name: "已约",
+        src: "booked",
+        href: "booked"
+      }, {
+        name: "我的",
+        src: "user",
+        href: "user"
+      }
 
       ],
       selected: 0
@@ -48,21 +48,12 @@ Page({
   },
   async loadData() {
     // 从服务器请求数据
-    // [
-    //   ["v1/slideshow/home", "poster"],
-    //   ["v1/functions/home", "actions"],
-    //   ["v1/teachers/home", "teachers"],
-    //   ["v1/book?action=1", "booked"],
-    //   ["v1/market/home", "market"],
-    //   ["v1/notices/home", "notices"]
-    // ]
-    // .forEach(x => {
-      
-    // })
-
-    utils.getString(app, x[0], (err, data) => {
+    utils.getString(app, "v1/app", (err, data) => {
       if (err) return;
-      this.setData(...data);
+      const { booked, poster, actions, teachers, market,notices} = data;
+      this.setData({
+        booked, poster, actions, teachers, market,notices
+      });
     });
 
   },
@@ -72,7 +63,7 @@ Page({
       title: app.globalData.title
     };
   },
-  onSubmit() {},
+  onSubmit() { },
   onHomeActionsSubmit(evt) {
     if (evt.detail === 2) {
       wx.switchTab({
@@ -82,11 +73,11 @@ Page({
       wx.navigateTo({
         url: `/pages/one/one`
       })
-    }else if (evt.detail === 6) {
+    } else if (evt.detail === 6) {
       wx.navigateTo({
         url: `/pages/market/market`
       })
-    }else if (evt.detail === 7) {
+    } else if (evt.detail === 7) {
       wx.navigateTo({
         url: `/pages/notices/notices`
       })
@@ -94,7 +85,7 @@ Page({
   },
   // 导航到公告页面
   onHomeNoticeSubmit(evt) {
-    
+
     wx.navigateTo({
       url: `/pages/notice/notice?id=${evt.detail}`
     })

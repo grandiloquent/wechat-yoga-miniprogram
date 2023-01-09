@@ -1,12 +1,38 @@
 package funcs
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
+	"os"
+	"strings"
+	"time"
 )
+
+const charset = "abcdefghijklmnopqrstuvwxyz" +
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+var seededRand *rand.Rand = rand.New(
+	rand.NewSource(time.Now().UnixNano()))
+
+func StringWithCharset(length int, charset string) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
+func randomString(length int) string {
+	return StringWithCharset(length, charset)
+}
 
 func getId(w http.ResponseWriter, r *http.Request) string {
 	return getInt("id", w, r)
@@ -103,4 +129,58 @@ func crossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "authorization")
+}
+func ValidToken(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) bool {
+	token := r.Header.Get("Authorization")
+	userinfo, err := decodeToken(token, secret)
+	if !checkUserInfo(userinfo) {
+		w.WriteHeader(http.StatusForbidden)
+		return false
+	}
+	if checkError(w, err) {
+		return false
+	}
+	return true
+}
+func decodeToken(token string, secret []byte) (string, error) {
+	if len(token) == 0 {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	pieces := strings.Split(token, "|")
+	if len(pieces) < 2 {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	b, err := hmacSha256(secret, pieces[1])
+	if err != nil {
+		return "", err
+	}
+	if base64.StdEncoding.EncodeToString(b) != pieces[0] {
+		return "", fmt.Errorf("%s", "Invalid Token")
+	}
+	return pieces[1], nil
+}
+func hmacSha256(key []byte, data string) ([]byte, error) {
+	h := hmac.New(sha256.New, key)
+	if _, err := h.Write([]byte(data)); err != nil {
+		return nil, err
+	}
+	return h.Sum(nil), nil
+}
+func checkUserInfo(userinfo string) bool {
+	return true
+}
+func fileExists(name string) bool {
+	_, err := os.Stat(name)
+	if err == nil {
+		return true
+	}
+	if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	return false
+
+}
+func getDateTimeString() string {
+	now := time.Now()
+	return fmt.Sprintf("%d%02d%02d-%02d%02d%02d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second())
 }

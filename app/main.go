@@ -1,23 +1,15 @@
 package main
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"image"
-	"image/jpeg"
-	"image/png"
 	"io"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
-	"path"
 	"strings"
 	"time"
 
@@ -25,7 +17,6 @@ import (
 	"yg/cron"
 
 	_ "github.com/lib/pq"
-	"github.com/nfnt/resize"
 
 	"yg/funcs"
 )
@@ -114,119 +105,15 @@ func main() {
 	   首页
 	*/
 	handlers["/"] = funcs.Home
-	/*
-	   网站图标
-	*/
 	handlers["/favicon.ico"] = funcs.Favicon
-
-	handlers["/v1/admin/card"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			action := r.URL.Query().Get("action")
-			if action == "1" {
-				QueryJSON(w, db, "select * from v1_admin_cards()")
-				return
-			}
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_card($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_card_update($1)")
-		}
-	}
-	/*
-	   管理员更新已排课课程
-	*/
-	handlers["/v1/admin/course"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := getId(w, r)
-			if id == "" {
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_course($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_course_update($1)")
-		}
-	}
-	/*
-	   查询课程
-	*/
+	handlers["/v1/admin/card"] = funcs.AdminCard
+	handlers["/v1/admin/course"] = funcs.AdminCourse
 	handlers["/v1/admin/lesson"] = funcs.AdminLesson
+	handlers["/v1/admin/market"] = funcs.AdminMarket
+	handlers["/v1/admin/notice"] = funcs.AdminNotice
+	handlers["/v1/admin/teacher"] = funcs.AdminTeacher
+	handlers["/v1/admin/user"] = funcs.AdminUser
 
-	/*
-	   营销
-	*/
-	handlers["/v1/admin/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			QueryJSON(w, db, "select * from v1_admin_market()")
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_market_update($1)")
-		}
-	}
-	handlers["/v1/admin/notice"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := getId(w, r)
-			if id == "" {
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_notice($1)", id)
-		} else if r.Method == "DELETE" {
-			id := getId(w, r)
-			if id == "" {
-				return
-			}
-			QueryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
-		}
-	}
-	handlers["/v1/admin/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_notices()")
-	}
-	handlers["/v1/admin/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_teacher($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
-		}
-	}
-	handlers["/v1/admin/teachers"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			action := r.URL.Query().Get("action")
-			if action == "1" {
-				// 待查询课程的起始时间
-				start := getInt("start", w, r)
-				if start == "" {
-					return
-				}
-				// 待查询课程的结束时间
-				end := getInt("end", w, r)
-				if end == "" {
-					return
-				}
-				QueryJSON(w, db, "select * from v1_admin_user_lessons($1,$2,$3)", id, start, end)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_user($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_user($1)")
-		}
-	}
-	handlers["/v1/admin/users"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_users()")
-	}
 	handlers["/v1/authorization"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		var code string
 		if r.Method == "GET" {
@@ -251,21 +138,9 @@ func main() {
 		}(res.Body)
 		_, _ = io.Copy(w, res.Body)
 	}
-	handlers["/v1/book"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		openId := r.URL.Query().Get("openId")
-		if len(openId) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		id := r.URL.Query().Get("id")
-		if len(id) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		QueryJSON(w, db, "select * from v1_book($1,$2)", id, openId)
-	}
+	handlers["/v1/app"] = funcs.App
+	handlers["/v1/book"] = funcs.Book
 	handlers["/v1/booked/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_booked_home()")
 	}
 	handlers["/v1/booked/query"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		openId := r.URL.Query().Get("openId")
@@ -411,135 +286,14 @@ func main() {
 	handlers["/v1/notices/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_notices_home()")
 	}
-	handlers["/v1/picture"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		_ = r.ParseMultipartForm(32 << 20) // 32MB is the default used by FormFile
-		fhs := r.MultipartForm.File["images"]
-		for _, fh := range fhs {
-			f, err := fh.Open()
-			// f is one of the files
-			if err != nil {
-				fmt.Println(err)
-				http.NotFound(w, r)
-				return
-			}
-			var originalImage image.Image
-			if strings.HasSuffix(fh.Filename, ".png") {
-				originalImage, err = png.Decode(f)
-			} else if strings.HasSuffix(fh.Filename, ".jpg") {
-				originalImage, err = jpeg.Decode(f)
-			} else {
-				originalImage, _, err = image.Decode(f)
-			}
-			if err != nil {
-				http.NotFound(w, r)
-				return
-			}
-			var m image.Image
-			//fmt.Println(originalImage.Bounds().Dx())
-			if originalImage.Bounds().Dx() > 1800 {
-				m = resize.Resize(1800, 0, originalImage, resize.Lanczos3)
-			} else {
-				m = originalImage
-			}
-			_ = os.MkdirAll("static/images", 0644)
-			fileName := fmt.Sprintf("%s-%s-W%dH%d%s", GetDateTimeString(), String(6), m.Bounds().Dx(), m.Bounds().Dy(), path.Ext(fh.Filename))
-			fullName := fmt.Sprintf("static/images/%s", fileName)
-			for FileExists(fullName) {
-				fileName = fmt.Sprintf("%s-%s-W%dH%d%s", GetDateTimeString(), String(6), m.Bounds().Dx(), m.Bounds().Dy(), path.Ext(fh.Filename))
-				fullName = fmt.Sprintf("static/images/%s", fileName)
-			}
-			output, err := os.Create(fullName)
-			if err != nil {
-				http.NotFound(w, r)
-				return
-			}
-			if strings.HasSuffix(fh.Filename, ".png") {
-				err = png.Encode(output, m)
-				if err != nil {
-					_ = output.Close()
-					http.NotFound(w, r)
-					return
-				}
-				// if strings.HasSuffix(fh.Filename, ".jpg")
-			} else {
-				err = jpeg.Encode(output, m, nil)
-				if err != nil {
-					_ = output.Close()
-					http.NotFound(w, r)
-					return
-				}
-			}
-			_ = output.Close()
-			_, _ = w.Write([]byte(fileName))
-		}
-	}
+	handlers["/v1/picture"] = funcs.Picture
+
 	handlers["/v1/slideshow/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_slideshow_home()")
 	}
-	handlers["/v1/snippet"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_snippet($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from update_snippet($1)")
-		} else if r.Method == "PUT" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryInt(w, db, "select * from v1_snippet_hit($1)", id)
-		}
-	}
-	handlers["/v1/sql"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		q := r.URL.Query().Get("q")
-		if len(q) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		CrossOrigin(w)
-		// 如果请求头包含敏感信息浏览器会发送请求预检
-		if r.Method == "OPTIONS" {
-			return
-		}
-		// 验证权限
-		// secret 是用于计算Hash的长度为32的字节数组
-		if !validToken(db, w, r, secret) {
-			return
-		}
-		rows, err := db.Query(q)
-		if CheckError(w, err) {
-			return
-		}
-		arrayResult := make([][]interface{}, 0)
-		columns, _ := rows.Columns()
-		colTypes, _ := rows.ColumnTypes()
-		colCount := len(columns)
-		for rows.Next() {
-			rowTemplate := make([]interface{}, colCount)
-			rowValues := make([]interface{}, colCount)
-			for i := range colTypes {
-				rowTemplate[i] = &rowValues[i]
-			}
-			err = rows.Scan(rowTemplate...)
-			if CheckError(w, err) {
-				return
-			}
-			arrayResult = append(arrayResult, rowValues)
-		}
-		var buf []byte
-		buf, err = json.Marshal(arrayResult)
-		if CheckError(w, err) {
-			return
-		}
-		w.Write(buf)
-	}
+	handlers["/v1/snippet"] = funcs.Snippet
+	handlers["/v1/sql"] = funcs.Sql
+
 	handlers["/v1/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {
@@ -595,18 +349,7 @@ func main() {
 
 	handlers["/v1/user"] = funcs.User
 
-	handlers["/v1/admin/vipcard"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := r.URL.Query().Get("id")
-			if len(id) == 0 {
-				http.NotFound(w, r)
-				return
-			}
-			QueryJSON(w, db, "select * from v1_admin_vipcard($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_vipcard_update($1)")
-		}
-	}
+	handlers["/v1/admin/vipcard"] = funcs.AdminVipcard
 	handlers["/v1/admin/weeks"] = funcs.AdminWeeks
 
 	// 启动服务器并侦听 8081 端口
@@ -621,7 +364,7 @@ func main() {
 
 			// 验证权限
 			// secret 是用于计算Hash的长度为32的字节数组
-			if !validToken(db, w, r, secret) {
+			if !funcs.ValidToken(db, w, r, secret) {
 				return
 			}
 		}
@@ -725,68 +468,7 @@ func writeError(w http.ResponseWriter, err error) {
 	w.WriteHeader(500)
 	fmt.Fprintln(w, err)
 }
-func decodeToken(token string, secret []byte) (string, error) {
-	if len(token) == 0 {
-		return "", fmt.Errorf("%s", "Invalid Token")
-	}
-	pieces := strings.Split(token, "|")
-	if len(pieces) < 2 {
-		return "", fmt.Errorf("%s", "Invalid Token")
-	}
-	b, err := HmacSha256(secret, pieces[1])
-	if err != nil {
-		return "", err
-	}
-	if base64.StdEncoding.EncodeToString(b) != pieces[0] {
-		return "", fmt.Errorf("%s", "Invalid Token")
-	}
-	return pieces[1], nil
-}
-func checkUserInfo(userinfo string) bool {
-	return true
-}
-func validToken(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) bool {
-	token := r.Header.Get("Authorization")
-	userinfo, err := decodeToken(token, secret)
-	if !checkUserInfo(userinfo) {
-		w.WriteHeader(http.StatusForbidden)
-		return false
-	}
-	if CheckError(w, err) {
-		return false
-	}
-	return true
-}
 
-func GetDateTimeString() string {
-	now := time.Now()
-	return fmt.Sprintf("%d%02d%02d-%02d%02d%02d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second())
-}
-
-const charset = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-var seededRand *rand.Rand = rand.New(
-	rand.NewSource(time.Now().UnixNano()))
-
-func StringWithCharset(length int, charset string) string {
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = charset[seededRand.Intn(len(charset))]
-	}
-	return string(b)
-}
-
-func String(length int) string {
-	return StringWithCharset(length, charset)
-}
-func HmacSha256(key []byte, data string) ([]byte, error) {
-	h := hmac.New(sha256.New, key)
-	if _, err := h.Write([]byte(data)); err != nil {
-		return nil, err
-	}
-	return h.Sum(nil), nil
-}
 func CrossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
@@ -816,17 +498,7 @@ func createToken(secret []byte, id string) ([]byte, error) {
 /*
 测试文件是否存在
 */
-func FileExists(name string) bool {
-	_, err := os.Stat(name)
-	if err == nil {
-		return true
-	}
-	if errors.Is(err, os.ErrNotExist) {
-		return false
-	}
-	return false
 
-}
 func getId(w http.ResponseWriter, r *http.Request) string {
 	return getInt("id", w, r)
 }

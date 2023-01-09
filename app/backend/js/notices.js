@@ -21,7 +21,7 @@ function appendChild(parent, textContent, className) {
 const wrapper = document.querySelector('.wrapper');
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/notices`, {
+  const response = await fetch(`${baseUri}/v1/admin/notice?action=1`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }

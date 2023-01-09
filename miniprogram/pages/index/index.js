@@ -48,22 +48,22 @@ Page({
   },
   async loadData() {
     // 从服务器请求数据
-    [
-      ["v1/slideshow/home", "poster"],
-      ["v1/functions/home", "actions"],
-      ["v1/teachers/home", "teachers"],
-      ["v1/booked/home", "booked"],
-      ["v1/market/home", "market"],
-      ["v1/notices/home", "notices"]
-    ]
-    .forEach(x => {
-      utils.getString(app, x[0], (err, data) => {
-        if (err) return;
-        this.setData({
-          [x[1]]: data
-        });
-      });
-    })
+    // [
+    //   ["v1/slideshow/home", "poster"],
+    //   ["v1/functions/home", "actions"],
+    //   ["v1/teachers/home", "teachers"],
+    //   ["v1/book?action=1", "booked"],
+    //   ["v1/market/home", "market"],
+    //   ["v1/notices/home", "notices"]
+    // ]
+    // .forEach(x => {
+      
+    // })
+
+    utils.getString(app, x[0], (err, data) => {
+      if (err) return;
+      this.setData(...data);
+    });
 
   },
   // 设置分享时的标题
@@ -113,4 +113,3 @@ Page({
   }
 
 })
-

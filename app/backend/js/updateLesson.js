@@ -3,7 +3,7 @@ const id = new URL(document.URL).searchParams.get('id') || 787;
 let old_start_time, old_class_type;
 async function loadData() {
   const response = await Promise.all([
-    fetch(`${baseUri}/v1/admin/lesson/info`, {
+    fetch(`${baseUri}/v1/admin/lesson?action=3`, {
       headers: {
         "Authorization": window.localStorage.getItem("Authorization")
       }

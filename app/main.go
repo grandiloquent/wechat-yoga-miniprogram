@@ -154,40 +154,7 @@ func main() {
 	   查询课程
 	*/
 	handlers["/v1/admin/lesson"] = funcs.AdminLesson
-	/*
-	   查询课程、老师列表
-	*/
-	handlers["/v1/admin/lesson/info"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_lesson_info()")
-	}
-	/*
-	   查询课程名称列表
-	*/
-	handlers["/v1/admin/lesson/names"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_admin_lesson_names()")
-	}
-	/*
-	   查询课程列表
-	*/
-	handlers["/v1/admin/lessons"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		// 待查询课程的起始时间
-		start := getInt("start", w, r)
-		if start == "" {
-			return
-		}
-		// 待查询课程的结束时间
-		end := getInt("end", w, r)
-		if end == "" {
-			return
-		}
-		QueryJSON(w, db, "select * from v1_admin_lessons($1,$2,5)", start, end)
-	}
-	/*
-	   更新课程
-	*/
-	handlers["/v1/admin/lessons/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_admin_lessons_update($1)")
-	}
+
 	/*
 	   营销
 	*/
@@ -336,42 +303,8 @@ func main() {
 		}
 		QueryJSON(w, db, "select * from v1_booking_query($1,$2,$3)", start, openId, classType)
 	}
-	handlers["/v1/debug"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		xforward := r.Header.Get("X-Forwarded-For")
-		buf, err := io.ReadAll(r.Body)
-		if CheckError(w, err) {
-			return
-		}
-		if len(buf) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		var data interface{}
-		err = json.Unmarshal(buf, &data)
-		if CheckError(w, err) {
-			return
-		}
-		buf, err = QueryRow(db, "select * from v1_debug($1,$2)", string(buf), xforward)
-		if CheckError(w, err) {
-			return
-		}
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.Write(buf)
-	}
-	handlers["/v1/document"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		name := r.URL.Query().Get("name")
-		if len(name) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		buf, err := ioutil.ReadFile("./frontend/" + name + ".md")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Write(buf)
-	}
+	handlers["/v1/debug"] = funcs.Debug
+	handlers["/v1/document"] = funcs.Document
 	handlers["/v1/documents"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		CrossOrigin(w)
 		files, err := ioutil.ReadDir("./frontend")

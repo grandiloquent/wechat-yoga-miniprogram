@@ -13,7 +13,7 @@ function filterHandler(evt) {
   }
 }
 async function loadLessonsData(start, end) {
-  const response = await fetch(`${baseUri}/v1/admin/lessons?start=${start}&end=${end}`, {
+  const response = await fetch(`${baseUri}/v1/admin/lesson?action=5&start=${start}&end=${end}`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }

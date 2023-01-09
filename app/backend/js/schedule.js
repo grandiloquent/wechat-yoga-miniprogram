@@ -1,7 +1,7 @@
 let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
 
 async function loadData() {
-  const response = await fetch(`${baseUri}/v1/admin/lesson/info`, {
+  const response = await fetch(`${baseUri}/v1/admin/lesson?action=3`, {
     headers: {
       "Authorization": window.localStorage.getItem("Authorization")
     }
@@ -88,7 +88,7 @@ async function onSubmitBar(evt) {
       date_time: '日一二三四五六'.split('').map(x => `周${x}`).indexOf(dateTime.selectedItem)
     }
     try {
-      const response = await fetch(`${baseUri}/v1/admin/lessons/update`, {
+      const response = await fetch(`${baseUri}/v1/admin/lesson?action=1`, {
         method: 'POST',
         headers: {
           "Authorization": window.localStorage.getItem("Authorization")

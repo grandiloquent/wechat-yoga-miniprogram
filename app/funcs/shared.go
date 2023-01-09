@@ -99,3 +99,8 @@ func queryJSON(w http.ResponseWriter, db *sql.DB, query string, args ...any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(buf)
 }
+func crossOrigin(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "authorization")
+}

@@ -138,8 +138,7 @@ func main() {
 	}
 	handlers["/v1/app"] = funcs.App
 	handlers["/v1/book"] = funcs.Book
-	handlers["/v1/booked/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-	}
+
 	handlers["/v1/booked/query"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {
@@ -202,15 +201,10 @@ func main() {
 		}
 		w.Write(buf)
 	}
-	handlers["/v1/functions/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_functions_home()")
-	}
+
 	handlers["/v1/login"] = funcs.Login
 	handlers["/v1/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_market()")
-	}
-	handlers["/v1/market/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_market_home()")
 	}
 	handlers["/v1/note"] = funcs.Note
 	handlers["/v1/notes"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
@@ -227,14 +221,8 @@ func main() {
 	handlers["/v1/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_notices()")
 	}
-	handlers["/v1/notices/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_notices_home()")
-	}
 	handlers["/v1/picture"] = funcs.Picture
 
-	handlers["/v1/slideshow/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_slideshow_home()")
-	}
 	handlers["/v1/snippet"] = funcs.Snippet
 	handlers["/v1/sql"] = funcs.Sql
 
@@ -274,9 +262,7 @@ func main() {
 		}
 		QueryJSON(w, db, "select * from v1_teacher_lessons($1,$2,$3,$4,$5)", startTime, endTime, openId, classType, teacherId)
 	}
-	handlers["/v1/teachers/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		QueryJSON(w, db, "select * from v1_teachers_home()")
-	}
+
 	handlers["/v1/unbook"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		openId := r.URL.Query().Get("openId")
 		if len(openId) == 0 {

@@ -592,25 +592,9 @@ func main() {
 		}
 		QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
 	}
-	handlers["/v1/user/check"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		openId := r.URL.Query().Get("openId")
-		if len(openId) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		QueryInt(w, db, "select * from v1_user_check($1)", openId)
-	}
-	handlers["/v1/user/update"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		InsertNumber(db, w, r, "select * from v1_user_update($1)")
-	}
-	handlers["/v1/user/user"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		openId := r.URL.Query().Get("openId")
-		if len(openId) == 0 {
-			http.NotFound(w, r)
-			return
-		}
-		QueryJSON(w, db, "select * from v1_user_user($1)", openId)
-	}
+
+	handlers["/v1/user"] = funcs.User
+
 	handlers["/v1/admin/vipcard"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		if r.Method == "GET" {
 			id := r.URL.Query().Get("id")

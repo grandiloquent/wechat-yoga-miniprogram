@@ -8,7 +8,7 @@ Page({
   },
 
   loadData() {
-    utils.getString(app, "v1/user/user", (err, data) => {
+    utils.getString(app, "v1/user?action=2", (err, data) => {
       if (err) return;
       if (data) {
         app.globalData.userId = data.id;

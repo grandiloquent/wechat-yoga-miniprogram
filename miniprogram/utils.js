@@ -126,7 +126,7 @@ async function checkUserAvailability(app) {
   }
   let result;
   try {
-    result = await getStringAsync(app, "v1/user/check");
+    result = await getStringAsync(app, "v1/user?action=1");
     if (!result) {
       return false;
     }

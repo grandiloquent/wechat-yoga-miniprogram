@@ -47,7 +47,7 @@ Component({
         const { avatarUrl, nickName } = app.globalData.userInfo;
         const open_id = app.globalData.openid;
         const res = await utils.request(
-          `${app.globalData.host}/v1/user/update`, {
+          `${app.globalData.host}/v1/user`, {
           method: 'POST',
           data: {
             avatar_url: avatarUrl, nick_name: nickName, open_id
@@ -65,7 +65,7 @@ Component({
         open_id: app.globalData.openid
       }
       try {
-        const res = await utils.request(`${app.globalData.host}/v1/user/update`, {
+        const res = await utils.request(`${app.globalData.host}/v1/user`, {
           data,
           method: 'POST'
         })

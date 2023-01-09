@@ -184,3 +184,15 @@ func getDateTimeString() string {
 	now := time.Now()
 	return fmt.Sprintf("%d%02d%02d-%02d%02d%02d", now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second())
 }
+func createToken(secret []byte, id string) ([]byte, error) {
+	s := fmt.Sprintf("%s-%d", id, time.Now().Unix())
+	buf, err := hmacSha256(secret, s)
+	if err != nil {
+		return nil, err
+	}
+	dst := make([]byte, base64.StdEncoding.EncodedLen(len(buf)))
+	base64.StdEncoding.Encode(dst, buf)
+	dst = append(dst, []byte("|")...)
+	dst = append(dst, []byte(s)...)
+	return dst, nil
+}

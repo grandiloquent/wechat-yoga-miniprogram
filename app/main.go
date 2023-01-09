@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -11,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	// 第三方 PostgreSQL 数据库客户端
 	"yg/cron"
@@ -207,43 +205,7 @@ func main() {
 	handlers["/v1/functions/home"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_functions_home()")
 	}
-	handlers["/v1/login"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		CrossOrigin(w)
-		if r.Method == "OPTIONS" {
-			return
-		}
-		if r.Method != "POST" && r.Method != "GET" {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		if r.Method == "POST" {
-			phoneNumber := r.FormValue("phone_number")
-			password := r.FormValue("password")
-			row := db.QueryRow("select * from check_user_password($1,$2)", phoneNumber, password)
-			if CheckError(w, row.Err()) {
-				return
-			}
-			var id sql.NullString
-			err := row.Scan(&id)
-			if CheckError(w, err) {
-				return
-			}
-			if !id.Valid {
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-			buf, err := createToken(secret, id.String)
-			if CheckError(w, err) {
-				return
-			}
-			w.Header().Set("Content-Type", "application/jwt")
-			w.Write(buf)
-		} else {
-			if !validToken(db, w, r, secret) {
-				return
-			}
-		}
-	}
+	handlers["/v1/login"] = funcs.Login
 	handlers["/v1/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_market()")
 	}
@@ -473,26 +435,6 @@ func CrossOrigin(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "authorization")
-}
-
-/*
-使用通过环境变量传入的密钥
-计算用户Id加时间戳的Hash值
-然后将Hash值和它的字符串组合成令牌
-当客户端发送回令牌时
-即可通过重新计算验证令牌的合法性
-*/
-func createToken(secret []byte, id string) ([]byte, error) {
-	s := fmt.Sprintf("%s-%d", id, time.Now().Unix())
-	buf, err := HmacSha256(secret, s)
-	if err != nil {
-		return nil, err
-	}
-	dst := make([]byte, base64.StdEncoding.EncodedLen(len(buf)))
-	base64.StdEncoding.Encode(dst, buf)
-	dst = append(dst, []byte("|")...)
-	dst = append(dst, []byte(s)...)
-	return dst, nil
 }
 
 /*

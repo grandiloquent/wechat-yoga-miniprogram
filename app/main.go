@@ -690,20 +690,7 @@ func main() {
 			InsertNumber(db, w, r, "select * from v1_admin_vipcard_update($1)")
 		}
 	}
-
-	handlers["/v1/admin/weeks"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		switch r.Method {
-		case "GET":
-			QueryJSON(w, db, "select * from v1_admin_weeks()")
-			break
-		// case "POST":
-		// 	InsertNumber(db, w, r, "select * from v1_admin_()")
-		// 	break
-		default:
-			http.NotFound(w, r)
-			break
-		}
-	}
+	handlers["/v1/admin/weeks"] = funcs.AdminWeeks
 
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8082", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

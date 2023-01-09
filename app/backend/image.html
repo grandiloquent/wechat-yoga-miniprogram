@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>课表</title>
     <link rel="stylesheet" href="css/image.css">
+    <!--
+    Code package for converting HTML to images
+    -->
     <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.2/dist/html-to-image.js"></script>
     <script src="../components/toast.js"></script>
 </head>
@@ -45,24 +48,26 @@
                 <div bind="line1" class="line1">9:00-10:00</div>
 
                 <div bind="line2" class="line2">19:30-20:30</div>
-                 
 
-                <div style="
-                grid-column: 2/7;
-                font-size: 22px;
-                ">
+
+                <div class="info">
                     <div>备注</div>
-                    <ol>
-                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
-                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
-                        <li>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</li>
-
-                    </ol>
+                    <div>
+                        <div>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。 </div>
+                        <div>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</div>
+                        <div>练习瑜伽穿着舒适易伸展的服装，不戴繁琐饰品，赤脚练习。</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
     <custom-toast bind="toast"></custom-toast>
+    <!--
+    A shared code package, 
+    the main function is to declare constants 
+    and bind elements and events
+    -->
     <script src="js/shared.js"></script>
     <script src="js/image.js"></script>
 

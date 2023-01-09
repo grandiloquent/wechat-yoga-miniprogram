@@ -1,18 +1,25 @@
 .item {
+  
+    height: 131px;
+    font-size: 22px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.item>div {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #81C784;
-    height: 131px;
+    flex-direction: column;
+    background-color: #74C092;
     border-radius: 8px;
     color: #fff;
-    font-size: 22px;
-    flex-direction: column;
+    height: 100%;
     width: 100%;
 }
 
 .week {
-    background-color: #4DD0E1;
+    background-color: #46C2A6;
     font-size: 24px;
     color: #fff;
     display: flex;
@@ -61,13 +68,30 @@ img {
     height: 120px;
 
 }
-    .line1{
-    display:flex;align-items: center;justify-content: center;
-                font-size: 24px;
-                
-    }
-    .line2{
-    display:flex;align-items: center;justify-content: center;
-                font-size: 22px;
-                
-    }
+
+.line1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+
+}
+
+.line2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+
+}
+
+.info {
+
+    grid-column: 1 / 7;
+    font-size: 22px;
+
+}
+
+.info>ol {
+    padding: 0;
+}

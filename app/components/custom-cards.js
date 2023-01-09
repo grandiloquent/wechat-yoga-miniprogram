@@ -7,10 +7,10 @@ export class CustomCards extends LitElement {
   static properties = {
     data: {}
   };
-  static styles = css`.wrapper {
+  static styles = css`
+  .wrapper {
   padding: 0 16px;
 }
-
 .item {
   border-top: 1px solid #e8eaed;
   display: block;
@@ -60,7 +60,7 @@ display:none;
   display: inline-flex;
 }
 
-.bottom {
+                      .bottom {
   letter-spacing: .00625em;
   font-family: "Google Sans", Roboto, Arial, sans-serif;
   color: #202124;
@@ -78,17 +78,17 @@ display:none;
     window.location = `./card?id=${index}`
   }
   render() {
-    return html`<div class="wrapper">
-${this.data .map((element,index)=>{
-console.log(element); 
-return html`<div class="item" data-index="${element.id}" @click="${this.navigate}">
+    return html` <div class="wrapper">
+${this.data.map((element, index) => {
+      console.log(element);
+      return html`<div class="item" data-index="${element.id}" @click="${this.navigate}">
   <div class="left">
     <div class="top">
       <div class="top-left">
 
       </div>
       <div class="top-right">
-${timeAgo(element.creation_time*1000)}
+${timeAgo(element.creation_time * 1000)}
       </div>
     </div>
     <div class="bottom">
@@ -97,7 +97,7 @@ ${element.title}
   </div>
   <img class="image" src=https://static.lucidu.cn/images/${element.thumbnail}>
 </div>`;
-})}
+    })}
   </div>`;
   }
   connectedCallback() {

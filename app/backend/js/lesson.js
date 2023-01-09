@@ -21,7 +21,7 @@ async function render() {
     suspended = checkIfLessonSuspended(obj);
     customLesson.suspended = suspended;
   } catch (error) {
-    console.log(errror);
+    console.log(error);
   }
 }
 /*
@@ -109,19 +109,52 @@ function checkIfLessonSuspended(lesson) {
   }
   return false;
 }
-
+/*
+检查课程是否已过期
+*/
 function checkIfLessonAvailable(lesson) {
   const d = new Date();
-  const seconds = new Date(d).setHours(0, 0, 0, 0) / 1000;
-  if (seconds > lesson.date_time || ((d.getHours() * 3600 + d.getMinutes() * 60) > lesson.start_time - 3600)) {
+  const dateSeconds = new Date(d).setHours(0, 0, 0, 0) / 1000;
+  if (dateSeconds > lesson.date_time) {
+    return false;
+  }
+  const timeSeconds = d.getHours() * 3600 + d.getMinutes() * 60;
+  /*
+  开课前1小时停止约课
+  */
+  if (dateSeconds === lesson.date_time && timeSeconds > lesson.start_time - 3600) {
     return false;
   }
   return true;
 }
-
+function deleteHandler(evt) {
+  customDialog.message = `您确定要删除 "${evt.detail.name}" 的预约吗？`
+  customDialog.removeAttribute('style');
+  customDialog.onsubmit = async evt => {
+    if (evt.detail === 2) {
+      await deleteUserBooked(evt.detail.id);
+    }
+  }
+}
+async function deleteUserBooked(id) {
+  try {
+    const response = await fetch(`${baseUri}/v1/admin/lesson?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": window.localStorage.getItem("Authorization")
+      }
+    });
+    if (response.status > 399 || response.status < 200) {
+      throw new Error(`${response.status}: ${response.statusText}`)
+    }
+    const results = await response.text();
+  } catch (error) {
+    console.log(error);
+  }
+}
 //------------------------------------------------
 
-let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8081' : ''
+let baseUri = window.location.host === "127.0.0.1:5500" ? 'http://127.0.0.1:8082' : ''
 const id = new URL(document.URL).searchParams.get('id');
 let suspended;
 

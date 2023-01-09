@@ -18,25 +18,45 @@ export class CustomLessonItems extends LitElement {
       detail: index
     }));
   }
+
+  _delete(evt) {
+    this.dispatchEvent(new CustomEvent('delete', {
+      detail: evt.currentTarget.dataset
+    }));
+  }
   render() {
     return html`<div class="wrapper">
   ${this.data.length ? this.data.map((element, index) => {
       console.log(element);
+      switch (element.vc_id) {
+        case '2': {
+          return '月卡'
+        }
+        case '3': {
+          return '年卡'
+        }
+        case '4': {
+          return '次卡'
+        }
+        case '1': {
+          return '周卡'
+        }
+      }
       return html`<div class="item">
     <img class="img" src=${element.avatar_url}>
     <div class="right">
       <div class="title">${element.nick_name}</div>
       <div class="subtitle-wrapper">
         <div class="subtitle">
-          周琼
+          ${timeAgo(element.creation_time * 1000)}
         </div>
         <div class="subtitle" style="display:none"></div>
       </div>
       <div class="label">
         <div class="label-left">
-          你好
+          ${formatCardType(element)}
         </div>
-        <div class="label-right">删除</div>
+        <div class="label-right" data-id=${element.reservation_id} data-name=${element.nick_name} @click=${this._delete}>删除</div>
       </div>
     </div>
   </div>
@@ -104,3 +124,23 @@ const i18n = {
     yearsAgo: 'years ago',
   },
 };
+
+
+function formatCardType(element) {
+  switch (element.vc_id) {
+    case 2: {
+      return '月卡'
+    }
+    case 3: {
+      return '年卡'
+    }
+    case 4: {
+      return '次卡'
+    }
+    case 1: {
+      return '周卡'
+    }
+    default:
+      return ''
+  }
+}

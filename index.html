@@ -196,3 +196,19 @@
     },
   };
 </script>
+
+<script>
+  console.log(`swtich(){
+${[{"id":2,"name":"月卡"}, 
+ {"id":3,"name":"年卡"}, 
+ {"id":4,"name":"次卡"}, 
+ {"id":1,"name":"周卡"}].map(x=>{
+  return `case ${x.id}:{
+  return '${x.name}'
+  }`
+  
+ }).join('\n')}
+ default:
+      return ''
+  }`)
+</script>

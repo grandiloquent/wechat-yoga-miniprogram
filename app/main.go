@@ -170,6 +170,12 @@ func main() {
 			// 通过调用数据库自定义函数进行查询操作
 			// 成功返回Json，失败空字符串
 			QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
+		} else if r.Method == "DELETE" {
+			id := getId(w, r)
+			if id == "" {
+				return
+			}
+			QueryInt(w, db, "select * from v1_admin_lesson_delete($1)", id)
 		} else if r.Method == "POST" {
 			InsertNumber(db, w, r, "select * from v1_admin_lesson_update($1)")
 		}

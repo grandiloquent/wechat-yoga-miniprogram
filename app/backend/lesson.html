@@ -22,7 +22,7 @@
   <div style="height: 56px;"></div>
   <custom-lesson bind="customLesson" @submit="onCustomLessonSubmit"></custom-lesson>
 
-  <custom-lesson-items bind="customLessonItems" @submit=""></custom-lesson-items>
+  <custom-lesson-items bind="customLessonItems" @delete="deleteHandler"></custom-lesson-items>
   <custom-toast bind="toast"></custom-toast>
   <custom-dialog bind="customDialog" @submit="" title="询问" style="display: none;"></custom-dialog>
   <script src="js/shared.js"></script>

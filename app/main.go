@@ -26,6 +26,8 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/nfnt/resize"
+
+	"yg/funcs"
 )
 
 func main() {
@@ -104,20 +106,19 @@ func main() {
 		log.Println("检查会员卡")
 	})
 	c.Start()
-	/*以请求连接为键的处理器 */
+	/*以请求连接为键的处理器
+
+	 */
 	handlers := make(map[string]func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte))
 	/*
 	   首页
 	*/
-	handlers["/"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		http.ServeFile(w, r, "./static/index.html")
-	}
+	handlers["/"] = funcs.Home
 	/*
 	   网站图标
 	*/
-	handlers["/favicon.ico"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		http.NotFound(w, r)
-	}
+	handlers["/favicon.ico"] = funcs.Favicon
+
 	handlers["/v1/admin/card"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		if r.Method == "GET" {
 			action := r.URL.Query().Get("action")
@@ -152,34 +153,7 @@ func main() {
 	/*
 	   查询课程
 	*/
-	handlers["/v1/admin/lesson"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		if r.Method == "GET" {
-			id := getId(w, r)
-			if id == "" {
-				return
-			}
-			action := r.URL.Query().Get("action")
-			if action == "1" {
-				QueryInt(w, db, "select * from v1_admin_lesson_update_status($1,$2)", id, 1)
-				return
-			}
-			if action == "2" {
-				QueryInt(w, db, "select * from v1_admin_lesson_update_status($1,$2)", id, 0)
-				return
-			}
-			// 通过调用数据库自定义函数进行查询操作
-			// 成功返回Json，失败空字符串
-			QueryJSON(w, db, "select * from v1_admin_lesson($1)", id)
-		} else if r.Method == "DELETE" {
-			id := getId(w, r)
-			if id == "" {
-				return
-			}
-			QueryInt(w, db, "select * from v1_admin_lesson_delete($1)", id)
-		} else if r.Method == "POST" {
-			InsertNumber(db, w, r, "select * from v1_admin_lesson_update($1)")
-		}
-	}
+	handlers["/v1/admin/lesson"] = funcs.AdminLesson
 	/*
 	   查询课程、老师列表
 	*/

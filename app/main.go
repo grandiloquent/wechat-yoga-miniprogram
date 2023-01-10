@@ -302,13 +302,13 @@ func main() {
 			funcs.Snippet(w, r, db)
 			return
 		case "/v1/sql":
-			funcs.Sql(w, r, db)
+			funcs.Sql(w, r, db, secret)
 			return
 		case "/v1/admin/vipcard":
 			funcs.AdminVipcard(w, r, db)
 			return
 		case "/v1/login":
-			funcs.Login(w, r, db)
+			funcs.Login(w, r, db, secret)
 			return
 		case "/v1/app":
 			funcs.App(w, r, db)

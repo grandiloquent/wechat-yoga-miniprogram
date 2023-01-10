@@ -6,10 +6,10 @@ import (
 	"net/http"
 )
 
-func Sql(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+func Sql(w http.ResponseWriter, r *http.Request, db *sql.DB, secret []byte) {
 	switch r.Method {
 	case "GET":
-		sqlGet(db, w, r)
+		sqlGet(db, w, r, secret)
 		return
 	case "DELETE":
 		sqlDelete(db, w, r)
@@ -23,7 +23,7 @@ func Sql(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 
 	}
 }
-func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -39,7 +39,7 @@ func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 
 		// 验证权限
 		// secret 是用于计算Hash的长度为32的字节数组
-		if !ValidToken(db, w, r) {
+		if !ValidToken(db, w, r, secret) {
 			return
 		}
 		rows, err := db.Query(q)

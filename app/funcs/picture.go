@@ -16,19 +16,19 @@ import (
 func Picture(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		pictureGet(db, w, r)
+		pictureGet(w, r)
 		return
 	case "DELETE":
-		pictureDelete(db, w, r)
+		pictureDelete(w, r)
 		return
 	case "POST":
-		picturePost(db, w, r)
+		picturePost(w, r)
 		return
 	case "OPTIONS":
-		pictureOptions(db, w, r)
+		pictureOptions(w, r)
 		return
 	case "PUT":
-		picturePut(db, w, r)
+		picturePut(w, r)
 		return
 	}
 }

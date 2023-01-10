@@ -5,18 +5,18 @@ import (
 	"net/http"
 )
 
-func Login(w http.ResponseWriter, r *http.Request, db *sql.DB) {
+func Login(w http.ResponseWriter, r *http.Request, db *sql.DB, secret []byte) {
 	crossOrigin(w)
 
 	switch r.Method {
 	case "GET":
-		loginGet(db, w, r)
+		loginGet(db, w, r, secret)
 		return
 	case "DELETE":
 		loginDelete(db, w, r)
 		return
 	case "POST":
-		loginPost(db, w, r)
+		loginPost(db, w, r, secret)
 		return
 	case "OPTIONS":
 		loginOptions(db, w, r)
@@ -26,14 +26,14 @@ func Login(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 		return
 	}
 }
-func loginGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func loginGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
 	case "2":
 		break
 	default:
-		if !ValidToken(db, w, r) {
+		if !ValidToken(db, w, r, secret) {
 			return
 		}
 		break
@@ -42,7 +42,7 @@ func loginGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
 func loginDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func loginPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
+func loginPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	phoneNumber := r.FormValue("phone_number")
 	password := r.FormValue("password")
 	row := db.QueryRow("select * from check_user_password($1,$2)", phoneNumber, password)

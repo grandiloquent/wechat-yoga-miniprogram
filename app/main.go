@@ -253,15 +253,7 @@ func main() {
 			}
 		}
 		switch r.URL.Path {
-		case "/v1/admin/weeks":
-			funcs.AdminWeeks(w, r, db)
-			return
-		case "/v1/authorization":
-			funcs.Authorization(w, r, authUrl)
-			return
-		case "/v1/user":
-			funcs.User(w, r, db)
-			return
+
 		case "/":
 			funcs.Home(w, r)
 			return
@@ -289,11 +281,29 @@ func main() {
 		case "/v1/admin/user":
 			funcs.AdminUser(w, r, db)
 			return
+		case "/v1/admin/vipcard":
+			funcs.AdminVipcard(w, r, db)
+			return
+		case "/v1/admin/weeks":
+			funcs.AdminWeeks(w, r, db)
+			return
+		case "/v1/app":
+			funcs.App(w, r, db)
+			return
+		case "/v1/authorization":
+			funcs.Authorization(w, r, authUrl)
+			return
+		case "/v1/book":
+			funcs.Book(w, r, db)
+			return
 		case "/v1/debug":
 			funcs.Debug(w, r, db)
 			return
 		case "/v1/document":
 			funcs.Document(w, r, db)
+			return
+		case "/v1/login":
+			funcs.Login(w, r, db, secret)
 			return
 		case "/v1/picture":
 			funcs.Picture(w, r)
@@ -304,17 +314,8 @@ func main() {
 		case "/v1/sql":
 			funcs.Sql(w, r, db, secret)
 			return
-		case "/v1/admin/vipcard":
-			funcs.AdminVipcard(w, r, db)
-			return
-		case "/v1/login":
-			funcs.Login(w, r, db, secret)
-			return
-		case "/v1/app":
-			funcs.App(w, r, db)
-			return
-		case "/v1/book":
-			funcs.Book(w, r, db)
+		case "/v1/user":
+			funcs.User(w, r, db)
 			return
 		}
 		f := handlers[r.URL.Path]

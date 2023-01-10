@@ -27,7 +27,6 @@ export class CustomLessonItems extends LitElement {
   render() {
     return html`<div class="wrapper">
   ${this.data.length ? this.data.map((element, index) => {
-      console.log(element);
       switch (element.vc_id) {
         case '2': {
           return '月卡'

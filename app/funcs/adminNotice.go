@@ -5,20 +5,20 @@ import (
 	"net/http"
 )
 
-func AdminNotice(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminNotice(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminNoticeGet(db, w, r, secret)
+		adminNoticeGet(db, w, r)
 		return
 	case "DELETE":
-		adminNoticeDelete(db, w, r, secret)
+		adminNoticeDelete(db, w, r)
 		return
 	case "POST":
-		adminNoticePost(db, w, r, secret)
+		adminNoticePost(db, w, r)
 		return
 	}
 }
-func adminNoticeGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminNoticeGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 
 	switch r.URL.Query().Get("action") {
 	case "1":
@@ -34,13 +34,13 @@ func adminNoticeGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret [
 	}
 
 }
-func adminNoticeDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminNoticeDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	id := getId(w, r)
 	if id == "" {
 		return
 	}
 	queryInt(w, db, "select * from v1_admin_notice_delete($1)", id)
 }
-func adminNoticePost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminNoticePost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_admin_notice_update($1)")
 }

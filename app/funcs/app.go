@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func App(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func App(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		appGet(db, w, r, secret)
+		appGet(db, w, r)
 		return
 	case "DELETE":
-		appDelete(db, w, r, secret)
+		appDelete(db, w, r)
 		return
 	case "POST":
-		appPost(db, w, r, secret)
+		appPost(db, w, r)
 		return
 	case "OPTIONS":
-		appOptions(db, w, r, secret)
+		appOptions(db, w, r)
 		return
 	case "PUT":
-		appPut(db, w, r, secret)
+		appPut(db, w, r)
 		return
 	}
 }
-func appGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func appGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -36,11 +36,11 @@ func appGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	}
 
 }
-func appDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func appDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func appPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func appPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func appOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func appOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func appPut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func appPut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

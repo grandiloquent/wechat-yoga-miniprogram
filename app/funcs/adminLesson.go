@@ -5,20 +5,20 @@ import (
 	"net/http"
 )
 
-func AdminLesson(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminLesson(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminLessonGet(db, w, r, secret)
+		adminLessonGet(db, w, r)
 		return
 	case "DELETE":
-		adminLessonDelete(db, w, r, secret)
+		adminLessonDelete(db, w, r)
 		return
 	case "POST":
-		adminLessonPost(db, w, r, secret)
+		adminLessonPost(db, w, r)
 		return
 	}
 }
-func adminLessonPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminLessonPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	action := r.URL.Query().Get("action")
 	if action == "1" {
 		insertNumber(db, w, r, "select * from v1_admin_lessons_update($1)")
@@ -26,7 +26,7 @@ func adminLessonPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret 
 	}
 	insertNumber(db, w, r, "select * from v1_admin_lesson_update($1)")
 }
-func adminLessonDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminLessonDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	id := getId(w, r)
 	if id == "" {
 		return
@@ -34,7 +34,7 @@ func adminLessonDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secre
 	queryInt(w, db, "select * from v1_admin_lesson_delete($1)", id)
 }
 
-func adminLessonGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminLessonGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	id := getId(w, r)
 	if id == "" {
 		return

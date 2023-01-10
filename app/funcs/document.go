@@ -6,20 +6,20 @@ import (
 	"net/http"
 )
 
-func Document(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func Document(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		documentGet(db, w, r, secret)
+		documentGet(db, w, r)
 		return
 	case "DELETE":
-		documentDelete(db, w, r, secret)
+		documentDelete(db, w, r)
 		return
 	case "POST":
-		documentPost(db, w, r, secret)
+		documentPost(db, w, r)
 		return
 	}
 }
-func documentGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func documentGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	crossOrigin(w)
 	name := r.URL.Query().Get("name")
 	if len(name) == 0 {
@@ -33,7 +33,7 @@ func documentGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []by
 	}
 	w.Write(buf)
 }
-func documentDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func documentDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func documentPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func documentPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

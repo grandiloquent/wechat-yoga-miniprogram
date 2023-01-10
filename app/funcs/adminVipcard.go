@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func AdminVipcard(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminVipcard(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminVipcardGet(db, w, r, secret)
+		adminVipcardGet(db, w, r)
 		return
 	case "DELETE":
-		adminVipcardDelete(db, w, r, secret)
+		adminVipcardDelete(db, w, r)
 		return
 	case "POST":
-		adminVipcardPost(db, w, r, secret)
+		adminVipcardPost(db, w, r)
 		return
 	case "OPTIONS":
-		adminVipcardOptions(db, w, r, secret)
+		adminVipcardOptions(db, w, r)
 		return
 	case "PUT":
-		adminVipcardPut(db, w, r, secret)
+		adminVipcardPut(db, w, r)
 		return
 	}
 }
-func adminVipcardGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminVipcardGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -41,12 +41,12 @@ func adminVipcardGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret 
 	}
 
 }
-func adminVipcardDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminVipcardDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminVipcardPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminVipcardPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_admin_vipcard_update($1)")
 }
-func adminVipcardOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminVipcardOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminVipcardPut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminVipcardPut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

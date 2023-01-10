@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func AdminTeacher(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminTeacher(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminTeacherGet(db, w, r, secret)
+		adminTeacherGet(db, w, r)
 		return
 	case "DELETE":
-		adminTeacherDelete(db, w, r, secret)
+		adminTeacherDelete(db, w, r)
 		return
 	case "POST":
-		adminTeacherPost(db, w, r, secret)
+		adminTeacherPost(db, w, r)
 		return
 	case "OPTIONS":
-		adminTeacherOptions(db, w, r, secret)
+		adminTeacherOptions(db, w, r)
 		return
 	case "PUT":
-		adminTeacherPut(db, w, r, secret)
+		adminTeacherPut(db, w, r)
 		return
 	}
 }
-func adminTeacherGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminTeacherGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		id := r.URL.Query().Get("id")
@@ -64,12 +64,12 @@ func adminTeacherGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret 
 	}
 
 }
-func adminTeacherDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminTeacherDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminTeacherPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminTeacherPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_admin_teacher_update($1)")
 }
-func adminTeacherOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminTeacherOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminTeacherPut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminTeacherPut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

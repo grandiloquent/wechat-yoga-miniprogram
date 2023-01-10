@@ -7,20 +7,20 @@ import (
 	"net/http"
 )
 
-func Debug(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func Debug(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		debugGet(db, w, r, secret)
+		debugGet(db, w, r)
 		return
 	case "DELETE":
-		debugDelete(db, w, r, secret)
+		debugDelete(db, w, r)
 		return
 	case "POST":
-		debugPost(db, w, r, secret)
+		debugPost(db, w, r)
 		return
 	}
 }
-func debugGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func debugGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	xforward := r.Header.Get("X-Forwarded-For")
 	buf, err := io.ReadAll(r.Body)
 	if checkError(w, err) {
@@ -42,7 +42,7 @@ func debugGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Write(buf)
 }
-func debugDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func debugDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func debugPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func debugPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

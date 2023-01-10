@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func AdminMarket(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminMarket(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminMarketGet(db, w, r, secret)
+		adminMarketGet(db, w, r)
 		return
 	case "DELETE":
-		adminMarketDelete(db, w, r, secret)
+		adminMarketDelete(db, w, r)
 		return
 	case "POST":
-		adminMarketPost(db, w, r, secret)
+		adminMarketPost(db, w, r)
 		return
 	case "OPTIONS":
-		adminMarketOptions(db, w, r, secret)
+		adminMarketOptions(db, w, r)
 		return
 	case "PUT":
-		adminMarketPut(db, w, r, secret)
+		adminMarketPut(db, w, r)
 		return
 	}
 }
-func adminMarketGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminMarketGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -36,13 +36,13 @@ func adminMarketGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret [
 	}
 
 }
-func adminMarketDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminMarketDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminMarketPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminMarketPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_admin_market_update($1)")
 
 }
-func adminMarketOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminMarketOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminMarketPut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminMarketPut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

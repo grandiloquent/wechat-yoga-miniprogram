@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func AdminCourse(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminCourse(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		adminCourseGet(db, w, r, secret)
+		adminCourseGet(db, w, r)
 		return
 	case "DELETE":
-		adminCourseDelete(db, w, r, secret)
+		adminCourseDelete(db, w, r)
 		return
 	case "POST":
-		adminCoursePost(db, w, r, secret)
+		adminCoursePost(db, w, r)
 		return
 	case "OPTIONS":
-		adminCourseOptions(db, w, r, secret)
+		adminCourseOptions(db, w, r)
 		return
 	case "PUT":
-		adminCoursePut(db, w, r, secret)
+		adminCoursePut(db, w, r)
 		return
 	}
 }
-func adminCourseGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminCourseGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -40,13 +40,13 @@ func adminCourseGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret [
 	}
 
 }
-func adminCourseDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminCourseDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminCoursePost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminCoursePost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_admin_course_update($1)")
 
 }
-func adminCourseOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminCourseOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func adminCoursePut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func adminCoursePut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

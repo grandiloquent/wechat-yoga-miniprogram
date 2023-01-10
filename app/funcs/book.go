@@ -5,26 +5,26 @@ import (
 	"net/http"
 )
 
-func Book(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func Book(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		bookGet(db, w, r, secret)
+		bookGet(db, w, r)
 		return
 	case "DELETE":
-		bookDelete(db, w, r, secret)
+		bookDelete(db, w, r)
 		return
 	case "POST":
-		bookPost(db, w, r, secret)
+		bookPost(db, w, r)
 		return
 	case "OPTIONS":
-		bookOptions(db, w, r, secret)
+		bookOptions(db, w, r)
 		return
 	case "PUT":
-		bookPut(db, w, r, secret)
+		bookPut(db, w, r)
 		return
 	}
 }
-func bookGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func bookGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -46,11 +46,11 @@ func bookGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) 
 	}
 
 }
-func bookDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func bookDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func bookPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func bookPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func bookOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func bookOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func bookPut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func bookPut(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }

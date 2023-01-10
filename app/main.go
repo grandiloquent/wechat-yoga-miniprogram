@@ -102,18 +102,6 @@ func main() {
 	/*
 	   首页
 	*/
-	handlers["/"] = funcs.Home
-	handlers["/favicon.ico"] = funcs.Favicon
-	handlers["/v1/admin/card"] = funcs.AdminCard
-	handlers["/v1/admin/course"] = funcs.AdminCourse
-	handlers["/v1/admin/lesson"] = funcs.AdminLesson
-	handlers["/v1/admin/market"] = funcs.AdminMarket
-	handlers["/v1/admin/notice"] = funcs.AdminNotice
-	handlers["/v1/admin/teacher"] = funcs.AdminTeacher
-	handlers["/v1/admin/user"] = funcs.AdminUser
-
-	handlers["/v1/app"] = funcs.App
-	handlers["/v1/book"] = funcs.Book
 
 	handlers["/v1/booked/query"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		openId := r.URL.Query().Get("openId")
@@ -151,8 +139,7 @@ func main() {
 		}
 		QueryJSON(w, db, "select * from v1_booking_query($1,$2,$3)", start, openId, classType)
 	}
-	handlers["/v1/debug"] = funcs.Debug
-	handlers["/v1/document"] = funcs.Document
+
 	handlers["/v1/documents"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		CrossOrigin(w)
 		files, err := ioutil.ReadDir("./frontend")
@@ -178,7 +165,6 @@ func main() {
 		w.Write(buf)
 	}
 
-	handlers["/v1/login"] = funcs.Login
 	handlers["/v1/market"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_market()")
 	}
@@ -197,10 +183,6 @@ func main() {
 	handlers["/v1/notices"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		QueryJSON(w, db, "select * from v1_notices()")
 	}
-	handlers["/v1/picture"] = funcs.Picture
-
-	handlers["/v1/snippet"] = funcs.Snippet
-	handlers["/v1/sql"] = funcs.Sql
 
 	handlers["/v1/teacher"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 		id := r.URL.Query().Get("id")
@@ -253,8 +235,6 @@ func main() {
 		QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
 	}
 
-	handlers["/v1/admin/vipcard"] = funcs.AdminVipcard
-
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8082", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -281,6 +261,60 @@ func main() {
 			return
 		case "/v1/user":
 			funcs.User(w, r, db)
+			return
+		case "/":
+			funcs.Home(w, r)
+			return
+		case "/favicon.ico":
+			funcs.Favicon(w, r)
+			return
+		case "/v1/admin/card":
+			funcs.AdminCard(w, r, db)
+			return
+		case "/v1/admin/course":
+			funcs.AdminCourse(w, r, db)
+			return
+		case "/v1/admin/lesson":
+			funcs.AdminLesson(w, r, db)
+			return
+		case "/v1/admin/market":
+			funcs.AdminMarket(w, r, db)
+			return
+		case "/v1/admin/notice":
+			funcs.AdminNotice(w, r, db)
+			return
+		case "/v1/admin/teacher":
+			funcs.AdminTeacher(w, r, db)
+			return
+		case "/v1/admin/user":
+			funcs.AdminUser(w, r, db)
+			return
+		case "/v1/debug":
+			funcs.Debug(w, r, db)
+			return
+		case "/v1/document":
+			funcs.Document(w, r, db)
+			return
+		case "/v1/picture":
+			funcs.Picture(w, r)
+			return
+		case "/v1/snippet":
+			funcs.Snippet(w, r, db)
+			return
+		case "/v1/sql":
+			funcs.Sql(w, r, db)
+			return
+		case "/v1/admin/vipcard":
+			funcs.AdminVipcard(w, r, db)
+			return
+		case "/v1/login":
+			funcs.Login(w, r, db)
+			return
+		case "/v1/app":
+			funcs.App(w, r, db)
+			return
+		case "/v1/book":
+			funcs.Book(w, r, db)
 			return
 		}
 		f := handlers[r.URL.Path]

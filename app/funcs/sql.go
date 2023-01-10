@@ -6,24 +6,24 @@ import (
 	"net/http"
 )
 
-func Sql(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func Sql(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		sqlGet(db, w, r, secret)
+		sqlGet(db, w, r)
 		return
 	case "DELETE":
-		sqlDelete(db, w, r, secret)
+		sqlDelete(db, w, r)
 		return
 	case "POST":
-		sqlPost(db, w, r, secret)
+		sqlPost(db, w, r)
 		return
 	case "OPTIONS":
-		sqlOptions(db, w, r, secret)
+		sqlOptions(db, w, r)
 		return
 
 	}
 }
-func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -39,7 +39,7 @@ func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 
 		// 验证权限
 		// secret 是用于计算Hash的长度为32的字节数组
-		if !ValidToken(db, w, r, secret) {
+		if !ValidToken(db, w, r) {
 			return
 		}
 		rows, err := db.Query(q)
@@ -72,10 +72,10 @@ func sqlGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
 	}
 
 }
-func sqlDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func sqlDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func sqlPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func sqlPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func sqlOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func sqlOptions(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	crossOrigin(w)
 }

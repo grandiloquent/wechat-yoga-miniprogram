@@ -1,7 +1,6 @@
 package funcs
 
 import (
-	"database/sql"
 	"fmt"
 	"image"
 	"image/jpeg"
@@ -14,26 +13,26 @@ import (
 	"github.com/nfnt/resize"
 )
 
-func Picture(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func Picture(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		pictureGet(db, w, r, secret)
+		pictureGet(db, w, r)
 		return
 	case "DELETE":
-		pictureDelete(db, w, r, secret)
+		pictureDelete(db, w, r)
 		return
 	case "POST":
-		picturePost(db, w, r, secret)
+		picturePost(db, w, r)
 		return
 	case "OPTIONS":
-		pictureOptions(db, w, r, secret)
+		pictureOptions(db, w, r)
 		return
 	case "PUT":
-		picturePut(db, w, r, secret)
+		picturePut(db, w, r)
 		return
 	}
 }
-func pictureGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func pictureGet(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("action") {
 	case "1":
 		break
@@ -44,9 +43,9 @@ func pictureGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byt
 	}
 
 }
-func pictureDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func pictureDelete(w http.ResponseWriter, r *http.Request) {
 }
-func picturePost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func picturePost(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	_ = r.ParseMultipartForm(32 << 20) // 32MB is the default used by FormFile
 	fhs := r.MultipartForm.File["images"]
@@ -109,7 +108,7 @@ func picturePost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []by
 		_, _ = w.Write([]byte(fileName))
 	}
 }
-func pictureOptions(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func pictureOptions(w http.ResponseWriter, r *http.Request) {
 }
-func picturePut(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func picturePut(w http.ResponseWriter, r *http.Request) {
 }

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func AdminWeeks(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func AdminWeeks(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
 		queryJSON(w, db, "select * from v1_admin_weeks()")

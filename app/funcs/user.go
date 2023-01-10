@@ -5,20 +5,20 @@ import (
 	"net/http"
 )
 
-func User(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func User(w http.ResponseWriter, r *http.Request, db *sql.DB) {
 	switch r.Method {
 	case "GET":
-		userGet(db, w, r, secret)
+		userGet(db, w, r)
 		return
 	case "DELETE":
-		userDelete(db, w, r, secret)
+		userDelete(db, w, r)
 		return
 	case "POST":
-		userPost(db, w, r, secret)
+		userPost(db, w, r)
 		return
 	}
 }
-func userGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func userGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 
 	switch r.URL.Query().Get("action") {
 	case "1":
@@ -40,8 +40,8 @@ func userGet(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) 
 	}
 
 }
-func userDelete(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func userDelete(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 }
-func userPost(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
+func userPost(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 	insertNumber(db, w, r, "select * from v1_user_update($1)")
 }

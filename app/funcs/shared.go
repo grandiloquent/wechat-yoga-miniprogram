@@ -196,3 +196,9 @@ func createToken(secret []byte, id string) ([]byte, error) {
 	dst = append(dst, []byte(s)...)
 	return dst, nil
 }
+func writeError(w http.ResponseWriter, err error) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(500)
+	fmt.Fprintln(w, err)
+}

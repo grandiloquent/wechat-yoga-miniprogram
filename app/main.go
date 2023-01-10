@@ -112,30 +112,6 @@ func main() {
 	handlers["/v1/admin/teacher"] = funcs.AdminTeacher
 	handlers["/v1/admin/user"] = funcs.AdminUser
 
-	handlers["/v1/authorization"] = func(db *sql.DB, w http.ResponseWriter, r *http.Request, secret []byte) {
-		var code string
-		if r.Method == "GET" {
-			code = r.URL.Query().Get("code")
-		} else {
-			buf, err := io.ReadAll(r.Body)
-			if CheckError(w, err) {
-				return
-			}
-			code = string(buf)
-		}
-		res, err := http.Get(authUrl + code)
-		if err != nil {
-			writeError(w, err)
-			return
-		}
-		defer func(Body io.ReadCloser) {
-			err := Body.Close()
-			if err != nil {
-				fmt.Printf("V1Authorization: %v\n", err)
-			}
-		}(res.Body)
-		_, _ = io.Copy(w, res.Body)
-	}
 	handlers["/v1/app"] = funcs.App
 	handlers["/v1/book"] = funcs.Book
 
@@ -277,13 +253,11 @@ func main() {
 		QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
 	}
 
-	handlers["/v1/user"] = funcs.User
-
 	handlers["/v1/admin/vipcard"] = funcs.AdminVipcard
-	handlers["/v1/admin/weeks"] = funcs.AdminWeeks
 
 	// 启动服务器并侦听 8081 端口
 	_ = http.ListenAndServe(":8082", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		if strings.HasPrefix(r.URL.Path, "/v1/admin/") {
 			// 启用跨域，便于本地测试
 			CrossOrigin(w)
@@ -297,6 +271,17 @@ func main() {
 			if !funcs.ValidToken(db, w, r, secret) {
 				return
 			}
+		}
+		switch r.URL.Path {
+		case "/v1/admin/weeks":
+			funcs.AdminWeeks(w, r, db)
+			return
+		case "/v1/authorization":
+			funcs.Authorization(w, r, authUrl)
+			return
+		case "/v1/user":
+			funcs.User(w, r, db)
+			return
 		}
 		f := handlers[r.URL.Path]
 		if f != nil {

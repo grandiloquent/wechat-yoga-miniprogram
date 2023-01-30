@@ -132,7 +132,7 @@
     connectedCallback() {
       const wrapper = document.createElement('div');
       // collapse
-      wrapper.setAttribute("class", "wrapper expand");
+      wrapper.setAttribute("class", "wrapper collapse");
       this.shadowRoot.appendChild(wrapper);
       const top = document.createElement('div');
       top.setAttribute("class", "top");

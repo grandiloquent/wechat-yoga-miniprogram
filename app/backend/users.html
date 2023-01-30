@@ -8,9 +8,9 @@
   <title>用户列表</title>
   <link rel="stylesheet" href="css/users.css">
   <script type="module" src="../components/custom-header.js"></script>
-  <script type="module" src="../components/custom-drawer.js"></script>
-  <script type="module" src="../components/custom-user-item.js"></script>
+  <script src="custom-drawer.js"></script>
   <script src="custom-users.js"></script>
+  <script src="custom-actions.js"></script>
 </head>
 
 <body>
@@ -19,7 +19,6 @@
   <div style="height: 56px;"></div>
   <custom-actions bind="customActions" @submit="onCustomActionsSubmit"></custom-actions>
   <custom-users bind="customUsers"></custom-users>
-  <script src="custom-actions.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/users.js"></script>
 </body>

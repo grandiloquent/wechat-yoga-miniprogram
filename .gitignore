@@ -25,3 +25,4 @@ app/assets/dataSourceName.txt
 server/Nginx
 server/Extension
 server/FileMove
+server/*.md

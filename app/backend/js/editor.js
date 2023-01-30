@@ -448,24 +448,51 @@ function substringBeforeLast(string, delimiter, missingDelimiterValue) {
     return string.substring(0, index);
   }
 }
+function substringNearest(string, index, start, end) {
+  let j = index;
+  while (j > -1) {
+    if (start.indexOf(string[j]) !== -1) {
+      j++
+      break;
+    }
+    j--;
+  }
+  let k = index;
+  while (k < string.length) {
+    if (end.indexOf(string[k]) !== -1) {
+      break;
+    }
+    k++;
+  }
+  return string.substring(j, k);
+}
 
 function jumpPage(textarea) {
-  const line = getLine(textarea);
-  const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);
-  let src;
-  if (!value) {
-    if (path.endsWith(".html")) {
-      src = 'http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), ".");
-    } else {
-      src = substringBeforeLast(path, ".");
-      src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(substringBeforeLast(src, "/"), "/")}/${substringAfterLast(src, "/")}.html`)}`;
+  if (typeof path !== 'undefined') {
+    const line = getLine(textarea);
+    const value = /(?<=(href|src)=")[^"]+(?=")/.exec(line);
+    let src;
+    if (!value) {
+      if (path.endsWith(".html")) {
+        src = 'http://127.0.0.1:8081/' + substringBeforeLast(substringAfter(path, "\\app\\"), ".");
+      } else {
+        src = substringBeforeLast(path, ".");
+        const name = `${substringBeforeLast(substringBeforeLast(src, "/"), "/")}/${substringAfterLast(src, "/")}.html`;
+        src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(name)}`;
+      }
+      window.open(src);
+      return
     }
+
+    src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(path, "/")}/${value[0]}`)}`;
     window.open(src);
-    return
+  } else {
+    window.open(
+      substringNearest(textarea.value,
+        textarea.selectionStart, '( ', ' )\r\n').trim(), '_blank'
+    );
   }
 
-  src = `${window.location.origin}${window.location.pathname}?path=${encodeURIComponent(`${substringBeforeLast(path, "/")}/${value[0]}`)}`;
-  window.open(src);
 }
 
 function substringAfter(string, delimiter, missingDelimiterValue) {

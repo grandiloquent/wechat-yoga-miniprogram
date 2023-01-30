@@ -10,7 +10,7 @@ async function drawPicture() {
     a.click();
     toast.setAttribute('message', '课表已下载');
 }
-//drawPicture();
+
 
 async function downloadData() {
     /*
@@ -38,6 +38,7 @@ async function render() {
         results = await downloadData();
         renderLessons(line1, 32400, results);
         renderLessons(line2, 70200, results);
+        drawPicture();
     } catch (error) {
         console.log(error);
     }

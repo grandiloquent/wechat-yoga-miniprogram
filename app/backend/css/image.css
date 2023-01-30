@@ -86,10 +86,9 @@ img {
 }
 
 .info {
-
-    grid-column: 1 / 7;
+    justify-self: self-start;
+    grid-column: 2 / 8;
     font-size: 22px;
-
 }
 
 .info>ol {

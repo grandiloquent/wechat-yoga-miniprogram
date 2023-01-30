@@ -1,3 +1,106 @@
+(() => {
+  class CustomActions extends HTMLElement {
+
+    constructor() {
+      super();
+      this.attachShadow({
+        mode: 'open'
+      });
+      const wrapper = document.createElement("div");
+      wrapper.setAttribute("class", "wrapper");
+      const style = document.createElement('style');
+      style.textContent = `.item-name {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 12px 4px 0;
+  color: #3c4043;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+  white-space: normal;
+}
+
+.item-image {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dadce0;
+  border-radius: 999rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  fill: currentColor;
+  color: #70757a;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.wrapper {
+  margin: 16px 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent
+}`;
+      this.wrapper = wrapper;
+      this.shadowRoot.append(style, wrapper);
+    }
+    navigate(e) {
+      const href = e.currentTarget.dataset.href;
+      window.location = `./${href}.html`;
+    }
+    set data(value) {
+      this.wrapper.insertAdjacentHTML('afterbegin', value.map(element => {
+        return `<div bind class="item" data-href="${element.href}" @click="navigate">
+  <div class="item-image">
+    <svg viewBox="0 0 24 24" style="width:24px;height:24px;">
+      ${element.path}
+    </svg>
+  </div>
+  <div class="item-name">
+    ${element.title}
+  </div>
+</div>`}).join(''));
+      this.wrapper.querySelectorAll('[bind]').forEach(element => {
+        if (element.getAttribute('bind')) {
+          this[element.getAttribute('bind')] = element;
+        }
+        [...element.attributes].filter(attr => attr.nodeName.startsWith('@')).forEach(attr => {
+          if (!attr.value) return;
+          element.addEventListener(attr.nodeName.slice(1), evt => {
+            this[attr.value](evt);
+          });
+        });
+      })
+    }
+
+    connectedCallback() {
+    }
+    static get observedAttributes() {
+      return ['title'];
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+    }
+  }
+  customElements.define('custom-actions', CustomActions);
+  /*
+  <!--
+  <script type="module" src="./components/custom-actions.js"></script>
+  <custom-actions></custom-actions>
+  customElements.whenDefined('custom-actions').then(() => {
+    customActions.data = []
+  })
+  -->
+  */
+})();
 customActions.data = [{
   path: ` <path d="M0 0h24v24H0V0z" fill="none"></path>
         <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z">

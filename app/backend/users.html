@@ -10,19 +10,19 @@
   <script type="module" src="../components/custom-header.js"></script>
   <script type="module" src="../components/custom-drawer.js"></script>
   <script type="module" src="../components/custom-user-item.js"></script>
-  <script type="module" src="../components/custom-users.js"></script>
-  <script type="module" src="../components/custom-button.js"></script>
-  <script type="module" src="../components/custom-users-buttons.js"></script>
+  <script src="custom-users.js"></script>
 </head>
 
 <body>
   <custom-drawer bind="customDrawer"></custom-drawer>
   <custom-header title="用户列表" bind @submit="showDrawer"></custom-header>
   <div style="height: 56px;"></div>
-  <custom-users-buttons></custom-users-buttons>
+  <custom-actions bind="customActions" @submit="onCustomActionsSubmit"></custom-actions>
   <custom-users bind="customUsers"></custom-users>
+  <script src="custom-actions.js"></script>
   <script src="js/shared.js"></script>
   <script src="js/users.js"></script>
 </body>
+
 
 </html>

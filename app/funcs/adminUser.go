@@ -44,6 +44,10 @@ func adminUserGet(db *sql.DB, w http.ResponseWriter, r *http.Request) {
 
 		queryJSON(w, db, "select * from v1_admin_users()")
 		break
+	case "3":
+
+		queryJSON(w, db, "select * from v1_admin_users_all()")
+		break
 	default:
 		id := r.URL.Query().Get("id")
 		if len(id) == 0 {

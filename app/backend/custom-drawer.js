@@ -147,6 +147,7 @@
       this.wrapper = wrapper;
       this.main = main;
       this.overlay = overlay;
+      overlay.style.display = 'none';
       overlay.addEventListener('click', evt => {
         this.wrapper.className = "wrapper collapse";
         overlay.style.display = 'none';

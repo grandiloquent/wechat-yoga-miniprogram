@@ -26,3 +26,4 @@ server/Nginx
 server/Extension
 server/FileMove
 server/*.md
+*.exe

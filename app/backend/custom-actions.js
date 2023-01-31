@@ -9,13 +9,7 @@
             const wrapper = document.createElement("div");
             wrapper.setAttribute("class", "wrapper");
             const style = document.createElement('style');
-            style.textContent = `.wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px;
-}
-
+            style.textContent = ` 
 .item {
   display: flex;
   align-items: center;
@@ -40,6 +34,7 @@
   background: #e8f0fe;
   color: #1967d2;
 }`;
+            wrapper.setAttribute("style", "display: flex;align-items: center; gap: 8px;padding: 16px;");
             this.wrapper = wrapper;
             this.shadowRoot.append(style, wrapper);
             this._items = [];
@@ -70,6 +65,9 @@
         }
 
         connectedCallback() {
+            if(this.hasAttribute('wrapper')) {
+                this.wrapper.setAttribute('style', this.getAttribute('wrapper'));
+            }
         }
     }
     customElements.define('custom-actions', CustomActions);

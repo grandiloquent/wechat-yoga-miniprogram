@@ -109,7 +109,7 @@ class CustomFilter extends HTMLElement {
           </div>
           <div class="item">
             <button class="button" style="padding: 0 11px;">
-              大后天
+              近 14 天
             </button>
           </div>
           <div class="item">

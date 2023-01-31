@@ -63,8 +63,10 @@ async function onSubmitBar(evt) {
     history.back();
   }
 }
-
-async function onCustomUserLessons(evt) {
+customElements.whenDefined('custom-actions').then(() => {
+  customActions.data = [{ "id": 0, "title": "今天" }, { "id": 1, "title": "明天" }, { "id": 2, "title": "近 14 天" }, { "id": 3, "title": "过去 1 月" }, { "id": 4, "title": "过去 1 年" }, { "id": 5, "title": "全部" }];
+})
+async function onCustomActionsSubmit(evt) {
   const now = new Date();
   const dateInSeconds = now.setHours(0, 0, 0, 0) / 1000;
   let start, end;

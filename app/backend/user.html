@@ -11,8 +11,8 @@
   <script src="custom-drawer.js"></script>
   <script src="../components/toast.js"></script>
   <script type="module" src="../components/custom-user-profile.js"></script>
-  <script type="module" src="../components/custom-user-options.js"></script>
   <script type="module" src="../components/custom-user-lessons.js"></script>
+  <script src="custom-actions.js"></script>
 </head>
 
 <body>
@@ -21,7 +21,7 @@
   <div style="height: 56px;"></div>
   <custom-user-profile bind="customUserProfile" @submit=""></custom-user-profile>
   <div style="height: 8px;"></div>
-  <custom-user-options bind="customUserOptions" @submit="onCustomUserLessons"></custom-user-options>
+  <custom-actions bind="customActions" wrapper="position: relative;height: 100%;max-width: 100%;overflow: overlay hidden;padding-left: 16px;padding-bottom: 20px;display: flex;gap: 8px;user-select: none" @submit="onCustomActionsSubmit"></custom-actions>
   <custom-user-lessons bind="customUserLessons" @submit=""></custom-user-lessons>
   <custom-toast bind="toast"></custom-toast>
   <script src="js/shared.js"></script>

@@ -131,7 +131,7 @@ render();
 function back() {
   const returnUrl = new URL(document.URL).searchParams.get('returnUrl');
   if (returnUrl) {
-    window.location = returnUrl;
+    window.location = "/backend"+returnUrl;
   } else {
     history.back();
   }

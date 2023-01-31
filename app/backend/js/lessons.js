@@ -4,9 +4,12 @@ Set the time range for querying courses
 */
 function filterHandler(evt) {
   if (!evt.detail) return;
-  if (evt.detail <= 4) {
+  if (evt.detail < 4) {
     const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 1) * 86400;
     render(date, date + 86400);
+  } else if (evt.detail === 4) {
+    const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 1) * 86400;
+    render(date, date + 14 * 86400);
   } else {
     const date = new Date().setHours(0, 0, 0, 0) / 1000 + (evt.detail - 6) * 86400;
     render(date, date + 86400);
@@ -44,7 +47,7 @@ function formatLessonType(lesson) {
 
 function formatLessonDateTime(lesson) {
   const date = new Date(lesson.date_time * 1000);
-  return `周${'日一二三四五六'[date.getDay()]} ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}`
+  return `${date.getMonth()+1}月${date.getDate()}日 周${'日一二三四五六'[date.getDay()]} ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}`
 }
 const baseUri = window.location.host === '127.0.0.1:5500' ? SETTINGS.host : '';
 

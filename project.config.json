@@ -43,7 +43,8 @@
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
     "ignoreUploadUnusedFiles": true,
-    "useStaticServer": true
+    "useStaticServer": true,
+    "condition": false
   },
   "appid": "wx915afa9083177059",
   "projectname": "Yoga",

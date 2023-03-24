@@ -76,4 +76,3 @@ document.querySelectorAll('[bind]').forEach(element => {
     });
   });
 })
-

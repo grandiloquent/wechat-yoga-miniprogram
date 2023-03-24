@@ -1,5 +1,5 @@
 {
-  "lazyCodeLoading": "requiredComponents",
+ 
   "pages": [
     "pages/index/index",
     "pages/booking/booking",

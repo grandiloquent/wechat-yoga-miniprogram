@@ -235,7 +235,7 @@ func main() {
 		QueryInt(w, db, "select * from v1_unbook($1,$2)", id, openId)
 	}
 
-	// 启动服务器并侦听 8081 端口
+	// 启动服务器并侦听 8082 端口
 	_ = http.ListenAndServe(":8082", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		if strings.HasPrefix(r.URL.Path, "/v1/admin/") {

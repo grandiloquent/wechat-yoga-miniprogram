@@ -56,9 +56,11 @@ function process(item) {
     item.label = "准备上课"
   } else if ((item.mode & 32)) {
     item.label = "正在上课"
-  } else if ((item.mode & 128)) {
-    item.label = "候补"
-  } else if ((item.mode & 256)) {
+  } 
+  else if ((item.mode & 128)) {
+    item.label = "已满额"
+  } 
+  else if ((item.mode & 256)) {
     item.label = "已取消"
   }
 

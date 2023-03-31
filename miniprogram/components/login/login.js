@@ -59,6 +59,20 @@ Component({
       }
     },
     async onUpdateUser() {
+      if (!this.data.avatarUrl) {
+        wx.showToast({
+          icon: "error",
+          title: "请设置头像"
+        })
+        return;
+      }
+      if (!this.data.nickName) {
+        wx.showToast({
+          icon: "error",
+          title: "请输入昵称"
+        })
+        return;
+      }
       const data = {
         avatar_url: this.data.avatarUrl,
         nick_name: this.data.nickName,

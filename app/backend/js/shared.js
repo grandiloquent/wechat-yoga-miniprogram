@@ -1,6 +1,6 @@
 const SETTINGS = {
   title: '晨蕴瑜伽',
-  cdn: "https://chenyunyoga.cn",
+  cdn: "https://lucidu.cn",
   host: "http://127.0.0.1:8082"
 };
 

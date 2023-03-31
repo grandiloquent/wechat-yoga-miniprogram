@@ -10,7 +10,7 @@ Page({
   loadData() {
     utils.getString(app, "v1/user?action=2", (err, data) => {
       if (err) return;
-      if (data) {
+      if (data && data.nick_name) {
         app.globalData.userId = data.id;
         this.setData({
           user: data

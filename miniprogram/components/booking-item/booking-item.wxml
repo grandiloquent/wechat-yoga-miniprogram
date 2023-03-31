@@ -14,7 +14,7 @@
         已预约 {{item.count}}/{{item.peoples}}
       </text>
     </view>
-    <view class="sub-right {{(item.mode&8||item.mode&128)?'sub-right-btn':''}}" bindtap="onClick" data-item="{{item}}">
+    <view class="sub-right {{(item.mode&8)?'sub-right-btn':''}}" bindtap="onClick" data-item="{{item}}">
       {{lesson.label}}
     </view>
   </view>

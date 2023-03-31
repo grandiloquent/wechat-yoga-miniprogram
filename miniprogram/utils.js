@@ -121,13 +121,17 @@ function checkIfLessonFullyBooked(todayTimestamp, lesson, currentSeconds, minute
   return false;
 }
 async function checkUserAvailability(app) {
+  if (!app.globalData.openid) {
+    return false;
+  }
   if (app.globalData.userId) {
     return true;
   }
   let result;
   try {
-    result = await getStringAsync(app, "v1/user?action=1");
-    if (!result) {
+    result = await getStringAsync(app, "v1/user?action=2");
+    //TODO: check
+    if (!result||!result.nick_name) {
       return false;
     }
     app.globalData.userId = result;

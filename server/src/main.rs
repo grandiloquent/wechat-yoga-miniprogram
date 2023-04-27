@@ -12,3 +12,4 @@ async fn main() -> Result<(), rocket::Error> {
 
     Ok(())
 }
+

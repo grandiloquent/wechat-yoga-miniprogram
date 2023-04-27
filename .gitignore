@@ -29,4 +29,3 @@ server/*.md
 *.exe
 target
 Cargo.lock
-Rocket.toml

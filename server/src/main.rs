@@ -1,3 +1,6 @@
+mod errors;
+mod handlers;
+
 use std::env;
 
 use deadpool_postgres::{ManagerConfig, Runtime};
@@ -23,7 +26,7 @@ async fn main() -> Result<(), rocket::Error> {
     config.manager = Some(ManagerConfig {
         recycling_method: deadpool_postgres::RecyclingMethod::Fast,
     });
- 
+
     rocket::build()
         .manage(
             config
@@ -31,11 +34,15 @@ async fn main() -> Result<(), rocket::Error> {
                 .expect("Can't create pool"),
         )
         .mount("/", routes![])
-        //.register("/", catchers![handlers::not_found::not_found])
+        .register(
+            "/",
+            catchers![
+                errors::not_found::not_found,
+                errors::internal_error::internal_error
+            ],
+        )
         .launch()
         .await?;
 
     Ok(())
 }
-
-

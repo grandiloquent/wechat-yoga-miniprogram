@@ -27,3 +27,5 @@ server/Extension
 server/FileMove
 server/*.md
 *.exe
+target
+Cargo.lock

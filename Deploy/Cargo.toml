@@ -7,4 +7,7 @@ edition = "2021"
 
 [dependencies]
 zip = "0.6.4"
+walkdir = "2.3.2"
+
 ssh-rs = "0.3.2"
+

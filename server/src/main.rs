@@ -34,7 +34,7 @@ async fn main() -> Result<(), rocket::Error> {
                 .create_pool(Some(Runtime::Tokio1), NoTls)
                 .expect("Can't create pool"),
         )
-        .mount("/", routes![])
+        .mount("/", routes![handlers::index::index])
         .register(
             "/",
             catchers![

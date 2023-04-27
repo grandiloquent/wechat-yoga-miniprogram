@@ -23,8 +23,7 @@ async fn main() -> Result<(), rocket::Error> {
     config.manager = Some(ManagerConfig {
         recycling_method: deadpool_postgres::RecyclingMethod::Fast,
     });
-
-    // https://rocket.rs/v0.4/guide/configuration/#rockettoml
+ 
     rocket::build()
         .manage(
             config

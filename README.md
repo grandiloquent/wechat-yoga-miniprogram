@@ -2,6 +2,10 @@
 
 瑜伽约课工具是一个使用 Rust 开发的微信小程序。
 
+- [部署](/Deploy)
+- [后端服务器](/server)
+- [前端](/WebAssembly/weixin)
+
 ## 微信小程序截图
 
 <div>

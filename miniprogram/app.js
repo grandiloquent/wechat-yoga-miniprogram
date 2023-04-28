@@ -3,6 +3,9 @@ const shard = require("./utils/shared");
 
 App({
   async onLaunch() {
+    // 检查小程序是否可更新。如果有更新的版
+    // 本，提示用户进行更新，如果用户同意更
+    // 新，则停止进一步执行程序
     try {
       await shard.checkUpdate();
     } catch (error) {

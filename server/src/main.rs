@@ -12,6 +12,8 @@ extern crate rocket;
 
 #[rocket::main]
 async fn main() -> Result<(), rocket::Error> {
+    // 配置 PostgreSQL 数据库
+    // 通过环境变量设置数据库公网IP，端口，数据库名称，用户名，密码
     let mut config = deadpool_postgres::Config::new();
 
     config.host = Some(env::var("DB_HOST").expect("Can't specify"));
@@ -27,7 +29,7 @@ async fn main() -> Result<(), rocket::Error> {
     config.manager = Some(ManagerConfig {
         recycling_method: deadpool_postgres::RecyclingMethod::Fast,
     });
-
+    // 实例化和启动 rocket
     rocket::build()
         .manage(
             config

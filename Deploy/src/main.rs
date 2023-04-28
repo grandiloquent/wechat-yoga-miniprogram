@@ -122,7 +122,7 @@ fn upload_server(session: &mut LocalSession<TcpStream>) {
     // 文件上传完成后执行解压命令
     let exec = session.open_exec().unwrap();
     let vec: Vec<u8> = exec
-        .send_command(format!("unzip -o {} -d server", src).as_str())
+        .send_command(format!("rm -rf /root/server || unzip -o {} -d server", src).as_str())
         .unwrap();
     println!("{}", String::from_utf8(vec).unwrap());
     let exec = session.open_exec().unwrap();

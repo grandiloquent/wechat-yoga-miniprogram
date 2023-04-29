@@ -2,9 +2,8 @@
     <view class="item-wrapper">
         <view>{{app.globalData.title}}</view>
         <swiper class="swiper" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
-            <swiper-item>长沙市 {{weather}}</swiper-item>
-            <swiper-item>{{date.cMonth}}月{{date.cDay}}日{{date.ncWeek}}</swiper-item>
-            <swiper-item>农历{{date.IMonthCn}}{{date.IDayCn}}</swiper-item>
+            <swiper-item>{{weather}}</swiper-item>
+            <swiper-item>{{date}}</swiper-item>
             <swiper-item>{{bj}}</swiper-item>
         </swiper>
     </view>

@@ -206,43 +206,16 @@ function debug(app, openid) {
 // 格式化以毫秒为单位的时间戳
 function formatBeijingTime(t) {
   const n = new Date(t);
-  return `北京时间${n.getHours()}点${n.getMinutes()}分${n.getSeconds()}秒`
+  return `北京时间 ${n.getHours()}点${n.getMinutes()}分${n.getSeconds()}秒`
 }
 
 function formatDate(ms) {
   const t = new Date(ms);
   return `${t.getFullYear()}-${(t.getMonth() + 1).toString().padStart(2, '0')}-${(t.getDate()).toString().padStart(2, '0')} ${(t.getHours()).toString().padStart(2, '0')}:${(t.getMinutes()).toString().padStart(2, '0')}:${(t.getSeconds()).toString().padStart(2, '0')}`;
 }
-// 格式腾讯天气接口返回的数据
-function formatWeather(obj) {
-  return obj['weather'] + obj['degree'] + '°' + {
-    "0": "微风",
-    "1": "东北风",
-    "2": "东风",
-    "3": "东南风",
-    "4": "南风",
-    "5": "西南风",
-    "6": "西风",
-    "7": "西北风",
-    "8": "北风",
-    "9": "旋转风"
-  }[obj['wind_direction']] + obj['wind_power'] + "级"
-  // obj['weather'] + obj['degree'] + '° • ' + { "0": "微风", "1": "东北风", "2": "东风", "3": "东南风", "4": "南风", "5": "西南风", "6": "西风", "7": "西北风", "8": "北风", "9": "旋转风" }[obj['wind_direction']] + obj['wind_power'] + "级" + " • 湿度" + obj['humidity'] + "%"
-}
 
 function getCurrentSeconds(now) {
   return now.getHours() * 60 * 60 + now.getMinutes() * 60;
-}
-// 通过淘宝接口获取北京时间
-function getNetworkTime(callback) {
-  wx.request({
-    url: "https://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp",
-    success: res => {
-      if (res.statusCode === 200) {
-        callback(parseInt(res.data.data.t))
-      }
-    }
-  });
 }
 // 鉴权后获取用户OpenId
 function getOpenId(host) {
@@ -330,16 +303,6 @@ function getUserProfile() {
   })
 }
 
-function getWeather(callback) {
-  wx.request({
-    url: "https://wis.qq.com/weather/common?source=xw&refer=h5&weather_type=observe&province=%E6%B9%96%E5%8D%97%E7%9C%81&city=%E9%95%BF%E6%B2%99%E5%B8%82",
-    success: res => {
-      if (res.statusCode === 200) {
-        callback(res.data.data.observe)
-      }
-    }
-  });
-}
 
 function isUserInfoProtected() {
   return compareVersion(wx.getSystemInfoSync().SDKVersion, "2.27.1") >= 0
@@ -572,14 +535,11 @@ module.exports = {
   debug,
   formatBeijingTime,
   formatDate,
-  formatWeather,
-  getNetworkTime,
   getOpenId,
   getRandomColor,
   getString,
   getStringAsync,
-  getUserProfile,
-  getWeather,
+  getUserProfile, 
   isUserInfoProtected,
   navigate,
   postString,

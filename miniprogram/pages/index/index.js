@@ -7,6 +7,8 @@ Page({
   },
   // 该页面加载时运行一次的方法
   async onLoad() {
+
+ 
     // 启用分享小程序的功能
     wx.showShareMenu({
       withShareTicket: true,

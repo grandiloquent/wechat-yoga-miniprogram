@@ -33,7 +33,6 @@ function checkUpdate() {
 // https://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp
 // https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
 function getJson(url) {
-console.log("getJson",url);
   return new Promise((resolve, reject) => {
     wx.request({
       url,
@@ -46,7 +45,6 @@ console.log("getJson",url);
 
       },
       fail(error) {
-console.log("getJson",error);
         reject(error);
       }
     })
@@ -56,5 +54,5 @@ console.log("getJson",error);
 
 module.exports = {
   checkUpdate,
-getJson
+  getJson
 };

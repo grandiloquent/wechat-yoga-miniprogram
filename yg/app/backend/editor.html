@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑</title>
+  <link rel="stylesheet" href="css/editor.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script type="module" src="../components/custom-bottom-bar.js"></script>
+  <script type="module" src="../components/custom-dialog-actions.js"></script>
+  <script src="../components/toast.js"></script>
+  <script type="module" src="../components/custom-dialog-replace.js"></script>
+</head>
+
+<body>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="编辑" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <textarea bind="textarea"></textarea>
+  <custom-bottom-bar bind="customBottomBar" @submit="navigate"></custom-bottom-bar>
+  <custom-toast id="toast"></custom-toast>
+  <custom-dialog-replace bind="customDialogReplace" @submit="findAndReplaceHandler" style="display: none;"></custom-dialog-replace>
+  <script src="js/editor.js"></script>
+  <script>
+    function formattingJavaScript(textarea) {
+      const options = { indent_size: 2, space_in_empty_paren: true }
+
+      let selected = getSelectedString(textarea);
+      let str = selected || textarea.value;
+      let s;
+
+      if (str.indexOf('</html>') !== -1 || str.indexOf('</view>') !== -1 || str.startsWith("<div")) {
+        s = html_beautify(str, options);
+      } else if (/\)\s+{/.test(str)) {
+        s = js_beautify(str, options);
+      } else {
+        s = css_beautify(str, options);
+      }
+      //const s = str.indexOf('</html>')!==-1 ? : ;
+      if (selected) {
+        replaceSelectedText(textarea, s)
+      } else {
+        textarea.value = s;
+      }
+    }
+  </script>
+</body>
+
+</html>

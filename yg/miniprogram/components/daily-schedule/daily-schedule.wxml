@@ -1,0 +1,7 @@
+<view class="daily-schedule">
+  <view class="daily-schedule-item {{item.time===selectedTime?'selected':''}}" bindtap="onClick" data-time="{{item.time}}" wx:for="{{dates}}" wx:key="id" data-id="{{item.id}}">
+    <text>{{item.week}}</text>
+    <text class="daily-schedule-day">{{item.day}}</text>
+    <text>{{item.month+1}}月</text>
+  </view>
+</view>

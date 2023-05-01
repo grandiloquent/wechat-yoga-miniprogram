@@ -1,0 +1,22 @@
+.wrapper {
+    width: 100vw;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.item-wrapper {
+    line-height: 40rpx;
+    justify-content: center;
+    display: flex;
+    font-size: 28rpx;
+    padding-left: 16rpx;
+    flex-direction: column;
+    width: 100%;
+}
+
+.swiper {
+    font-size: 20rpx;
+    color: #999;
+    height: 32rpx;
+}

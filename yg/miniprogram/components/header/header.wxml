@@ -1,0 +1,11 @@
+<view class="wrapper">
+  <view class="main">
+    <view class="buttons">
+      <view class="filter"></view>
+      <view class="button {{selected===1?'selected':''}}" data-id="1" bindtap="onClick">今天</view>
+      <view class="button {{selected===2?'selected':''}}" data-id="2" bindtap="onClick">明天</view>
+      <view class="button {{selected===3?'selected':''}}" data-id="3" bindtap="onClick">近 7 日</view>
+      <view class="button {{selected===4?'selected':''}}" data-id="4" bindtap="onClick">过去 1 年</view>
+    </view>
+  </view>
+</view>

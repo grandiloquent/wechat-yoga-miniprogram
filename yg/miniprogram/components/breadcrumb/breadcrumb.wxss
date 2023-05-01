@@ -1,0 +1,40 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  height: 64rpx;
+  background-color: #fff;
+}
+
+.container {
+  letter-spacing: 1.6rpx;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 24rpx;
+  font-weight: 500;
+  line-height: 32rpx;
+  text-transform: uppercase;
+  display: flex;
+  color: #202124;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item {
+  text-decoration: none;
+  color: #80868b;
+  margin-right: 8rpx;
+}
+
+.separator {
+  margin-right: 8rpx;
+  width: 28rpx;
+  height: 28rpx;
+  background-size: 28rpx 28rpx;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(128, 134, 139)' xmlns='http://www.w3.org/2000/svg'  focusable='false' viewBox='0 0 24 24' class=' NMm5M hhikbc'><path d='M7.59 18.59L9 20l8-8-8-8-1.41 1.41L14.17 12'></path></svg>");
+
+}

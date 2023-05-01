@@ -1,0 +1,24 @@
+<view class="wrapper" style="background-color:{{backgroundColor}}">
+    <view class="header-box" data-id="0" bindtap="navigate">
+        <image class="avatar" src="{{ user.avatar_url }}" mode="aspectFill"></image>
+        <view class="r">
+            <view class="nick">{{ user.nick_name }}</view>
+        </view>
+    </view>
+    <view class="items">
+        <view class="item" data-id="1" bindtap="navigate">
+            <view class="text">{{user.big}}</view>
+            <view>团课</view>
+        </view>
+        <view class="item" data-id="2" bindtap="navigate">
+            <view class="text">{{user.one}}</view>
+            <view>私教</view>
+        </view>
+        <view class="item" data-id="3" bindtap="navigate">
+            <view class="text">{{user.small}}</view>
+            <view>小班</view>
+        </view>
+    </view>
+</view>
+
+    

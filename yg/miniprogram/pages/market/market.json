@@ -1,0 +1,8 @@
+{
+
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {
+    "breadcrumb": "../../components/breadcrumb/breadcrumb",
+      "wemark": "../../wemark/wemark"
+  }
+}

@@ -1,0 +1,20 @@
+ <booking-bar app="{{app}}" bind:submit="onBookingBarSubmit"></booking-bar>
+ <daily-schedule app="{{app}}" offset="{{offset}}" bind:submit="onDailyScheduleSubmit" style="background:#fff"></daily-schedule>
+
+ <view wx:if="{{holiday}}" class="empty-container">
+   <view>
+     <image class="empty-picture" src="../../images/smile.svg"></image>
+     <view class="empty-text">假日注意休息</view>
+   </view>
+ </view>
+<view wx:elif="{{loading}}" style="display:none;align-items: center;justify-content: center;flex-direction:column;height:33.333vh">
+<spinner></spinner>
+<view style="font-size:24rpx;color: rgba(0, 0, 0, 0.35);">正在加载...</view>
+</view>
+
+<view style="padding:20rpx">
+<booking-item wx:for="{{lessons}}" wx:key="*this" item="{{item}}" app="{{app}}" bind:submit="onBookingItemSubmit"></booking-item>
+</view>
+<login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>
+
+<tabbar app="{{app}}"items="{{items}}" selected="{{selected}}"></tabbar> 

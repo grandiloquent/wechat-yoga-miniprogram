@@ -1,0 +1,10 @@
+<view style="border-radius: 12rpx;margin:0 24rpx;background: #fff;padding:0 24rpx;">
+    <view style="font-size: 32rpx;color: #333;line-height: 96rpx;">我的课程</view>
+    <view style="display: flex;justify-content: space-around;">
+        <view class="action action-history" data-tab="/pages/booked/booked" bindtap="navigate">约课记录</view>
+        <view class="action action-fav" style="display: none;">收藏课程</view>
+        <view class="action">会员卡</view>
+        <view class="action action-check">会员体测</view>
+        <view class="action action-feedback">意见反馈</view>
+    </view>
+</view>

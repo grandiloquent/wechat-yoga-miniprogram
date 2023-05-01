@@ -1,0 +1,10 @@
+<view style="padding:16rpx 32rpx;background:#fff;border-bottom:1px solid #dadce0">
+  <breadcrumb app="{{app}}" bind:submit="onBreadcrumbSubmit"></breadcrumb>
+  <view class="title">{{notice.title}} </view>
+<view style="font-size:24rpx;line-height:40rpx;color:rgb(102, 102, 102)">
+发布于 {{timeago}}
+</view>
+</view>
+<view style="padding:16rpx 32rpx;background:#fff;">
+<wemark md="{{notice.content}}" host="{{app.globalData.host}}" link highlight type="wemark"></wemark>
+</view>

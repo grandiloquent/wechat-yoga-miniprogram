@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会员卡</title>
+  <link rel="stylesheet" href="css/card.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script type="module" src="../components/custom-field.js"></script>
+  <script type="module" src="../components/custom-submit-bar.js"></script>
+  <script src="../components/toast.js"></script>
+  <script type="module" src="../components/custom-action-sheet.js"></script>
+
+</head>
+
+<body>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="会员卡" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <custom-field bind="titleInput" @submit="onNameInput" label="名称" placeholder="请输入会员卡名称"></custom-field>
+  <custom-field bind="cardTypeInput" @tap="onCardTypeTap" label="类型" placeholder="请输入会员卡类型"></custom-field>
+
+  <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-toast bind="toast"></custom-toast>
+  <custom-action-sheet title="选择会员卡类型" bind="customActionSheet" @close="onClose" style="display:none" @item="onItem"></custom-action-sheet>
+  <script src="js/shared.js"></script>
+  <script src="js/card.js"></script>
+</body>
+
+</html>

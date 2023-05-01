@@ -1,0 +1,25 @@
+<view class="wrapper" style="background-color:{{background}}">
+  <image class="avatar" src="{{app.globalData.staticHost}}/images/{{teacher.thumbnail}}" mode="aspectFit"></image>
+  <view class="teacher-info">
+    <view style="display:flex;align-items: center;justify-content: center;flex-direction:column;">
+      <view class="title">{{teacher.name}}</view>
+      <view class="subtitle">{{teacher.introduction}}</view>
+    </view>
+  </view>
+</view>
+<teacher-buttons app="{{app}}" bind:submit="onTeacherButtonsSubmit"></teacher-buttons>
+<view wx:if="{{holiday}}" style="padding:120rpx 32rpx;font-size:28rpx;background:#fff;display:flex;align-items: center;justify-content: center">
+  <view>暂未安排课程</view>
+</view>
+<view wx:elif="{{loading}}" style="display:none;align-items: center;justify-content: center;flex-direction:column;height:33.333vh">
+  <spinner></spinner>
+  <view style="font-size:24rpx;color: rgba(0, 0, 0, 0.35);">正在加载...</view>
+</view>
+<view style="padding:20rpx;" wx:if="{{lessons}}">
+  <booking-item wx:for="{{lessons}}" wx:key="*this" item="{{item}}" app="{{app}}" bind:submit="onBookingItemSubmit"></booking-item>
+</view>
+<view class="more" style="display:none">
+  <view>更多介绍</view>
+  <view class="more-image"></view>
+</view>
+<share app="{{app}}" bind:submit="onShareSubmit"></share>

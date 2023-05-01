@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易计算器 - 回形针</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1px;
+            background-color: #dadce0;
+            border-top: 1px solid #dadce0;
+            flex-grow: 1;
+        }
+
+        .wrapper>div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+        }
+
+        textarea {
+            resize: none;
+            height: 33vh;
+            border: 0;
+            font-size: 14px;
+            line-height: 20px;
+            padding: 12px;
+        }
+
+        :focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea>
+
+    </textarea>
+    <div class="wrapper">
+        <div>退格</div>
+    </div>
+    <script>
+        const textarea = document.querySelector('textarea');
+        textarea.value = localStorage.getItem('string')
+        document.querySelector('.wrapper')
+            .insertAdjacentHTML('beforeend', '+-*/%()0123456789='.split('')
+                .map(v => {
+                    return `<div data-symbol="${v}">${v}</div>`
+                }).join(''))
+
+        document.querySelectorAll('[data-symbol]')
+            .forEach(element => {
+                element.addEventListener('click', evt => {
+                    const symbol = evt.target.dataset.symbol;
+                    if (symbol === '=') {
+                        const s = textarea.value.split('=')[0];
+                        textarea.value = `${s} = ` + eval(s);
+                    } else
+                        textarea.value += symbol;
+                });
+            })
+        document.addEventListener('visibilitychange', evt => {
+            localStorage.setItem('string', textarea.value)
+        })
+    </script>
+</body>
+
+</html>

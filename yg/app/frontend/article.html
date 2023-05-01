@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>瑜伽约课微信小程序</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/default.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/languages/go.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/languages/pgsql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/languages/shell.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+
+  <link rel="stylesheet" href="./css/article.css">
+
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+
+</head>
+<script src="./js/custom-breadcrumb.js"></script>
+<script src="./js/custom-button.js"></script>
+
+
+<body>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="瑜伽" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;">
+  </div>
+  <div class="header">
+    <div class="heading-wrapper">
+      <div class="heading-top">
+        <custom-breadcrumb></custom-breadcrumb>
+        <div class="heading-right">
+          <custom-button></custom-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="markdown" style="padding:16px;">
+  </div>
+  <div style="display:flex;align-items: center;justify-content: center;font-size:12px;padding:32px 32px;">
+    © 2022 微信瑜伽约课工具小程序
+  </div>
+  <script src="./js/article.js"></script>
+</body>
+
+</html>

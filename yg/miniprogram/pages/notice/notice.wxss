@@ -1,0 +1,12 @@
+page {
+  background: #f2f2f2
+}
+
+.title {
+  margin: 0;
+  padding-top: 4rpx;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 2rem;
+  font-size: 44rpx;
+}

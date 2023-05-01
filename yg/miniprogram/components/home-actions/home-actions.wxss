@@ -1,0 +1,39 @@
+.wrapper {
+    background-color: #fff;
+    margin: 20rpx 20rpx;
+    box-shadow: 0 2rpx 12rpx rgba(32, 33, 36, 0.28);
+    border-radius: 16rpx;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 20rpx 0 46rpx;
+    row-gap: 16rpx;
+}
+
+.image {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.text {
+    font-size: 24rpx;
+}
+
+.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    background-color: transparent;
+    margin: 0;
+    line-height: normal;
+}
+
+.button::after {
+    display: none;
+}

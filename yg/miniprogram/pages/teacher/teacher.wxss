@@ -1,0 +1,69 @@
+page {
+  background: #f2f2f2
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 500rpx;
+  position: relative;
+  border-bottom-left-radius: 24rpx;
+  border-bottom-right-radius: 24rpx;
+}
+
+.avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(60, 64, 67, .30), 0rpx 2rpx 6rpx 2rpx rgba(60, 64, 67, .15);
+}
+
+.teacher-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  height: 150rpx;
+  left: 0;
+  right: 0;
+}
+
+.title {
+  font-size: 36rpx;
+  color: #fff
+}
+
+.subtitle {
+  font-size: 30rpx;
+  color: #fff;
+}
+
+.more {
+  background-color: #fff;
+  box-shadow: 0 0 0 2rpx #ebedef;
+  color: #70757a;
+  font-size: 28rpx;
+  margin: 40rpx 32rpx 56rpx;
+  overflow: hidden;
+  border-radius: 16rpx;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+line-height:48rpx;
+padding:12rpx 0;
+}
+
+.more-image {
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(112, 117, 122)' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'></path></svg>");
+  width: 48rpx;
+  height: 48rpx;
+}
+

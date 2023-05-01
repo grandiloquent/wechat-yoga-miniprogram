@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" style="height:100%">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>课程</title>
+  <link rel="stylesheet" href="css/updateLesson.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script src="../components/toast.js"></script>
+  <script type="module" src="../components/custom-submit-bar.js"></script>
+  <script type="module" src="../components/custom-options.js"></script>
+
+</head>
+
+<body style="height:100%">
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="课程" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <custom-options bind="lesson" title="课程"></custom-options>
+    <custom-options bind="lessonType" title="课程类型"></custom-options>
+    <custom-options bind="teacher" title="老师"></custom-options>
+    <custom-options bind="startTime" @submit="onStartTimeSubmit" title="开课时间"></custom-options>
+    <custom-options bind="endTime" @submit="onEndTimeSubmit" title="下课时间"></custom-options>
+    <custom-options bind="peoples" title="人数"></custom-options>
+  </div>
+  <div style="height:68px"></div>
+  <custom-submit-bar bind @submit="onSubmitBar"></custom-submit-bar>
+  <custom-toast bind="toast"></custom-toast>
+  <script src="js/shared.js"></script>
+  <script src="js/updateLesson.js"></script>
+</body>
+
+</html>

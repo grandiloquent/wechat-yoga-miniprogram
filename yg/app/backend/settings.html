@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>设置</title>
+  <link rel="stylesheet" href="css/settings.css">
+  <script type="module" src="../components/custom-header.js"></script>
+  <script type="module" src="../components/custom-drawer.js"></script>
+  <script type="module" src="../components/custom-actions.js"></script>
+</head>
+
+<body>
+  <custom-drawer bind="customDrawer"></custom-drawer>
+  <custom-header title="设置" bind @submit="showDrawer"></custom-header>
+  <div style="height: 56px;"></div>
+  <custom-actions bind="customActions"></custom-actions>
+  <script src="js/shared.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+.copyright {
+    display: flex;
+    justify-content: center;
+    font-size: 22rpx;
+    color: rgba(0, 0, 0, 0.35);
+    margin: 60rpx 0 32rpx 0;
+  }

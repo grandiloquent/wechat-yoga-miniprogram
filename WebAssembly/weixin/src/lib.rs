@@ -21,7 +21,9 @@ extern "C" {
     pub async fn get_login_code() -> Result<JsValue, JsValue>;
     #[wasm_bindgen(catch, js_name = "postData",js_namespace = shared)]
     pub async fn post_data(url: &str,data:&str) -> Result<JsValue, JsValue>;
-    
+    pub type Page;
+    #[wasm_bindgen(method,js_name = "setData")]
+    pub fn set_data(this:&Page,obj:Object);
 }
 #[wasm_bindgen]
 pub async fn beijing_time() -> Result<JsValue, JsValue> {
@@ -112,4 +114,11 @@ pub async fn get_open_id(base_uri:&str) -> Result<String, JsValue> {
         return Ok(openid.as_string().unwrap())
     }
     Err("")?
+}
+#[wasm_bindgen]
+pub async fn bind_index(base_uri:&str,page:&Page) -> Result<String, JsValue>{
+    let config = js_sys::Object::new();
+    Reflect::set(&config, &"width".into(), &"100%".into()).unwrap();
+    page.set_data(config);
+    Ok(())
 }

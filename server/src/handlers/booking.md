@@ -5,7 +5,7 @@ where proname = 'v1_booking_query';
 ```
 
 ```pgsql
-CREATE OR REPLACE FUNCTION fn_query_lessons_booking(input_date_time integer, input_open_id text, input_class_type integer)
+CREATE OR REPLACE FUNCTION fn_lessons_next_two_weeks(input_date_time integer, input_open_id text, input_class_type integer)
  RETURNS json
  LANGUAGE sql
 AS $function$

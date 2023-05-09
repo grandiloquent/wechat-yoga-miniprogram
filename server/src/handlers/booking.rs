@@ -1,12 +1,23 @@
-use crate::utils::data::query_json;
+use crate::utils::data::query_json_with_params;
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
 
-#[get("/lessons")]
-pub async fn lessons(pool: &State<Pool>) -> Result<String, Status> {
+#[get("/lessons?<start>&<openid>&<class_type>")]
+pub async fn lessons(
+    start: i32,
+    openid: String,
+    class_type: i32,
+    pool: &State<Pool>,
+) -> Result<String, Status> {
     match pool.get().await {
-        Ok(conn) => match query_json(&conn, "select * from fn_lessons()").await {
+        Ok(conn) => match query_json_with_params(
+            &conn,
+            "select * from fn_lessons_next_two_weeks($1,$2,$3)",
+            &[&start, &openid, &class_type],
+        )
+        .await
+        {
             Ok(v) => {
                 return match String::from_utf8(v.0) {
                     Ok(v) => Ok(v),

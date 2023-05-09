@@ -1,6 +1,6 @@
 const utils = require('utils');
 const shard = require("./utils/shared");
-import init,{get_open_id} from "./pkg/weixin";
+const weixin = require('./utils/weixin');
 
 App({
   async onLaunch() {
@@ -26,12 +26,12 @@ App({
     // 登录小程序
     if (!this.globalData.openid) {
       try {
-        await init();
+
         // 通过后端服务器请求微信鉴权获取用户OpenId
         // 相同的用户登录不同的小程序其OpenId也不同
         // 如果将OpenId作为用户标识，会影响数据迁移的可行性
         // 举例说，用户在A小程序的OpenIdA，在B为OpenIdB，如果要把A程序中的该用户的数据迁移到B，OpenIdA和OpenIdB并没有映射关系，无法简单迁移
-        this.globalData.openid = await get_open_id(this.globalData.host);
+        this.globalData.openid = await weixin.getOpenId(this.globalData.host);
         wx.setStorage({
           key: "openid",
           data: this.globalData.openid
@@ -44,6 +44,19 @@ App({
       }
     }
 
+  },
+  async getOpenId() {
+    if (this.globalData.openid) {
+      return this.globalData.openid;
+    }
+    const res = await wx.getStorage({
+      key: 'openid'
+    });
+    if (res.data) {
+      this.globalData.openid = res.data;
+      return res.data;
+    }
+    return null;
   },
   globalData: {
     openid: null,

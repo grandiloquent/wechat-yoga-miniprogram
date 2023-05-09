@@ -1,6 +1,6 @@
 use deadpool_postgres::{GenericClient, Object};
 use std::error::Error;
-use tokio_postgres::types::{FromSql, Type};
+use tokio_postgres::types::{FromSql, Type, ToSql};
 
 #[derive(Debug, PartialEq)]
 pub struct Simple(pub Vec<u8>);
@@ -27,3 +27,11 @@ pub async fn query_json(
 ) -> Result<Simple, tokio_postgres::Error> {
     conn.query_one(statement, &[]).await?.try_get(0)
 }
+pub async fn query_json_with_params(
+    conn: &Object,
+    statement: &str,
+    params: &[&(dyn ToSql + Sync)]
+) -> Result<Simple, tokio_postgres::Error> {
+    conn.query_one(statement, params).await?.try_get(0)
+}
+

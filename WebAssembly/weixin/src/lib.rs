@@ -134,3 +134,96 @@ pub async fn bind_index(base_uri: &str, page: &Page) -> Result<String, JsValue> 
     }
     Err("")?
 }
+
+#[wasm_bindgen]
+pub async fn bind_booking(
+    base_uri: &str,
+    start: u32,
+    openid: String,
+    class_type: i8,
+    page: &Page,
+) -> Result<(), JsValue> {
+    let json = get_json(
+        format!(
+            "{}/lessons?start={}&class_type={}&openid={}",
+            base_uri, start, class_type, openid
+        )
+        .as_str(),
+    )
+    .await?;
+    if json.is_array() {
+        let data = js_sys::Object::new();
+        // https://github.com/rustwasm/wasm-bindgen/blob/main/crates/js-sys/tests/wasm/Reflect.rs
+        let values = sort_lessons(&json);
+        let array = js_sys::Array::new();
+        for index in 0..values.len() {
+            let item = &values[index];
+            let date_time = safe_f64(item, "date_time");
+            let start_time = safe_f64(item, "start_time");
+            let end_time = safe_f64(item, "end_time");
+
+            let now = now_in_seconds();
+            if (now - date_time - start_time > 0f64) {
+                Reflect::set(item, &"mode".into(), &JsValue::from(1)).unwrap();
+                Reflect::set(item, &"label".into(), &"已完成".into()).unwrap();
+            } else {
+                let hidden = safe_f64(item, "hidden") as i8;
+                let peoples = safe_f64(item, "peoples") as u8;
+                let count = safe_f64(item, "count") as u8;
+                if hidden == -1 {
+                    Reflect::set(item, &"mode".into(), &JsValue::from(3)).unwrap();
+                    Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
+                } else if count >= peoples {
+                    Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
+                    Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
+                } else {
+                    Reflect::set(item, &"mode".into(), &JsValue::from(8)).unwrap();
+                    Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+                }
+            }
+            add_lesson_time(item, start_time, end_time);
+            array.push(item);
+        }
+
+        Reflect::set(&data, &"lessons".into(), &array).unwrap();
+        page.set_data(data);
+    }
+    Ok(())
+}
+fn add_lesson_time(item: &JsValue, start_time: f64, end_time: f64) {
+    let _ = Reflect::set(
+        item,
+        &"time".into(),
+        &format!(
+            "{}-{}",
+            format_seconds(start_time),
+            format_seconds(end_time)
+        )
+        .into(),
+    );
+}
+fn format_seconds(seconds: f64) -> String {
+    format!(
+        "{}:{:02}",
+        (seconds / 3600f64).floor(),
+        seconds % 3600f64 / 60f64
+    )
+}
+fn now_in_seconds() -> f64 {
+    (Date::now() / 1000f64).floor()
+}
+fn safe_f64(obj: &JsValue, key: &str) -> f64 {
+    match Reflect::get(obj, &key.into()) {
+        Ok(v) => v.as_f64().unwrap_or(0f64),
+        Err(_) => 0f64,
+    }
+}
+fn sort_lessons(json: &JsValue) -> Vec<JsValue> {
+    let mut values = js_sys::Array::from(json).iter().collect::<Vec<JsValue>>();
+    values.sort_by(|a, b| {
+        safe_f64(&a, "start_time")
+            .partial_cmp(&safe_f64(&b, "start_time"))
+            .unwrap()
+    });
+    values
+}

@@ -1,5 +1,6 @@
 const utils = require('../../utils')
 const app = getApp();
+const weixin = require('../../utils/weixin');
 
 Page({
   data: {
@@ -50,28 +51,36 @@ Page({
     // 清空已加载的课程
     // 隐藏“假日注意休息”的元素
     // 显示加载数据的元素
-    this.setData({
-      lessons: null,
-      holiday: false,
-      loading: true
-    })
+    // this.setData({
+    //   lessons: null,
+    //   holiday: false,
+    //   loading: true
+    // })
+    // try {
+    //   const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=4`);
+    //   if (!data.length) {
+    //     throw new Error()
+    //   }
+    //   utils.setLessonStatus(data, 3, 60);
+    //   const lessons = utils.sortLessons(data);
+    //   this.setData({
+    //     holiday: false,
+    //     lessons,
+    //     loading: false
+    //   });
+    // } catch (error) {
+    //   this.setData({
+    //     holiday: true,
+    //     loading: false
+    //   });
+    // }
+    let openid = (await app.getOpenId()) || "";
+
     try {
-      const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=4`);
-      if (!data.length) {
-        throw new Error()
-      }
-      utils.setLessonStatus(data, 3, 60);
-      const lessons = utils.sortLessons(data);
-      this.setData({
-        holiday: false,
-        lessons,
-        loading: false
-      });
+      await weixin.bindBooking(app.globalData.host, this.data.selectedTime,
+        openid, 4, this);
     } catch (error) {
-      this.setData({
-        holiday: true,
-        loading: false
-      });
+      console.log("weixin.bindBooking",error)
     }
   },
   onShareAppMessage() {

@@ -217,27 +217,7 @@ function formatDate(ms) {
 function getCurrentSeconds(now) {
   return now.getHours() * 60 * 60 + now.getMinutes() * 60;
 }
-// 鉴权后获取用户OpenId
-function getOpenId(host) {
-  return new Promise((resolve, reject) => {
-    wx.login({
-      success: async response => {
-        try {
-          const res = await request(`${host}/v1/authorization`, {
-            method: 'POST',
-            data: `${response.code}`
-          })
-          resolve(res.data.openid);
-        } catch (error) {
-          reject(error)
-        }
-      },
-      fail: error => {
-        reject(error)
-      }
-    });
-  });
-}
+
 // 获取随机颜色
 function getRandomColor() {
   return colors[getRandomInt(0, colors.length)];
@@ -334,17 +314,7 @@ function postString(app, path, data, callback, arg) {
     }
   });
 }
-// 异步化函数
-function promisify(api) {
-  return (opt, ...arg) => {
-    return new Promise((resolve, reject) => {
-      api(Object.assign({}, opt, {
-        success: resolve,
-        fail: reject
-      }), ...arg)
-    })
-  }
-}
+
 // 异步Http请求函数
 function request(url, arg) {
   /*
@@ -427,10 +397,6 @@ function setLessonStatus(lessons, throttleHours, minutesLimit) {
     }
     lessons[i].mode |= 8;
   }
-}
-function parseDuration(string) {
-  const match = /(\d+):(\d+)/.exec(string);
-  return parseInt(match[1]) * 60 * 60 + parseInt(match[2]) * 60
 }
 
 // 简化显示真机调试信息
@@ -535,7 +501,6 @@ module.exports = {
   debug,
   formatBeijingTime,
   formatDate,
-  getOpenId,
   getRandomColor,
   getString,
   getStringAsync,

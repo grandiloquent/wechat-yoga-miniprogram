@@ -1,4 +1,3 @@
-const utils = require('../../utils')
 const app = getApp();
 const weixin = require('../../utils/weixin');
 
@@ -44,24 +43,18 @@ Page({
       ],
       selected: 0
     });
-    
-    console.log(app.globalData.host)
-    await weixin.bindIndex("http://localhost:8002", this);
-    //this.loadData();
+    await weixin.bindIndex(app.globalData.host, this);
   },
   navigate(e) {
-    utils.navigate(e)
-  },
-  async loadData() {
-    // 从服务器请求数据
-    utils.getString(app, "index", (err, data) => {
-      if (err) return;
-      const { booked, poster, actions, teachers, market, notices } = data;
-      this.setData({
-        booked, poster, actions, teachers, market, notices
-      });
-    });
-
+    if (e.currentTarget.dataset.tab) {
+      wx.switchTab({
+        url: e.currentTarget.dataset.tab,
+      })
+    } else if (e.currentTarget.dataset.href) {
+      wx.navigateTo({
+        url: e.currentTarget.dataset.href + (e.currentTarget.dataset.id || ''),
+      })
+    }
   },
   // 设置分享时的标题
   onShareAppMessage() {

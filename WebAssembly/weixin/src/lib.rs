@@ -105,6 +105,11 @@ pub async fn get_weather() -> Result<String, JsValue> {
 pub async fn get_open_id(base_uri:&str) -> Result<String, JsValue> {
     let code=get_login_code().await?;
     let json =
-    post_data(format!("{}/auth",base_uri).as_str(),code.as_string().unwrap().as_str()).await?;
-    Ok("".to_string())
+    get_json(format!("{}/auth?code={}",base_uri,code.as_string().unwrap()).as_str()).await?;
+    // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
+    if json.is_object() {
+        let openid = Reflect::get(json.as_ref(), &"openid".into())?;
+        return Ok(openid.as_string().unwrap())
+    }
+    Err("")?
 }

@@ -29,6 +29,6 @@ pub fn debug(
     //         Err(Status::InternalServerError)
     //     }
     // }
-    println!("{} {}", client_addr.get_ipv4_string().unwrap(),data);
+    //println!("{} {}", client_addr.get_ipv4_string().unwrap(),data);
     Ok(String::new())
 }

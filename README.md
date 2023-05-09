@@ -85,4 +85,6 @@ document.querySelectorAll('[bind]').forEach(element => {
 
 ## 支持和赞助
 
-
+```
+$dir="C:\Users\Administrator\Desktop\file\yg\server\src";$name="models";$filename="settings.rs";Set-Location $dir;New-Item -Type "directory" $name;Set-Location $name; New-Item mod.rs;New-Item $filename;Get-ChildItem | Where-Object {$_.Name -ne "mod.rs"} | Split-Path -LeafBase | Join-String -FormatString "pub mod {0};`r`n" | Set-Content -Path .\mod.rs;` 
+```

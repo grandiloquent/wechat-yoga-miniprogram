@@ -194,7 +194,7 @@ export function get_open_id(base_uri) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_35(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_33(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -243,10 +243,6 @@ function getImports() {
         const ret = shared.getLoginCode();
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_postData_c3aa21abd42be530 = function() { return handleError(function (arg0, arg1, arg2, arg3) {
-        const ret = shared.postData(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
-        return addHeapObject(ret);
-    }, arguments) };
     imports.wbg.__wbg_get_baf4855f9a986186 = function() { return handleError(function (arg0, arg1) {
         const ret = Reflect.get(getObject(arg0), getObject(arg1));
         return addHeapObject(ret);
@@ -278,7 +274,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_35(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_33(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }

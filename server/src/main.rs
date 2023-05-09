@@ -1,10 +1,12 @@
 mod errors;
 mod handlers;
+mod models;
 mod utils;
 
 use std::env;
 
 use deadpool_postgres::{ManagerConfig, Runtime};
+use models::settings::Settings;
 use tokio_postgres::NoTls;
 
 #[macro_use]
@@ -31,12 +33,24 @@ async fn main() -> Result<(), rocket::Error> {
     });
     // 实例化和启动 rocket
     rocket::build()
+        .manage(Settings {
+            appid: env::var("APPID").expect("Couldn't find appid"),
+            secret: env::var("SECRET").expect("Couldn't find secret"),
+        })
         .manage(
             config
                 .create_pool(Some(Runtime::Tokio1), NoTls)
                 .expect("Can't create pool"),
         )
-        .mount("/", routes![handlers::auth::auth,handlers::booking::lessons,handlers::debug::debug,handlers::index::index])
+        .mount(
+            "/",
+            routes![
+                handlers::auth::auth,
+                handlers::booking::lessons,
+                handlers::debug::debug,
+                handlers::index::index
+            ],
+        )
         .register(
             "/",
             catchers![

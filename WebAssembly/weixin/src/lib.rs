@@ -116,9 +116,14 @@ pub async fn get_open_id(base_uri:&str) -> Result<String, JsValue> {
     Err("")?
 }
 #[wasm_bindgen]
-pub async fn bind_index(base_uri:&str,page:&Page) -> Result<String, JsValue>{
-    let config = js_sys::Object::new();
-    Reflect::set(&config, &"width".into(), &"100%".into()).unwrap();
-    page.set_data(config);
-    Ok(())
+pub async fn bind_index(base_uri:&str) -> Result<String, JsValue>{
+    let json =
+    get_json(format!("{}/index",base_uri).as_str()).await?;
+    if json.is_object() {
+    
+    }
+    // let data = js_sys::Object::new();
+    // Reflect::set(&data, &"width".into(), &"100%".into()).unwrap();
+    // page.set_data(data);
+    Ok("".to_string())
 }

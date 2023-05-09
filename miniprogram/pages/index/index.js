@@ -1,5 +1,6 @@
 const utils = require('../../utils')
 const app = getApp();
+const weixin = require('../../utils/weixin');
 
 Page({
   data: {
@@ -8,7 +9,7 @@ Page({
   // 该页面加载时运行一次的方法
   async onLoad() {
 
- 
+
     // 启用分享小程序的功能
     wx.showShareMenu({
       withShareTicket: true,
@@ -42,8 +43,11 @@ Page({
 
       ],
       selected: 0
-    })
-    this.loadData();
+    });
+    
+    console.log(app.globalData.host)
+    await weixin.bindIndex("http://localhost:8002", this);
+    //this.loadData();
   },
   navigate(e) {
     utils.navigate(e)
@@ -52,9 +56,9 @@ Page({
     // 从服务器请求数据
     utils.getString(app, "index", (err, data) => {
       if (err) return;
-      const { booked, poster, actions, teachers, market,notices} = data;
+      const { booked, poster, actions, teachers, market, notices } = data;
       this.setData({
-        booked, poster, actions, teachers, market,notices
+        booked, poster, actions, teachers, market, notices
       });
     });
 

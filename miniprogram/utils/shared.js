@@ -51,8 +51,50 @@ function getJson(url) {
   });
 
 }
+function postData(url, data) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url,
+      data,
+      method: 'POST',
+      success(res) {
+        if (res.statusCode === 200) {
+          resolve(res.data);
+        } else {
+          reject();
+        }
+
+      },
+      fail(error) {
+        reject(error);
+      }
+    })
+  });
+
+}
+
+
+// https://developers.weixin.qq.com/miniprogram/dev/api/open-api/login/wx.login.html
+async function getLoginCode() {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success: res => {
+        if (res.code) {
+          resolve(res.code)
+        } else {
+          reject();
+        }
+      },
+      fail: () => {
+        reject();
+      }
+    });
+  });
+}
 
 module.exports = {
   checkUpdate,
-  getJson
+  getJson,
+  getLoginCode,
+  postData
 };

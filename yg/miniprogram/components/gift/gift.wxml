@@ -1,8 +1,0 @@
-<view class="market-container" style="background-image: url({{app.globalData.staticHost}}/images/sign_3.gif);">
-  <view style="flex: 1">
-    <view class="market-title">{{slogan}}</view>
-  </view>
-  <view class="market-action" bindtap="onClick">
-    <label>去看看</label>
-  </view>
-</view>

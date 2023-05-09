@@ -1,6 +1,0 @@
-<view class="wrapper" style="height:{{height}};padding-top:{{top}};">
-  <view class="container">
-    <view  catchtap="onClick" data-id="1" class="left {{selected==0?'active':''}}">本周</view>
-    <view catchtap="onClick" data-id="2" class="right {{selected==1?'active':''}}">下周</view>
-  </view>
-</view>

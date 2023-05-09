@@ -1,3 +1,0 @@
-<user-profile user="{{user}}" backgroundColor="{{backgroundColor}}" app="{{app}}" bind:submit="onUserProfileSubmit"></user-profile>
-<login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>
-<user-actions items="{{user-actions}}" app="{{app}}" bind:submit="onUserActionsSubmit"></user-actions>

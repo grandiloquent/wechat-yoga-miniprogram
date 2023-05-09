@@ -201,7 +201,7 @@ function debug(app, openid) {
     platform,
     open_id: openid
   };
-  postString(app, "v1/debug", data)
+  postString(app, "debug", data)
 }
 // 格式化以毫秒为单位的时间戳
 function formatBeijingTime(t) {

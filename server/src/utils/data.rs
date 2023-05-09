@@ -8,7 +8,7 @@ impl<'a> FromSql<'a> for Simple {
     fn from_sql(ty: &Type, raw: &[u8]) -> Result<Self, Box<dyn Error + Sync + Send>> {
         Vec::<u8>::from_sql(ty, raw).map(Simple)
     }
-    fn accepts(ty: &Type) -> bool {
+    fn accepts(_ty: &Type) -> bool {
         true
     }
 }

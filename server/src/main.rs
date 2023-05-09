@@ -16,14 +16,14 @@ async fn main() -> Result<(), rocket::Error> {
     // 通过环境变量设置数据库公网IP，端口，数据库名称，用户名，密码
     let mut config = deadpool_postgres::Config::new();
 
-    config.host = Some(env::var("DB_HOST").expect("Can't specify"));
+    config.host = Some(env::var("DB_HOST").expect("Please specify DB_HOST"));
     config.port = Some(
         env::var("DB_PORT")
-            .expect("Can't specify")
+            .expect("Please specify DB_PORT")
             .parse::<u16>()
             .expect("Couldn't parse"),
     );
-    config.password = Some(env::var("DB_PASSWORD").expect("Can't specify"));
+    config.password = Some(env::var("DB_PASSWORD").expect("Please specify DB_PASSWORD"));
     config.dbname = Some("yoga".to_string());
     config.user = Some("psycho".to_string());
     config.manager = Some(ManagerConfig {
@@ -36,7 +36,7 @@ async fn main() -> Result<(), rocket::Error> {
                 .create_pool(Some(Runtime::Tokio1), NoTls)
                 .expect("Can't create pool"),
         )
-        .mount("/", routes![handlers::index::index])
+        .mount("/", routes![handlers::auth::auth,handlers::booking::lessons,handlers::debug::debug,handlers::index::index])
         .register(
             "/",
             catchers![

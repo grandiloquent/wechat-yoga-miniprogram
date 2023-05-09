@@ -2,7 +2,7 @@
 // "home-bar":"../../components/home-bar/home-bar"
 // <home-bar app="{{app}}"></home-bar>
 const utils = require('../../utils'); 
-import init,{beijing_time, lunar_time,get_weather} from "../../utils/weixin";
+import init,{beijing_time, lunar_time,get_weather} from "../../pkg/weixin";
 
 Component({
   options: {

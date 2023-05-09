@@ -50,7 +50,7 @@ Page({
   },
   async loadData() {
     // 从服务器请求数据
-    utils.getString(app, "v1/app", (err, data) => {
+    utils.getString(app, "index", (err, data) => {
       if (err) return;
       const { booked, poster, actions, teachers, market,notices} = data;
       this.setData({

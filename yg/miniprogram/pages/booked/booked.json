@@ -1,6 +1,0 @@
-{
-	"navigationBarBackgroundColor": "#ffffff",
-	"usingComponents": {
-		"header": "../../components/header/header"
-	}
-}

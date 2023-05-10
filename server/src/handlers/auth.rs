@@ -1,9 +1,6 @@
 use std::{collections::HashMap, error::Error};
-
 use rocket::{http::Status, State};
-
 use crate::models::settings::Settings;
-
 async fn login_we_chat(
     settings: &State<Settings>,
     js_code: String,
@@ -26,7 +23,6 @@ async fn login_we_chat(
     let json = res.text().await?;
     Ok(json)
 }
-
 #[get("/yoga/auth?<code>")]
 pub async fn auth(code: String, settings: &State<Settings>) -> Result<String, Status> {
     let json = login_we_chat(settings, code).await;
@@ -38,11 +34,8 @@ pub async fn auth(code: String, settings: &State<Settings>) -> Result<String, St
         }
     }
 }
-
 /*
 https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
-
 console.log([...$0.querySelectorAll('tr>td:first-child')].map(x=>`params.insert("${x.textContent}",${x.textContent});`).join('\n'))
-
 https://github.com/seanmonstar/reqwest
  */

@@ -119,8 +119,14 @@ Page({
       await this.book(item)
     }
   },
+  onClick(e) {
+    const { id, mode } = e.currentTarget.dataset;
+    if (mode === 32) {
+      this.book(id)
+    }
+  },
   // 预约课程
-  async book(item) {
+  async book(id) {
     let result = await utils.checkUserAvailability(app);
     if (!result) {
       this.setData({
@@ -129,9 +135,10 @@ Page({
       return;
     }
     try {
-      result = await utils.getStringAsync(app, `v1/book?id=${item.course_id}`);
+      let openid = (await app.getOpenId()) || "";
+      result = await weixin.book(app.globalData.host, id, openid);
       if (result > 0) {
-        this.loadData();
+        await this.loadData();
       }
       else {
         wx.showModal({

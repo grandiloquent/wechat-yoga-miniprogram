@@ -2,7 +2,6 @@ use crate::utils::data::query_json;
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
-
 #[get("/yoga/index")]
 pub async fn index(pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {

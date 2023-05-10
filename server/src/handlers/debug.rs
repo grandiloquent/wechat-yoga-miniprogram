@@ -2,9 +2,7 @@ use crate::utils::client_real_addr::ClientRealAddr;
 use crate::utils::data::query_json;
 use deadpool_postgres::Pool;
 use rocket::http::Status;
-
 use rocket::State;
-
 #[post("/yoga/debug", data = "<data>")]
 pub fn debug(
     client_addr: &ClientRealAddr,

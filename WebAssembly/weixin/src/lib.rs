@@ -105,11 +105,22 @@ pub async fn get_weather() -> Result<String, JsValue> {
 pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
     let code = get_login_code().await?;
     let json =
-        get_json(format!("{}/yoga/auth?code={}", base_uri, code.as_string().unwrap()).as_str()).await?;
+        get_json(format!("{}/yoga/auth?code={}", base_uri, code.as_string().unwrap()).as_str())
+            .await?;
     // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
     if json.is_object() {
         let openid = Reflect::get(json.as_ref(), &"openid".into())?;
         return Ok(openid.as_string().unwrap());
+    }
+    Err("")?
+}
+#[wasm_bindgen]
+pub async fn book(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
+    let json =
+        get_json(format!("{}/yoga/book?id={}&openid={}", base_uri, id, openid).as_str()).await?;
+    // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
+    if json.is_bigint() {
+        return Ok(json.as_f64().unwrap_or(0f64).to_string());
     }
     Err("")?
 }
@@ -169,7 +180,7 @@ pub async fn bind_booking(
                 Reflect::set(item, &"label".into(), &"已完成".into()).unwrap();
             } else if (now - date_time - start_time > 0f64) {
                 // 10000
-                
+
                 Reflect::set(item, &"mode".into(), &JsValue::from(16)).unwrap();
                 Reflect::set(item, &"label".into(), &"正在上课".into()).unwrap();
             } else if (date_time + start_time - now < 3600f64) {

@@ -101,19 +101,19 @@ pub async fn get_weather() -> Result<String, JsValue> {
     Err("")?
 }
 
-#[wasm_bindgen]
-pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
-    let code = get_login_code().await?;
-    let json =
-        get_json(format!("{}/yoga/auth?code={}", base_uri, code.as_string().unwrap()).as_str())
-            .await?;
-    // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
-    if json.is_object() {
-        let openid = Reflect::get(json.as_ref(), &"openid".into())?;
-        return Ok(openid.as_string().unwrap());
-    }
-    Err("")?
-}
+// #[wasm_bindgen]
+// pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
+//     let code = get_login_code().await?;
+//     let json =
+//         get_json(format!("{}/yoga/auth?code={}", base_uri, code.as_string().unwrap()).as_str())
+//             .await?;
+//     // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
+//     if json.is_object() {
+//         let openid = Reflect::get(json.as_ref(), &"openid".into())?;
+//         return Ok(openid.as_string().unwrap());
+//     }
+//     Err("")?
+// }
 #[wasm_bindgen]
 pub async fn book(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
     let json =
@@ -132,40 +132,40 @@ pub async fn unbook(base_uri: &str, id: i32, openid: String) -> Result<String, J
         None => Err("")?,
     }
 }
-#[wasm_bindgen]
-pub async fn debug(base_uri: &str, data: String) -> Result<String, JsValue> {
-    let json = post_data(format!("{}/yoga/debug", base_uri).as_str(), data.as_str()).await?;
-    match json.as_f64() {
-        Some(v) => Ok(v.to_string()),
-        None => Err("")?,
-    }
-}
+// #[wasm_bindgen]
+// pub async fn debug(base_uri: &str, data: String) -> Result<String, JsValue> {
+//     let json = post_data(format!("{}/yoga/debug", base_uri).as_str(), data.as_str()).await?;
+//     match json.as_f64() {
+//         Some(v) => Ok(v.to_string()),
+//         None => Err("")?,
+//     }
+// }
 #[wasm_bindgen]
 pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsValue> {
     get_json(format!("{}/yoga/user/query?openid={}", base_uri, openid).as_str()).await
 }
 
-#[wasm_bindgen]
-pub async fn bind_index(base_uri: &str, page: &Page) -> Result<String, JsValue> {
-    let json = get_json(format!("{}/yoga/index", base_uri).as_str()).await?;
-    if json.is_object() {
-        let data = js_sys::Object::new();
-        let booked = Reflect::get(json.as_ref(), &"booked".into())?;
-        Reflect::set(&data, &"booked".into(), &booked).unwrap();
-        let poster = Reflect::get(json.as_ref(), &"poster".into())?;
-        Reflect::set(&data, &"poster".into(), &poster).unwrap();
-        let actions = Reflect::get(json.as_ref(), &"actions".into())?;
-        Reflect::set(&data, &"actions".into(), &actions).unwrap();
-        let market = Reflect::get(json.as_ref(), &"market".into())?;
-        Reflect::set(&data, &"market".into(), &market).unwrap();
-        let notices = Reflect::get(json.as_ref(), &"notices".into())?;
-        Reflect::set(&data, &"notices".into(), &notices).unwrap();
-        let teachers = Reflect::get(json.as_ref(), &"teachers".into())?;
-        Reflect::set(&data, &"teachers".into(), &teachers).unwrap();
-        page.set_data(data);
-    }
-    Err("")?
-}
+// #[wasm_bindgen]
+// pub async fn bind_index(base_uri: &str, page: &Page) -> Result<String, JsValue> {
+//     let json = get_json(format!("{}/yoga/index", base_uri).as_str()).await?;
+//     if json.is_object() {
+//         let data = js_sys::Object::new();
+//         let booked = Reflect::get(json.as_ref(), &"booked".into())?;
+//         Reflect::set(&data, &"booked".into(), &booked).unwrap();
+//         let poster = Reflect::get(json.as_ref(), &"poster".into())?;
+//         Reflect::set(&data, &"poster".into(), &poster).unwrap();
+//         let actions = Reflect::get(json.as_ref(), &"actions".into())?;
+//         Reflect::set(&data, &"actions".into(), &actions).unwrap();
+//         let market = Reflect::get(json.as_ref(), &"market".into())?;
+//         Reflect::set(&data, &"market".into(), &market).unwrap();
+//         let notices = Reflect::get(json.as_ref(), &"notices".into())?;
+//         Reflect::set(&data, &"notices".into(), &notices).unwrap();
+//         let teachers = Reflect::get(json.as_ref(), &"teachers".into())?;
+//         Reflect::set(&data, &"teachers".into(), &teachers).unwrap();
+//         page.set_data(data);
+//     }
+//     Err("")?
+// }
 
 #[wasm_bindgen]
 pub async fn bind_booking(

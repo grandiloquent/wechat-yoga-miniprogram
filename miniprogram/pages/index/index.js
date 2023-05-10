@@ -1,5 +1,4 @@
 const app = getApp();
-const weixin = require('../../utils/weixin');
 
 Page({
   data: {
@@ -43,7 +42,7 @@ Page({
       ],
       selected: 0
     });
-    await weixin.bindIndex(app.globalData.host, this);
+    bindIndex(app, this);
   },
   navigate(e) {
     if (e.currentTarget.dataset.tab) {
@@ -103,3 +102,16 @@ Page({
   }
 
 })
+
+function bindIndex(app, page) {
+  const url = `${app.globalData.host}/yoga/index`
+  wx.request({
+    url,
+    success(res) {
+      if (res.statusCode === 200) {
+        console.log()
+        page.setData(res.data)
+      }
+    }
+  });
+}

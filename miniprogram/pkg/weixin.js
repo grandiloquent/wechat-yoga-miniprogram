@@ -1,4 +1,8 @@
 const shared=require("../utils/shared");
+const  encoding = require('../utils/encoding');
+const  TextDecoder = TextDecoder?TextDecoder:encoding.TextDecoder;
+const TextEncoder = TextEncoder?TextEncoder:encoding.TextEncoder;
+
 let wasm;
 
 const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
@@ -258,17 +262,6 @@ export function get_weather() {
 
 /**
 * @param {string} base_uri
-* @returns {Promise<string>}
-*/
-export function get_open_id(base_uri) {
-    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.get_open_id(ptr0, len0);
-    return takeObject(ret);
-}
-
-/**
-* @param {string} base_uri
 * @param {number} id
 * @param {string} openid
 * @returns {Promise<string>}
@@ -299,20 +292,6 @@ export function unbook(base_uri, id, openid) {
 
 /**
 * @param {string} base_uri
-* @param {string} data
-* @returns {Promise<string>}
-*/
-export function debug(base_uri, data) {
-    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    const ptr1 = passStringToWasm0(data, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len1 = WASM_VECTOR_LEN;
-    const ret = wasm.debug(ptr0, len0, ptr1, len1);
-    return takeObject(ret);
-}
-
-/**
-* @param {string} base_uri
 * @param {string} openid
 * @returns {Promise<any>}
 */
@@ -322,18 +301,6 @@ export function user_query(base_uri, openid) {
     const ptr1 = passStringToWasm0(openid, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len1 = WASM_VECTOR_LEN;
     const ret = wasm.user_query(ptr0, len0, ptr1, len1);
-    return takeObject(ret);
-}
-
-/**
-* @param {string} base_uri
-* @param {any} page
-* @returns {Promise<string>}
-*/
-export function bind_index(base_uri, page) {
-    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.bind_index(ptr0, len0, addHeapObject(page));
     return takeObject(ret);
 }
 
@@ -354,15 +321,15 @@ export function bind_booking(base_uri, start, openid, class_type, page) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_65(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_58(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
+
 
 async function load(module, imports){
   const instance = await WXWebAssembly.instantiate(module, imports);
   return instance;
 }
-
 function getImports() {
     const imports = {};
     imports.wbg = {};
@@ -395,10 +362,6 @@ function getImports() {
         const ret = shared.getJson(getStringFromWasm0(arg0, arg1));
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_postData_c3aa21abd42be530 = function() { return handleError(function (arg0, arg1, arg2, arg3) {
-        const ret = shared.postData(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
-        return addHeapObject(ret);
-    }, arguments) };
     imports.wbg.__wbindgen_is_object = function(arg0) {
         const val = getObject(arg0);
         const ret = typeof(val) === 'object' && val !== null;
@@ -420,10 +383,6 @@ function getImports() {
         const ret = arg0;
         return addHeapObject(ret);
     };
-    imports.wbg.__wbg_getLoginCode_05eff33504377071 = function() { return handleError(function () {
-        const ret = shared.getLoginCode();
-        return addHeapObject(ret);
-    }, arguments) };
     imports.wbg.__wbg_get_27fe3dac1c4d0224 = function(arg0, arg1) {
         const ret = getObject(arg0)[arg1 >>> 0];
         return addHeapObject(ret);
@@ -483,7 +442,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_65(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_58(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -520,8 +479,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper164 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 80, __wbg_adapter_22);
+    imports.wbg.__wbindgen_closure_wrapper140 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 68, __wbg_adapter_22);
         return addHeapObject(ret);
     };
 
@@ -545,21 +504,10 @@ function finalizeInit(instance, module) {
 
 
 
-
-			async function init(){
-
-
+async function init() {
     const imports = getImports();
-
-
     initMemory(imports);
-
     const { instance, module } = await load("/pkg/weixin_bg.wasm", imports);
-
     return finalizeInit(instance, module);
-
 }
-
-
-
 export default init;

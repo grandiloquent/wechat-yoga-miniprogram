@@ -2,7 +2,11 @@
 // "home-bar":"../../components/home-bar/home-bar"
 // <home-bar app="{{app}}"></home-bar>
 const utils = require('../../utils');
-const weixin = require('../../utils/weixin');
+import init, {
+  beijing_time,
+  lunar_time,
+  get_weather
+} from "../../pkg/weixin";
 
 Component({
   options: {
@@ -19,17 +23,18 @@ Component({
   },
   lifetimes: {
     async attached() {
+      await init();
       const { navigationHeight, navigationTop } = utils.calculateNavigationBarSize();
       this.setData({
         height: `${navigationHeight}px`,
         top: `${navigationTop}px`,
-        date: weixin.lunarTime()
+        date: lunar_time()
       })
       this.setData({
-        weather: await weixin.getWeather()
+        weather: await get_weather()
       })
 
-      this.data.time = parseInt(await weixin.beijingTime());
+      this.data.time = parseInt(await beijing_time());
       clearInterval(this.data.timer);
       this.setData({
         bj: utils.formatBeijingTime(this.data.time)

@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/booking/booking",
     "pages/index/index",
+    "pages/booking/booking",
     "pages/booked/booked",
     "pages/market/market",
     "pages/notice/notice",

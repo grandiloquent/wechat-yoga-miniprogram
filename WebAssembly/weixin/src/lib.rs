@@ -133,6 +133,14 @@ pub async fn unbook(base_uri: &str, id: i32, openid: String) -> Result<String, J
     }
 }
 #[wasm_bindgen]
+pub async fn debug(base_uri: &str, data: String) -> Result<String, JsValue> {
+    let json = post_data(format!("{}/yoga/debug", base_uri).as_str(), data.as_str()).await?;
+    match json.as_f64() {
+        Some(v) => Ok(v.to_string()),
+        None => Err("")?,
+    }
+}
+#[wasm_bindgen]
 pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsValue> {
     get_json(format!("{}/yoga/user/query?openid={}", base_uri, openid).as_str()).await
 }

@@ -2,7 +2,6 @@ use crate::utils::data::{query_int_with_params, query_json_with_params};
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
-
 #[get("/yoga/lessons?<start>&<openid>&<class_type>")]
 pub async fn lessons(
     start: i32,
@@ -35,7 +34,6 @@ pub async fn lessons(
         }
     }
 }
-
 #[get("/yoga/book?<id>&<openid>")]
 pub async fn book(id: i32, openid: String, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {
@@ -58,7 +56,6 @@ pub async fn book(id: i32, openid: String, pool: &State<Pool>) -> Result<String,
         }
     }
 }
-
 #[get("/yoga/unbook?<id>&<openid>")]
 pub async fn unbook(id: i32, openid: String, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {

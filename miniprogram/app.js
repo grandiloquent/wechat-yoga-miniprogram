@@ -1,4 +1,3 @@
-const utils = require('utils');
 const shard = require("./utils/shared");
 const weixin = require('./utils/weixin');
 
@@ -19,7 +18,7 @@ App({
       });
       if (res.data) {
         this.globalData.openid = res.data;
-        utils.debug(this, this.globalData.openid);
+        weixin.debug(this)
         return;
       }
     } catch (error) { }
@@ -36,7 +35,7 @@ App({
           key: "openid",
           data: this.globalData.openid
         });
-        utils.debug(this, this.globalData.openid)
+        weixin.debug(this)
       } catch (error) {
         wx.showModal({
           content: JSON.stringify(error)

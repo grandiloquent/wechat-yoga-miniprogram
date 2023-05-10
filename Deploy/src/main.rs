@@ -90,20 +90,18 @@ fn main() {
         .connect(env::var("ADDR").expect(""))
         .unwrap()
         .run_local();
-    install_rust(&mut session);
+    //install_rust(&mut session);
+    upload_server(&mut session);
     session.close();
 }
 
-
 fn install_rust(session: &mut LocalSession<TcpStream>) {
-    // 该命令需要交互操作。可以通过 Visual 
+    // 该命令需要交互操作。可以通过 Visual
     // Studio Code 的 Remote - SSH 扩展运行
     // 该命令
     let command = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh";
     let exec = session.open_exec().unwrap();
-    let vec: Vec<u8> = exec
-        .send_command(command)
-        .unwrap();
+    let vec: Vec<u8> = exec.send_command(command).unwrap();
     println!("{}", String::from_utf8(vec).unwrap());
 }
 
@@ -122,11 +120,14 @@ fn upload_server(session: &mut LocalSession<TcpStream>) {
     // 文件上传完成后执行解压命令
     let exec = session.open_exec().unwrap();
     let vec: Vec<u8> = exec
-        .send_command(format!("rm -rf /root/server || unzip -o {} -d server", src).as_str())
+        .send_command(
+            format!("rm -rf /root/server && unzip -o /root/server.zip -d /root/server").as_str(),
+        )
         .unwrap();
     println!("{}", String::from_utf8(vec).unwrap());
     let exec = session.open_exec().unwrap();
-    let vec: Vec<u8> = exec.send_command("mkdir /root/bin || cd /root/server && cargo build --release && mv target/release/YogaServer /root/bin/YogaServer").unwrap();
+    // mkdir /root/bin &&
+    let vec: Vec<u8> = exec.send_command("cd /root/server && cargo build --release && mv target/release/YogaServer /root/bin/YogaServer").unwrap();
     println!("{}", String::from_utf8(vec).unwrap());
     // 删除压缩文件
     let _ = fs::remove_file(src);

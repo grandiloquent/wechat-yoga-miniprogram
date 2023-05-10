@@ -158,3 +158,16 @@ BEGIN
 END;
 $function$
 ```
+
+```pgsql
+CREATE OR REPLACE FUNCTION fn_unbook(input_reservation_id integer, input_open_id text)
+ RETURNS integer
+ LANGUAGE sql
+AS $function$
+delete
+from reservation
+where id = input_reservation_id
+  and user_id = (select id from "user" where open_id = input_open_id)
+returning id;
+$function$
+```

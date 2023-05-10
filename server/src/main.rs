@@ -44,7 +44,13 @@ async fn main() -> Result<(), rocket::Error> {
         )
         .mount(
             "/",
-            routes![handlers::auth::auth,handlers::booking::lessons,handlers::booking::book,handlers::debug::debug,handlers::index::index,handlers::user::lessons,handlers::user::book],
+            routes![handlers::auth::auth,
+handlers::booking::lessons,
+handlers::booking::book,
+handlers::booking::unbook,
+handlers::debug::debug,
+handlers::index::index,
+handlers::user::user_query],
         )
         .register(
             "/",
@@ -55,6 +61,5 @@ async fn main() -> Result<(), rocket::Error> {
         )
         .launch()
         .await?;
-
     Ok(())
 }

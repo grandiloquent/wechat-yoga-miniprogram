@@ -59,3 +59,28 @@ pub async fn book(id: i32, openid: String, pool: &State<Pool>) -> Result<String,
         }
     }
 }
+#[get("/yoga/unbook?<id>&<openid>")]
+pub async fn unbook(id: i32, openid: String, pool: &State<Pool>) -> Result<String, Status> {
+    match pool.get().await {
+        Ok(conn) => {
+            match query_json_with_params(&conn, "select * from fn_unbook($1,$2)", &[&id, &openid])
+                .await
+            {
+                Ok(v) => {
+                    return match String::from_utf8(v.0) {
+                        Ok(v) => Ok(v),
+                        Err(_) => Err(Status::InternalServerError),
+                    };
+                }
+                Err(error) => {
+                    println!("Error: {}", error);
+                    Err(Status::NoContent)
+                }
+            }
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            Err(Status::InternalServerError)
+        }
+    }
+}

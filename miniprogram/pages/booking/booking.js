@@ -120,14 +120,16 @@ Page({
     }
   },
   onClick(e) {
-    const { id, mode } = e.currentTarget.dataset;
+    const { id, bookid, mode } = e.currentTarget.dataset;
     if (mode === 32) {
       this.book(id)
+    } else if (mode === 64) {
+      this.unbook(bookid)
     }
   },
   // 预约课程
   async book(id) {
-    let result = await utils.checkUserAvailability(app);
+    let result = await weixin.checkUserAvailability(app);
     if (!result) {
       this.setData({
         showLogin: true
@@ -156,10 +158,10 @@ Page({
     }
   },
   // 取消已预约的课程
-  async unbook(item) {
+  async unbook(bookid) {
     try {
-      const result = await utils.getStringAsync(app, `v1/unbook?id=${item.reservation_id}`);
-      this.loadData();
+      const result = await weixin.unbook(app.globalData.host, bookid, app.globalData.openid);
+      await this.loadData();
     } catch (error) {
 
     }

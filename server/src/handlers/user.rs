@@ -2,7 +2,6 @@ use crate::utils::data::query_json_with_params;
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
-
 #[get("/yoga/user/query?<openid>")]
 pub async fn user_query(openid: String, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {
@@ -27,8 +26,4 @@ pub async fn user_query(openid: String, pool: &State<Pool>) -> Result<String, St
             Err(Status::InternalServerError)
         }
     }
-const } = document.querySelector('.}');
- }.addEventListener('click', evt => {
-        formatComments(textarea);
-    });
-            
+}

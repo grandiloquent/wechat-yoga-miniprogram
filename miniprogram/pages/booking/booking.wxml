@@ -25,7 +25,7 @@
         <text>{{item.teacherName}}</text>
         <text wx:if="{{!(item.mode&31)}}">已预约 {{item.count}}/{{item.peoples}}</text>
       </view>
-      <view class="sub-right {{(item.mode==32)?'sub-right-btn':''}}" data-id="{{item.course_id}}" data-mode="{{item.mode}}" bindtap="onClick">
+      <view class="sub-right {{(item.mode==32)?'sub-right-btn':''}}" data-id="{{item.course_id}}" data-bookid="{{item.reservation_id}}" data-mode="{{item.mode}}" bindtap="onClick">
         {{item.label}}
       </view>
     </view>

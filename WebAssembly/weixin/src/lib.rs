@@ -118,12 +118,25 @@ pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
 pub async fn book(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
     let json =
         get_json(format!("{}/yoga/book?id={}&openid={}", base_uri, id, openid).as_str()).await?;
-    // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
     if json.is_bigint() {
         return Ok(json.as_f64().unwrap_or(0f64).to_string());
     }
     Err("")?
 }
+#[wasm_bindgen]
+pub async fn unbook(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
+    let json =
+        get_json(format!("{}/yoga/unbook?id={}&openid={}", base_uri, id, openid).as_str()).await?;
+    if json.is_bigint() {
+        return Ok(json.as_f64().unwrap_or(0f64).to_string());
+    }
+    Err("")?
+}
+#[wasm_bindgen]
+pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsValue> {
+    get_json(format!("{}/yoga/user/query?openid={}", base_uri, openid).as_str()).await
+}
+
 #[wasm_bindgen]
 pub async fn bind_index(base_uri: &str, page: &Page) -> Result<String, JsValue> {
     let json = get_json(format!("{}/yoga/index", base_uri).as_str()).await?;
@@ -200,8 +213,16 @@ pub async fn bind_booking(
                     Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
                     Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
                 } else {
-                    Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
-                    Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+                    let reservation_id = safe_f64(item, "reservation_id");
+                    if reservation_id == 0f64 {
+                        // 100000
+                        Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
+                        Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+                    } else {
+                        // 1000000
+                        Reflect::set(item, &"mode".into(), &JsValue::from(64)).unwrap();
+                        Reflect::set(item, &"label".into(), &"取消预约".into()).unwrap();
+                    }
                 }
             }
             add_lesson_time(item, start_time, end_time);

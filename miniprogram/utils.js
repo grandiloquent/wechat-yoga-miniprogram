@@ -120,26 +120,7 @@ function checkIfLessonFullyBooked(todayTimestamp, lesson, currentSeconds, minute
   }
   return false;
 }
-async function checkUserAvailability(app) {
-  if (!app.globalData.openid) {
-    return false;
-  }
-  if (app.globalData.userId) {
-    return true;
-  }
-  let result;
-  try {
-    result = await getStringAsync(app, "v1/user?action=2");
-    //TODO: check
-    if (!result||!result.nick_name) {
-      return false;
-    }
-    app.globalData.userId = result;
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
+ 
 
 function chooseImage() {
   return new Promise((resolve, reject) => {
@@ -494,8 +475,7 @@ function formatDuration(ms) {
 }
 module.exports = {
   calculateNavigationBarSize,
-  checkIfAvatar,
-  checkUserAvailability,
+  checkIfAvatar, 
   chooseImage,
   compareVersion,
   debug,

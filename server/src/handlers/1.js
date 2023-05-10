@@ -1,30 +1,28 @@
-(() => {
-    const obj = [
+[
 	{
-		"course_id": 801,
+		"course_id": 907,
 		"peoples": 16,
-		"count": 10,
+		"count": 7,
 		"reservation_id": null,
 		"start_time": 32400,
 		"end_time": 36000,
-		"date_time": 1683561600,
-		"lesson_name": "普拉提",
-		"teacher_name": "欧阳老师",
-		"thumbnail": "20220417-fulrwe-W3000H3000.jpg",
+		"date_time": 1683648000,
+		"lesson_name": "艾扬格瑜伽",
+		"teacher_name": "周琼老师",
+		"thumbnail": "20220419-ulogqi-W970H970.jpg",
 		"hidden": null
 	},
 	{
-		"course_id": 854,
+		"course_id": 959,
 		"peoples": 16,
-		"count": 11,
-		"reservation_id": null,
+		"count": 12,
+		"reservation_id": 6667,
 		"start_time": 70200,
 		"end_time": 73800,
-		"date_time": 1683561600,
-		"lesson_name": "肩颈理疗",
-		"teacher_name": "金钰老师",
-		"thumbnail": "132219030.png",
+		"date_time": 1683648000,
+		"lesson_name": "内观流",
+		"teacher_name": "阿MAY老师",
+		"thumbnail": "20220530-ydrklu-W640H640.jpg",
 		"hidden": null
 	}
-];
-})();
+]

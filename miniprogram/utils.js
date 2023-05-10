@@ -184,11 +184,6 @@ function debug(app, openid) {
   };
   postString(app, "debug", data)
 }
-// 格式化以毫秒为单位的时间戳
-function formatBeijingTime(t) {
-  const n = new Date(t);
-  return `北京时间 ${n.getHours()}点${n.getMinutes()}分${n.getSeconds()}秒`
-}
 
 function formatDate(ms) {
   const t = new Date(ms);
@@ -479,7 +474,6 @@ module.exports = {
   chooseImage,
   compareVersion,
   debug,
-  formatBeijingTime,
   formatDate,
   getRandomColor,
   getString,

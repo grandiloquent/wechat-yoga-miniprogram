@@ -1,4 +1,12 @@
 const app = getApp();
+const shared = require("../../utils/shared");
+
+import init, {
+  beijing_time,
+  lunar_time,
+  get_weather
+} from "../../pkg/weixin";
+
 
 Page({
   data: {
@@ -6,8 +14,7 @@ Page({
   },
   // 该页面加载时运行一次的方法
   async onLoad() {
-
-
+    initializeTopBar(this);
     // 启用分享小程序的功能
     wx.showShareMenu({
       withShareTicket: true,
@@ -114,4 +121,39 @@ function bindIndex(app, page) {
       }
     }
   });
+}
+
+// 格式化以毫秒为单位的时间戳
+function formatBeijingTime(t) {
+  const n = new Date(t);
+  return `北京时间 ${n.getHours()}点${n.getMinutes()}分${n.getSeconds()}秒`
+}
+
+async function initializeTopBar(page) {
+  const { navigationHeight, navigationTop, paddingLeft } = shared.getNavigationBarSize();
+  page.setData({
+    navigationHeight,
+    navigationTop,
+    navigationPaddingLeft: paddingLeft,
+    navigationTitleFontSize: navigationHeight / 6 * 2,
+    navigationSubTitleFontSize: navigationHeight / 6 * 1.5,
+    navigationGap:navigationHeight / 6*.3
+  })
+  await init();
+
+  page.setData({
+    weather: await get_weather(),
+    date: lunar_time(),
+  });
+  page.data.time = parseInt(await beijing_time());
+  clearInterval(page.data.timer);
+  page.setData({
+    bj: formatBeijingTime(page.data.time)
+  });
+  page.data.timer = setInterval(() => {
+    page.data.time += 1000;
+    page.setData({
+      bj: formatBeijingTime(page.data.time)
+    });
+  }, 1000);
 }

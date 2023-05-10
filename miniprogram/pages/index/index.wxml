@@ -1,4 +1,15 @@
-<home-bar app="{{app}}"></home-bar>
+<view class="wrapper" style="height:{{navigationHeight}}px;padding-top:{{navigationTop}}px;">
+    <view class="item-wrapper" style="height:{{navigationHeight}}px;padding-left:{{navigationPaddingLeft}}px">
+        <view class="navigation-title" style="font-size:{{navigationTitleFontSize}}px;line-height:{{navigationTitleFontSize}}px;">
+            {{app.globalData.title}}
+        </view>
+        <swiper style="font-size:{{navigationSubTitleFontSize}}px;height:{{navigationSubTitleFontSize*1.5}}px" class="swiper" vertical="true" circular="true" duration="300" autoplay="true" interval="3000">
+            <swiper-item>{{weather}}</swiper-item>
+            <swiper-item>{{date}}</swiper-item>
+            <swiper-item>{{bj}}</swiper-item>
+        </swiper>
+    </view>
+</view>
 <poster items="{{poster}}" app="{{app}}"></poster>
 <home-actions items="{{actions}}" app="{{app}}" bind:submit="onHomeActionsSubmit"></home-actions>
 <gift slogan="{{market.slogan}}" app="{{app}}" bind:submit="navigate" data-href="/pages/market/market"></gift>

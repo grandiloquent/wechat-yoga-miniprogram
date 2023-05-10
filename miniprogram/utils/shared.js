@@ -79,9 +79,46 @@ async function getOpenId() {
   const res = await getJson(url, code);
   return res.openid;
 }
+function getNavigationBarSize() {
+  const {
+    screenWidth,
+    statusBarHeight
+  } = wx.getSystemInfoSync();
+  const {
+    height,
+    top,
+    right
+  } = wx.getMenuButtonBoundingClientRect();
+  const paddingLeft = screenWidth - right;
+  const navigationHeight = (top - statusBarHeight) * 2 + height;
+
+  // console.log(`screenWidth = ${screenWidth}\n`,
+  //   `statusBarHeight = ${statusBarHeight}\n`,
+  //   `height = ${height}\n`,
+  //   `top = ${top}\n`,
+  //   `right = ${right}\n`, `paddingLeft = ${paddingLeft}\n`,
+  //   `navigationHeight = ${navigationHeight}\n`);
+
+  /* iPad
+   screenWidth = 768
+   statusBarHeight = 20
+   height = 44
+   top = 28
+   right = 761
+   paddingLeft = 7
+   navigationHeight = 60
+  */
+  return {
+    navigationHeight,
+    navigationTop: statusBarHeight,
+    paddingLeft,
+  }
+}
+
 module.exports = {
   getJson,
   getLoginCode,
   postData,
-  getOpenId
+  getOpenId,
+  getNavigationBarSize
 };

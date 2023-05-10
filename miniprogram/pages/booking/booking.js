@@ -75,12 +75,19 @@ Page({
     //   });
     // }
     let openid = (await app.getOpenId()) || "";
-
+    this.setData({
+      holiday: false,
+      loading: true
+    })
     try {
       await weixin.bindBooking(app.globalData.host, this.data.selectedTime,
         openid, 4, this);
     } catch (error) {
-      console.log("weixin.bindBooking",error)
+      this.setData({
+        holiday: true,
+        loading: false,
+        lessons: []
+      });
     }
   },
   onShareAppMessage() {

@@ -105,7 +105,7 @@ pub async fn get_weather() -> Result<String, JsValue> {
 pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
     let code = get_login_code().await?;
     let json =
-        get_json(format!("{}/auth?code={}", base_uri, code.as_string().unwrap()).as_str()).await?;
+        get_json(format!("{}/yoga/auth?code={}", base_uri, code.as_string().unwrap()).as_str()).await?;
     // {"session_key":"XgFKF\/6n0ZSdBK3UaGC+Ng==","openid":"oQOVx5Dxk0E6NQO-Ojoyuky2GVR8"}
     if json.is_object() {
         let openid = Reflect::get(json.as_ref(), &"openid".into())?;
@@ -115,7 +115,7 @@ pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
 }
 #[wasm_bindgen]
 pub async fn bind_index(base_uri: &str, page: &Page) -> Result<String, JsValue> {
-    let json = get_json(format!("{}/index", base_uri).as_str()).await?;
+    let json = get_json(format!("{}/yoga/index", base_uri).as_str()).await?;
     if json.is_object() {
         let data = js_sys::Object::new();
         let booked = Reflect::get(json.as_ref(), &"booked".into())?;
@@ -145,7 +145,7 @@ pub async fn bind_booking(
 ) -> Result<(), JsValue> {
     let json = get_json(
         format!(
-            "{}/lessons?start={}&class_type={}&openid={}",
+            "{}/yoga/lessons?start={}&class_type={}&openid={}",
             base_uri, start, class_type, openid
         )
         .as_str(),

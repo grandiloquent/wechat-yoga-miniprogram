@@ -3,7 +3,7 @@ use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
 
-#[get("/lessons?<start>&<openid>&<class_type>")]
+#[get("/yoga/lessons?<start>&<openid>&<class_type>")]
 pub async fn lessons(
     start: i32,
     openid: String,
@@ -26,7 +26,7 @@ pub async fn lessons(
             }
             Err(error) => {
                 println!("Error: {}", error);
-                Err(Status::InternalServerError)
+                Err(Status::NoContent)
             }
         },
         Err(error) => {

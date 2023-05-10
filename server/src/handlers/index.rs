@@ -3,7 +3,7 @@ use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
 
-#[get("/index")]
+#[get("/yoga/index")]
 pub async fn index(pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {
         Ok(conn) => match query_json(&conn, "select * from fn_index()").await {

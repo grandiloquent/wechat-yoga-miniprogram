@@ -5,7 +5,7 @@ use rocket::http::Status;
 
 use rocket::State;
 
-#[post("/debug", data = "<data>")]
+#[post("/yoga/debug", data = "<data>")]
 pub fn debug(
     client_addr: &ClientRealAddr,
     data: String,

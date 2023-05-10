@@ -23,9 +23,9 @@
       <view class="text-lesson">{{item.lesson_name}}</view>
       <view class="sub-left">
         <text>{{item.teacherName}}</text>
-        <text wx:if="{{!(item.mode&7)}}">已预约 {{item.count}}/{{item.peoples}}</text>
+        <text wx:if="{{!(item.mode&31)}}">已预约 {{item.count}}/{{item.peoples}}</text>
       </view>
-      <view class="sub-right {{(item.mode==8)?'sub-right-btn':''}}" bindtap="onClick">
+      <view class="sub-right {{(item.mode==32)?'sub-right-btn':''}}" bindtap="onClick">
         {{item.label}}
       </view>
     </view>

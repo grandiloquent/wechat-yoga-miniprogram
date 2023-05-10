@@ -54,7 +54,7 @@ function process(item) {
     item.label = "预约"
   } else if ((item.mode & 16)) {
     item.label = "准备上课"
-  } else if ((item.mode & 32)) {
+  } else if ((item.mode & 8)) {
     item.label = "正在上课"
   } 
   else if ((item.mode & 128)) {

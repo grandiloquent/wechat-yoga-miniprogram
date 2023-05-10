@@ -163,21 +163,33 @@ pub async fn bind_booking(
             let end_time = safe_f64(item, "end_time");
 
             let now = now_in_seconds();
-            if (now - date_time - start_time > 0f64) {
+            if (now - date_time - start_time > 3600f64) {
+                // 1
                 Reflect::set(item, &"mode".into(), &JsValue::from(1)).unwrap();
                 Reflect::set(item, &"label".into(), &"已完成".into()).unwrap();
+            } else if (now - date_time - start_time > 0f64) {
+                // 10000
+                
+                Reflect::set(item, &"mode".into(), &JsValue::from(16)).unwrap();
+                Reflect::set(item, &"label".into(), &"正在上课".into()).unwrap();
+            } else if (date_time + start_time - now < 3600f64) {
+                // 1000
+                Reflect::set(item, &"mode".into(), &JsValue::from(8)).unwrap();
+                Reflect::set(item, &"label".into(), &"准备上课".into()).unwrap();
             } else {
                 let hidden = safe_f64(item, "hidden") as i8;
                 let peoples = safe_f64(item, "peoples") as u8;
                 let count = safe_f64(item, "count") as u8;
                 if hidden == -1 {
-                    Reflect::set(item, &"mode".into(), &JsValue::from(3)).unwrap();
+                    // 100
+                    Reflect::set(item, &"mode".into(), &JsValue::from(4)).unwrap();
                     Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
                 } else if count >= peoples {
+                    // 10
                     Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
                     Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
                 } else {
-                    Reflect::set(item, &"mode".into(), &JsValue::from(8)).unwrap();
+                    Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
                     Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
                 }
             }

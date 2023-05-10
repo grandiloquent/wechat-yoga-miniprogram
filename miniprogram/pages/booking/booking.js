@@ -160,10 +160,10 @@ Page({
   // 取消已预约的课程
   async unbook(bookid) {
     try {
-      const result = await weixin.unbook(app.globalData.host, bookid, app.globalData.openid);
+      await weixin.unbook(app.globalData.host, bookid, app.globalData.openid);
       await this.loadData();
     } catch (error) {
-
+      console.log(error)
     }
   },
   // 成功登录后隐藏登陆元素

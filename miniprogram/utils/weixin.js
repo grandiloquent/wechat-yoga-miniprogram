@@ -30,10 +30,10 @@ class Shared {
         await get_open_id(baseUri);
     }
     async book(baseUri, id, openid) {
-        await book(baseUri, id, openid);
+        return await book(baseUri, id, openid);
     }
     async unbook(baseUri, id, openid) {
-        await unbook(baseUri, id, openid);
+        return await unbook(baseUri, id, openid);
     }
     async checkUserAvailability(app) {
         if (!app.globalData.openid) {

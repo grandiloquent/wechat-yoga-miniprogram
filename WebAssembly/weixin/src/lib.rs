@@ -118,19 +118,19 @@ pub async fn get_open_id(base_uri: &str) -> Result<String, JsValue> {
 pub async fn book(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
     let json =
         get_json(format!("{}/yoga/book?id={}&openid={}", base_uri, id, openid).as_str()).await?;
-    if json.is_bigint() {
-        return Ok(json.as_f64().unwrap_or(0f64).to_string());
+    match json.as_f64() {
+        Some(v) => Ok(v.to_string()),
+        None => Err("")?,
     }
-    Err("")?
 }
 #[wasm_bindgen]
 pub async fn unbook(base_uri: &str, id: i32, openid: String) -> Result<String, JsValue> {
     let json =
         get_json(format!("{}/yoga/unbook?id={}&openid={}", base_uri, id, openid).as_str()).await?;
-    if json.is_bigint() {
-        return Ok(json.as_f64().unwrap_or(0f64).to_string());
+    match json.as_f64() {
+        Some(v) => Ok(v.to_string()),
+        None => Err("")?,
     }
-    Err("")?
 }
 #[wasm_bindgen]
 pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsValue> {

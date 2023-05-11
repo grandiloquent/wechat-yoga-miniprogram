@@ -4,10 +4,8 @@ use rocket::fs::TempFile;
 use rocket::State;
 //use image::{GenericImage, GenericImageView, ImageBuffer, RgbImage};
 use std::path::Path;
-
 #[derive(FromForm)]
 pub struct Upload<'f>(TempFile<'f>);
-
 #[post("/yoga/picture", data = "<form>")]
 pub async fn picture(
     mut form: Form<Upload<'_>>,

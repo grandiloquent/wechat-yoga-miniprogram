@@ -47,7 +47,7 @@ Page({
     },
     onChooseAvatar(e) {
         // `${app.globalData.host}/yoga/picture`
-        let url = `${app.globalData.host}/yoga/picture`;
+        let url = `${app.globalData.host}/yoga/avatar`;
 
         let { avatarUrl } = e.detail
         wx.uploadFile({
@@ -55,9 +55,9 @@ Page({
             filePath: avatarUrl,
             name: 'images',
             success: res => {
-                // this.setData({
-                //     avatarUrl: `${app.globalData.host}/images/${res.data}`,
-                // })
+                this.setData({
+                    avatarUrl: `${app.globalData.host}/images/${res.data}`,
+                })
             }
         });
     },

@@ -1,7 +1,6 @@
 {
 	"navigationBarBackgroundColor": "#ffffff",
 	"usingComponents": {
-		"login": "../../components/login/login",
 		"user-actions": "../../components/user-actions/user-actions",
 		"user-profile": "../../components/user-profile/user-profile"
 	}

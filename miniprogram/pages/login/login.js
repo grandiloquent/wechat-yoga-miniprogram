@@ -1,4 +1,3 @@
-const utils = require('../../utils')
 const app = getApp();
 const shared = require('../../utils/shared')
 import init, {
@@ -9,7 +8,7 @@ Page({
         app,
     },
     async onLoad(options) {
-        const return_url = options.return_url;
+        this.data.return_url = options.return_url;
         wx.setNavigationBarTitle({
             title: app.globalData.title
         });
@@ -85,13 +84,14 @@ Page({
             open_id: app.globalData.openid
         }
         try {
-            const res = await registerUser(app, data);
+            await registerUser(app, data);
             // https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html
-            wx.navigateTo({
-                url: return_url
-            })
+            app.globalData.userId=null;
+            wx.switchTab({
+                url: decodeURIComponent(this.data.return_url)
+            });
         } catch (error) {
-
+            console.error(error);
         }
     },
 });

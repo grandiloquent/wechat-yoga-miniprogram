@@ -13,8 +13,9 @@ Page({
   },
 
   async loadData() {
+    let openid = app.globalData.openid || await app.getOpenId();
     const res = await shared.checkUserAvailability(app, async () => {
-      return await user_query(app.globalData.host, (app.getOpenId.openid || await app.getOpenId()));
+      return await user_query(app.globalData.host, openid);
     });
     if (res) {
       this.setData({
@@ -33,10 +34,10 @@ Page({
           success: function (res) {
             if (res.confirm) {
               wx.navigateTo({
-                url:`/pages/login/login`
+                url: `/pages/login/login?return_url=${encodeURIComponent("/pages/user/user")}`
               })
             } else {
-              
+
             }
           }
         });
@@ -73,7 +74,6 @@ Page({
       ],
       selected: 3
     })
-    this.loadData();
   },
   onLoginSubmit(evt) {
     this.setData({
@@ -87,6 +87,7 @@ Page({
     };
   },
   onShow() {
+    this.loadData();
     this.setData({
       backgroundColor: utils.getRandomColor()
     })

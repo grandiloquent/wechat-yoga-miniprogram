@@ -121,7 +121,7 @@ fn upload_server(session: &mut LocalSession<TcpStream>) {
     let exec = session.open_exec().unwrap();
     let vec: Vec<u8> = exec
         .send_command(
-            format!("rm -rf /root/server && unzip -o /root/server.zip -d /root/server").as_str(),
+            format!("rm -rf /root/server/src && unzip -o /root/server.zip -d /root/server").as_str(),
         )
         .unwrap();
     println!("{}", String::from_utf8(vec).unwrap());

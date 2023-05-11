@@ -5,8 +5,7 @@
     "booking-bar": "../../components/booking-bar/booking-bar",
       "booking-item": "../../components/booking-item/booking-item",
       "daily-schedule": "../../components/daily-schedule/daily-schedule",
-      "spinner": "../../components/spinner/spinner",
-      "login": "../../components/login/login"
+      "spinner": "../../components/spinner/spinner"
   }   
   
 }

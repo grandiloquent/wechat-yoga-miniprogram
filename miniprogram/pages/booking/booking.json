@@ -4,8 +4,7 @@
   "usingComponents": {
     "booking-bar": "../../components/booking-bar/booking-bar",
       "daily-schedule": "../../components/daily-schedule/daily-schedule",
-      "spinner": "../../components/spinner/spinner",
-      "login": "../../components/login/login"
+      "spinner": "../../components/spinner/spinner"
   }   
   
 }

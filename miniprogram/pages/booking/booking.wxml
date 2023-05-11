@@ -11,7 +11,7 @@
   <view style="font-size:24rpx;color: rgba(0, 0, 0, 0.35);">正在加载...</view>
 </view>
 <view style="padding:20rpx">
-  <view class="item-wrapper {{(item.mode&1)?'disabled':''}}" wx:for="{{lessons}}" wx:key="*this">
+  <view class="item-wrapper {{(item.mode&1)?'disabled':''}}" wx:for="{{lessons}}" wx:key="course_id">
     <view class="item">
       <image class="item-image" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
     </view>

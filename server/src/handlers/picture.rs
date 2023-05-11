@@ -22,7 +22,7 @@ pub async fn avatar(
     mut form: Form<Upload<'_>>,
     settings: &State<Settings>,
 ) -> std::io::Result<String> {
-    let name = form.0.name().unwrap().to_string();
+    let name = form.0.name().unwrap().to_string()+".avif";
     let path = Path::new(settings.image_dir.as_str());
     form.0.persist_to(path.join(name.clone())).await?;
     Ok(name)

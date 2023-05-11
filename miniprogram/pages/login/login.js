@@ -8,7 +8,8 @@ Page({
     data: {
         app,
     },
-    async onLoad() {
+    async onLoad(options) {
+        const return_url = options.return_url;
         wx.setNavigationBarTitle({
             title: app.globalData.title
         });
@@ -61,6 +62,38 @@ Page({
             }
         });
     },
+    onNickNameInput(evt) {
+        this.data.nickName = evt.detail.value;
+    }, async onUpdateUser() {
+        if (!this.data.avatarUrl) {
+            wx.showToast({
+                icon: "error",
+                title: "请设置头像"
+            })
+            return;
+        }
+        if (!this.data.nickName) {
+            wx.showToast({
+                icon: "error",
+                title: "请输入昵称"
+            })
+            return;
+        }
+        const data = {
+            avatar_url: this.data.avatarUrl,
+            nick_name: this.data.nickName,
+            open_id: app.globalData.openid
+        }
+        try {
+            const res = await registerUser(app, data);
+            // https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html
+            wx.navigateTo({
+                url: return_url
+            })
+        } catch (error) {
+
+        }
+    },
 });
 
 function isUserInfoProtected() {
@@ -105,4 +138,21 @@ function getUserProfile() {
             }
         });
     })
+}
+
+function registerUser(app, data) {
+    return new Promise((resolve, reject) => {
+        const url = `${app.globalData.host}/yoga/user`
+        wx.request({
+            url,
+            data,
+            method: 'POST',
+            success(res) {
+                resolve(res)
+            },
+            fail(error) {
+                reject(error)
+            }
+        });
+    });
 }

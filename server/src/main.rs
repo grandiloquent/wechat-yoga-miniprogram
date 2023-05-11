@@ -63,7 +63,8 @@ handlers::favicon::favicon,
 handlers::index::index,
 handlers::picture::picture,
 handlers::picture::avatar,
-handlers::user::user_query],
+handlers::user::user_query,
+handlers::user::register_user],
         )
         .register(
             "/",

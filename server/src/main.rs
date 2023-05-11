@@ -7,6 +7,8 @@ use std::env;
 
 use deadpool_postgres::{ManagerConfig, Runtime};
 use models::settings::Settings;
+use rocket::data::{Limits, ToByteUnit};
+use rocket::figment::Figment;
 use tokio_postgres::NoTls;
 
 #[macro_use]
@@ -31,11 +33,19 @@ async fn main() -> Result<(), rocket::Error> {
     config.manager = Some(ManagerConfig {
         recycling_method: deadpool_postgres::RecyclingMethod::Fast,
     });
+    let limits = Limits::default().limit("limits.file", 10.megabytes());
+
+    let figment = Figment::from(rocket::Config::default())
+        .merge((rocket::Config::ADDRESS, "127.0.0.1"))
+        .merge((rocket::Config::PORT, 8002))
+        .merge((rocket::Config::LIMITS, limits));
     // 实例化和启动 rocket
     rocket::build()
+        .configure(figment)
         .manage(Settings {
             appid: env::var("APPID").expect("Couldn't find appid"),
             secret: env::var("SECRET").expect("Couldn't find secret"),
+            image_dir: env::var("IMAGE_DIR").expect("Couldn't find image_dir"),
         })
         .manage(
             config
@@ -44,13 +54,17 @@ async fn main() -> Result<(), rocket::Error> {
         )
         .mount(
             "/",
-            routes![handlers::auth::auth,
-handlers::booking::lessons,
-handlers::booking::book,
-handlers::booking::unbook,
-handlers::debug::debug,
-handlers::index::index,
-handlers::user::user_query],
+            routes![
+                handlers::auth::auth,
+                handlers::booking::lessons,
+                handlers::booking::book,
+                handlers::booking::unbook,
+                handlers::debug::debug,
+                handlers::favicon::favicon,
+                handlers::index::index,
+                handlers::picture::picture,
+                handlers::user::user_query
+            ],
         )
         .register(
             "/",

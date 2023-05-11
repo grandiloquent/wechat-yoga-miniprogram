@@ -3,7 +3,6 @@ use crate::utils::data::{Body, query_int_with_params};
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
-
 #[post("/yoga/debug", data = "<data>")]
 pub async fn debug(
     client_addr: &ClientRealAddr,

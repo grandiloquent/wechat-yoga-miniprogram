@@ -44,7 +44,23 @@ Page({
             console.log(response);
         }
         catch { }
-    }
+    },
+    onChooseAvatar(e) {
+        // `${app.globalData.host}/yoga/picture`
+        let url = `${app.globalData.host}/yoga/picture`;
+
+        let { avatarUrl } = e.detail
+        wx.uploadFile({
+            url, //仅为示例，非真实的接口地址
+            filePath: avatarUrl,
+            name: 'images',
+            success: res => {
+                // this.setData({
+                //     avatarUrl: `${app.globalData.host}/images/${res.data}`,
+                // })
+            }
+        });
+    },
 });
 
 function isUserInfoProtected() {

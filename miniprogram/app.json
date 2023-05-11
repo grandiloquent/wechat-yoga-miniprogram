@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/user/user",
     "pages/index/index",
     "pages/booking/booking",
     "pages/booked/booked",
@@ -8,8 +10,7 @@
     "pages/notices/notices",
     "pages/one/one",
     "pages/small/small",
-    "pages/teacher/teacher",
-    "pages/user/user"
+    "pages/teacher/teacher"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

@@ -1,5 +1,10 @@
 const utils = require('../../utils')
 const app = getApp();
+const shared = require('../../utils/shared')
+
+import init, {
+  user_query
+} from "../../pkg/weixin";
 
 Page({
   data: {
@@ -7,52 +12,63 @@ Page({
     showLogin: false
   },
 
-  loadData() {
-    utils.getString(app, "v1/user?action=2", (err, data) => {
-      if (err) return;
-      if (data && data.nick_name) {
-        app.globalData.userId = data.id;
-        this.setData({
-          user: data
-        });
-      } else {
-        this.setData({
-          showLogin: true
+  async loadData() {
+    const res = await shared.checkUserAvailability(app, async () => {
+      return await user_query(app.globalData.host, (app.getOpenId.openid || await app.getOpenId()));
+    });
+    if (res) {
+      this.setData({
+        user: app.globalData.userId
+      })
+    }
+    if (app.globalData.userId) {
+      try {
+        await checkAvatar(app.globalData.userId.avatar_url);
+      } catch (error) {
+        // showModal
+        // https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showModal.html
+        wx.showModal({
+          title: '询问',
+          content: '您的头像已失效，请更新？',
+          success: function (res) {
+            if (res.confirm) {
+              wx.navigateTo({
+                url:`/pages/login/login`
+              })
+            } else {
+              
+            }
+          }
         });
       }
 
-    });
+    }
   },
   navigate(e) {
     utils.navigate(e)
   },
   async onLoad() {
+    shared.setPage(app);
+    await init();
 
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
-    })
-    wx.setNavigationBarTitle({
-      title: app.globalData.title
-    });
     this.getTabBar().setData({
       items: [{
-          name: "首页",
-          src: "home",
-          href: "index"
-        }, {
-          name: "约课",
-          src: "book",
-          href: "booking"
-        }, {
-          name: "已约",
-          src: "booked",
-          href: "booked"
-        }, {
-          name: "我的",
-          src: "user",
-          href: "user"
-        }
+        name: "首页",
+        src: "home",
+        href: "index"
+      }, {
+        name: "约课",
+        src: "book",
+        href: "booking"
+      }, {
+        name: "已约",
+        src: "booked",
+        href: "booked"
+      }, {
+        name: "我的",
+        src: "user",
+        href: "user"
+      }
 
       ],
       selected: 3
@@ -87,3 +103,29 @@ Page({
 function onUserActionsSubmit(evt) {
 
 }
+
+
+// 测试微信用户头像是否已失效
+// 应当紧测试微信提供的头像，如果头像保存在服务器，应该跳过以降低负载
+function checkAvatar(url) {
+  return new Promise((resolve, reject) => {
+    wx.request({
+      url,
+      method: 'GET',
+      success: res => {
+        // if (res.header['X-ErrNo'] === '-6101') {
+        //     reject()
+        // }
+        if (res.statusCode > 400 || res.statusCode < 200) {
+          reject();
+        } else
+          resolve()
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  });
+}
+
+

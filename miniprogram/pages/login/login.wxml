@@ -1,0 +1,45 @@
+<block wx:if="{{isUserProtected}}">
+    <view class="container" style="top:{{(bound&&(bound.navigationTop+bound.navigationHeight))||0}}px">
+        <view style="background: #fff;display: flex;">
+            <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+                <image class="avatar" src="{{avatarUrl}}" mode="aspectFill"></image>
+            </button>
+        </view>
+        <view style="position: relative;display: flex;box-sizing: border-box;width: 100%;padding: 20rpx 32rpx;overflow: hidden;color: #323233;font-size: 28rpx;line-height: 48rpx;background-color: #fff;">
+            <view style="-webkit-box-flex: 0;flex: none;box-sizing: border-box;width: 6.2em;margin-right: 24rpx;color: #646566;text-align: left;word-wrap: break-word;">
+                头像
+            </view>
+            <view style="-webkit-box-flex: 1;flex: 1;position: relative;color: #969799;text-align: right;vertical-align: middle;word-wrap: break-word;overflow: visible;">
+                <view style="display: flex;-webkit-box-align: center;align-items: center;">
+                    <button style="padding: 0;font: inherit;color: inherit;margin: 0;" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+                        轻触选择您心仪的头像
+                    </button>
+                </view>
+            </view>
+        </view>
+        <view style="position: relative;display: flex;box-sizing: border-box;width: 100%;padding: 20rpx 32rpx;overflow: hidden;color: #323233;font-size: 28rpx;line-height: 48rpx;background-color: #fff;">
+            <view style="-webkit-box-flex: 0;flex: none;box-sizing: border-box;width: 6.2em;margin-right: 24rpx;color: #646566;text-align: left;word-wrap: break-word;">
+                昵称
+            </view>
+            <view style="-webkit-box-flex: 1;flex: 1;position: relative;color: #969799;text-align: right;vertical-align: middle;word-wrap: break-word;overflow: visible;">
+                <view style="display: flex;-webkit-box-align: center;align-items: center;">
+                    <input type="nickname" placeholder="请输入昵称" value="{{nickName}}" bindinput="onNickNameInput" bindconfirm="onNickNameInput" />
+                </view>
+            </view>
+        </view>
+        <view catchtap="onUpdateUser" style="box-sizing: border-box;height: 88rpx;border-radius: 4rpx;color: #fff;background-color: #07c160;border: 2rpx solid #07c160;padding: 0 30rpx;font-size: 32rpx;display:flex;align-items: center;justify-content: center;margin: 48rpx;">
+            保存
+        </view>
+    </view>
+</block>
+<block wx:else>
+    <view class="login-box">
+        <image class="logo" src="/images/wx.jpg" mode="widthFix"></image>
+        <view class="line"></view>
+        <view class="title">申请获取以下权限</view>
+        <view class="profile">获得你的公开信息(昵称，头像)</view>
+        <view class="btn">
+            <button class="btn-primary" type="primary" bindtap="updateUserInfo">微信一键登录</button>
+        </view>
+    </view>
+</block>

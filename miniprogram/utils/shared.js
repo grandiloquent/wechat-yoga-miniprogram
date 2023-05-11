@@ -73,7 +73,7 @@ function promisify(api) {
   }
 }
 
-async function getOpenId() {
+async function getOpenId(app) {
   const code = await getLoginCode();
   const url = `${app.globalData.host}/yoga/auth?code=${code}`;
   const res = await getJson(url, code);
@@ -114,11 +114,45 @@ function getNavigationBarSize() {
     paddingLeft,
   }
 }
+async function checkUserAvailability(app, fn) {
+  if (!app.globalData.openid) {
+    return false;
+  }
+
+  if (app.globalData.userId) {
+    return true;
+  }
+
+  let result;
+  try {
+    result = await fn(app)
+    //TODO: check
+    if (!result || !result.nick_name) {
+      return false;
+    }
+    app.globalData.userId = result;
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+async function setPage(app) {
+  wx.showShareMenu({
+    withShareTicket: true,
+    menus: ['shareAppMessage', 'shareTimeline']
+  })
+  wx.setNavigationBarTitle({
+    title: app.globalData.title
+  });
+}
 
 module.exports = {
   getJson,
   getLoginCode,
   postData,
   getOpenId,
-  getNavigationBarSize
+  getNavigationBarSize,
+  setPage,
+  checkUserAvailability,
 };

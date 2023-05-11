@@ -40,31 +40,7 @@ function calculateNavigationBarSize() {
     paddingLeft,
   }
 }
-// 测试微信用户头像是否已失效
-// 应当紧测试微信提供的头像，如果头像保存在服务器，应该跳过以降低负载
-function checkIfAvatar(app, url) {
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: `${app.globalData.host}/api/avatar`,
-      data: {
-        q: url
-      },
-      method: 'GET',
-      success: res => {
-        // if (res.header['X-ErrNo'] === '-6101') {
-        //     reject()
-        // }
-        if (res.statusCode > 400 || res.statusCode < 200) {
-          reject();
-        } else
-          resolve()
-      },
-      fail: error => {
-        reject(error)
-      }
-    })
-  });
-}
+
 
 function checkIfBooked(todayTimestamp, lesson, currentSeconds, minutesLimit, throttleHours) {
   if (lesson.reservation_id) {
@@ -136,28 +112,6 @@ function chooseImage() {
       }
     });
   });
-}
-// 通过比较微信基础库版本号，用于解决兼容性问题
-function compareVersion(v1, v2) {
-  v1 = v1.split('.')
-  v2 = v2.split('.')
-  const len = Math.max(v1.length, v2.length)
-  while (v1.length < len) {
-    v1.push('0')
-  }
-  while (v2.length < len) {
-    v2.push('0')
-  }
-  for (let i = 0; i < len; i++) {
-    const num1 = parseInt(v1[i])
-    const num2 = parseInt(v2[i])
-    if (num1 > num2) {
-      return 1
-    } else if (num1 < num2) {
-      return -1
-    }
-  }
-  return 0
 }
 
 function debug(app, openid) {
@@ -240,29 +194,9 @@ function getStringAsync(app, path, arg) {
     });
   });
 }
-// 异步获取用户昵称头像等信息
-// 特定版本的基础库已关闭该接口。调用后将统一返回一致的头像和名为微信用户的昵称
-// 使用该方法时必须考虑兼容性
-function getUserProfile() {
-  // https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserProfile.html
-  return new Promise((resolve, reject) => {
-    wx.getUserProfile({
-      lang: 'zh_CN',
-      desc: '用于完善会员资料',
-      success: response => {
-        resolve(response)
-      },
-      fail: error => {
-        reject(error)
-      }
-    });
-  })
-}
 
 
-function isUserInfoProtected() {
-  return compareVersion(wx.getSystemInfoSync().SDKVersion, "2.27.1") >= 0
-}
+
 
 function navigate(e) {
   if (e.currentTarget.dataset.tab) {
@@ -470,16 +404,13 @@ function formatDuration(ms) {
 }
 module.exports = {
   calculateNavigationBarSize,
-  checkIfAvatar, 
+  
   chooseImage,
-  compareVersion,
   debug,
   formatDate,
   getRandomColor,
   getString,
   getStringAsync,
-  getUserProfile, 
-  isUserInfoProtected,
   navigate,
   postString,
   request,

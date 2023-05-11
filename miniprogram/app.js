@@ -10,7 +10,11 @@ App({
     } catch (error) {
       return;
     }
-    // 尝试读取登录缓存
+    // 尝试读取缓存的 OpenId。OpenId 是
+    // 用户相对于该小程序的唯一标识。
+    // 但一旦小程序的程序 Id 
+    // 变化。该标识也会变更。也就是
+    // 说，它无法作为小程序之间通用的标识。
     try {
       const res = await wx.getStorage({
         key: 'openid'
@@ -29,16 +33,17 @@ App({
         // 相同的用户登录不同的小程序其OpenId也不同
         // 如果将OpenId作为用户标识，会影响数据迁移的可行性
         // 举例说，用户在A小程序的OpenIdA，在B为OpenIdB，如果要把A程序中的该用户的数据迁移到B，OpenIdA和OpenIdB并没有映射关系，无法简单迁移
-        this.globalData.openid = await shared.getOpenId(this.globalData.host);
+        this.globalData.openid = await shared.getOpenId(this);
         wx.setStorage({
           key: "openid",
           data: this.globalData.openid
         });
         debug(this)
       } catch (error) {
-        wx.showModal({
-          content: JSON.stringify(error)
-        });
+        console.error(error);
+        // wx.showModal({
+        //   content: JSON.stringify(error)
+        // });
       }
     }
 
@@ -100,7 +105,8 @@ function checkUpdate() {
 
 }
 
-
+// 记录访问小程序的设备信息，用于分析和统
+// 计，比喻说优先测试最常见设备的兼容性
 function debug(app) {
   const {
     brand,

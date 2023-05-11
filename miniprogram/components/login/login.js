@@ -109,4 +109,4 @@ Component({
       this.data.nickName = evt.detail.value;
     }
   }
-})
+});

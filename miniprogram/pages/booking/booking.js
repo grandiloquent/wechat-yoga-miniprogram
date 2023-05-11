@@ -1,6 +1,12 @@
 const utils = require('../../utils')
 const app = getApp();
-const weixin = require('../../utils/weixin');
+
+import init, {
+  bind_booking,
+  book,
+  unbook,
+  user_query
+} from "../../pkg/weixin";
 
 Page({
   data: {
@@ -11,6 +17,7 @@ Page({
     selectedTime: 0
   },
   async onLoad() {
+    await init();
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -48,39 +55,13 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    // 清空已加载的课程
-    // 隐藏“假日注意休息”的元素
-    // 显示加载数据的元素
-    // this.setData({
-    //   lessons: null,
-    //   holiday: false,
-    //   loading: true
-    // })
-    // try {
-    //   const data = await utils.getStringAsync(app, `v1/booking/query?start=${this.data.selectedTime}&classType=4`);
-    //   if (!data.length) {
-    //     throw new Error()
-    //   }
-    //   utils.setLessonStatus(data, 3, 60);
-    //   const lessons = utils.sortLessons(data);
-    //   this.setData({
-    //     holiday: false,
-    //     lessons,
-    //     loading: false
-    //   });
-    // } catch (error) {
-    //   this.setData({
-    //     holiday: true,
-    //     loading: false
-    //   });
-    // }
     let openid = (await app.getOpenId()) || "";
     this.setData({
       holiday: false,
       loading: true
     })
     try {
-      await weixin.bindBooking(app.globalData.host, this.data.selectedTime,
+      await bind_booking(app.globalData.host, this.data.selectedTime,
         openid, 4, this);
     } catch (error) {
       this.setData({
@@ -129,7 +110,7 @@ Page({
   },
   // 预约课程
   async book(id) {
-    let result = await weixin.checkUserAvailability(app);
+    let result = await checkUserAvailability(app);
     if (!result) {
       this.setData({
         showLogin: true
@@ -138,7 +119,7 @@ Page({
     }
     try {
       let openid = (await app.getOpenId()) || "";
-      result = await weixin.book(app.globalData.host, id, openid);
+      result = await book(app.globalData.host, id, openid);
       if (result > 0) {
         await this.loadData();
       }
@@ -160,7 +141,7 @@ Page({
   // 取消已预约的课程
   async unbook(bookid) {
     try {
-      await weixin.unbook(app.globalData.host, bookid, app.globalData.openid);
+      await unbook(app.globalData.host, bookid, app.globalData.openid);
       await this.loadData();
     } catch (error) {
       console.log(error)
@@ -177,3 +158,24 @@ Page({
 }
 
 )
+async function checkUserAvailability(app) {
+  if (!app.globalData.openid) {
+    return false;
+  }
+  if (app.globalData.userId) {
+    return true;
+  }
+  let result;
+  try {
+    result = await user_query(app.globalData.host, app.globalData.openid);
+    //TODO: check
+    if (!result || !result.nick_name) {
+      return false;
+    }
+    app.globalData.userId = result;
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

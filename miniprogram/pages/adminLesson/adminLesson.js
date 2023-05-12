@@ -7,10 +7,19 @@ Page({
         selected: 0,
         indexs: ["今天", "明天", "近七日", "近半月"]
     },
+    // 通过 URL 查询参数获取待查
+    // 询的课程标识
     async onLoad(options) {
         this.data.id = options.id || 1271;
         this.loadData();
     },
+    // 查询课程的基本信息和预约该课程
+    // 的学员列表。在服务端将接受到
+    // 的课程标识和用户标识直接发送
+    // 给数据库，数据库使用用户标识
+    // 通过查询用户表检查用户的权限
+    // ，然后以 JSON 格式返回
+    // 查询结果
     async loadData() {
         const lesson = await
             new Promise((resolve, reject) => {
@@ -68,7 +77,13 @@ function formatLessonDateTime(lesson) {
     //  ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}
     return `${date.getMonth() + 1}月${date.getDate()}日${lesson.start_time < 43200 ? '上午' : '晚上'}`
 }
-// fw
+// 因节假日或其他原因，需要取消原来排定的
+// 课程时，可通过将课程的 hidden 
+// 字段设置为 1 来隐藏该课程。同时，我
+// 们应该以某种方式提前通知该课程的老师
+// 和已预约的学员，且在计算费用时，应该
+// 排除该课程，我们还应该记录取消该课程
+// 的原因。
 async function suspendLesson(app, id, status) {
     return new Promise((resolve, reject) => {
         const url = `${app.globalData.host}/yoga/admin/lesson/hidden?id=${id}&status=${status}&openid=${app.globalData.openid

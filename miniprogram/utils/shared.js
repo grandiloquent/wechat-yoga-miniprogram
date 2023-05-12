@@ -146,7 +146,17 @@ async function setPage(app) {
     title: app.globalData.title
   });
 }
-
+function navigate(e) {
+  if (e.currentTarget.dataset.tab) {
+    wx.switchTab({
+      url: e.currentTarget.dataset.tab,
+    })
+  } else if (e.currentTarget.dataset.href) {
+    wx.navigateTo({
+      url: e.currentTarget.dataset.href + (e.currentTarget.dataset.id || ''),
+    })
+  }
+}
 module.exports = {
   getJson,
   getLoginCode,
@@ -155,4 +165,5 @@ module.exports = {
   getNavigationBarSize,
   setPage,
   checkUserAvailability,
+  navigate
 };

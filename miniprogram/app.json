@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/adminLessons/adminLessons",
     "pages/index/index",
     "pages/user/user",
     "pages/login/login",

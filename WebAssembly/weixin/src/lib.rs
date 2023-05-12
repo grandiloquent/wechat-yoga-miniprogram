@@ -1,5 +1,5 @@
 use chinese_lunisolar_calendar::chrono::prelude::*;
-use chinese_lunisolar_calendar::{ChineseVariant, LunisolarDate};
+use chinese_lunisolar_calendar::LunisolarDate;
 use js_sys::{Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 

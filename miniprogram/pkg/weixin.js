@@ -2,7 +2,6 @@ const shared=require("../utils/shared");
 const  encoding = require('../utils/encoding');
 const  TextDecoder = TextDecoder?TextDecoder:encoding.TextDecoder;
 const TextEncoder = TextEncoder?TextEncoder:encoding.TextEncoder;
-
 let wasm;
 
 const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
@@ -325,11 +324,11 @@ function __wbg_adapter_58(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
-
 async function load(module, imports){
   const instance = await WXWebAssembly.instantiate(module, imports);
   return instance;
 }
+
 function getImports() {
     const imports = {};
     imports.wbg = {};
@@ -504,10 +503,21 @@ function finalizeInit(instance, module) {
 
 
 
-async function init() {
+
+			async function init(){
+
+
     const imports = getImports();
+
+
     initMemory(imports);
+
     const { instance, module } = await load("/pkg/weixin_bg.wasm", imports);
+
     return finalizeInit(instance, module);
+
 }
+
+
+
 export default init;

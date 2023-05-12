@@ -51,7 +51,8 @@ Page({
   async onLoad() {
     shared.setPage(app);
     await init();
-
+    this.data.initialized = true;
+    this.loadData();
     this.getTabBar().setData({
       items: [{
         name: "首页",
@@ -75,19 +76,15 @@ Page({
       selected: 3
     })
   },
-  onLoginSubmit(evt) {
-    this.setData({
-      showLogin: false
-    });
-    this.loadData();
-  },
   onShareAppMessage() {
     return {
       title: app.globalData.title
     };
   },
   onShow() {
-    this.loadData();
+    if (this.data.initialized) {
+      this.loadData();
+    }
     this.setData({
       backgroundColor: utils.getRandomColor()
     })
@@ -98,12 +95,12 @@ Page({
         showLogin: true
       });
     }
+  },
+  navigate(e) {
+    shared.navigate(e)
   }
 })
 
-function onUserActionsSubmit(evt) {
-
-}
 
 
 // 测试微信用户头像是否已失效

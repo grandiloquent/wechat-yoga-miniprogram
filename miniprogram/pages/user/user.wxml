@@ -1,3 +1,10 @@
 <user-profile user="{{user}}" backgroundColor="{{backgroundColor}}" app="{{app}}" bind:submit="onUserProfileSubmit"></user-profile>
-<login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>
 <user-actions items="{{user-actions}}" app="{{app}}" bind:submit="onUserActionsSubmit"></user-actions>
+<view wx:if="{{user.user_type===4}}" style="border-radius: 12rpx;margin:0 24rpx;background: #fff;padding:0 24rpx;margin-top:36rpx">
+    <view style="font-size: 32rpx;color: #333;line-height: 96rpx;">管理员</view>
+    <view style="display: flex;justify-content: space-around;">
+        <view class="action" data-href="/pages/adminLessons/adminLessons" bind:tap="navigate" style="background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJmaWxsOiM4MTgxODEiIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQo8cGF0aCBkPSJNMjAuMDE2IDIxdi0xMi45ODRoLTE2LjAzMXYxMi45ODRoMTYuMDMxek0yMC4wMTYgM3EwLjc5NyAwIDEuMzgzIDAuNjA5dDAuNTg2IDEuNDA2djE1Ljk4NHEwIDAuNzk3LTAuNTg2IDEuNDA2dC0xLjM4MyAwLjYwOWgtMTYuMDMxcS0wLjc5NyAwLTEuMzgzLTAuNjA5dC0wLjU4Ni0xLjQwNnYtMTUuOTg0cTAtMC43OTcgMC41ODYtMS40MDZ0MS4zODMtMC42MDloMS4wMzF2LTIuMDE2aDEuOTY5djIuMDE2aDEwLjAzMXYtMi4wMTZoMS45Njl2Mi4wMTZoMS4wMzF6Ij48L3BhdGg+DQo8L3N2Zz4=)">
+            课程
+        </view>
+    </view>
+</view>

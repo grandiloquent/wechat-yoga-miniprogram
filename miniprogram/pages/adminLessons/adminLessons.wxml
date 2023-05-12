@@ -1,0 +1,18 @@
+<view class="title">课程</view>
+<view class="actions">
+    <view wx:for="{{indexs}}" wx:key="index" class="action {{selected===index&&'selected'}}" data-id="{{index}}" bind:tap="onIndex">
+        {{item}}
+    </view>
+</view>
+<view class="items">
+    <view class="item">
+        <view class="item-body">
+            <image class="item-body-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlDCcCBSldJ_i9eBnaAF8z5kLyM0_IUQVZyAgMjKCyajjb73AeIW2hICQryrA"></image>
+            <view class="item-body-left">
+                <view class="item-body-line">
+                    <view class="item-body-text">你好</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

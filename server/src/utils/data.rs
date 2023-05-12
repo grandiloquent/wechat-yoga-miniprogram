@@ -29,7 +29,7 @@ impl ToSql for Body {
         <&str as ToSql>::to_sql(&&self.0.as_str(), ty, w)
     }
 
-    fn accepts(ty: &Type) -> bool {
+    fn accepts(_ty: &Type) -> bool {
         true
     }
 

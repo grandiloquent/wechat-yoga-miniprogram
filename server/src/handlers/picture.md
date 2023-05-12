@@ -1,6 +1,3 @@
-```
-$file="picture";$dir="C:\Users\Administrator\Desktop\file\yg\server\src\handlers";Set-Location $dir;New-Item $file".rs";New-Item $file".md";Get-ChildItem | Where-Object {$_.Name -ne "mod.rs"} | Split-Path -LeafBase | Join-String -FormatString "pub mod {0};`r`n" | Set-Content -Path .\mod.rs
-```
 
 ```
 Host: localhost:8002

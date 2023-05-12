@@ -5,12 +5,21 @@
     </view>
 </view>
 <view class="items">
-    <view class="item">
+    <view class="item" wx:for="{{lessons}}" wx:key="course_id">
         <view class="item-body">
-            <image class="item-body-image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlDCcCBSldJ_i9eBnaAF8z5kLyM0_IUQVZyAgMjKCyajjb73AeIW2hICQryrA"></image>
+            <image class="item-body-image" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
             <view class="item-body-left">
                 <view class="item-body-line">
-                    <view class="item-body-text">你好</view>
+                    <view class="item-body-text">{{item.teacher_name}}</view>
+                    <view>{{item.date}}</view>
+                </view>
+                <view class="item-body-line">
+                    <view class="item-text">{{item.lesson_name}}</view>
+                </view>
+                <view style="flex-grow:1"></view>
+                <view class="item-body-line">
+                    <view style="flex-grow:1"></view>
+                    <view>{{item.dif}}</view>
                 </view>
             </view>
         </view>

@@ -9,7 +9,6 @@
     line-height: 64rpx;
     -webkit-box-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
     justify-content: space-between;
     padding: 0 32rpx;
     border-bottom: none;
@@ -70,11 +69,12 @@
 
 .item-body {
     display: flex;
-    flex-direction: row;
 }
 
 .item-body-left {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .item-body-image {
@@ -102,3 +102,16 @@
     padding-right: 8px;
     padding-left: 6px
 }
+
+.item-text{
+    color: #202124;
+    font-size: 32rpx;
+    line-height: 48rpx;
+    font-weight: 500;
+    padding-top: 16rpx;
+}
+
+/*
+<view class="">
+</view>
+*/

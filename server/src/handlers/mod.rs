@@ -1,3 +1,4 @@
+pub mod admin_lessons;
 pub mod auth;
 pub mod booking;
 pub mod debug;

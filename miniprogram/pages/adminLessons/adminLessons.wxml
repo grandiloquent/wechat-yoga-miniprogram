@@ -5,7 +5,7 @@
     </view>
 </view>
 <view class="items">
-    <view class="item" wx:for="{{lessons}}" wx:key="course_id">
+    <view class="item" wx:for="{{lessons}}" wx:key="course_id" data-href="/pages/adminLesson/adminLesson?id={{item.course_id}}" bind:tap="navigate">
         <view class="item-body">
             <image class="item-body-image" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
             <view class="item-body-left">

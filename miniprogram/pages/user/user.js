@@ -46,7 +46,7 @@ Page({
     }
   },
   navigate(e) {
-    utils.navigate(e)
+    shared.navigate(e)
   },
   async onLoad() {
     shared.setPage(app);

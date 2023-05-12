@@ -1,4 +1,5 @@
 const app = getApp();
+const shared = require('../../utils/shared')
 
 Page({
     data: {
@@ -20,7 +21,6 @@ Page({
                 wx.request({
                     url,
                     success(res) {
-                        console.log(res);
                         resolve(res.data);
                     },
                     fail(error) {
@@ -72,7 +72,10 @@ Page({
             this.data.end = this.data.start + 14 * 86400;
             this.loadData();
         }
-    }
+    },
+    navigate(e) {
+        shared.navigate(e)
+    },
 });
 
 function formatLessonDateTime(lesson) {

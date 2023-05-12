@@ -1,0 +1,21 @@
+<view style="padding:0 32rpx">
+    <view class="title">
+        <view>{{lesson.lesson_name}}</view>
+        <view wx:if="{{lesson.hidden===null}}" class="lesson-action">停课</view>
+    </view>
+    <view style="border-top:2rpx solid #dadce0;padding:16rpx 0;display:flex">
+        <image style="width:160rpx;height:160rpx;border-radius:12rpx" src="{{app.globalData.staticHost}}/images/{{lesson.thumbnail}}" />
+        <view style="margin-left:16rpx;font-size:28rpx">
+            <view>{{lesson.teacher_name}}</view>
+            <view>{{lesson.date}}</view>
+        </view>
+    </view>
+    <view style="height:16rpx;margin:0 -32rpx;background-color:#f1f3f4"></view>
+    <view class="subtitle">学员</view>
+    <view class="user-item" wx:for="{{lesson.students}}">
+        <image class="user-item-image" src="{{item.avatar_url}}"></image>
+        <view class="user-item-text">{{item.nick_name}}</view>
+        <view style="flex-grow:1"></view>
+        <view class="user-item-action">删除</view>
+    </view>
+</view>

@@ -1,0 +1,68 @@
+.user-item {
+    border-top: 2rpx solid #dadce0;
+    padding: 16rpx 0;
+    min-height: 86rpx;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.user-item-text {
+    font-size: 28rpx;
+    line-height: 40rpx;
+    color: #202124;
+    margin-left: 12rpx;
+}
+
+.user-item-image {
+    width: 72rpx;
+    height: 72rpx;
+    border-radius: 8rpx;
+}
+
+.user-item-action {
+    font-size: 24rpx;
+    line-height: 22rpx;
+    color: #5f6368;
+}
+
+.title {
+    line-height: 64rpx;
+    font-size: 44rpx;
+    padding: 16rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subtitle {
+    font-size: 36rpx;
+    line-height: 48rpx;
+    color: #202124;
+    margin-bottom: 24rpx;
+    margin-top: 32rpx;
+}
+
+.lesson-action {
+
+    font-size:28rpx;
+    font-weight: 500;
+    line-height: 40rpx;
+    box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(60, 64, 67, .30), 0rpx 2rpx 6rpx 2rpx rgba(60, 64, 67, .15);
+    border-radius: 48rpx;
+    color: #3c4043;
+    background-color: #fff;
+    padding: 0 32rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60rpx;
+}
+
+
+/*
+<view class="">
+</view>
+*/

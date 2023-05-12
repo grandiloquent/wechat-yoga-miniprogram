@@ -28,3 +28,15 @@ from (select course.id                                 as course_id,
 $function$
 
 ```
+
+```
+CREATE OR REPLACE FUNCTION fn_admin_lesson_update_status(in_id integer, in_value integer)
+RETURNS integer
+LANGUAGE sql
+AS $function$
+update course
+set hidden=in_value
+where id = in_id
+returning id;
+$function$
+```

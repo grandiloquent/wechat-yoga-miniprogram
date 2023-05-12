@@ -1,23 +1,27 @@
-<view class="top" style="background-color:{{background}}">
-    <image class="top-image" src="{{app.globalData.staticHost}}/images/{{lesson.thumbnail}}" />
-</view>
-<view class="wrapper">
-    <view class="header-action-wrapper">
-        <view class="gap"></view>
-        <view wx:if="{{lesson.hidden===null}}" class="lesson-action">停课</view>
+<view class="{{lesson.hidden?'disabled':''}}">
+    <view class="top" style="background-color:{{background}}">
+        <image class="top-image" src="{{app.globalData.staticHost}}/images/{{lesson.thumbnail}}" />
     </view>
-    <view class="title">{{lesson.lesson_name}}</view>
-    <view class="header-subtitle">{{lesson.teacher_name}}</view>
-    <view class="header-date">
-        <view class="header-date-icon"></view>
-        <view>{{lesson.date}}</view>
-    </view>
-    <view style="height:16rpx;margin:0 -32rpx;background-color:#f1f3f4"></view>
-    <view class="subtitle">学员</view>
-    <view class="user-item" wx:for="{{lesson.students}}">
-        <image class="user-item-image" src="{{item.avatar_url}}"></image>
-        <view class="user-item-text">{{item.nick_name}}</view>
-        <view class="gap"></view>
-        <view class="user-item-action">删除</view>
+    <view class="wrapper">
+        <view class="header-action-wrapper">
+            <view class="gap"></view>
+            <view class="lesson-action" bind:tap="onDeleteLesson">{{lesson.hidden?"开课":"停课"}}</view>
+        </view>
+        <view class="title">{{lesson.lesson_name}}</view>
+        <view class="header-subtitle">{{lesson.teacher_name}}</view>
+        <view class="header-date">
+            <view class="header-date-icon"></view>
+            <view>{{lesson.date}}</view>
+        </view>
+        <view style="height:16rpx;margin:0 -32rpx;background-color:#f1f3f4"></view>
+        <view class="subtitle">学员</view>
+        <view class="user-item" wx:for="{{lesson.students}}" wx:key="reservation_id">
+            <image class="user-item-image" src="{{item.avatar_url}}"></image>
+            <view class="user-item-text">{{item.nick_name}}</view>
+            <view class="gap"></view>
+            <view class="user-item-action" data-name="{{item.nick_name}}" data-id="{{item.reservation_id}}" catch:tap="onDeleteUser">
+                删除
+            </view>
+        </view>
     </view>
 </view>

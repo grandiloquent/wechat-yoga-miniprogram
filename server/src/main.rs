@@ -56,6 +56,7 @@ async fn main() -> Result<(), rocket::Error> {
             "/",
             routes![handlers::admin_lessons::admin_lessons,
 handlers::admin_lessons::admin_lesson,
+handlers::admin_lessons::admin_lesson_hidden,
 handlers::auth::auth,
 handlers::booking::lessons,
 handlers::booking::book,

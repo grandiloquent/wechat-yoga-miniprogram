@@ -28,6 +28,15 @@
     color: #5f6368;
 }
 
+.disabled .user-item-action,
+.disabled .user-item-text,
+.disabled .title,
+.disabled .subtitle,
+.disabled .header-subtitle,
+.disabled .header-date {
+    color: #C6C6C6;
+}
+
 .title {
     line-height: 48rpx;
     font-size: 40rpx;

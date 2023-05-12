@@ -30,6 +30,11 @@ Page({
             lesson
         })
     },
+    onShow() {
+        this.setData({
+            background: shared.getRandomColor()
+        })
+    }
 });
 function formatLessonDateTime(lesson) {
     const date = new Date(lesson.date_time * 1000);

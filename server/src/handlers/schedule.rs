@@ -21,14 +21,14 @@ pub async fn admin_schedule(pool: &State<Pool>) -> Result<Vec<u8>, Status> {
  let font = Vec::from(include_bytes!("PingFang.ttf") as &[u8]);
     let font = Font::try_from_vec(font).unwrap();
 
-    let height = 12.4;
+    let height = 16f32;
     let scale = Scale {
-        x: height * 2.0,
+        x: height * 1.0,
         y: height,
     };
 
     let text = "Hello, world!";
-    draw_text_mut(&mut image, Rgba([0u8, 0u8, 255u8, 255u8]), 0, 0, scale, &font, text);
+    draw_text_mut(&mut image, Rgba([0u8, 0u8, 255u8, 255u8]), (185f32*1.5f32) as i32, 123+335, scale, &font, text);
     let mut bytes: Vec<u8> = Vec::new();
    let  _= image.write_to(&mut Cursor::new(&mut bytes), image::ImageOutputFormat::Png);
     Ok(bytes)

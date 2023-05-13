@@ -15,19 +15,30 @@ Page({
         this.loadData();
     },
     async loadData() {
-        const lessons = await
-            new Promise((resolve, reject) => {
-                const url = `${app.globalData.host}/yoga/admin/lessons?start=${this.data.start}&end=${this.data.end}&openid=${app.globalData.openid}`
-                wx.request({
-                    url,
-                    success(res) {
-                        resolve(res.data);
-                    },
-                    fail(error) {
-                        reject();
-                    }
+        let lessons
+        try {
+            lessons = await
+                new Promise((resolve, reject) => {
+                    const url = `${app.globalData.host}/yoga/admin/lessons?start=${this.data.start}&end=${this.data.end}&openid=${app.globalData.openid}`
+                    wx.request({
+                        url,
+                        success(res) {
+                            if (res.statusCode === 200)
+                                resolve(res.data);
+                            else
+                                reject()
+                        },
+                        fail(error) {
+                            reject();
+                        }
+                    });
                 });
-            });
+        } catch (error) {
+            this.setData({
+                lessons: null
+            })
+            return
+        }
         this.setData({
             lessons: lessons.sort((x, y) => {
                 if (x.date_time === y.date_time)
@@ -57,7 +68,7 @@ Page({
             const date = new Date();
             date.setHours(0, 0, 0, 0);
             this.data.start = date.getTime() / 1000 + 86400;
-            this.data.end = this.data.start + 2 * 86400;
+            this.data.end = this.data.start + 86400;
             this.loadData();
         } else if (selected === 2) {
             const date = new Date();

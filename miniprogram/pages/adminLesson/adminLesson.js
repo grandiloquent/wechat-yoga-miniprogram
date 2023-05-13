@@ -1,5 +1,8 @@
 const app = getApp();
 const shared = require('../../utils/shared')
+import init, {
+    query_lesson
+} from "../../pkg/admin";
 
 Page({
     data: {
@@ -10,35 +13,14 @@ Page({
     // 通过 URL 查询参数获取待查
     // 询的课程标识
     async onLoad(options) {
-        this.data.id = options.id || 1271;
-        this.loadData();
+        this.data.id = options.id || 1323;
+        await init();
+        let openid = app.globalData.openid || (await app.getOpenId());
+        if (openid) {
+            await query_lesson(this, app.globalData.host, this.data.id, openid);
+        }
     },
-    // 查询课程的基本信息和预约该课程
-    // 的学员列表。在服务端将接受到
-    // 的课程标识和用户标识直接发送
-    // 给数据库，数据库使用用户标识
-    // 通过查询用户表检查用户的权限
-    // ，然后以 JSON 格式返回
-    // 查询结果
-    async loadData() {
-        const lesson = await
-            new Promise((resolve, reject) => {
-                const url = `${app.globalData.host}/yoga/admin/lesson?id=${this.data.id}&openid=${app.globalData.openid}`
-                wx.request({
-                    url,
-                    success(res) {
-                        resolve(res.data);
-                    },
-                    fail(error) {
-                        reject();
-                    }
-                });
-            });
-        lesson.date = formatLessonDateTime(lesson);
-        this.setData({
-            lesson
-        })
-    },
+
     onShow() {
         this.setData({
             background: shared.getRandomColor()

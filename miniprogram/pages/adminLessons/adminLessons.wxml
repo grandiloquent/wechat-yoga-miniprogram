@@ -5,7 +5,7 @@
     </view>
 </view>
 <view class="items">
-    <view class="item" wx:for="{{lessons}}" wx:key="course_id" data-href="/pages/adminLesson/adminLesson?id={{item.course_id}}" bind:tap="navigate">
+    <view wx:if="{{lessons}}" wx:for="{{lessons}}" wx:key="course_id" class="item" data-href="/pages/adminLesson/adminLesson?id={{item.course_id}}" bind:tap="navigate">
         <view class="item-body">
             <image class="item-body-image" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
             <view class="item-body-left">
@@ -23,5 +23,8 @@
                 </view>
             </view>
         </view>
+    </view>
+    <view wx:if="{{!lessons}}">
+        <view  class="not-found-message">假日请注意休息</view>
     </view>
 </view>

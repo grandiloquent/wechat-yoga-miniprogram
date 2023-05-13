@@ -111,4 +111,14 @@
     padding-top: 16rpx;
 }
 
- 
+
+
+.not-found-message {
+    margin:48rpx auto;
+    font-size: 32rpx;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, .6);
+}

@@ -10,6 +10,7 @@ use models::settings::Settings;
 use rocket::data::{Limits, ToByteUnit};
 use rocket::figment::Figment;
 use tokio_postgres::NoTls;
+use crate::utils::content_disposition::ContentDisposition;
 
 #[macro_use]
 extern crate rocket;
@@ -42,6 +43,7 @@ async fn main() -> Result<(), rocket::Error> {
     // 实例化和启动 rocket
     rocket::build()
         .configure(figment)
+        .attach(ContentDisposition)
         .manage(Settings {
             appid: env::var("APPID").expect("Couldn't find appid"),
             secret: env::var("SECRET").expect("Couldn't find secret"),

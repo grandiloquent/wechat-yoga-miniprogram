@@ -16,14 +16,15 @@ impl Fairing for ContentDisposition {
     }
 
     async fn on_response<'r>(&self, request: &'r Request<'_>, response: &mut Response<'r>) {
+        // https://api.rocket.rs/v0.4/rocket/struct.Request.html#method.uri
         let p = request.uri().path();
-        if p.ends_with(".zip") {
+        if p=="/yoga/admin/schedule" {
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
             response.set_header(Header::new(
                 "Content-Disposition",
                 format!(
                     "attachment; filename=\"{}\"",
-                    p.to_string().substring_after_last("\\")
+                    "1.png"
                 ),
             ));
         }

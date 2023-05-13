@@ -1,19 +1,13 @@
 const app = getApp();
-const shared = require('../../utils/shared')
-
 
 Page({
     data: {
         app,
     },
-    // 通过 URL 查询参数获取待查
-    // 询的课程标识
-    async onLoad(options) {
+    async onLoad() {
         this.setData({
             src: `${app.globalData.host}/yoga/admin/schedule`
         })
-
-
     },
     onShare() {
         wx.downloadFile({
@@ -30,8 +24,5 @@ Page({
             current: this.data.src,
             urls: [this.data.src] 
         })
-    },
-    onShow() {
-
     },
 });

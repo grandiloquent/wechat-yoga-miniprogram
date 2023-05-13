@@ -5,4 +5,5 @@ pub mod debug;
 pub mod favicon;
 pub mod index;
 pub mod picture;
+pub mod schedule;
 pub mod user;

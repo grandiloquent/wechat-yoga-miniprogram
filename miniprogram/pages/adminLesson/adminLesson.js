@@ -2,7 +2,8 @@ const app = getApp();
 const shared = require('../../utils/shared')
 import init, {
     query_lesson,
-    suspend_lesson
+    suspend_lesson,
+    delete_booked
 } from "../../pkg/admin";
 
 Page({
@@ -34,8 +35,11 @@ Page({
         wx.showModal({
             title: '询问',
             content: `您确定要取消"${e.currentTarget.dataset.name}"的预约吗？`,
-            success: function (res) {
+            success: async (res) => {
                 if (res.confirm) {
+                    await delete_booked(app.globalData.host,
+                        e.currentTarget.dataset.id
+                        , app.globalData.openid || (await app.getOpenId()))
                     this.loadData();
                 }
             },

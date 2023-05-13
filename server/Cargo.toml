@@ -12,4 +12,6 @@ deadpool-postgres = { version = "0.10.5", features = ["rt_tokio_1"] }
 serde = "1.0.160"
 reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
 
-#image = {version="0.24.6",features=["avif-decoder"]}
+image = {version="0.24.6"}
+imageproc = "0.23.0"
+rusttype = "0.9.3"

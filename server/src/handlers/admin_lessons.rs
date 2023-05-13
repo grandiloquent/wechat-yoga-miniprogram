@@ -83,4 +83,30 @@ pub async fn admin_lesson_hidden(
         }
     }
 }
-
+#[get("/yoga/admin/lesson/delete?<id>")]
+pub async fn admin_lesson_delete(
+    id: i32,
+    pool: &State<Pool>,
+    ) -> Result<String, Status> {
+    match pool.get().await {
+        Ok(conn) => {
+            match query_int_with_params(
+                &conn,
+                "select * from fn_admin_lesson_delete($1)",
+                &[&id],
+            )
+            .await
+            {
+                Ok(v) => Ok(v.to_string()),
+                Err(error) => {
+                    println!("Error: {}", error);
+                    Err(Status::InternalServerError)
+                }
+            }
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            Err(Status::InternalServerError)
+        }
+    }
+}

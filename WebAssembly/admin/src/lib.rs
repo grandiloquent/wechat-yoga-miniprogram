@@ -85,3 +85,11 @@ pub async fn suspend_lesson(
     )
     .await
 }
+#[wasm_bindgen]
+pub async fn delete_booked(
+    base_uri: &str,
+    id: u32,
+    openid: String,
+) -> Result<JsValue, JsValue> {
+    get_json(format!("{}/yoga/admin/lesson/delete?id={}&openid={}", base_uri, id, openid).as_str()).await
+}

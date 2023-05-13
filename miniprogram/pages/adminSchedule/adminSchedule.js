@@ -25,7 +25,12 @@ Page({
             }
         })
     },
-
+    onPreview() {
+        wx.previewImage({
+            current: this.data.src,
+            urls: [this.data.src] 
+        })
+    },
     onShow() {
 
     },

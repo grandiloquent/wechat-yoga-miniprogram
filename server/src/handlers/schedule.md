@@ -1,12 +1,12 @@
-```
+```pgsql
 select pg_get_functiondef(oid) from pg_proc where proname = 'query_week_lessons';
 ```
 
-```
+```pgsql
 drop FUNCTION fn_query_week_lessons;
-``                
+```              
 
-```
+```pgsql
 CREATE OR REPLACE FUNCTION fn_query_week_lessons()
     RETURNS json
     LANGUAGE plpgsql
@@ -51,7 +51,7 @@ END
 $function$
 ```
 
-```
+```pgsql
 select * from fn_query_week_lessons()
 ```
                 

@@ -1,5 +1,5 @@
-use crate::utils::data::query_json_with_params;
 use crate::utils::data::query_int_with_params;
+use crate::utils::data::query_json_with_params;
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
@@ -83,3 +83,4 @@ pub async fn admin_lesson_hidden(
         }
     }
 }
+

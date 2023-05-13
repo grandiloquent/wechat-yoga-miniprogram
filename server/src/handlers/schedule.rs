@@ -5,55 +5,208 @@ use image::{DynamicImage, RgbImage, Rgba};
 use imageproc::drawing::{draw_text_mut, text_size};
 // use imageproc::rect::Rect;
 use rocket::http::Status;
+use rocket::serde::json::serde_json;
+
+use chrono::{Datelike, LocalResult, NaiveDateTime, TimeZone, Utc, Weekday};
+use chrono_tz::Tz;
+use rocket::serde::json::Value;
 use rocket::State;
 use rusttype::{point, Font, Rect, Scale};
 use std::io::{Cursor, Write};
 use std::path::Path;
+
 #[get("/yoga/admin/schedule")]
-// Vec<u8>
-pub async fn admin_schedule(pool: &State<Pool>) -> Result<String, Status> {
-     match pool.get().await {
-        Ok(conn) => match query_json(&conn, "select * from fn_query_week_lessons()").await {
-            Ok(v) => {
-                return match String::from_utf8(v.0) {
-                    Ok(v) => Ok(v),
-                    Err(_) => Err(Status::InternalServerError),
-                };
-            }
-            Err(error) => {
-                println!("Error: {}", error);
-                Err(Status::InternalServerError)
-            }
-        },
+
+pub async fn admin_schedule(pool: &State<Pool>) -> Result<Vec<u8>, Status> {
+    let conn = match pool.get().await {
+        Ok(conn) => conn,
         Err(error) => {
             println!("Error: {}", error);
-            Err(Status::InternalServerError)
+            return Err(Status::InternalServerError);
         }
-    }
-    /*let bytes = include_bytes!("pattern.png") as &[u8];
+    };
+    let obj: Value = match query_json(&conn, "select * from fn_query_week_lessons()").await {
+        Ok(v) => serde_json::from_slice(&v.0).unwrap(),
+        Err(error) => {
+            println!("Error: {}", error);
+            return Err(Status::InternalServerError);
+        }
+    };
+
+    let bytes = include_bytes!("pattern.png") as &[u8];
+
+    // https://docs.rs/rusttype/0.9.2/rusttype/enum.Font.html
+    let font = Vec::from(include_bytes!("PingFang.ttf") as &[u8]);
+    let font = Font::try_from_vec(font).unwrap();
+
+    // https://docs.rs/serde_json/latest/serde_json/value/enum.Value.html#method.as_array
+    let obj = obj.as_array().unwrap();
+
     let mut image = ImageReader::new(Cursor::new(bytes))
         .with_guessed_format()
         .unwrap()
         .decode()
         .unwrap();
-    // https://docs.rs/rusttype/0.9.2/rusttype/enum.Font.html
-    let font = Vec::from(include_bytes!("PingFang.ttf") as &[u8]);
-    let font = Font::try_from_vec(font).unwrap();
+    for index in 0..obj.len() {
+        let lesson = obj.get(index).unwrap();
+        println!("{:?}", lesson);
+        let timestamp_i64 = lesson["date_time"].as_i64().unwrap();
+        let start_time = lesson["start_time"].as_i64().unwrap();
+        let tz: Tz = "Asia/Hong_Kong".parse().unwrap();
+        // https://docs.diesel.rs/1.4.x/chrono/offset/trait.TimeZone.html#method.timestamp_millis_opt
+        if let Some(dt) = NaiveDateTime::from_timestamp_opt(timestamp_i64, 0) {
+            let utc_time = dt.and_local_timezone(Utc).unwrap();
+            // https://docs.rs/chrono/latest/chrono/struct.DateTime.html#method.with_timezone
+            let hkt = utc_time.with_timezone(&tz);
+            let dt = hkt.date_naive();
+            if start_time == 32400 {
+                match dt.weekday() {
+                    Weekday::Mon => {
+                        draw_text(&font, &mut image, "周一", 36.4, 0, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            0,
+                            311,
+                        );
+                    }
+                    Weekday::Tue => {
+                        draw_text(&font, &mut image, "周二", 36.4, 1, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            1,
+                            311,
+                        );
+                    }
+                    Weekday::Wed => {
+                        draw_text(&font, &mut image, "周三", 36.4, 2, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            2,
+                            311,
+                        );
+                    }
+                    Weekday::Thu => {
+                        draw_text(&font, &mut image, "周四", 36.4, 3, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            3,
+                            311,
+                        );
+                    }
+                    Weekday::Fri => {
+                        draw_text(&font, &mut image, "周五", 36.4, 4, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            4,
+                            311,
+                        );
+                    }
+                    Weekday::Sat => {
+                        draw_text(&font, &mut image, "周六", 36.4, 5, 186);
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            5,
+                            311,
+                        );
+                    }
+                    Weekday::Sun => {}
+                }
+            } else {
+                match dt.weekday() {
+                    Weekday::Mon => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            0,
+                            446,
+                        );
+                    }
+                    Weekday::Tue => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            1,
+                            446,
+                        );
+                    }
+                    Weekday::Wed => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            2,
+                            446,
+                        );
+                    }
+                    Weekday::Thu => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            3,
+                            446,
+                        );
+                    }
+                    Weekday::Fri => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            4,
+                            446,
+                        );
+                    }
+                    Weekday::Sat => {
+                        draw_text(
+                            &font,
+                            &mut image,
+                            lesson["lesson_name"].as_str().unwrap(),
+                            28f32,
+                            5,
+                            446,
+                        );
+                    }
+                    Weekday::Sun => {}
+                }
+            }
+        }
+    }
+    // http://127.0.0.1:8002/yoga/admin/schedule
 
-    
-    let text = "周一";
-    draw_text(&font, &mut image, text,36.4,0,186);
     let mut bytes: Vec<u8> = Vec::new();
     let _ = image.write_to(&mut Cursor::new(&mut bytes), image::ImageOutputFormat::Png);
     Ok(bytes)
-*/
 }
 
 // http://127.0.0.1:8002/yoga/admin/schedule
 // 28f32,0, 446,
 // 22.4,0,478
-fn draw_text(font: &Font, image: &mut DynamicImage, text: &str, font_size:f32,x: i32, y: i32) {
-   
+fn draw_text(font: &Font, image: &mut DynamicImage, text: &str, font_size: f32, x: i32, y: i32) {
     let scale = Scale {
         x: font_size,
         y: font_size,
@@ -77,10 +230,9 @@ fn draw_text(font: &Font, image: &mut DynamicImage, text: &str, font_size:f32,x:
         image,
         Rgba([255u8, 255u8, 255u8, 255u8]),
         202i32 + 135 * x + (100 - width) / 2,
-        y, 
+        y,
         scale,
         &font,
         text,
     );
 }
-

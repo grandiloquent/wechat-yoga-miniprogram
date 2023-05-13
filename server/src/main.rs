@@ -43,7 +43,7 @@ async fn main() -> Result<(), rocket::Error> {
     // 实例化和启动 rocket
     rocket::build()
         .configure(figment)
-        //.attach(ContentDisposition)
+        .attach(ContentDisposition)
         .manage(Settings {
             appid: env::var("APPID").expect("Couldn't find appid"),
             secret: env::var("SECRET").expect("Couldn't find secret"),

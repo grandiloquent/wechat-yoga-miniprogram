@@ -28,7 +28,7 @@ BEGIN
     else
         date_seconds = date_seconds - 86400 * (week - 1);
     end if;
-    FOR i in 0..5
+    FOR i in 0..6
         LOOP
             date_times = array_append(date_times, date_seconds + 86400 * i);
         end loop;
@@ -36,8 +36,8 @@ BEGIN
     from (select course.start_time,
                  course.end_time,
                  course.date_time,
-                 l.name,
-                 c.name
+                 l.name as lesson_name,
+                 c.name as teacher_name
           from course
                    join lesson l on l.id = course.lesson_id
                    join coach c on course.teacher_id = c.id
@@ -50,11 +50,7 @@ BEGIN
 END
 $function$
 ```
-
+ 
 ```pgsql
-select * from fn_query_week_lessons()
+select * from fn_query_week_lessons();
 ```
-                
-
-
-                

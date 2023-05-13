@@ -1,0 +1,4 @@
+<view class="wrapper">
+    <view class="btn" bind:tap="onShare"></view>
+    <image src="{{src}}" mode="aspectFit" />
+</view>

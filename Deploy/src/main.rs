@@ -35,7 +35,7 @@ where
             Some(v) => v.to_str().unwrap(),
             None => "",
         };
-        if path.is_file() && (ext == "rs" || ext == "toml") {
+        if path.is_file() && (ext == "rs" || ext == "toml" || ext == "png" || ext == "ttf") {
             #[allow(deprecated)]
             zip.start_file_from_path(name, options)?;
             let mut f = File::open(path)?;
@@ -61,11 +61,8 @@ fn doit(src_dir: &str, dst_file: &str) -> zip::result::ZipResult<()> {
 
     let walkdir = WalkDir::new(src_dir);
     let it = walkdir.into_iter().filter_entry(|e| {
-        !e.path()
-            .as_os_str()
-            .to_str()
-            .unwrap_or("")
-            .contains("\\target")
+        let s = e.path().as_os_str().to_str().unwrap_or("");
+        !s.contains("\\target")
     });
 
     zip_dir(
@@ -121,7 +118,8 @@ fn upload_server(session: &mut LocalSession<TcpStream>) {
     let exec = session.open_exec().unwrap();
     let vec: Vec<u8> = exec
         .send_command(
-            format!("rm -rf /root/server/src && unzip -o /root/server.zip -d /root/server").as_str(),
+            format!("rm -rf /root/server/src && unzip -o /root/server.zip -d /root/server")
+                .as_str(),
         )
         .unwrap();
     println!("{}", String::from_utf8(vec).unwrap());

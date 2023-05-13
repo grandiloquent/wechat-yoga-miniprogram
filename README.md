@@ -9,6 +9,7 @@
 - [部署](/Deploy)
 - [后端服务器](/server)
 - [前端](/WebAssembly/weixin)
+- [设计资源](/资源)
 
 ## 开发环境
 
@@ -24,7 +25,12 @@
 <img width="250"  src="images/Screenshot_2022-12-29-12-53-05-122_com.tencent.mm.jpg">
 <img width="250" src="images/Screenshot_2022-12-29-12-53-28-806_com.tencent.mm.jpg">
 <img width="250" src="images/Screenshot_2022-12-29-12-53-18-957_com.tencent.mm.jpg">
+
 </div>
+
+### 课程表
+
+<img src="images/课程表.png">
 
 ## 本地运行
 

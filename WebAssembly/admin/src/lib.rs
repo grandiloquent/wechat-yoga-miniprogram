@@ -62,3 +62,26 @@ pub async fn query_lesson(
     }
     Ok(())
 }
+// 因节假日或其他原因，需要取消原来排定的
+// 课程时，可通过将课程的 hidden
+// 字段设置为 1 来隐藏该课程。同时，我
+// 们应该以某种方式提前通知该课程的老师
+// 和已预约的学员，且在计算费用时，应该
+// 排除该课程，我们还应该记录取消该课程
+// 的原因。
+#[wasm_bindgen]
+pub async fn suspend_lesson(
+    base_uri: &str,
+    id: u32,
+    status: u32,
+    openid: String,
+) -> Result<JsValue, JsValue> {
+    get_json(
+        format!(
+            "{}/yoga/admin/lesson/hidden?id={}&status={}&openid={}",
+            base_uri, id, status, openid
+        )
+        .as_str(),
+    )
+    .await
+}

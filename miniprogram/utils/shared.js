@@ -1,7 +1,9 @@
-
+// 1.Google 设计 500 的主色。
+// 2.在页面的 onShow 方法中获取该数组包含的随机颜色。
+// 3.使用页面 setData 方法将随机颜色绑定视觉元素。
 const colors = ["rgb(244, 67, 54)", "rgb(233, 30, 99)", "rgb(156, 39, 176)", "rgb(103, 58, 183)", "rgb(63, 81, 181)", "rgb(33, 150, 243)", "rgb(3, 169, 244)", "rgb(0, 188, 212)", "rgb(0, 150, 136)", "rgb(76, 175, 80)", "rgb(139, 195, 74)", "rgb(205, 220, 57)", "rgb(255, 235, 59)", "rgb(255, 193, 7)", "rgb(255, 152, 0)", "rgb(255, 87, 34)", "rgb(121, 85, 72)", "rgb(158, 158, 158)", "rgb(96, 125, 139)"];
 
-// https://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp
+// 1.WebAssembly 发送 Http Get 请求的函数。
 // https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html
 function getJson(url) {
   return new Promise((resolve, reject) => {
@@ -147,6 +149,11 @@ async function setPage(app) {
     title: app.globalData.title
   });
 }
+// 1.跳转页面的封装函数。
+// 2.在元素的定义中，使用目标页面的绝对路径添加 data-href 属性。
+// 3.使用 bind:tap 将有类似行为的元素都绑定到相同的事件处理器。
+// 4.在事件处理器中，使用事件对象调用该函数。
+// 5.绑定底部导航栏的页面，必须使用 wx.switchTab 跳转。对于这类页面可以使用 data-tab 绑定绝对路径。
 function navigate(e) {
   if (e.currentTarget.dataset.tab) {
     wx.switchTab({
@@ -168,6 +175,9 @@ function getRandomInt(min, max) {
 function getRandomColor() {
   return colors[getRandomInt(0, colors.length)];
 }
+// 1.计算底部导航栏的高度。
+// 2.在 iPad 等设备上可能出现底部导航栏遮挡用户界面的问题。
+// 3.在页面文件的底部，添加一个与底部导航栏等高的元素可解决相关问题。
 function getTabBarHeight() {
   const { screenHeight, windowHeight, statusBarHeight, pixelRatio
   } = wx.getSystemInfoSync();

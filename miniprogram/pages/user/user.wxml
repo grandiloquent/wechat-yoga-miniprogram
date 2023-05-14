@@ -1,6 +1,6 @@
 <user-profile user="{{user}}" backgroundColor="{{backgroundColor}}" app="{{app}}" bind:submit="onUserProfileSubmit"></user-profile>
 <user-actions items="{{user-actions}}" app="{{app}}" bind:submit="onUserActionsSubmit"></user-actions>
-<view wx:if="{{user.user_type===4}}" style="border-radius: 12rpx;margin:0 24rpx;background: #fff;padding:0 24rpx;margin-top:36rpx">
+<view wx:if="{{user.user_type===4}}" style="border-radius: 12rpx;margin:36rpx 24rpx;background: #fff;padding:0 24rpx;">
     <view style="font-size: 32rpx;color: #333;line-height: 96rpx;">管理员</view>
     <view style="display: flex;justify-content: space-around;">
         <view class="action" data-href="/pages/adminLessons/adminLessons" bind:tap="navigate" style="background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJmaWxsOiM4MTgxODEiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgOTYgOTYwIDk2MCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMjAwIDk3NnEtMzMgMC01Ni41LTIzLjVUMTIwIDg5NlYzMzZxMC0zMyAyMy41LTU2LjVUMjAwIDI1Nmg0MHYtODBoODB2ODBoMzIwdi04MGg4MHY4MGg0MHEzMyAwIDU2LjUgMjMuNVQ4NDAgMzM2djU2MHEwIDMzLTIzLjUgNTYuNVQ3NjAgOTc2SDIwMFptMC04MGg1NjBWNDk2SDIwMHY0MDBabTAtNDgwaDU2MHYtODBIMjAwdjgwWm0wIDB2LTgwIDgwWm0yODAgMjQwcS0xNyAwLTI4LjUtMTEuNVQ0NDAgNjE2cTAtMTcgMTEuNS0yOC41VDQ4MCA1NzZxMTcgMCAyOC41IDExLjVUNTIwIDYxNnEwIDE3LTExLjUgMjguNVQ0ODAgNjU2Wm0tMTYwIDBxLTE3IDAtMjguNS0xMS41VDI4MCA2MTZxMC0xNyAxMS41LTI4LjVUMzIwIDU3NnExNyAwIDI4LjUgMTEuNVQzNjAgNjE2cTAgMTctMTEuNSAyOC41VDMyMCA2NTZabTMyMCAwcS0xNyAwLTI4LjUtMTEuNVQ2MDAgNjE2cTAtMTcgMTEuNS0yOC41VDY0MCA1NzZxMTcgMCAyOC41IDExLjVUNjgwIDYxNnEwIDE3LTExLjUgMjguNVQ2NDAgNjU2Wk00ODAgODE2cS0xNyAwLTI4LjUtMTEuNVQ0NDAgNzc2cTAtMTcgMTEuNS0yOC41VDQ4MCA3MzZxMTcgMCAyOC41IDExLjVUNTIwIDc3NnEwIDE3LTExLjUgMjguNVQ0ODAgODE2Wm0tMTYwIDBxLTE3IDAtMjguNS0xMS41VDI4MCA3NzZxMC0xNyAxMS41LTI4LjVUMzIwIDczNnExNyAwIDI4LjUgMTEuNVQzNjAgNzc2cTAgMTctMTEuNSAyOC41VDMyMCA4MTZabTMyMCAwcS0xNyAwLTI4LjUtMTEuNVQ2MDAgNzc2cTAtMTcgMTEuNS0yOC41VDY0MCA3MzZxMTcgMCAyOC41IDExLjVUNjgwIDc3NnEwIDE3LTExLjUgMjguNVQ2NDAgODE2WiIvPjwvc3ZnPg==)">
@@ -17,3 +17,4 @@
         </view>
     </view>
 </view>
+<view style="height:{{tabHeight}}px"></view>

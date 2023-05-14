@@ -50,9 +50,6 @@ Page({
   },
   async onLoad() {
     shared.setPage(app);
-    await init();
-    this.data.initialized = true;
-    this.loadData();
     this.getTabBar().setData({
       items: [{
         name: "首页",
@@ -74,7 +71,14 @@ Page({
 
       ],
       selected: 3
+    });
+    this.setData({
+      tabHeight: shared.getTabBarHeight()
     })
+    await init();
+    this.data.initialized = true;
+    this.loadData();
+
   },
   onShareAppMessage() {
     return {

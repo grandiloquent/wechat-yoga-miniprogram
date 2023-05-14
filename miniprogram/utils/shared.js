@@ -168,7 +168,11 @@ function getRandomInt(min, max) {
 function getRandomColor() {
   return colors[getRandomInt(0, colors.length)];
 }
-
+function getTabBarHeight() {
+  const { screenHeight, windowHeight, statusBarHeight, pixelRatio
+  } = wx.getSystemInfoSync();
+  return (screenHeight - windowHeight - statusBarHeight) * pixelRatio;
+}
 module.exports = {
   getJson,
   getLoginCode,
@@ -178,5 +182,6 @@ module.exports = {
   setPage,
   checkUserAvailability,
   navigate,
-  getRandomColor
+  getRandomColor,
+  getTabBarHeight
 };

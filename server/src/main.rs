@@ -71,7 +71,8 @@ handlers::picture::picture,
 handlers::picture::avatar,
 handlers::schedule::admin_schedule,
 handlers::user::user_query,
-handlers::user::register_user],
+handlers::user::register_user,
+handlers::user::user_book_statistics],
         )
         .register(
             "/",

@@ -51,3 +51,29 @@ pub async fn register_user(data: String, pool: &State<Pool>) -> Result<String, S
         }
     }
 }
+
+#[get("/yoga/user/book/statistics?<id>")]
+pub async fn user_book_statistics(id:String, pool: &State<Pool>) -> Result<String, Status> {
+    match pool.get().await {
+        Ok(conn) => {
+            match query_json_with_params(&conn, "select * from fn_user_book_statistics($1)", &[&id.as_str()])
+                .await
+            {
+                Ok(v) => {
+                    return match String::from_utf8(v.0) {
+                        Ok(v) => Ok(v),
+                        Err(_) => Err(Status::InternalServerError),
+                    };
+                }
+                Err(error) => {
+                    println!("Error: {}", error);
+                    Err(Status::InternalServerError)
+                }
+            }
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            Err(Status::InternalServerError)
+        }
+    }
+}

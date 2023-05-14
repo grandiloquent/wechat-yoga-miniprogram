@@ -3,7 +3,7 @@ const app = getApp();
 const shared = require('../../utils/shared')
 
 import init, {
-  user_query
+  user_book_statistics
 } from "../../pkg/weixin";
 
 Page({
@@ -15,12 +15,13 @@ Page({
   async loadData() {
     let openid = app.globalData.openid || await app.getOpenId();
     const res = await shared.checkUserAvailability(app, async () => {
-      return await user_query(app.globalData.host, openid);
+      return await user_book_statistics(app.globalData.host, openid);
     });
     if (res) {
       this.setData({
         user: app.globalData.userId
-      })
+      });
+
     }
     if (app.globalData.userId) {
       try {

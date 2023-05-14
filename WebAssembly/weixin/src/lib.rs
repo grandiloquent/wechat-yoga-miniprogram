@@ -166,6 +166,10 @@ pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsVal
 //     }
 //     Err("")?
 // }
+#[wasm_bindgen]
+pub async fn user_book_statistics(base_uri: &str, openid: String)  -> Result<JsValue, JsValue> {
+     get_json(format!("{}/yoga/user/book/statistics?id={}", base_uri, openid).as_str()).await
+}
 
 #[wasm_bindgen]
 pub async fn bind_booking(

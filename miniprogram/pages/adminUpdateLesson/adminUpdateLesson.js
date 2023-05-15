@@ -18,7 +18,7 @@ Page({
   // 询的课程标识
   async onLoad(options) {
 
-    this.data.id = options.id || 1323;
+    this.data.id = options.id || 908;
     await init();
     this.loadData();
   },
@@ -62,6 +62,8 @@ Page({
     const start_time = durationToSeconds(this.data.start_times[this.data.startTimesIndex] + ":00");
     const obj = {
       id: this.data.id,
+      lesson: this.data.lessons[this.data.lessonIndex],
+      teacher: this.data.teachers[this.data.teachersIndex],
       class_type: ((class_type === "团课") && 4)
         || ((class_type === "私教") && 2)
           ((class_type === "小班") && 1),
@@ -71,7 +73,7 @@ Page({
       old_start_time: this.data.lesson.start_time,
       old_class_type: this.data.lesson.class_type
     }
-    await lesson_update(this, app.globalData.host, app.globalData.openid || (await app.getOpenId()),
+    await lesson_update(app.globalData.host, app.globalData.openid || (await app.getOpenId()),
       JSON.stringify(obj)
     );
     wx.showToast({

@@ -138,7 +138,7 @@ pub async fn admin_lesson_update(data: String, pool: &State<Pool>) -> Result<Str
     match pool.get().await {
         Ok(conn) => match query_int_with_params(
             &conn,
-            "select * from admin_lesson_update($1)",
+            "select * from fn_admin_lesson_update($1)",
             &[&Body(data)],
         )
         .await

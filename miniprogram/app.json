@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/adminLesson/adminLesson",
-    "pages/adminUpdateLesson/adminUpdateLesson",
     "pages/index/index",
+    "pages/adminLessons/adminLessons",
+    "pages/adminUpdateLesson/adminUpdateLesson",
+    "pages/adminLesson/adminLesson",
     "pages/user/user",
     "pages/adminSchedule/adminSchedule",
-    "pages/adminLessons/adminLessons",
     "pages/login/login",
     "pages/booking/booking",
     "pages/booked/booked",

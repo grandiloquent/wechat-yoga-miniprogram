@@ -290,7 +290,24 @@ export function lessons_and_teachers(page, base_uri, id, openid) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_41(arg0, arg1, arg2, arg3) {
+/**
+* @param {string} base_uri
+* @param {string} openid
+* @param {string} data
+* @returns {Promise<any>}
+*/
+export function lesson_update(base_uri, openid, data) {
+    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(openid, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ptr2 = passStringToWasm0(data, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len2 = WASM_VECTOR_LEN;
+    const ret = wasm.lesson_update(ptr0, len0, ptr1, len1, ptr2, len2);
+    return takeObject(ret);
+}
+
+function __wbg_adapter_44(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -320,6 +337,10 @@ function getImports() {
     };
     imports.wbg.__wbg_getJson_309efdaca0125846 = function() { return handleError(function (arg0, arg1) {
         const ret = shared.getJson(getStringFromWasm0(arg0, arg1));
+        return addHeapObject(ret);
+    }, arguments) };
+    imports.wbg.__wbg_postData_74b82076a46ad19e = function() { return handleError(function (arg0, arg1, arg2, arg3) {
+        const ret = shared.postData(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
         return addHeapObject(ret);
     }, arguments) };
     imports.wbg.__wbindgen_is_object = function(arg0) {
@@ -376,7 +397,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_41(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_44(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -413,8 +434,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper95 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 41, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper103 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 45, __wbg_adapter_18);
         return addHeapObject(ret);
     };
 

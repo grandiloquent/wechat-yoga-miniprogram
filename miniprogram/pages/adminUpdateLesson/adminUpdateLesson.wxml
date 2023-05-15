@@ -10,16 +10,7 @@
 </picker>
 
 
-<view class="h2">
-  课程类型
-</view>
 
-<picker bindchange="onClassTypesChange" value="{{classTypesIndex}}" range="{{class_types}}">
- <view class="cell">
- <view class="cell__title">{{class_types[classTypesIndex]}}</view>
- <view class="van-icon-arrow"></view>
- </view>
-</picker>
 
 <view class="h2">
   老师
@@ -32,6 +23,16 @@
  </view>
 </picker>
 
+<view class="h2">
+  课程类型
+</view>
+
+<picker bindchange="onClassTypesChange" value="{{classTypesIndex}}" range="{{class_types}}">
+ <view class="cell">
+ <view class="cell__title">{{class_types[classTypesIndex]}}</view>
+ <view class="van-icon-arrow"></view>
+ </view>
+</picker>
 
 <view class="h2">
   上课时间

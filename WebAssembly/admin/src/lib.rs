@@ -133,3 +133,15 @@ pub async fn lessons_and_teachers(page: &Page, base_uri: &str, id: u32, openid: 
 
     page.set_data(obj);
 }
+#[wasm_bindgen]
+pub async fn lesson_update(
+    base_uri: &str,
+    openid: String,
+    data: String,
+) -> Result<JsValue, JsValue> {
+    post_data(
+        format!("{}/yoga/lesson/update?openid={}", base_uri, openid).as_str(),
+        data.as_str(),
+    )
+    .await
+}

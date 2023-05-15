@@ -1,7 +1,8 @@
 const app = getApp();
 const shared = require('../../utils/shared')
 import init, {
-  lessons_and_teachers
+  lessons_and_teachers,
+  lesson_update
 } from "../../pkg/admin";
 
 Page({
@@ -11,7 +12,7 @@ Page({
     teachersIndex: 0,
     startTimesIndex: 0,
     peoplesIndex: 0,
-classTypesIndex:0
+    classTypesIndex: 0
   },
   // 通过 URL 查询参数获取待查
   // 询的课程标识
@@ -24,13 +25,13 @@ classTypesIndex:0
   async loadData() {
 
     await lessons_and_teachers(this, app.globalData.host, this.data.id, app.globalData.openid || (await app.getOpenId()));
-let  class_type= ((this.data.lesson.class_type === 1 && '小班') || (this.data.lesson.class_type === 2 && '私教') || (this.data.lesson.class_type === 4 && '团课'));
+    let class_type = ((this.data.lesson.class_type === 1 && '小班') || (this.data.lesson.class_type === 2 && '私教') || (this.data.lesson.class_type === 4 && '团课'));
     this.setData({
       lessonIndex: this.data.lessons.indexOf(this.data.lesson.lesson_name),
       teachersIndex: this.data.teachers.indexOf(this.data.lesson.teacher_name),
       startTimesIndex: this.data.start_times.indexOf(formatSeconds(this.data.lesson.start_time).replace(/^0+/, '')),
       peoplesIndex: this.data.peoples.indexOf(this.data.lesson.peoples + ''),
-classTypesIndex:this.data.class_types.indexOf(class_type),
+      classTypesIndex: this.data.class_types.indexOf(class_type),
     }
     )
   },
@@ -51,11 +52,31 @@ classTypesIndex:this.data.class_types.indexOf(class_type),
   },
   onPeoplesChange(e) {
     this.setData({ peoplesIndex: parseInt(e.detail.value) });
-  },onClassTypesChange(e) {
- this.setData({ classTypesIndex: parseInt(e.detail.value) });
- },
-  onSubmit() {
+  }, onClassTypesChange(e) {
+    this.setData({ classTypesIndex: parseInt(e.detail.value) });
+  },
+  async onSubmit() {
+
     console.log(this.data);
+    const class_type = this.data.class_types[this.data.classTypesIndex];
+    const start_time = durationToSeconds(this.data.start_times[this.data.startTimesIndex] + ":00");
+    const obj = {
+      id: this.data.id,
+      class_type: ((class_type === "团课") && 4)
+        || ((class_type === "私教") && 2)
+          ((class_type === "小班") && 1),
+      start_time,
+      end_time: start_time + 3600,
+      peoples: parseInt(this.data.peoples[this.data.peoplesIndex]),
+      old_start_time: this.data.lesson.start_time,
+      old_class_type: this.data.lesson.class_type
+    }
+    await lesson_update(this, app.globalData.host, app.globalData.openid || (await app.getOpenId()),
+      JSON.stringify(obj)
+    );
+    wx.showToast({
+      title: "成功"
+    });
   }
 });
 

@@ -76,6 +76,66 @@ $function$
 select * from fn_admin_lessons_and_teachers(1323);
 ```
 
+```pgsql
+select pg_get_functiondef(oid) from pg_proc where proname = 'v1_admin_lesson_update';
+```
+                
+```
+CREATE OR REPLACE FUNCTION fn_admin_lesson_update(obj json)
+ RETURNS integer
+ LANGUAGE plpgsql
+AS $function$
+declare
+    v_course_id      integer;
+    v_id             integer;
+    v_lesson_id      integer;
+    v_teacher_id     integer;
+    v_class_type     integer;
+    v_start_time     integer;
+    v_end_time       integer;
+    v_peoples        integer;
+    v_old_start_time integer;
+    v_old_class_type integer;
+BEGIN
+    v_course_id = nullif((obj ->> 'id')::integer, 0);
+    select id into v_lesson_id from lesson where name = obj ->> 'lesson' limit 1;
+
+    select id into v_teacher_id from coach where name = obj ->> 'teacher' limit 1;
+    v_class_type = nullif((obj ->> 'class_type')::integer, 0);
+    v_start_time = nullif((obj ->> 'start_time')::integer, 0);
+    v_end_time = nullif((obj ->> 'end_time')::integer, 0);
+    v_peoples = nullif((obj ->> 'peoples')::bigint, 0);
+    v_old_start_time = nullif((obj ->> 'old_start_time')::integer, 0);
+    v_old_class_type = nullif((obj ->> 'old_class_type')::integer, 0);
+    for v_id in select c.id
+                from course c,
+                     lateral (
+                         select date_time
+                         from course
+                         where id = v_course_id
+                         limit 1
+                         ) t
+                where c.date_time >= t.date_time
+                  and (t.date_time - c.date_time) % 7 * 86400 = 0
+        loop
+            update course
+            set lesson_id=coalesce(nullif(v_lesson_id, 0), lesson_id),
+                teacher_id=coalesce(nullif(v_teacher_id, 0), teacher_id),
+                class_type = coalesce(v_class_type, class_type),
+                start_time = coalesce(v_start_time, start_time),
+                end_time = coalesce(v_end_time, end_time),
+                peoples = coalesce(v_peoples, peoples)
+            where id = v_id
+              and start_time = v_old_start_time
+              and class_type = v_old_class_type;
+        end loop;
+    return 0;
+end;
+$function$
+
+```
+
+                
                 
 
                 

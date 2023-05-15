@@ -120,5 +120,16 @@ pub async fn lessons_and_teachers(page: &Page, base_uri: &str, id: u32, openid: 
     peoples.push(&JsValue::from_str("8"));
     peoples.push(&JsValue::from_str("16"));
     let _ = Reflect::set(&obj, &JsValue::from_str("peoples"), &JsValue::from(peoples));
+
+    let class_types = Array::new();
+    class_types.push(&JsValue::from_str("团课"));
+    class_types.push(&JsValue::from_str("小班"));
+    class_types.push(&JsValue::from_str("私教"));
+    let _ = Reflect::set(
+        &obj,
+        &JsValue::from_str("class_types"),
+        &JsValue::from(class_types),
+    );
+
     page.set_data(obj);
 }

@@ -110,3 +110,26 @@ pub async fn admin_lesson_delete(
         }
     }
 }
+#[get("/yoga/admin/lessons/and/teachers?<id>")]
+pub async fn admin_lessons_and_teachers(id:i32,pool: &State<Pool>) -> Result<String, Status> {
+    match pool.get().await {
+        Ok(conn) => {
+            match query_json_with_params(&conn, "select * from fn_admin_lessons_and_teachers($1)", &[&id]).await {
+                Ok(v) => {
+                    return match String::from_utf8(v.0) {
+                        Ok(v) => Ok(v),
+                        Err(_) => Err(Status::InternalServerError),
+                    };
+                }
+                Err(error) => {
+                    println!("Error: {}", error);
+                    Err(Status::InternalServerError)
+                }
+            }
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            Err(Status::InternalServerError)
+        }
+    }
+}

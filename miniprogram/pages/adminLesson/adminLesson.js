@@ -15,7 +15,9 @@ Page({
     // 通过 URL 查询参数获取待查
     // 询的课程标识
     async onLoad(options) {
-        this.data.id = options.id || 1323;
+const id=options.id || 1323;
+       this.setData({id
+})
         await init();
         this.loadData();
     },
@@ -44,6 +46,8 @@ Page({
                 }
             },
         });
+    },navigate(e) {
+        shared.navigate(e)
     },
     onDeleteLesson() {
         const hidden = !this.data.hidden;

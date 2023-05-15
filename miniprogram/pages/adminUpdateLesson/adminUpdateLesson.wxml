@@ -1,0 +1,49 @@
+<view class="h2">
+  课程
+</view>
+
+<picker bindchange="onLessonChange" value="{{lessonIndex}}" range="{{lessons}}">
+  <view class="cell">
+    <view class="cell__title">{{lessons[lessonIndex]}}</view>
+    <view class="van-icon-arrow"></view>
+  </view>
+</picker>
+
+<view class="h2">
+  老师
+</view>
+<!--teachers lesson-->
+ <picker bindchange="onTeachersChange" value="{{teachersIndex}}" range="{{teachers}}">
+ <view class="cell">
+ <view class="cell__title">{{teachers[teachersIndex]}}</view>
+ <view class="van-icon-arrow"></view>
+ </view>
+</picker>
+
+<view class="h2">
+  上课时间
+</view>
+
+<picker bindchange="onStartTimesChange" value="{{startTimesIndex}}" range="{{start_times}}">
+  <view class="cell">
+    <view class="cell__title">{{start_times[startTimesIndex]}}</view>
+    <view class="van-icon-arrow"></view>
+  </view>
+</picker>
+
+<view class="h2">
+  上课人数
+</view>
+
+<picker bindchange="onPeoplesChange" value="{{peoplesIndex}}" range="{{peoples}}">
+  <view class="cell">
+    <view class="cell__title">{{peoples[peoplesIndex]}}</view>
+    <view class="van-icon-arrow"></view>
+  </view>
+</picker>
+
+    <view class="btn-wrapper">
+       <view class="btn" bind:tap="onSubmit">
+    提交
+</view>
+</view>

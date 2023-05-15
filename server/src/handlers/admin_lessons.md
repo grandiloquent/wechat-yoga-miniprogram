@@ -40,3 +40,42 @@ where id = in_id
 returning id;
 $function$
 ```
+
+```
+select json_agg(r)
+from (select coach.name as teachers, lesson.name as lessons
+      from coach
+               cross join lateral
+          (select name
+           from lesson) as lesson) r;
+```
+
+```
+drop FUNCTION fn_admin_lessons_and_teachers()
+```
+
+```
+CREATE OR REPLACE FUNCTION fn_admin_lessons_and_teachers(in_id integer)
+    RETURNS json
+    LANGUAGE sql
+AS
+$function$
+select json_build_object('lessons', (select json_agg(name) from lesson),
+                         'teachers', (select json_agg(name) from coach),
+                         'lesson',
+                         (select row_to_json(r)
+                          from (select l.peoples, l.start_time, l.class_type, l2.name lesson_name, c.name teacher_name
+                                from course l
+                                         join lesson l2 on l2.id = l.lesson_id
+                                         join coach c on c.id = l.teacher_id
+                                where l.id = in_id) r));
+$function$
+```
+                
+```
+select * from fn_admin_lessons_and_teachers(1323);
+```
+
+                
+
+                

@@ -41,7 +41,7 @@ BEGIN
           from course
                    join lesson l on l.id = course.lesson_id
                    join coach c on course.teacher_id = c.id
-          where
+          where  COALESCE( course.hidden,0)=0 and
             --course.date_time >= 1665158400 and course.date_time <= (1665158400 + 86400* 6)
               course.date_time = ANY (date_times)
             and course.class_type = 4

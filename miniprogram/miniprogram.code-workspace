@@ -7,5 +7,7 @@
 			"path": "..\\WebAssembly\\admin"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "admin"
+	}
 }

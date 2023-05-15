@@ -5,7 +5,7 @@
     <view class="wrapper">
         <view class="header-action-wrapper">
             <view class="gap"></view>
-            <view class="lesson-action">编辑</view>
+            <view class="lesson-action" data-href="/pages/adminUpdateLesson/adminUpdateLesson?id={{id}}" bind:tap="navigate">编辑</view>
         </view>
         <view class="title">{{lesson_name}}</view>
         <view class="header-subtitle">{{teacher_name}}</view>

@@ -1,4 +1,4 @@
-use js_sys::{Date, Object, Reflect};
+use js_sys::{Array, Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -96,4 +96,29 @@ pub async fn delete_booked(base_uri: &str, id: u32, openid: String) -> Result<Js
     )
     .await
 }
-
+#[wasm_bindgen]
+pub async fn lessons_and_teachers(page: &Page, base_uri: &str, id: u32, openid: String) {
+    let json = get_json(
+        format!(
+            "{}/yoga/admin/lessons/and/teachers?&id={}&openid={}",
+            base_uri, id, openid
+        )
+        .as_str(),
+    )
+    .await
+    .unwrap();
+    let obj = Object::from(json);
+    let start_times = Array::new();
+    start_times.push(&JsValue::from_str("9:00"));
+    start_times.push(&JsValue::from_str("19:30"));
+    let _ = Reflect::set(
+        &obj,
+        &JsValue::from_str("start_times"),
+        &JsValue::from(start_times),
+    );
+    let peoples = Array::new();
+    peoples.push(&JsValue::from_str("8"));
+    peoples.push(&JsValue::from_str("16"));
+    let _ = Reflect::set(&obj, &JsValue::from_str("peoples"), &JsValue::from(peoples));
+    page.set_data(obj);
+}

@@ -60,6 +60,7 @@ async fn main() -> Result<(), rocket::Error> {
 handlers::admin_lessons::admin_lesson,
 handlers::admin_lessons::admin_lesson_hidden,
 handlers::admin_lessons::admin_lesson_delete,
+handlers::admin_lessons::admin_lessons_and_teachers,
 handlers::auth::auth,
 handlers::booking::lessons,
 handlers::booking::book,

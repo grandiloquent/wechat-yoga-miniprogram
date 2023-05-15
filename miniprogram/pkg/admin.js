@@ -1,7 +1,7 @@
-const shared=require("../utils/shared");
-const  encoding = require('../utils/encoding');
-const  TextDecoder = TextDecoder?TextDecoder:encoding.TextDecoder;
-const TextEncoder = TextEncoder?TextEncoder:encoding.TextEncoder;
+const shared = require("../utils/shared");
+const encoding = require('../utils/encoding');
+const TextDecoder = TextDecoder ? TextDecoder : encoding.TextDecoder;
+const TextEncoder = TextEncoder ? TextEncoder : encoding.TextEncoder;
 let wasm;
 
 const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
@@ -277,33 +277,28 @@ export function delete_booked(base_uri, id, openid) {
 /**
 * @param {any} page
 * @param {string} base_uri
+* @param {number} id
 * @param {string} openid
 * @returns {Promise<void>}
 */
-export function user_book_statistics(page, base_uri, openid) {
+export function lessons_and_teachers(page, base_uri, id, openid) {
     const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
     const ptr1 = passStringToWasm0(openid, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len1 = WASM_VECTOR_LEN;
-    const ret = wasm.user_book_statistics(addHeapObject(page), ptr0, len0, ptr1, len1);
+    const ret = wasm.lessons_and_teachers(addHeapObject(page), ptr0, len0, id, ptr1, len1);
     return takeObject(ret);
 }
 
-function __wbg_adapter_39(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_41(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
-async function load(module, imports){
-  const instance = await WXWebAssembly.instantiate(module, imports);
-  return instance;
-}
+
 
 function getImports() {
     const imports = {};
     imports.wbg = {};
-    imports.wbg.__wbg_log_760b865e98d4a5bc = function(arg0, arg1) {
-        console.log(getStringFromWasm0(arg0, arg1));
-    };
     imports.wbg.__wbg_setData_dfa0ac28fa11b259 = function(arg0, arg1) {
         getObject(arg0).setData(takeObject(arg1));
     };
@@ -342,6 +337,10 @@ function getImports() {
         const ret = arg0;
         return addHeapObject(ret);
     };
+    imports.wbg.__wbg_new_b525de17f44a8943 = function() {
+        const ret = new Array();
+        return addHeapObject(ret);
+    };
     imports.wbg.__wbg_get_baf4855f9a986186 = function() { return handleError(function (arg0, arg1) {
         const ret = Reflect.get(getObject(arg0), getObject(arg1));
         return addHeapObject(ret);
@@ -349,6 +348,10 @@ function getImports() {
     imports.wbg.__wbg_new_f9876326328f45ed = function() {
         const ret = new Object();
         return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_push_49c286f04dd3bf59 = function(arg0, arg1) {
+        const ret = getObject(arg0).push(getObject(arg1));
+        return ret;
     };
     imports.wbg.__wbg_call_9495de66fdbe016b = function() { return handleError(function (arg0, arg1, arg2) {
         const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
@@ -373,7 +376,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_39(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_41(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -410,8 +413,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper99 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 45, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper95 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 41, __wbg_adapter_18);
         return addHeapObject(ret);
     };
 
@@ -436,20 +439,14 @@ function finalizeInit(instance, module) {
 
 
 
-			async function init(){
 
-
-    const imports = getImports();
-
-
-    initMemory(imports);
-
-    const { instance, module } = await load("/pkg/admin_bg.wasm", imports);
-
-    return finalizeInit(instance, module);
-
+async function init() {
+  const imports = getImports();
+  initMemory(imports);
+  const {
+    instance,
+    module
+  } = await WXWebAssembly.instantiate("/pkg/admin_bg.wasm", imports);
+  return finalizeInit(instance, module);
 }
-
-
-
 export default init;

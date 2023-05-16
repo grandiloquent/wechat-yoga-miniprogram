@@ -1,5 +1,8 @@
 const app = getApp();
 const shared = require('../../utils/shared')
+import init, {
+    query_lessons
+} from "../../pkg/admin";
 
 Page({
     data: {
@@ -8,6 +11,7 @@ Page({
         indexs: ["今天", "明天", "近七日", "近半月"]
     },
     async onLoad() {
+        await init();
         const date = new Date();
         date.setHours(0, 0, 0, 0);
         this.data.start = date.getTime() / 1000;
@@ -15,44 +19,10 @@ Page({
         this.loadData();
     },
     async loadData() {
-        let lessons
-        try {
-            lessons = await
-                new Promise((resolve, reject) => {
-                    const url = `${app.globalData.host}/yoga/admin/lessons?start=${this.data.start}&end=${this.data.end}&openid=${app.globalData.openid}`
-                    wx.request({
-                        url,
-                        success(res) {
-                            if (res.statusCode === 200)
-                                resolve(res.data);
-                            else
-                                reject()
-                        },
-                        fail(error) {
-                            reject();
-                        }
-                    });
-                });
-        } catch (error) {
-            this.setData({
-                lessons: null
-            })
-            return
-        }
-        this.setData({
-            lessons: lessons.sort((x, y) => {
-                if (x.date_time === y.date_time)
-                    return x.start_time - y.end_time;
-                else
-                    return x.date_time - y.date_time
-            }).map(x => {
-                x["date"] = formatLessonDateTime(x);
-                const dif = x.peoples - x.count;
-                x["dif"] = dif === 0 ? "已满额" : `差  ${dif} 人`;
-                x['expired'] = checkIfLessonExpired(x);
-                return x;
-            })
-        });
+
+        await query_lessons(this, app.globalData.host, this.data.start, this.data.end,
+            await app.getOpenId());
+        console.log(this.data);
     },
     onIndex(e) {
         const selected = e.currentTarget.dataset.id;
@@ -89,22 +59,3 @@ Page({
         shared.navigate(e)
     },
 });
-
-function formatLessonDateTime(lesson) {
-    const date = new Date(lesson.date_time * 1000);
-    //  周${'日一二三四五六'[date.getDay()]} 
-    //  ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}
-    return `${date.getMonth() + 1}月${date.getDate()}日${lesson.start_time < 43200 ? '上午' : '晚上'}`
-}
-function checkIfLessonExpired(lesson) {
-    const now = new Date();
-    const senconds = now.getHours() * 3600 + now.getMinutes() * 60;
-    now.setHours(0, 0, 0, 0);
-    if (lesson.date_time > now.getTime()/1000) {
-        return false;
-    }
-    if (lesson['date_time'] == now.getTime()/1000 && lesson.start_time > senconds) {
-        return false;
-    }
-    return true;
-}

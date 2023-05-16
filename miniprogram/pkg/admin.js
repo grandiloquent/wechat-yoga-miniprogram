@@ -1,8 +1,28 @@
-const shared = require("../utils/shared");
-const encoding = require('../utils/encoding');
-const TextDecoder = TextDecoder ? TextDecoder : encoding.TextDecoder;
-const TextEncoder = TextEncoder ? TextEncoder : encoding.TextEncoder;
+const shared=require("../utils/shared");
+const  encoding = require('../utils/encoding');
+const  TextDecoder = TextDecoder?TextDecoder:encoding.TextDecoder;
+const TextEncoder = TextEncoder?TextEncoder:encoding.TextEncoder;
 let wasm;
+
+const heap = new Array(128).fill(undefined);
+
+heap.push(undefined, null, true, false);
+
+function getObject(idx) { return heap[idx]; }
+
+let heap_next = heap.length;
+
+function dropObject(idx) {
+    if (idx < 132) return;
+    heap[idx] = heap_next;
+    heap_next = idx;
+}
+
+function takeObject(idx) {
+    const ret = getObject(idx);
+    dropObject(idx);
+    return ret;
+}
 
 const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
@@ -21,12 +41,6 @@ function getStringFromWasm0(ptr, len) {
     return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
 }
 
-const heap = new Array(128).fill(undefined);
-
-heap.push(undefined, null, true, false);
-
-let heap_next = heap.length;
-
 function addHeapObject(obj) {
     if (heap_next === heap.length) heap.push(heap.length + 1);
     const idx = heap_next;
@@ -34,20 +48,6 @@ function addHeapObject(obj) {
 
     heap[idx] = obj;
     return idx;
-}
-
-function getObject(idx) { return heap[idx]; }
-
-function dropObject(idx) {
-    if (idx < 132) return;
-    heap[idx] = heap_next;
-    heap_next = idx;
-}
-
-function takeObject(idx) {
-    const ret = getObject(idx);
-    dropObject(idx);
-    return ret;
 }
 
 function isLikeNone(x) {
@@ -307,24 +307,44 @@ export function lesson_update(base_uri, openid, data) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_44(arg0, arg1, arg2, arg3) {
+/**
+* @param {any} page
+* @param {string} base_uri
+* @param {number} start
+* @param {number} end
+* @param {string} openid
+* @returns {Promise<void>}
+*/
+export function query_lessons(page, base_uri, start, end, openid) {
+    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(openid, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ret = wasm.query_lessons(addHeapObject(page), ptr0, len0, start, end, ptr1, len1);
+    return takeObject(ret);
+}
+
+function __wbg_adapter_63(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
-
+async function load(module, imports){
+  const instance = await WXWebAssembly.instantiate(module, imports);
+  return instance;
+}
 
 function getImports() {
     const imports = {};
     imports.wbg = {};
+    imports.wbg.__wbindgen_object_drop_ref = function(arg0) {
+        takeObject(arg0);
+    };
     imports.wbg.__wbg_setData_dfa0ac28fa11b259 = function(arg0, arg1) {
         getObject(arg0).setData(takeObject(arg1));
     };
     imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
         const ret = getStringFromWasm0(arg0, arg1);
         return addHeapObject(ret);
-    };
-    imports.wbg.__wbindgen_object_drop_ref = function(arg0) {
-        takeObject(arg0);
     };
     imports.wbg.__wbindgen_cb_drop = function(arg0) {
         const obj = takeObject(arg0).original;
@@ -339,15 +359,6 @@ function getImports() {
         const ret = shared.getJson(getStringFromWasm0(arg0, arg1));
         return addHeapObject(ret);
     }, arguments) };
-    imports.wbg.__wbg_postData_74b82076a46ad19e = function() { return handleError(function (arg0, arg1, arg2, arg3) {
-        const ret = shared.postData(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
-        return addHeapObject(ret);
-    }, arguments) };
-    imports.wbg.__wbindgen_is_object = function(arg0) {
-        const val = getObject(arg0);
-        const ret = typeof(val) === 'object' && val !== null;
-        return ret;
-    };
     imports.wbg.__wbindgen_number_get = function(arg0, arg1) {
         const obj = getObject(arg1);
         const ret = typeof(obj) === 'number' ? obj : undefined;
@@ -357,6 +368,23 @@ function getImports() {
     imports.wbg.__wbindgen_number_new = function(arg0) {
         const ret = arg0;
         return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_postData_74b82076a46ad19e = function() { return handleError(function (arg0, arg1, arg2, arg3) {
+        const ret = shared.postData(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+        return addHeapObject(ret);
+    }, arguments) };
+    imports.wbg.__wbindgen_is_object = function(arg0) {
+        const val = getObject(arg0);
+        const ret = typeof(val) === 'object' && val !== null;
+        return ret;
+    };
+    imports.wbg.__wbg_get_27fe3dac1c4d0224 = function(arg0, arg1) {
+        const ret = getObject(arg0)[arg1 >>> 0];
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_length_e498fbc24f9c1d4f = function(arg0) {
+        const ret = getObject(arg0).length;
+        return ret;
     };
     imports.wbg.__wbg_new_b525de17f44a8943 = function() {
         const ret = new Array();
@@ -368,6 +396,10 @@ function getImports() {
     }, arguments) };
     imports.wbg.__wbg_new_f9876326328f45ed = function() {
         const ret = new Object();
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_from_67ca20fa722467e6 = function(arg0) {
+        const ret = Array.from(getObject(arg0));
         return addHeapObject(ret);
     };
     imports.wbg.__wbg_push_49c286f04dd3bf59 = function(arg0, arg1) {
@@ -382,12 +414,36 @@ function getImports() {
         const ret = getObject(arg0).getDate();
         return ret;
     };
+    imports.wbg.__wbg_getFullYear_abc04e024781dd77 = function(arg0) {
+        const ret = getObject(arg0).getFullYear();
+        return ret;
+    };
+    imports.wbg.__wbg_getHours_0f72f442d2fdb4a3 = function(arg0) {
+        const ret = getObject(arg0).getHours();
+        return ret;
+    };
+    imports.wbg.__wbg_getMinutes_ac2db610c67f610c = function(arg0) {
+        const ret = getObject(arg0).getMinutes();
+        return ret;
+    };
     imports.wbg.__wbg_getMonth_6ad36dd86402e445 = function(arg0) {
         const ret = getObject(arg0).getMonth();
         return ret;
     };
+    imports.wbg.__wbg_getTime_7c59072d1651a3cf = function(arg0) {
+        const ret = getObject(arg0).getTime();
+        return ret;
+    };
     imports.wbg.__wbg_new_f127e324c1313064 = function(arg0) {
         const ret = new Date(getObject(arg0));
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_new0_25059e40b1c02766 = function() {
+        const ret = new Date();
+        return addHeapObject(ret);
+    };
+    imports.wbg.__wbg_newwithyearmonthday_56b67c81d209147f = function(arg0, arg1, arg2) {
+        const ret = new Date(arg0 >>> 0, arg1, arg2);
         return addHeapObject(ret);
     };
     imports.wbg.__wbg_new_9d3a9ce4282a18a8 = function(arg0, arg1) {
@@ -397,7 +453,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_44(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_63(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -434,8 +490,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper103 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 45, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper120 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 50, __wbg_adapter_18);
         return addHeapObject(ret);
     };
 
@@ -460,14 +516,20 @@ function finalizeInit(instance, module) {
 
 
 
+			async function init(){
 
-async function init() {
-  const imports = getImports();
-  initMemory(imports);
-  const {
-    instance,
-    module
-  } = await WXWebAssembly.instantiate("/pkg/admin_bg.wasm", imports);
-  return finalizeInit(instance, module);
+
+    const imports = getImports();
+
+
+    initMemory(imports);
+
+    const { instance, module } = await load("/pkg/admin_bg.wasm", imports);
+
+    return finalizeInit(instance, module);
+
 }
+
+
+
 export default init;

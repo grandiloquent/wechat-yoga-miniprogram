@@ -195,15 +195,11 @@ pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, op
         } else {
             "晚上"
         };
+        check_if_lesson_expired(date_time);
         let _ = Reflect::set(
             &json,
             &JsValue::from_str("date"),
             &format!("{}月{}日{}", now.get_month() + 1, now.get_date(), time).into(),
-        );
-        let _ = Reflect::set(
-            &json,
-            &JsValue::from_str("expired"),
-            &JsValue::from_bool(check_if_lesson_expired(date_time,start_time)),
         );
     }
     let obj = Object::new();

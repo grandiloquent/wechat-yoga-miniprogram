@@ -1,6 +1,12 @@
 <view class="wrapper" style="height:{{navigationHeight}}px;padding-top:{{top}};">
+  <!-- 用左上角胶囊按钮的高度比例来设置字体大小
+用其他方式无法很好的兼容各种设备 -->
   <view class="container" style="padding-left:{{paddingLeft}}px;font-size:{{height/6*2.5}}px">
-    <view catchtap="onClick" data-id="1" class="left {{selected==0?'active':''}}" style=";height:{{height}}px;">本周</view>
-    <view catchtap="onClick" data-id="2" class="right {{selected==1?'active':''}}" style=";height:{{height}}px;">下周</view>
+    <view catchtap="onClick" data-id="1" class="left {{selected==0?'active':''}}" style=";height:{{height}}px;">
+      本周
+    </view>
+    <view catchtap="onClick" data-id="2" class="right {{selected==1?'active':''}}" style=";height:{{height}}px;">
+      下周
+    </view>
   </view>
 </view>

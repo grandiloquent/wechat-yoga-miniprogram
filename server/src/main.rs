@@ -56,25 +56,7 @@ async fn main() -> Result<(), rocket::Error> {
         )
         .mount(
             "/",
-            routes![handlers::admin_lessons::admin_lessons,
-handlers::admin_lessons::admin_lesson,
-handlers::admin_lessons::admin_lesson_hidden,
-handlers::admin_lessons::admin_lesson_delete,
-handlers::admin_lessons::admin_lessons_and_teachers,
-handlers::admin_lessons::admin_lesson_update,
-handlers::auth::auth,
-handlers::booking::lessons,
-handlers::booking::book,
-handlers::booking::unbook,
-handlers::debug::debug,
-handlers::favicon::favicon,
-handlers::index::index,
-handlers::picture::picture,
-handlers::picture::avatar,
-handlers::schedule::admin_schedule,
-handlers::user::user_query,
-handlers::user::register_user,
-handlers::user::user_book_statistics],
+            routes![handlers::admin_lessons::admin_lessons,handlers::admin_lessons::admin_lesson,handlers::admin_lessons::admin_lesson_hidden,handlers::admin_lessons::admin_lesson_delete,handlers::admin_lessons::admin_lessons_and_teachers,handlers::admin_lessons::admin_lesson_update,handlers::auth::auth,handlers::booking::lessons,handlers::booking::book,handlers::booking::unbook,handlers::debug::debug,handlers::favicon::favicon,handlers::index::index,handlers::picture::picture,handlers::picture::avatar,handlers::schedule::admin_schedule,handlers::user::user_query,handlers::user::register_user,handlers::user::user_book_statistics],
         )
         .register(
             "/",

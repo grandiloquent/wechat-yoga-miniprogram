@@ -1,12 +1,9 @@
 // https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/
 // "booking-bar":"../../components/booking-bar/booking-bar"
 // <booking-bar app="{{app}}"></booking-bar>
-const utils = require('../../utils')
+const shared = require('../../utils/shared')
 
 Component({
-  options: {
-    styleIsolation: 'isolated'
-  },
   properties: {
     selected: Number,
     app: Object
@@ -16,18 +13,21 @@ Component({
     async attached() {
       const {
         navigationHeight,
-        navigationTop
-      } = utils.calculateNavigationBarSize();
-
+        navigationTop,
+        paddingLeft,
+        height
+      } = shared.getNavigationBarSize();
       this.setData({
-        height: `${navigationHeight}px`,
-        top: `${navigationTop}px`
+        navigationHeight,
+        top: `${navigationTop}px`,
+        paddingLeft,
+        height
       })
     },
-    detached: function() {},
+    detached: function () { },
   },
   observers: {
-    'items': function(items) {
+    'items': function (items) {
       this.setData({
         notices: items.map(x => {
           x.timeago = utils.timeago(x.updated_time)

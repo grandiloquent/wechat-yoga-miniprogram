@@ -1,6 +1,6 @@
-<view class="wrapper" style="height:{{height}};padding-top:{{top}};">
-  <view class="container">
-    <view  catchtap="onClick" data-id="1" class="left {{selected==0?'active':''}}">本周</view>
-    <view catchtap="onClick" data-id="2" class="right {{selected==1?'active':''}}">下周</view>
+<view class="wrapper" style="height:{{navigationHeight}}px;padding-top:{{top}};">
+  <view class="container" style="padding-left:{{paddingLeft}}px;font-size:{{height/6*2.5}}px">
+    <view catchtap="onClick" data-id="1" class="left {{selected==0?'active':''}}" style=";height:{{height}}px;">本周</view>
+    <view catchtap="onClick" data-id="2" class="right {{selected==1?'active':''}}" style=";height:{{height}}px;">下周</view>
   </view>
 </view>

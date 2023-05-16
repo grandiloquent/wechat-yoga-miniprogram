@@ -115,6 +115,7 @@ function getNavigationBarSize() {
     navigationHeight,
     navigationTop: statusBarHeight,
     paddingLeft,
+    height
   }
 }
 async function checkUserAvailability(app, fn) {

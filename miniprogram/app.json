@@ -1,13 +1,13 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/booking/booking",
     "pages/adminLessons/adminLessons",
     "pages/adminUpdateLesson/adminUpdateLesson",
     "pages/adminLesson/adminLesson",
     "pages/user/user",
     "pages/adminSchedule/adminSchedule",
     "pages/login/login",
-    "pages/booking/booking",
     "pages/booked/booked",
     "pages/market/market",
     "pages/notice/notice",

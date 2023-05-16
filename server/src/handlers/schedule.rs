@@ -11,9 +11,7 @@ use rocket::serde::json::Value;
 use rocket::State;
 use rusttype::{point, Font, Rect, Scale};
 use std::io::Cursor;
-
 #[get("/yoga/admin/schedule")]
-
 pub async fn admin_schedule(pool: &State<Pool>) -> Result<Vec<u8>, Status> {
     let conn = match pool.get().await {
         Ok(conn) => conn,
@@ -29,16 +27,12 @@ pub async fn admin_schedule(pool: &State<Pool>) -> Result<Vec<u8>, Status> {
             return Err(Status::InternalServerError);
         }
     };
-
     let bytes = include_bytes!("pattern.png") as &[u8];
-
     // https://docs.rs/rusttype/0.9.2/rusttype/enum.Font.html
     let font = Vec::from(include_bytes!("PingFang.ttf") as &[u8]);
     let font = Font::try_from_vec(font).unwrap();
-
     // https://docs.rs/serde_json/latest/serde_json/value/enum.Value.html#method.as_array
     let obj = obj.as_array().unwrap();
-
     let mut image = ImageReader::new(Cursor::new(bytes))
         .with_guessed_format()
         .unwrap()
@@ -62,12 +56,10 @@ pub async fn admin_schedule(pool: &State<Pool>) -> Result<Vec<u8>, Status> {
         }
     }
     // http://127.0.0.1:8002/yoga/admin/schedule
-
     let mut bytes: Vec<u8> = Vec::new();
     let _ = image.write_to(&mut Cursor::new(&mut bytes), image::ImageOutputFormat::Png);
     Ok(bytes)
 }
-
 fn draw_item(font: &Font, image: &mut DynamicImage, lesson: &Value, offset: i32, top: bool) {
     let y_name = if top { 311 } else { 446 };
     if top {
@@ -111,7 +103,6 @@ fn draw_text(font: &Font, image: &mut DynamicImage, text: &str, font_size: f32, 
     let max_y = glyphs.iter().map(|g| g.max.y).max().unwrap();
     let height = max_y - min_y;
     let width = last.x - first.x;
-
     // https://docs.rs/imageproc/latest/imageproc/drawing/fn.draw_text_mut.html
     // https://github.com/search?q=draw_text_mut%20path%3A*.rs&type=code
     draw_text_mut(

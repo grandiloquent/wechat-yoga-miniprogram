@@ -111,10 +111,14 @@
     padding-top: 16rpx;
 }
 
+.disabled .item-text,
+.disabled .item-body-line {
+    color: rgba(0, 0, 0, .6);
+}
 
 
 .not-found-message {
-    margin:48rpx auto;
+    margin: 48rpx auto;
     font-size: 32rpx;
     width: 100%;
     display: flex;

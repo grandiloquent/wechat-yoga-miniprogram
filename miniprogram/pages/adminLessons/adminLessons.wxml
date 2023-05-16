@@ -6,7 +6,7 @@
 </view>
 <view class="items">
     <view wx:if="{{lessons}}" wx:for="{{lessons}}" wx:key="course_id" class="item" data-href="/pages/adminLesson/adminLesson?id={{item.course_id}}" bind:tap="navigate">
-        <view class="item-body">
+        <view class="item-body {{item.expired?'disabled':''}}">
             <image class="item-body-image" src="{{app.globalData.staticHost}}/images/{{item.thumbnail}}"></image>
             <view class="item-body-left">
                 <view class="item-body-line">
@@ -19,8 +19,10 @@
                 <view style="flex-grow:1"></view>
                 <view class="item-body-line">
                     <view style="flex-grow:1"></view>
-                    <view>{{item.dif}}</view>
-                </view>
+                    <view wx:if="{{item.expired}}">已完成</view>
+                    <view wx:else>{{item.dif}}</view>
+               
+               </view>
             </view>
         </view>
     </view>

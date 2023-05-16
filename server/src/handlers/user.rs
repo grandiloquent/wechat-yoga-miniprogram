@@ -51,7 +51,6 @@ pub async fn register_user(data: String, pool: &State<Pool>) -> Result<String, S
         }
     }
 }
-
 #[get("/yoga/user/book/statistics?<id>")]
 pub async fn user_book_statistics(id:String, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {

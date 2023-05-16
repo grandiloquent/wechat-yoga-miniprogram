@@ -49,6 +49,7 @@ Page({
                 x["date"] = formatLessonDateTime(x);
                 const dif = x.peoples - x.count;
                 x["dif"] = dif === 0 ? "已满额" : `差  ${dif} 人`;
+                x['expired'] = checkIfLessonExpired(x);
                 return x;
             })
         });
@@ -94,4 +95,16 @@ function formatLessonDateTime(lesson) {
     //  周${'日一二三四五六'[date.getDay()]} 
     //  ${lesson.start_time / 3600 | 0}:${((lesson.start_time % 3600) / 60 | 0).toString().padStart(2, '0')}
     return `${date.getMonth() + 1}月${date.getDate()}日${lesson.start_time < 43200 ? '上午' : '晚上'}`
+}
+function checkIfLessonExpired(lesson) {
+    const now = new Date();
+    const senconds = now.getHours() * 3600 + now.getMinutes() * 60;
+    now.setHours(0, 0, 0, 0);
+    if (lesson.date_time > now.getTime()/1000) {
+        return false;
+    }
+    if (lesson['date_time'] == now.getTime()/1000 && lesson.start_time > senconds) {
+        return false;
+    }
+    return true;
 }

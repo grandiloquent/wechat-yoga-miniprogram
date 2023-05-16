@@ -1,9 +1,7 @@
 use crate::utils::data::{query_int_with_params, query_json_with_params, Body};
-
 use deadpool_postgres::Pool;
 use rocket::http::Status;
 use rocket::State;
-
 #[get("/yoga/admin/lessons?<start>&<end>")]
 pub async fn admin_lessons(start: i32, end: i32, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {

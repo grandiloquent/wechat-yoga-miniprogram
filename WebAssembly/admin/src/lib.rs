@@ -202,8 +202,36 @@ pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, op
         let _ = Reflect::set(
             &json,
             &JsValue::from_str("expired"),
-            &JsValue::from_bool(check_if_lesson_expired(date_time,start_time)),
+            &JsValue::from_bool(check_if_lesson_expired(date_time, start_time)),
         );
+    }
+    let mut items = array.iter().collect::<Vec<JsValue>>();
+    items.sort_by(|x, y| {
+        let x1 = Reflect::get(&x, &"date_time".into())
+            .unwrap()
+            .as_f64()
+            .unwrap();
+        let y1 = Reflect::get(&y, &"date_time".into())
+            .unwrap()
+            .as_f64()
+            .unwrap();
+        if x1 == y1 {
+            let x2 = Reflect::get(&x, &"start_time".into())
+                .unwrap()
+                .as_f64()
+                .unwrap();
+            let y2 = Reflect::get(&y, &"start_time".into())
+                .unwrap()
+                .as_f64()
+                .unwrap();
+            return x2.partial_cmp(&y2).unwrap();
+        } else {
+            return x1.partial_cmp(&y1).unwrap();
+        }
+    });
+    let array = js_sys::Array::new();
+    for index in 0..items.len() {
+        array.push(&items[index]);
     }
     let obj = Object::new();
     let _ = Reflect::set(&obj, &JsValue::from_str("lessons"), &array);

@@ -10,7 +10,8 @@ import init, {
 
 Page({
   data: {
-    app
+    app,
+    enabled: false
   },
   // 该页面加载时运行一次的方法
   async onLoad() {
@@ -116,8 +117,8 @@ function bindIndex(app, page) {
     url,
     success(res) {
       if (res.statusCode === 200) {
-        console.log()
         page.setData(res.data)
+        page.setData({enabled:true});
       }
     }
   });
@@ -137,7 +138,7 @@ async function initializeTopBar(page) {
     navigationPaddingLeft: paddingLeft,
     navigationTitleFontSize: navigationHeight / 6 * 2,
     navigationSubTitleFontSize: navigationHeight / 6 * 1.5,
-    navigationGap:navigationHeight / 6*.3
+    navigationGap: navigationHeight / 6 * .3
   })
   await init();
 

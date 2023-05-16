@@ -146,7 +146,6 @@ pub async fn lesson_update(
     .await
 }
 
-// qg
 #[wasm_bindgen]
 pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, openid: String) {
     let json = get_json(

@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "..\\WebAssembly\\admin"
+		},
+		{
+			"path": "..\\WebAssembly\\weixin"
 		}
 	],
 	"settings": {

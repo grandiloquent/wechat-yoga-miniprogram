@@ -22,7 +22,6 @@ Page({
 
         await query_lessons(this, app.globalData.host, this.data.start, this.data.end,
             await app.getOpenId());
-        console.log(this.data);
     },
     onIndex(e) {
         const selected = e.currentTarget.dataset.id;

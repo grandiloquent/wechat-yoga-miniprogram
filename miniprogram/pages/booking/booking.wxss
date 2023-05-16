@@ -86,6 +86,7 @@ page {
   -webkit-box-orient: vertical;
   white-space: normal;
   -webkit-line-clamp: 3;
+  font-size: 38rpx;
 }
 
 .sub-left {

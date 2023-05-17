@@ -24,6 +24,7 @@
     <view class="right">
       <view class="text-time">
         {{item.time}}
+        <text>{{item.hour}}</text>
       </view>
       <view class="text-lesson">{{item.lesson_name}}</view>
       <view class="sub-left">

@@ -194,50 +194,7 @@ pub async fn bind_booking(
         let array = js_sys::Array::new();
         for index in 0..values.len() {
             let item = &values[index];
-            let date_time = safe_f64(item, "date_time");
-            let start_time = safe_f64(item, "start_time");
-            let end_time = safe_f64(item, "end_time");
-
-            let now = now_in_seconds();
-            if (now - date_time - start_time > 3600f64) {
-                // 1
-                Reflect::set(item, &"mode".into(), &JsValue::from(1)).unwrap();
-                Reflect::set(item, &"label".into(), &"已完成".into()).unwrap();
-            } else if (now - date_time - start_time > 0f64) {
-                // 10000
-
-                Reflect::set(item, &"mode".into(), &JsValue::from(16)).unwrap();
-                Reflect::set(item, &"label".into(), &"正在上课".into()).unwrap();
-            } else if (date_time + start_time - now < 3600f64) {
-                // 1000
-                Reflect::set(item, &"mode".into(), &JsValue::from(8)).unwrap();
-                Reflect::set(item, &"label".into(), &"准备上课".into()).unwrap();
-            } else {
-                let hidden = safe_f64(item, "hidden") as i8;
-                let peoples = safe_f64(item, "peoples") as u8;
-                let count = safe_f64(item, "count") as u8;
-                if hidden == -1 {
-                    // 100
-                    Reflect::set(item, &"mode".into(), &JsValue::from(4)).unwrap();
-                    Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
-                } else if count >= peoples {
-                    // 10
-                    Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
-                    Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
-                } else {
-                    let reservation_id = safe_f64(item, "reservation_id");
-                    if reservation_id == 0f64 {
-                        // 100000
-                        Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
-                        Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
-                    } else {
-                        // 1000000
-                        Reflect::set(item, &"mode".into(), &JsValue::from(64)).unwrap();
-                        Reflect::set(item, &"label".into(), &"取消预约".into()).unwrap();
-                    }
-                }
-            }
-            add_lesson_time(item, start_time, end_time);
+            process_lesson(item, false);
             array.push(item);
         }
 
@@ -246,17 +203,52 @@ pub async fn bind_booking(
     }
     Ok(())
 }
-fn add_lesson_time(item: &JsValue, start_time: f64, end_time: f64) {
-    let _ = Reflect::set(
-        item,
-        &"time".into(),
-        &format!(
-            "{}-{}",
-            format_seconds(start_time),
-            format_seconds(end_time)
-        )
-        .into(),
-    );
+fn add_lesson_time(
+    item: &JsValue,
+    date_time: f64,
+    start_time: f64,
+    end_time: f64,
+    long_time: bool,
+) {
+    if long_time {
+        let date = Date::new(&JsValue::from_f64(date_time * 1000f64));
+        let _ = Reflect::set(
+            item,
+            &"time".into(),
+            &format!(
+                "{}月{}日周{}",
+                date.get_month() + 1,
+                date.get_date(),
+                "日一二三四五六"
+                    .chars()
+                    .nth(date.get_day() as usize)
+                    .unwrap()
+            )
+            .into(),
+        );
+        let _ = Reflect::set(
+            item,
+            &"hour".into(),
+            &format!(
+                "{}-{}",
+                format_seconds(start_time),
+                format_seconds(end_time)
+            )
+            .into(),
+        );
+        //  
+    } else {
+        let _ = Reflect::set(
+            item,
+            &"time".into(),
+            &format!(
+                "{}-{}",
+                format_seconds(start_time),
+                format_seconds(end_time)
+            )
+            .into(),
+        );
+    }
 }
 fn format_seconds(seconds: f64) -> String {
     format!(
@@ -303,6 +295,61 @@ pub async fn teacher_lessons(
     )
     .await
     .unwrap();
+    let lessons = Reflect::get(&json, &"lessons".into()).unwrap();
+    let values = sort_lessons(&lessons);
+    let array = js_sys::Array::new();
+    for index in 0..values.len() {
+        let item = &values[index];
+        process_lesson(item, true);
+        array.push(item);
+    }
     let obj = Object::from(json);
     page.set_data(obj);
+}
+
+fn process_lesson(item: &JsValue, long_time: bool) {
+    let date_time = safe_f64(item, "date_time");
+    let start_time = safe_f64(item, "start_time");
+    let end_time = safe_f64(item, "end_time");
+
+    let now = now_in_seconds();
+    if now - date_time - start_time > 3600f64 {
+        // 1
+        Reflect::set(item, &"mode".into(), &JsValue::from(1)).unwrap();
+        Reflect::set(item, &"label".into(), &"已完成".into()).unwrap();
+    } else if now - date_time - start_time > 0f64 {
+        // 10000
+
+        Reflect::set(item, &"mode".into(), &JsValue::from(16)).unwrap();
+        Reflect::set(item, &"label".into(), &"正在上课".into()).unwrap();
+    } else if date_time + start_time - now < 3600f64 {
+        // 1000
+        Reflect::set(item, &"mode".into(), &JsValue::from(8)).unwrap();
+        Reflect::set(item, &"label".into(), &"准备上课".into()).unwrap();
+    } else {
+        let hidden = safe_f64(item, "hidden") as i8;
+        let peoples = safe_f64(item, "peoples") as u8;
+        let count = safe_f64(item, "count") as u8;
+        if hidden == -1 {
+            // 100
+            Reflect::set(item, &"mode".into(), &JsValue::from(4)).unwrap();
+            Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
+        } else if count >= peoples {
+            // 10
+            Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
+            Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
+        } else {
+            let reservation_id = safe_f64(item, "reservation_id");
+            if reservation_id == 0f64 {
+                // 100000
+                Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
+                Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+            } else {
+                // 1000000
+                Reflect::set(item, &"mode".into(), &JsValue::from(64)).unwrap();
+                Reflect::set(item, &"label".into(), &"取消预约".into()).unwrap();
+            }
+        }
+    }
+    add_lesson_time(item, date_time, start_time, end_time, long_time);
 }

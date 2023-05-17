@@ -67,6 +67,7 @@ padding:12rpx 0;
   height: 48rpx;
 }
 
+
 .item-wrapper {
   color: #202124;
   display: flex;
@@ -78,6 +79,7 @@ padding:12rpx 0;
   padding-left: 32rpx;
   padding-right: 32rpx;
 }
+
 
 .item {
   display: flex;
@@ -140,4 +142,17 @@ padding:12rpx 0;
   left: -32rpx;
   bottom: 32rpx;
 
+}
+
+
+.sub-right {
+  position: absolute;
+  padding: 32rpx 32rpx 32rpx 34rpx;
+  font-size: 30rpx;
+  right: -32rpx;
+  bottom: 0rpx;
+  color: #70757a;
+}
+.sub-right-btn {
+  color: #4285f4;
 }

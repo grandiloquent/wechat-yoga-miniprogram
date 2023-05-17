@@ -10,42 +10,38 @@ Page({
     type: 4
   },
   async loadData() {
-    this.setData({
-      lessons: null,
-      holiday: false,
-      loading: true
-    })
-    try {
-      let now = new Date();
-      now.setHours(0, 0, 0, 0);
-      const data = await utils.getStringAsync(app, `v1/teacher/lessons?teacherId=${this.data.id}&startTime=${now.getTime() / 1000}&endTime=${now.getTime() / 1000 + 86400 * 7}&classType=${this.data.type}`);
-      if (!data.length) {
-        throw new Error()
-      }
-      utils.setLessonStatus(data, 3, 60);
-      const lessons = utils.sortLessons(data).map((element, index) => {
-        element.teacher_name = utils.formatLessonShortDate(element);
-        return element;
-      })
-      this.setData({
-        holiday: false,
-        lessons,
-        loading: false
-      });
-    } catch (error) {
-      console.log(error)
-      this.setData({
-        holiday: true,
-        loading: false
-      });
-    }
-  },
-  async onLoad(options) {
-
-    this.data.id = options.id || 3;
+    // this.setData({
+    //   lessons: null,
+    //   holiday: false,
+    //   loading: true
+    // })
+    // try {
+    //   let now = new Date();
+    //   now.setHours(0, 0, 0, 0);
+    //   const data = await utils.getStringAsync(app, `v1/teacher/lessons?teacherId=${this.data.id}&startTime=${now.getTime() / 1000}&endTime=${now.getTime() / 1000 + 86400 * 7}&classType=${this.data.type}`);
+    //   if (!data.length) {
+    //     throw new Error()
+    //   }
+    //   utils.setLessonStatus(data, 3, 60);
+    //   const lessons = utils.sortLessons(data).map((element, index) => {
+    //     element.teacher_name = utils.formatLessonShortDate(element);
+    //     return element;
+    //   })
+    //   this.setData({
+    //     holiday: false,
+    //     lessons,
+    //     loading: false
+    //   });
+    // } catch (error) {
+    //   console.log(error)
+    //   this.setData({
+    //     holiday: true,
+    //     loading: false
+    //   });
+    // }
     let now = new Date();
     now.setHours(0, 0, 0, 0);
-    await init();
+
     const startTime = now.getTime() / 1000;
     const endTime = startTime + 86400 * 7;
     const openId = await app.getOpenId();
@@ -53,6 +49,13 @@ Page({
     const teacherId = this.data.id;
 
     await teacher_lessons(this, app.globalData.host, startTime, endTime, openId, classType, teacherId);
+    console.log(this.data);
+  },
+  async onLoad(options) {
+    this.data.id = options.id || 3;
+
+
+    await init();
 
     wx.showShareMenu({
       withShareTicket: true,
@@ -60,7 +63,8 @@ Page({
     })
     wx.setNavigationBarTitle({
       title: app.globalData.title
-    })
+    });
+    this.loadData();
   },
   onShareAppMessage() {
     return {
@@ -88,27 +92,9 @@ Page({
     }
   },
   async book(item) {
-    let result = await utils.checkUserAvailability(app);
-    if (!result) {
-      this.setData({
-        showLogin: true
-      });
-      return;
-    }
-    try {
-      result = await utils.getStringAsync(app, `v1/book?id=${item.course_id}`);
-      console.log(result);
-      this.loadData();
-    } catch (error) {
 
-    }
   },
   async unbook(item) {
-    try {
-      const result = await utils.getStringAsync(app, `v1/unbook?id=${item.reservation_id}`);
-      this.loadData();
-    } catch (error) {
 
-    }
   },
 })

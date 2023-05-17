@@ -82,4 +82,5 @@
     padding: 32rpx 32rpx 24rpx;
     background-color: #fff;
     margin-top: 20rpx;
+    font-size: 38rpx;
 }

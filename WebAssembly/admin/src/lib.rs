@@ -1,3 +1,5 @@
+use std::fmt::format;
+
 use js_sys::{Array, Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 
@@ -239,19 +241,36 @@ pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, op
 }
 
 fn check_if_lesson_expired(date_time: f64, start_time: f64) -> bool {
+    // log(format!(
+    //     "check_if_lesson_expired: date_time = {}\n start_time= {}",
+    //     date_time, start_time
+    // )
+    // .as_str());
     let now = Date::new_0();
     let senconds = now.get_hours() * 3600 + now.get_minutes() * 60;
-    let now = Date::new_with_year_month_day(
+
+    let now = Date::new_with_year_month_day_hr_min_sec_milli(
         now.get_full_year(),
         (now.get_month()) as i32,
         now.get_date() as i32,
-    )
-    .get_time()
-        / 1000f64;
-    if date_time > now {
+        0,
+        0,
+        0,
+        0,
+    );
+    // log(format!("check_if_lesson_expired: now = {}", now.get_time()).as_str());
+    let now = now.get_time() / 1000f64;
+    // log(format!(
+    //     "check_if_lesson_expired: now = {}\n senconds = {}",
+    //     now, senconds
+    // )
+    // .as_str());
+
+    if date_time - now >= 86400f64 {
         return false;
     }
-    if date_time == now && start_time > senconds as f64 {
+
+    if (date_time - now >= 0f64 && date_time - now < 86400f64) && start_time > senconds as f64 {
         return false;
     }
     return true;

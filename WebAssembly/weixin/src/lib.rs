@@ -1,6 +1,6 @@
 use chinese_lunisolar_calendar::chrono::prelude::*;
 use chinese_lunisolar_calendar::LunisolarDate;
-use js_sys::{Date, Object, Reflect};
+use js_sys::{Array, Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -300,9 +300,9 @@ pub async fn teacher_lessons(
     )
     .await
     .unwrap();
-   
+
     let lessons = Reflect::get(&json, &"lessons".into()).unwrap();
-    if !lessons.is_null(){
+    if !lessons.is_null() {
         let values = sort_lessons(&lessons);
         let array = js_sys::Array::new();
         for index in 0..values.len() {
@@ -361,4 +361,42 @@ fn process_lesson(item: &JsValue, long_time: bool) {
         }
     }
     add_lesson_time(item, date_time, start_time, end_time, long_time);
+}
+
+#[wasm_bindgen]
+pub async fn bind_index(page: &Page, base_uri: &str) {
+    let json = get_json(format!("{}/yoga/index", base_uri).as_str())
+        .await
+        .unwrap();
+    let obj = Object::from(json);
+    Array::from(&Reflect::get(&obj, &"notices".into()).unwrap())
+        .iter()
+        .for_each(|f| {
+            let updated_time = Reflect::get(&f, &"updated_time".into())
+                .unwrap()
+                .as_f64()
+                .unwrap();
+            let now = Date::now() / 1000f64;
+            let dif = now - updated_time;
+            if dif > 31556926f64 {
+                let _ = Reflect::set(
+                    &f,
+                    &"timeago".into(),
+                    &format!("{} 年之前", (dif / 31556926f64) as u32)
+                        .as_str()
+                        .into(),
+                );
+            } else if dif > 2629743.83f64 {
+                let _ = Reflect::set(
+                    &f,
+                    &"timeago".into(),
+                    &format!("{} 月之前", (dif / 2629743.83f64) as u32)
+                        .as_str()
+                        .into(),
+                );
+            }
+        });
+
+    let _ = Reflect::set(&obj, &"enabled".into(), &JsValue::from_bool(true));
+    page.set_data(obj);
 }

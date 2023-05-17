@@ -1,4 +1,5 @@
 pub mod ;
+pub mod 2592000;
 pub mod admin_lessons;
 pub mod auth;
 pub mod booking;
@@ -8,4 +9,5 @@ pub mod index;
 pub mod picture;
 pub mod schedule;
 pub mod teacher;
+pub mod timeago,;
 pub mod user;

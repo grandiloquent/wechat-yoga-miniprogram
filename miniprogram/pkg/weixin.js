@@ -353,7 +353,19 @@ export function teacher_lessons(page, base_uri, start_time, end_time, open_id, c
     return takeObject(ret);
 }
 
-function __wbg_adapter_66(arg0, arg1, arg2, arg3) {
+/**
+* @param {any} page
+* @param {string} base_uri
+* @returns {Promise<void>}
+*/
+export function bind_index(page, base_uri) {
+    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ret = wasm.bind_index(addHeapObject(page), ptr0, len0);
+    return takeObject(ret);
+}
+
+function __wbg_adapter_67(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -486,7 +498,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_66(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_67(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -523,8 +535,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper156 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 77, __wbg_adapter_24);
+    imports.wbg.__wbindgen_closure_wrapper163 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 81, __wbg_adapter_24);
         return addHeapObject(ret);
     };
 

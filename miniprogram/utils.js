@@ -1,24 +1,24 @@
 // 谷歌 Material 500 的颜色
 // Those values are the relative lightness/darkness or "tint" of the color, where 50 is lightest and 900 is darkest. The Material Design guidelines suggest using the 500 tint as your primary color and the 700 tint as the darker status bar color.
 const colors = ["rgb(244, 67, 54)", "rgb(233, 30, 99)", "rgb(156, 39, 176)", "rgb(103, 58, 183)", "rgb(63, 81, 181)", "rgb(33, 150, 243)", "rgb(3, 169, 244)", "rgb(0, 188, 212)", "rgb(0, 150, 136)", "rgb(76, 175, 80)", "rgb(139, 195, 74)", "rgb(205, 220, 57)", "rgb(255, 235, 59)", "rgb(255, 193, 7)", "rgb(255, 152, 0)", "rgb(255, 87, 34)", "rgb(121, 85, 72)", "rgb(158, 158, 158)", "rgb(96, 125, 139)"];
-const SECONDS_IN_TIME = [
-  1, // 1 second
-  60, // 1 minute
-  3600, // 1 hour
-  86400, // 1 day
-  604800, // 1 week
-  2419200, // 1 month
-  29030400 // 1 year
-];
-const en_US = [
-  "刚刚", "秒之前",
-  "1 分钟之前", "分钟之前",
-  "1 小时之前", "小时之前",
-  "1 天之前", "天之前",
-  "1 周之前", "周之前",
-  "1 月之前", "月之前",
-  "1 年之前", "年之前"
-]
+// const SECONDS_IN_TIME = [
+//   1, // 1 second
+//   60, // 1 minute
+//   3600, // 1 hour
+//   86400, // 1 day
+//   604800, // 1 week
+//   2419200, // 1 month
+//   29030400 // 1 year
+// ];
+// const en_US = [
+//   "刚刚", "秒之前",
+//   "1 分钟之前", "分钟之前",
+//   "1 小时之前", "小时之前",
+//   "1 天之前", "天之前",
+//   "1 周之前", "周之前",
+//   "1 月之前", "月之前",
+//   "1 年之前", "年之前"
+// ]
 // 计算微信顶部导航栏的尺寸，用于自定义导航栏
 function calculateNavigationBarSize() {
   const {
@@ -96,7 +96,7 @@ function checkIfLessonFullyBooked(todayTimestamp, lesson, currentSeconds, minute
   }
   return false;
 }
- 
+
 
 function chooseImage() {
   return new Promise((resolve, reject) => {
@@ -360,18 +360,7 @@ function substringAfterLast(string, delimiter, missingDelimiterValue) {
     return string.substring(index + delimiter.length);
   }
 } // https://github.com/tekinosman/timeago-js/blob/main/timeago.js
-function timeago(timestamp, lang) {
-  let now = Math.floor(new Date / 1000);
-  let diff = (now - timestamp) || 1; // prevent undefined val when diff == 0
-  for (let i = 6; i >= 0; i--) {
-    if (diff >= SECONDS_IN_TIME[i]) {
-      let time_elapsed = Math.floor(diff / SECONDS_IN_TIME[i]);
-      let adverbs = en_US;
-      let sentence = adverbs.map((el, idx) => idx % 2 == 0 ? el : time_elapsed + " " + el);
-      return time_elapsed >= 2 ? sentence[i * 2 + 1] : sentence[i * 2];
-    }
-  }
-}
+
 
 function uploadFile(url, filePath) {
   return new Promise((resolve, reject) => {
@@ -404,7 +393,7 @@ function formatDuration(ms) {
 }
 module.exports = {
   calculateNavigationBarSize,
-  
+
   chooseImage,
   debug,
   formatDate,
@@ -419,7 +408,6 @@ module.exports = {
   showModal,
   sortLessons,
   substringAfterLast,
-  timeago,
   uploadFile,
   formatLessonShortDate,
   formatDuration

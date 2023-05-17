@@ -167,8 +167,8 @@ pub async fn user_query(base_uri: &str, openid: String) -> Result<JsValue, JsVal
 //     Err("")?
 // }
 #[wasm_bindgen]
-pub async fn user_book_statistics(base_uri: &str, openid: String)  -> Result<JsValue, JsValue> {
-     get_json(format!("{}/yoga/user/book/statistics?id={}", base_uri, openid).as_str()).await
+pub async fn user_book_statistics(base_uri: &str, openid: String) -> Result<JsValue, JsValue> {
+    get_json(format!("{}/yoga/user/book/statistics?id={}", base_uri, openid).as_str()).await
 }
 
 #[wasm_bindgen]
@@ -282,4 +282,27 @@ fn sort_lessons(json: &JsValue) -> Vec<JsValue> {
             .unwrap()
     });
     values
+}
+
+#[wasm_bindgen]
+pub async fn teacher_lessons(
+    page: &Page,
+    base_uri: &str,
+    start_time: i32,
+    end_time: i32,
+    open_id: String,
+    class_type: i32,
+    teacher_id: i32,
+) {
+    let json = get_json(
+        format!(
+            "{}/yoga/teacher/lessons?start_time={}&end_time={}&open_id={}&class_type={}&teacher_id={}",
+            base_uri, start_time,end_time,open_id,class_type,teacher_id
+        )
+        .as_str(),
+    )
+    .await
+    .unwrap();
+    let obj = Object::from(json);
+    page.set_data(obj);
 }

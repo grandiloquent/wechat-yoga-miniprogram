@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/teacher/teacher",
     "pages/index/index",
     "pages/adminLessons/adminLessons",
     "pages/adminLesson/adminLesson",
@@ -13,8 +14,7 @@
     "pages/notice/notice",
     "pages/notices/notices",
     "pages/one/one",
-    "pages/small/small",
-    "pages/teacher/teacher"
+    "pages/small/small"
   ],
   "sitemapLocation": "sitemap.json",
   "tabBar": {

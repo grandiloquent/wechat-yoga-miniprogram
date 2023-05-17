@@ -1,5 +1,8 @@
 const utils = require('../../utils')
 const app = getApp();
+import init, {
+  teacher_lessons
+} from "../../pkg/weixin";
 
 Page({
   data: {
@@ -15,7 +18,7 @@ Page({
     try {
       let now = new Date();
       now.setHours(0, 0, 0, 0);
-      const data = await utils.getStringAsync(app, `v1/teacher/lessons?teacherId=${this.data.id}&startTime=${now.getTime()/1000}&endTime=${now.getTime()/1000+86400 * 7}&classType=${this.data.type}`);
+      const data = await utils.getStringAsync(app, `v1/teacher/lessons?teacherId=${this.data.id}&startTime=${now.getTime() / 1000}&endTime=${now.getTime() / 1000 + 86400 * 7}&classType=${this.data.type}`);
       if (!data.length) {
         throw new Error()
       }
@@ -38,6 +41,19 @@ Page({
     }
   },
   async onLoad(options) {
+
+    this.data.id = options.id || 3;
+    let now = new Date();
+    now.setHours(0, 0, 0, 0);
+    await init();
+    const startTime = now.getTime() / 1000;
+    const endTime = startTime + 86400 * 7;
+    const openId = await app.getOpenId();
+    const classType = this.data.type;
+    const teacherId = this.data.id;
+
+    await teacher_lessons(this, app.globalData.host, startTime, endTime, openId, classType, teacherId);
+
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -45,14 +61,6 @@ Page({
     wx.setNavigationBarTitle({
       title: app.globalData.title
     })
-    this.data.id = options.id || 3;
-    utils.getString(app, `v1/teacher?id=${this.data.id}`, (err, data) => {
-      if (err) return;
-      this.setData({
-        teacher: data
-      });
-    });
-    this.loadData();
   },
   onShareAppMessage() {
     return {

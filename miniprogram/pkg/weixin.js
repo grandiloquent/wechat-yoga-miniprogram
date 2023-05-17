@@ -334,7 +334,26 @@ export function bind_booking(base_uri, start, openid, class_type, page) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_59(arg0, arg1, arg2, arg3) {
+/**
+* @param {any} page
+* @param {string} base_uri
+* @param {number} start_time
+* @param {number} end_time
+* @param {string} open_id
+* @param {number} class_type
+* @param {number} teacher_id
+* @returns {Promise<void>}
+*/
+export function teacher_lessons(page, base_uri, start_time, end_time, open_id, class_type, teacher_id) {
+    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(open_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ret = wasm.teacher_lessons(addHeapObject(page), ptr0, len0, start_time, end_time, ptr1, len1, class_type, teacher_id);
+    return takeObject(ret);
+}
+
+function __wbg_adapter_60(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -455,7 +474,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_59(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_60(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -492,8 +511,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper144 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 71, __wbg_adapter_22);
+    imports.wbg.__wbindgen_closure_wrapper151 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 75, __wbg_adapter_22);
         return addHeapObject(ret);
     };
 

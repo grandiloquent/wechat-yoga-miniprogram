@@ -112,9 +112,9 @@ Page({
   async book(id) {
     let result = await checkUserAvailability(app);
     if (!result) {
-      this.setData({
-        showLogin: true
-      });
+       wx.navigateTo({
+        url: `/pages/login/login?return_url=${encodeURIComponent(`/pages/booking/booking`)}`
+      })
       return;
     }
     try {
@@ -147,13 +147,6 @@ Page({
       console.log(error)
     }
   },
-  // 成功登录后隐藏登陆元素
-  onLoginSubmit(evt) {
-    this.setData({
-      showLogin: false
-    });
-  }
-
 
 }
 

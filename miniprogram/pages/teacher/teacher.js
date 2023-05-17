@@ -1,7 +1,10 @@
 const utils = require('../../utils')
 const app = getApp();
 import init, {
-  teacher_lessons
+  teacher_lessons,
+  book,
+  unbook,
+  user_query
 } from "../../pkg/weixin";
 
 Page({
@@ -10,38 +13,8 @@ Page({
     type: 4
   },
   async loadData() {
-    // this.setData({
-    //   lessons: null,
-    //   holiday: false,
-    //   loading: true
-    // })
-    // try {
-    //   let now = new Date();
-    //   now.setHours(0, 0, 0, 0);
-    //   const data = await utils.getStringAsync(app, `v1/teacher/lessons?teacherId=${this.data.id}&startTime=${now.getTime() / 1000}&endTime=${now.getTime() / 1000 + 86400 * 7}&classType=${this.data.type}`);
-    //   if (!data.length) {
-    //     throw new Error()
-    //   }
-    //   utils.setLessonStatus(data, 3, 60);
-    //   const lessons = utils.sortLessons(data).map((element, index) => {
-    //     element.teacher_name = utils.formatLessonShortDate(element);
-    //     return element;
-    //   })
-    //   this.setData({
-    //     holiday: false,
-    //     lessons,
-    //     loading: false
-    //   });
-    // } catch (error) {
-    //   console.log(error)
-    //   this.setData({
-    //     holiday: true,
-    //     loading: false
-    //   });
-    // }
     let now = new Date();
     now.setHours(0, 0, 0, 0);
-
     const startTime = now.getTime() / 1000;
     const endTime = startTime + 86400 * 7;
     const openId = await app.getOpenId();
@@ -51,10 +24,7 @@ Page({
   },
   async onLoad(options) {
     this.data.id = options.id || 3;
-
-
     await init();
-
     wx.showShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -85,18 +55,71 @@ Page({
       this.setData({ lessons: null });
     }
   },
-  async onBookingItemSubmit(evt) {
-    const item = evt.detail;
-    if (item.mode & 6) {
-      await this.unbook(item)
-    } else if (item.mode & 8) {
-      await this.book(item)
+  async onClick(e) {
+    const { id, bookid, mode } = e.currentTarget.dataset;
+    if (mode === 32) {
+      this.book(id)
+    } else if (mode === 64) {
+      this.unbook(bookid)
     }
   },
-  async book(item) {
+  // 预约课程
+  async book(id) {
+    let result = await checkUserAvailability(app);
+    if (!result) {
+      wx.navigateTo({
+        url: `/pages/login/login?return_url=$${encodeURIComponent(`/pages/teacher/teacher?id=${this.data.id}`)}`
+      })
+      return;
+    }
+    try {
+      let openid = (await app.getOpenId()) || "";
+      result = await book(app.globalData.host, id, openid);
+      if (result > 0) {
+        await this.loadData();
+      }
+      else {
+        wx.showModal({
+          title: '信息',
+          content: '请您购买会员卡',
+          success: res => {
+            if (res.confirm) {
 
-  },
-  async unbook(item) {
+            }
+          }
+        })
+      }
+    } catch (error) {
 
+    }
   },
-})
+  async unbook(bookid) {
+    try {
+      await unbook(app.globalData.host, bookid, app.globalData.openid);
+      await this.loadData();
+    } catch (error) {
+      console.log(error)
+    }
+  },
+});
+async function checkUserAvailability(app) {
+  if (!app.globalData.openid) {
+    return false;
+  }
+  if (app.globalData.userId) {
+    return true;
+  }
+  let result;
+  try {
+    result = await user_query(app.globalData.host, app.globalData.openid);
+    //TODO: check
+    if (!result || !result.nick_name) {
+      return false;
+    }
+    app.globalData.userId = result;
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

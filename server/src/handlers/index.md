@@ -57,3 +57,7 @@ select jsonb_build_object('poster', (select json_agg(t)
            );
 $function$
 ```
+
+```
+select * from fn_index();
+```

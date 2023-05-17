@@ -86,10 +86,18 @@ Page({
         try {
             await registerUser(app, data);
             // https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.navigateTo.html
-            app.globalData.userId=null;
-            wx.switchTab({
-                url: decodeURIComponent(this.data.return_url)
-            });
+            app.globalData.userId = null;
+            if (this.data.return_url.startsWith('$')) {
+                wx.navigateTo({
+                    url: decodeURIComponent(this.data.return_url.slice(1))
+                });
+            }
+            else {
+                console.log(this.data.return_url);
+                wx.switchTab({
+                    url: decodeURIComponent(this.data.return_url)
+                });
+            }
         } catch (error) {
             console.error(error);
         }

@@ -31,4 +31,3 @@
     </view>
   </view>
 </view>
-<login wx:if="{{showLogin}}" app="{{app}}" bind:success="onLoginSubmit"></login>

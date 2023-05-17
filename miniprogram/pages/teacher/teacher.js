@@ -47,9 +47,7 @@ Page({
     const openId = await app.getOpenId();
     const classType = this.data.type;
     const teacherId = this.data.id;
-
     await teacher_lessons(this, app.globalData.host, startTime, endTime, openId, classType, teacherId);
-    console.log(this.data);
   },
   async onLoad(options) {
     this.data.id = options.id || 3;
@@ -81,7 +79,11 @@ Page({
   },
   async onTeacherButtonsSubmit(evt) {
     this.data.type = (evt.detail === 1 && 4) || (evt.detail === 2 && 2) || (evt.detail === 3 && 1)
-    await this.loadData();
+    try {
+      await this.loadData();
+    } catch (error) {
+      this.setData({ lessons: null });
+    }
   },
   async onBookingItemSubmit(evt) {
     const item = evt.detail;

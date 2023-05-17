@@ -236,7 +236,7 @@ fn add_lesson_time(
             )
             .into(),
         );
-        //  
+        //
     } else {
         let _ = Reflect::set(
             item,
@@ -269,6 +269,11 @@ fn safe_f64(obj: &JsValue, key: &str) -> f64 {
 fn sort_lessons(json: &JsValue) -> Vec<JsValue> {
     let mut values = js_sys::Array::from(json).iter().collect::<Vec<JsValue>>();
     values.sort_by(|a, b| {
+        let x1 = safe_f64(&a, "date_time");
+        let x2 = safe_f64(&b, "date_time");
+        if x1 != x2 {
+            return x1.partial_cmp(&x2).unwrap();
+        }
         safe_f64(&a, "start_time")
             .partial_cmp(&safe_f64(&b, "start_time"))
             .unwrap()
@@ -295,13 +300,17 @@ pub async fn teacher_lessons(
     )
     .await
     .unwrap();
+   
     let lessons = Reflect::get(&json, &"lessons".into()).unwrap();
-    let values = sort_lessons(&lessons);
-    let array = js_sys::Array::new();
-    for index in 0..values.len() {
-        let item = &values[index];
-        process_lesson(item, true);
-        array.push(item);
+    if !lessons.is_null(){
+        let values = sort_lessons(&lessons);
+        let array = js_sys::Array::new();
+        for index in 0..values.len() {
+            let item = &values[index];
+            process_lesson(item, true);
+            array.push(item);
+        }
+        Reflect::set(&json, &"lessons".into(), &array).unwrap();
     }
     let obj = Object::from(json);
     page.set_data(obj);

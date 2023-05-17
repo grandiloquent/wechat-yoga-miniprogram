@@ -53,15 +53,7 @@ Page({
     bindIndex(app, this);
   },
   navigate(e) {
-    if (e.currentTarget.dataset.tab) {
-      wx.switchTab({
-        url: e.currentTarget.dataset.tab,
-      })
-    } else if (e.currentTarget.dataset.href) {
-      wx.navigateTo({
-        url: e.currentTarget.dataset.href + (e.currentTarget.dataset.id || ''),
-      })
-    }
+    shared.navigate(e);
   },
   // 设置分享时的标题
   onShareAppMessage() {
@@ -69,7 +61,6 @@ Page({
       title: app.globalData.title
     };
   },
-  onSubmit() { },
   onHomeActionsSubmit(evt) {
     if (evt.detail === 2) {
       wx.switchTab({
@@ -118,7 +109,7 @@ function bindIndex(app, page) {
     success(res) {
       if (res.statusCode === 200) {
         page.setData(res.data)
-        page.setData({enabled:true});
+        page.setData({ enabled: true });
       }
     }
   });

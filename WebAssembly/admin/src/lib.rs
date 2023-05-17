@@ -1,5 +1,3 @@
-use std::fmt::format;
-
 use js_sys::{Array, Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 

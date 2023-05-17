@@ -1,5 +1,0 @@
-<swiper class="swiper" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
-    <swiper-item wx:for="{{items}}" wx:key="id">
-        <image class="image" src="{{app.globalData.staticHost}}/images/{{item.image}}"></image>
-    </swiper-item>
-</swiper>

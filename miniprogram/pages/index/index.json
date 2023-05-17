@@ -1,52 +1,41 @@
 {
   "usingComponents": {
-    "poster": "../../components/poster/poster",
     "home-actions": "../../components/home-actions/home-actions",
     "gift": "../../components/gift/gift",
     "teacher": "../../components/teacher/teacher",
-    "home-booked": "../../components/home-booked/home-booked",
-    "home-notice": "../../components/home-notice/home-notice",
-    "copyright": "../../components/copyright/copyright"
+    "home-booked": "../../components/home-booked/home-booked"
   },
   "navigationStyle": "custom",
   "tabBar": {
- "custom": true,
+    "custom": true,
     "backgroundColor": "white",
     "color": "#8c8c8c",
-    "list": [ {
-      "iconPath": "images/home-off.png",
+    "list": [
+      {
+        "iconPath": "images/home-off.png",
         "pagePath": "pages/index/index",
         "selectedIconPath": "images/home-on.png",
         "text": "首页"
-    }
-
-    ,
-    {
-    "iconPath": "images/yueke.png",
-      "pagePath": "pages/booking/booking",
-      "selectedIconPath": "images/yueke-on.png",
-      "text": "约课"
+      },
+      {
+        "iconPath": "images/yueke.png",
+        "pagePath": "pages/booking/booking",
+        "selectedIconPath": "images/yueke-on.png",
+        "text": "约课"
+      },
+      {
+        "iconPath": "images/check-in.png",
+        "pagePath": "pages/booked/booked",
+        "selectedIconPath": "images/check-in-on.png",
+        "text": "已约"
+      },
+      {
+        "iconPath": "images/my-off.png",
+        "pagePath": "pages/user/user",
+        "selectedIconPath": "images/my-on.png",
+        "text": "我的"
+      }
+    ],
+    "selectedColor": "#749b15"
   }
-
-  ,
-  {
-  "iconPath": "images/check-in.png",
-    "pagePath": "pages/booked/booked",
-    "selectedIconPath": "images/check-in-on.png",
-    "text": "已约"
-}
-
-,
-{
-"iconPath": "images/my-off.png",
-  "pagePath": "pages/user/user",
-  "selectedIconPath": "images/my-on.png",
-  "text": "我的"
-}
-
-],
-"selectedColor": "#749b15"
-}
-
-
 }

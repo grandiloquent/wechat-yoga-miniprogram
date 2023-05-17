@@ -116,9 +116,9 @@ function checkAvatar(url) {
       url,
       method: 'GET',
       success: res => {
-        // if (res.header['X-ErrNo'] === '-6101') {
-        //     reject()
-        // }
+        if (res.header['X-ErrNo'] === '-6101') {
+            reject()
+        }
         if (res.statusCode > 400 || res.statusCode < 200) {
           reject();
         } else

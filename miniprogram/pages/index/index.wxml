@@ -11,13 +11,24 @@
             </swiper>
         </view>
     </view>
-    <poster items="{{poster}}" app="{{app}}"></poster>
+    <swiper class="photo-swiper" indicator-dots="true" indicator-active-color="#fff" autoplay circular>
+        <swiper-item wx:for="{{poster}}" wx:key="id">
+            <image class="photo-image" src="{{app.globalData.staticHost}}/images/{{item.image}}"></image>
+        </swiper-item>
+    </swiper>
     <home-actions items="{{actions}}" app="{{app}}" bind:submit="onHomeActionsSubmit"></home-actions>
     <gift slogan="{{market.slogan}}" app="{{app}}" bind:submit="navigate" data-href="/pages/market/market"></gift>
     <teacher items="{{teachers}}" app="{{app}}" bind:submit="onTeacherSubmit"></teacher>
     <home-booked items="{{booked}}" app="{{app}}" bind:submit="onHomeBookedSubmit"></home-booked>
-    <home-notice items="{{notices}}" app="{{app}}" bind:submit="onHomeNoticeSubmit"></home-notice>
-    <copyright items="{{copyright}}" app="{{app}}" bind:submit="onCopyrightSubmit"></copyright>
+    <!-- <home-notice items="{{notices}}" app="{{app}}" bind:submit="onHomeNoticeSubmit"></home-notice> -->
+    <view class="title">公告</view>
+    <view style="background-color: #fff;padding:26rpx 0 32rpx;">
+        <view class="notice-item" wx:for="{{notices}}" wx:key="id" data-id="{{item.id}}" bindtap="navigate">
+            <view class="notice-item-title">{{item.title}}</view>
+            <view class="notice-item-subtitle">{{item.timeago}}</view>
+        </view>
+    </view>
+    <view class="copyright">版权归晨蕴约课工具所有</view>
     <!-- 预留底部栏的空间 -->
     <view style="height: 96rpx"></view>
 </view>

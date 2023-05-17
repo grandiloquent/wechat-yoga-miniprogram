@@ -104,19 +104,6 @@ Page({
 
 })
 
-// function bindIndex(app, page) {
-//   const url = `${app.globalData.host}/yoga/index`
-//   wx.request({
-//     url,
-//     success(res) {
-//       if (res.statusCode === 200) {
-//         page.setData(res.data)
-//         page.setData({ enabled: true });
-//       }
-//     }
-//   });
-// }
-
 // 格式化以毫秒为单位的时间戳
 function formatBeijingTime(t) {
   const n = new Date(t);

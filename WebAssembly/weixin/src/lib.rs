@@ -369,6 +369,7 @@ pub async fn bind_index(page: &Page, base_uri: &str) {
         .await
         .unwrap();
     let obj = Object::from(json);
+    // https://github.com/vi/timeago/blob/master/src/lib.rs
     Array::from(&Reflect::get(&obj, &"notices".into()).unwrap())
         .iter()
         .for_each(|f| {
@@ -378,19 +379,19 @@ pub async fn bind_index(page: &Page, base_uri: &str) {
                 .unwrap();
             let now = Date::now() / 1000f64;
             let dif = now - updated_time;
-            if dif > 31556926f64 {
+            if dif > 31536036f64 {
                 let _ = Reflect::set(
                     &f,
                     &"timeago".into(),
-                    &format!("{} 年之前", (dif / 31556926f64) as u32)
+                    &format!("{}年之前", (dif / 31536036f64) as u32)
                         .as_str()
                         .into(),
                 );
-            } else if dif > 2629743.83f64 {
+            } else if dif > 2628003f64 {
                 let _ = Reflect::set(
                     &f,
                     &"timeago".into(),
-                    &format!("{} 月之前", (dif / 2629743.83f64) as u32)
+                    &format!("{}月之前", (dif / 2_628_003f64) as u32)
                         .as_str()
                         .into(),
                 );

@@ -1,3 +1,4 @@
+pub mod admin_book;
 pub mod admin_lessons;
 pub mod admin_user;
 pub mod auth;

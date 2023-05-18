@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/adminBook/adminBook",
     "pages/index/index",
     "pages/adminUsers/adminUsers",
     "pages/adminUser/adminUser",

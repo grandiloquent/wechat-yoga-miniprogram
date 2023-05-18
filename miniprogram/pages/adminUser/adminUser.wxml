@@ -1,0 +1,7 @@
+<view wx:if="{{loaded}}"></view>
+<view wx:else>
+    <view class="loading-wrapper">
+        <view class="spinner"></view>
+        <view>加载中...</view>
+    </view>
+</view>

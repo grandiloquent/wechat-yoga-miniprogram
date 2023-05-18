@@ -357,7 +357,23 @@ export function users_all(page, base_uri, open_id) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_67(arg0, arg1, arg2, arg3) {
+/**
+* @param {any} page
+* @param {string} base_uri
+* @param {string} open_id
+* @param {number} id
+* @returns {Promise<void>}
+*/
+export function user(page, base_uri, open_id, id) {
+    const ptr0 = passStringToWasm0(base_uri, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len0 = WASM_VECTOR_LEN;
+    const ptr1 = passStringToWasm0(open_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    const len1 = WASM_VECTOR_LEN;
+    const ret = wasm.user(addHeapObject(page), ptr0, len0, ptr1, len1, id);
+    return takeObject(ret);
+}
+
+function __wbg_adapter_68(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -490,7 +506,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_67(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_68(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -527,8 +543,8 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper146 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 62, __wbg_adapter_18);
+    imports.wbg.__wbindgen_closure_wrapper153 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 66, __wbg_adapter_18);
         return addHeapObject(ret);
     };
 

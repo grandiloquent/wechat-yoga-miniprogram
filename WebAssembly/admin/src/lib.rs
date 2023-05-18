@@ -355,3 +355,13 @@ fn timeago(seconds: f64) -> String {
 
     return "刚刚".to_string();
 }
+#[wasm_bindgen]
+pub async fn user(page: &Page, base_uri: &str, open_id: String, id: i32) {
+    let json =
+        get_json(format!("{}/yoga/admin/user?open_id={}&id={}", base_uri, open_id, id).as_str())
+            .await
+            .unwrap();
+    let obj = Object::from(json);
+    let _ = Reflect::set(&obj, &"loaded".into(), &JsValue::from_bool(true));
+    page.set_data(obj);
+}

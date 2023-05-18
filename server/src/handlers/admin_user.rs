@@ -60,3 +60,35 @@ pub async fn admin_users_all(open_id: String, pool: &State<Pool>) -> Result<Stri
         }
     }
 }
+#[get("/yoga/admin/user?<open_id>&<id>")]
+pub async fn admin_user(id:i32,
+                        open_id:String,
+                        pool: &State<Pool>,
+                        ) -> Result<String, Status> {
+    match pool.get().await {
+        Ok(conn) => {
+            match query_json_with_params(
+                &conn,
+                "select * from fn_admin_user($1)",
+                &[&id],
+            )
+            .await
+            {
+                Ok(v) => {
+                    return match String::from_utf8(v.0) {
+                        Ok(v) => Ok(v),
+                        Err(_) => Err(Status::InternalServerError),
+                    };
+                }
+                Err(error) => {
+                    println!("Error: {}", error);
+                    Err(Status::InternalServerError)
+                }
+            }
+        }
+        Err(error) => {
+            println!("Error: {}", error);
+            Err(Status::InternalServerError)
+        }
+    }
+}

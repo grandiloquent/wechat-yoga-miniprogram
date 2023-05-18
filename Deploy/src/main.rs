@@ -125,7 +125,7 @@ fn upload_server(session: &mut LocalSession<TcpStream>) {
     println!("{}", String::from_utf8(vec).unwrap());
     let exec = session.open_exec().unwrap();
     // mkdir /root/bin &&
-    let vec: Vec<u8> = exec.send_command("cd /root/server && cargo build --release && mv target/release/YogaServer /root/bin/YogaServer").unwrap();
+    let vec: Vec<u8> = exec.send_command("cd /root/server && /root/.cargo/bin/cargo build --release && mv target/release/YogaServer /root/bin/YogaServer").unwrap();
     println!("{}", String::from_utf8(vec).unwrap());
     // 删除压缩文件
     let _ = fs::remove_file(src);

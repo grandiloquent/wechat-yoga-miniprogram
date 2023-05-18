@@ -1,5 +1,5 @@
 ```pgsql
-select pg_get_functiondef(oid) from pg_proc where proname = 'v1_admin_users_all';
+select pg_get_functiondef(oid) from pg_proc where proname = 'v1_admin_user';
 ```
 
 ```pgsql

@@ -1,12 +1,12 @@
 {
   "pages": [
-    "pages/adminBook/adminBook",
     "pages/index/index",
+    "pages/booking/booking",
+    "pages/adminLessons/adminLessons",
+    "pages/adminBook/adminBook",
     "pages/adminUsers/adminUsers",
     "pages/adminUser/adminUser",
-    "pages/booking/booking",
     "pages/teacher/teacher",
-    "pages/adminLessons/adminLessons",
     "pages/adminLesson/adminLesson",
     "pages/adminUpdateLesson/adminUpdateLesson",
     "pages/user/user",

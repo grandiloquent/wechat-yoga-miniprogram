@@ -5,8 +5,8 @@ use rocket::State;
 
 #[post("/yoga/admin/lessons/update?<open_id>", data = "<obj>")]
 pub async fn admin_lessons_update(
-    obj: String,
     open_id: String,
+    obj: String,
     pool: &State<Pool>,
 ) -> Result<String, Status> {
     match pool.get().await {

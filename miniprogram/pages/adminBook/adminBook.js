@@ -90,8 +90,19 @@ Page({
             lesson,
             teacher
         };
+        try {
+            await lessons_update(app.globalData.host, await app.getOpenId(), JSON.stringify(obj));
+        } catch (error) {
 
-        await lessons_update(app.globalData.host, await app.getOpenId(), JSON.stringify(obj));
+        }
+
+        wx.showToast({
+            title: "成功"
+        });
+
+        wx.switchTab({
+            url:"/pages/booking/booking"
+        });
     }
 
 

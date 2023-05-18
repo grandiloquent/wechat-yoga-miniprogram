@@ -51,3 +51,8 @@ end;
 $function$
 
 ```
+
+
+```
+delete from course where start_time = 5400
+```

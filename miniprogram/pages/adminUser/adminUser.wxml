@@ -1,4 +1,21 @@
-<view wx:if="{{loaded}}"></view>
+<view wx:if="{{loaded}}">
+    <view class="top" style="background-color:{{background}}">
+        <image class="top-image" src="{{avatar_url}}" />
+    </view>
+    <view class="wrapper">
+        <view class="header-action-wrapper">
+            <view class="gap"></view>
+            <view class="action" data-href="/pages/adminUpdateLesson/adminUpdateLesson?id={{id}}" bind:tap="navigate">
+                编辑
+            </view>
+        </view>
+        <view class="title">{{nick_name}}</view>
+        <view wx:if="{{booked}}" class="header-subtitle">已约课 {{booked}} 课时</view>
+        <view class="header-date">
+            <view>{{date}}</view>
+        </view>
+    </view>
+</view>
 <view wx:else>
     <view class="loading-wrapper">
         <view class="spinner"></view>

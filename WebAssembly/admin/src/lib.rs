@@ -362,6 +362,28 @@ pub async fn user(page: &Page, base_uri: &str, open_id: String, id: i32) {
             .await
             .unwrap();
     let obj = Object::from(json);
+    let date = Date::new(&JsValue::from_f64(
+        Reflect::get(&obj, &"creation_time".into())
+            .unwrap()
+            .as_f64()
+            .unwrap()*1000f64,
+    ));
+    let _ = Reflect::set(
+        &obj,
+        &"date".into(),
+        &format!(
+            "{}年{}月{}日 {}时{}分{}秒",
+            date.get_full_year(),
+            date.get_month() + 1,
+            date.get_date(),
+            date.get_hours(),
+            date.get_minutes(),
+            date.get_seconds()
+        )
+        .into(),
+    );
+
     let _ = Reflect::set(&obj, &"loaded".into(), &JsValue::from_bool(true));
+
     page.set_data(obj);
 }

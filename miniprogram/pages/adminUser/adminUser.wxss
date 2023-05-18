@@ -1,4 +1,3 @@
-
 @-webkit-keyframes spinner {
     0% {
         -webkit-transform: rotate(0deg)
@@ -21,8 +20,7 @@
     justify-content: center;
     flex-direction: column;
     font-size: 28rpx;
-    color: rgba(15, 15, 15,.6)
-    
+    color: rgba(15, 15, 15, .6)
 }
 
 @keyframes spinner {
@@ -48,4 +46,76 @@
     border-top-color: #666;
     -webkit-animation: spinner .8s linear infinite;
     animation: spinner .8s linear infinite
+}
+
+
+.top {
+    display: block;
+    width: 100%;
+    padding-bottom: 33.3333%;
+    position: relative;
+}
+
+.top-image {
+    width: 180rpx;
+    height: 180rpx;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: rgba(0, 0, 0, 0.03) 0rpx 0rpx 4rpx inset;
+    left: 32rpx;
+    top: calc(100% - 90rpx);
+}
+
+.wrapper {
+    padding: 0 32rpx
+}
+
+.header-action-wrapper {
+    padding: 24rpx 0;
+    display: flex
+}
+
+.gap {
+    flex-grow: 1
+}
+
+.action {
+
+    font-size: 28rpx;
+    font-weight: 500;
+    line-height: 40rpx;
+    box-shadow: 0rpx 2rpx 4rpx 0rpx rgba(60, 64, 67, .30), 0rpx 2rpx 6rpx 2rpx rgba(60, 64, 67, .15);
+    border-radius: 48rpx;
+    color: #3c4043;
+    background-color: #fff;
+    padding: 0 32rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60rpx;
+}
+
+.title {
+    line-height: 48rpx;
+    font-size: 40rpx;
+    padding: 8rpx 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subtitle {
+    font-size: 36rpx;
+    line-height: 48rpx;
+    color: #202124;
+    margin-bottom: 24rpx;
+    margin-top: 32rpx;
+}
+
+.header-date {
+    margin: 24rpx 0;
+    color: rgb(83, 100, 113);
+    font-size: 30rpx;
+    display: flex;
+    align-items: center;
 }

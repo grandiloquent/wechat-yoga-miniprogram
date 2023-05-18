@@ -373,7 +373,7 @@ export function user(page, base_uri, open_id, id) {
     return takeObject(ret);
 }
 
-function __wbg_adapter_68(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_70(arg0, arg1, arg2, arg3) {
     wasm.wasm_bindgen__convert__closures__invoke2_mut__h0d52a275242271dc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
@@ -479,6 +479,10 @@ function getImports() {
         const ret = getObject(arg0).getMonth();
         return ret;
     };
+    imports.wbg.__wbg_getSeconds_bcd6e2368c82cded = function(arg0) {
+        const ret = getObject(arg0).getSeconds();
+        return ret;
+    };
     imports.wbg.__wbg_getTime_7c59072d1651a3cf = function(arg0) {
         const ret = getObject(arg0).getTime();
         return ret;
@@ -506,7 +510,7 @@ function getImports() {
                 const a = state0.a;
                 state0.a = 0;
                 try {
-                    return __wbg_adapter_68(a, state0.b, arg0, arg1);
+                    return __wbg_adapter_70(a, state0.b, arg0, arg1);
                 } finally {
                     state0.a = a;
                 }
@@ -543,7 +547,7 @@ function getImports() {
     imports.wbg.__wbindgen_throw = function(arg0, arg1) {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
-    imports.wbg.__wbindgen_closure_wrapper153 = function(arg0, arg1, arg2) {
+    imports.wbg.__wbindgen_closure_wrapper154 = function(arg0, arg1, arg2) {
         const ret = makeMutClosure(arg0, arg1, 66, __wbg_adapter_18);
         return addHeapObject(ret);
     };

@@ -1,5 +1,5 @@
 <view wx:if="{{loaded}}" style="padding:0 32rpx">
-    <view class="user-item" wx:for="{{students}}" wx:key="id" data-href="/pages/adminUser/adminUser?id={{id}}" bind:tap="navigate">
+    <view class="user-item" wx:for="{{students}}" wx:key="id" data-href="/pages/adminUser/adminUser?id={{item.id}}" bind:tap="navigate">
         <image class="user-item-image" src="{{item.avatar_url}}"></image>
         <view class="user-item-text">{{item.nick_name}}</view>
         <view class="gap"></view>

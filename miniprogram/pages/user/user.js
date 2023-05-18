@@ -96,9 +96,9 @@ Page({
   },
   onUserProfileSubmit(evt) {
     if (evt.detail === '0') {
-      this.setData({
-        showLogin: true
-      });
+      wx.navigateTo({
+        url: `/pages/login/login?return_url=${encodeURIComponent(`/pages/user/user`)}`
+      })
     }
   },
   navigate(e) {

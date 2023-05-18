@@ -39,9 +39,6 @@ Page({
       title: app.globalData.title
     };
   },
-  onShareSubmit(evt) {
-    console.log(evt.detail)
-  },
   onShow() {
     this.setData({
       background: utils.getRandomColor()

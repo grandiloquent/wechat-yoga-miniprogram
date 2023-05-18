@@ -1,8 +1,6 @@
 {
 	"navigationBarBackgroundColor": "#ffffff",
 	"usingComponents": {
-		"booking-item": "../../components/booking-item/booking-item",
-		"share": "../../components/share/share",
 		"spinner": "../../components/spinner/spinner",
 		"teacher-buttons": "../../components/teacher-buttons/teacher-buttons"
 	}

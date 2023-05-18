@@ -41,4 +41,3 @@
   <view>更多介绍</view>
   <view class="more-image"></view>
 </view>
-<share app="{{app}}" bind:submit="onShareSubmit"></share>

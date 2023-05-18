@@ -56,7 +56,8 @@ async fn main() -> Result<(), rocket::Error> {
         )
         .mount(
             "/",
-            routes![handlers::admin_lessons::admin_lessons,
+            routes![handlers::admin_book::admin_lessons_update,
+handlers::admin_lessons::admin_lessons,
 handlers::admin_lessons::admin_lesson,
 handlers::admin_lessons::admin_lesson_hidden,
 handlers::admin_lessons::admin_lesson_delete,

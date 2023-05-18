@@ -35,15 +35,7 @@ impl ToSql for Body {
 
     to_sql_checked!();
 }
-pub async fn query_json_with_id(
-    conn: &Object,
-    id: i32,
-    statement: &str,
-) -> Result<Simple, tokio_postgres::Error> {
-    // https://docs.rs/tokio-postgres/latest/tokio_postgres/row/struct.Row.html
-    // https://docs.rs/tokio-postgres/latest/tokio_postgres/types/struct.Json.html
-    conn.query_one(statement, &[&id]).await?.try_get(0)
-}
+
 
 pub async fn query_json(
     conn: &Object,

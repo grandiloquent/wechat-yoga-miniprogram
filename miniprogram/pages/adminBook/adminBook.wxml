@@ -1,4 +1,62 @@
-<view wx:if="{{loaded}}"></view>
+<view wx:if="{{loaded}}">
+    <view class="grid-wrapper">
+        <view class="grid-title">课程</view>
+        <view class="grid">
+            <view class="{{lessonSelectedIndex===index?'selected':''}}" wx:for="{{lessons}}" wx:key="*this" data-index="{{index}}" bind:tap="onLesson">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">老师</view>
+        <view class="grid">
+            <view class="{{teacherSelectedIndex===index?'selected':''}}" wx:for="{{teachers}}" wx:key="*this" data-index="{{index}}" bind:tap="onTeacher">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">课程</view>
+        <view class="grid">
+            <view class="{{classTypeSelectedIndex===index?'selected':''}}" wx:for="{{classTypes}}" wx:key="*this" data-index="{{index}}" bind:tap="onClassType">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">开课时间</view>
+        <view class="grid">
+            <view class="{{startTimeSelectedIndex===index?'selected':''}}" wx:for="{{startTimes}}" wx:key="*this" data-index="{{index}}" bind:tap="onStartTime">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">下课时间</view>
+        <view class="grid">
+            <view class="{{endTimeSelectedIndex===index?'selected':''}}" wx:for="{{endTimes}}" wx:key="*this" data-index="{{index}}" bind:tap="onEndTime">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">人数</view>
+        <view class="grid">
+            <view class="{{peopleSelectedIndex===index?'selected':''}}" wx:for="{{peoples}}" wx:key="*this" data-index="{{index}}" bind:tap="onPeople">
+                <view>{{item}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="grid-wrapper">
+        <view class="grid-title">日期</view>
+        <view class="grid">
+            <view class="{{weekSelectedIndex===index?'selected':''}}" wx:for="{{weeks}}" wx:key="*this" data-index="{{index}}" bind:tap="onWeek">
+                <view>周{{item}}</view>
+            </view>
+        </view>
+        <view class="button" bind:tap="onSubmit">提交</view>
+    </view>
+</view>
 <view wx:else>
     <view class="loading-wrapper">
         <view class="spinner"></view>

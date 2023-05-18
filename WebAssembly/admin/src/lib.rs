@@ -366,7 +366,8 @@ pub async fn user(page: &Page, base_uri: &str, open_id: String, id: i32) {
         Reflect::get(&obj, &"creation_time".into())
             .unwrap()
             .as_f64()
-            .unwrap()*1000f64,
+            .unwrap()
+            * 1000f64,
     ));
     let _ = Reflect::set(
         &obj,
@@ -386,4 +387,17 @@ pub async fn user(page: &Page, base_uri: &str, open_id: String, id: i32) {
     let _ = Reflect::set(&obj, &"loaded".into(), &JsValue::from_bool(true));
 
     page.set_data(obj);
+}
+#[wasm_bindgen]
+pub async fn lessons_update(
+    base_uri: &str,
+    open_id: String,
+    obj: String,
+) -> Result<JsValue, JsValue> {
+    let json = post_data(
+        format!("{}/yoga/admin/lessons/update?open_id={}", base_uri, open_id,).as_str(),
+        obj.as_str(),
+    )
+    .await?;
+    Ok(json)
 }

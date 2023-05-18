@@ -343,16 +343,18 @@ fn process_lesson(item: &JsValue, long_time: bool) {
             // 100
             Reflect::set(item, &"mode".into(), &JsValue::from(4)).unwrap();
             Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
-        } else if count >= peoples {
-            // 10
-            Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
-            Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
         } else {
             let reservation_id = safe_f64(item, "reservation_id");
             if reservation_id == 0f64 {
-                // 100000
-                Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
-                Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+                if count >= peoples {
+                    // 10
+                    Reflect::set(item, &"mode".into(), &JsValue::from(2)).unwrap();
+                    Reflect::set(item, &"label".into(), &"已满额".into()).unwrap();
+                } else {
+                    // 100000
+                    Reflect::set(item, &"mode".into(), &JsValue::from(32)).unwrap();
+                    Reflect::set(item, &"label".into(), &"预约".into()).unwrap();
+                }
             } else {
                 // 1000000
                 Reflect::set(item, &"mode".into(), &JsValue::from(64)).unwrap();

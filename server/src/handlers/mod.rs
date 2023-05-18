@@ -1,6 +1,5 @@
-pub mod ;
-pub mod 2592000;
 pub mod admin_lessons;
+pub mod admin_user;
 pub mod auth;
 pub mod booking;
 pub mod debug;
@@ -9,5 +8,4 @@ pub mod index;
 pub mod picture;
 pub mod schedule;
 pub mod teacher;
-pub mod timeago,;
 pub mod user;

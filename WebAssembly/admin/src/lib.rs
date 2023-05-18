@@ -273,3 +273,85 @@ fn check_if_lesson_expired(date_time: f64, start_time: f64) -> bool {
     }
     return true;
 }
+
+#[wasm_bindgen]
+pub async fn user_lessons(
+    page: &Page,
+    base_uri: &str,
+    id: i32,
+    start: i32,
+    end: i32,
+    open_id: String,
+) {
+    let json = get_json(
+        format!(
+            "{}/yoga/admin/user/lessons?id={}&start={}&end={}&open_id={}",
+            base_uri, id, start, end, open_id
+        )
+        .as_str(),
+    )
+    .await
+    .unwrap();
+    let obj = Object::from(json);
+    page.set_data(obj);
+}
+
+#[wasm_bindgen]
+pub async fn users_all(page: &Page, base_uri: &str, open_id: String) {
+    let json = get_json(format!("{}/yoga/admin/users/all?open_id={}", base_uri, open_id).as_str())
+        .await
+        .unwrap();
+    let obj = Object::new();
+    let array = Array::from(&json);
+    // creation_time
+    let mut array = array.iter().collect::<Vec<_>>();
+    array.sort_by(|x, y| {
+        let x1 = Reflect::get(x, &"creation_time".into())
+            .unwrap()
+            .as_f64()
+            .unwrap();
+        let y1 = Reflect::get(y, &"creation_time".into())
+            .unwrap()
+            .as_f64()
+            .unwrap();
+        return y1.partial_cmp(&x1).unwrap();
+    });
+    let now = Date::now() / 1000f64;
+    let _ = Reflect::set(
+        &obj,
+        &"students".into(),
+        &array
+            .iter()
+            .map(|x| {
+                let x1 = Reflect::get(x, &"creation_time".into())
+                    .unwrap()
+                    .as_f64()
+                    .unwrap();
+                let _ = Reflect::set(&x, &"timeago".into(), &timeago(now - x1).as_str().into());
+                x
+            })
+            .collect::<Array>(),
+    );
+    let _ = Reflect::set(&obj, &"loaded".into(), &JsValue::from_bool(true));
+    page.set_data(obj);
+}
+
+fn timeago(seconds: f64) -> String {
+    if seconds > 31536036f64 {
+        return format!("{}年之前", (seconds / 31536036f64) as u64);
+    } else if seconds > 2628003f64 {
+        return format!("{}月之前", (seconds / 2628003f64) as u64);
+    } else if seconds > 604800f64 {
+        return format!("{}周之前", (seconds / 604800f64) as u64);
+    } else if seconds > 86400f64 {
+        return format!("{}天之前", (seconds / 86400f64) as u64);
+    } else if seconds > 3600f64 {
+        return format!("{}小时之前", (seconds / 3600f64) as u64);
+    } else if seconds > 60f64 {
+        return format!("{}分钟之前", (seconds / 60f64) as u64);
+    } else if seconds > 0f64 {
+        return format!("{}秒之前", seconds);
+    }
+
+    return "刚刚".to_string();
+}

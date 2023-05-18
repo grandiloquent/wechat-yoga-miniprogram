@@ -16,6 +16,16 @@
     margin-left: 12rpx;
 }
 
+
+
+.user-item-subtext {
+    font-size: 28rpx;
+    line-height: 40rpx;
+    color: #202124;
+    margin-left: 12rpx;
+}
+
+
 .user-item-image {
     width: 72rpx;
     height: 72rpx;

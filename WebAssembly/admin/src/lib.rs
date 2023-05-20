@@ -148,7 +148,8 @@ pub async fn lesson_update(
 
 #[wasm_bindgen]
 pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, openid: String) {
-    let json = get_json(
+
+    let json = match get_json(
         format!(
             "{}/yoga/admin/lessons?start={}&end={}&openid={}",
             base_uri, start, end, openid
@@ -156,7 +157,16 @@ pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, op
         .as_str(),
     )
     .await
-    .unwrap();
+    {
+        Ok(v) => v,
+        Err(_err) => {
+            let obj = Object::new();
+            let _ = Reflect::set(&obj, &JsValue::from_str("lessons"), &JsValue::from(""));
+            page.set_data(obj);
+            return;
+        }
+    };
+
     let array = Array::from(&json);
     for index in 0..array.length() {
         let json = array.get(index);

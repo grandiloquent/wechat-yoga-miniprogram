@@ -104,8 +104,6 @@ Page({
             url:"/pages/booking/booking"
         });
     }
-
-
 });
 
 function durationToSeconds(duration) {

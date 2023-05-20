@@ -1,5 +1,5 @@
 ```pgsql
-select pg_get_functiondef(oid) from pg_proc where proname = 'v1_admin_user';
+select pg_get_functiondef(oid) from pg_proc where proname = 'fn_admin_users_all';
 ```
 
 ```pgsql
@@ -31,4 +31,26 @@ from (
      ) as t
 $function$
 
+```
+
+```
+CREATE OR REPLACE FUNCTION public.fn_admin_users_all(in_open_id text)
+    RETURNS json
+    LANGUAGE sql
+AS
+$function$
+select case
+           when user_type = 4 then (select json_agg(t)
+                                    from (select u.id,
+                                                 nick_name,
+                                                 avatar_url,
+                                                 u.creation_time
+                                          from "user" u
+                                          where u.user_type is null
+                                             or (u.user_type <> -1 and u.user_type <> 4)) t)
+           END
+from "user"
+where open_id = in_open_id;
+
+$function$;
 ```

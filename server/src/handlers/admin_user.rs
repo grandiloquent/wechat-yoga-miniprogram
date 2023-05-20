@@ -41,7 +41,7 @@ pub async fn admin_user_lessons(
 pub async fn admin_users_all(open_id: String, pool: &State<Pool>) -> Result<String, Status> {
     match pool.get().await {
         Ok(conn) => {
-            match query_json_with_params(&conn, "select * from fn_admin_users_all()", &[]).await {
+            match query_json_with_params(&conn, "select * from fn_admin_users_all($1)", &[&open_id]).await {
                 Ok(v) => {
                     return match String::from_utf8(v.0) {
                         Ok(v) => Ok(v),

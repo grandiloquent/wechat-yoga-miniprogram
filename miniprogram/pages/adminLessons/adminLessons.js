@@ -16,7 +16,8 @@ Page({
         date.setHours(0, 0, 0, 0);
         this.data.start = date.getTime() / 1000;
         this.data.end = this.data.start + 86400;
-        this.loadData();
+        await this.loadData();
+
     },
     async loadData() {
 

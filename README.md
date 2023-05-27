@@ -10,6 +10,7 @@
 - [后端服务器](/server)
 - [前端](/WebAssembly/weixin)
 - [设计资源](/资源)
+- [微信小程序数独游戏](/miniprogram/pages/sudoku)
 
 ## 开发环境
 

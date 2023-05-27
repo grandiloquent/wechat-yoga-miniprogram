@@ -33,6 +33,7 @@ Page({
 
             }
             this.data.puzzles = puzzle.split('');
+            this.setData({ puzzles: this.data.puzzles });
             // this.sudoku.print_board(
             //     this.sudoku.solve(puzzle)
             // )
@@ -51,12 +52,12 @@ Page({
         } else {
             this.setData({
                 numbers:
-        //            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
-                this.data.puzzles
-                    .map(x => {
-                        if (x === '.') return 0;
-                        return parseInt(x)
-                    })
+                    //            [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
+                    this.data.puzzles
+                        .map(x => {
+                            if (x === '.') return 0;
+                            return parseInt(x)
+                        })
             });
         }
     },
@@ -77,7 +78,7 @@ Page({
         const index = this.data.selectedIndex;
         const columns = [...new Array(9).keys()].map(x => index % 9 + x * 9);
         const rowsStart = index - index % 9;
-        const rows = [...new Array(9).keys()].map(x => rowsStart+ x);
+        const rows = [...new Array(9).keys()].map(x => rowsStart + x);
         // 获取每个九宫格的第一个数字
         const blocksStart = ((index / 9 | 0) / 3 | 0) * 27 + (index % 9 / 3 | 0) * 3;
         const blocks = [...new Array(9).keys()].map(x => {

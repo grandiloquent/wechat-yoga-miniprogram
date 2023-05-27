@@ -1,0 +1,25 @@
+<view class="difficulty-wrapper">
+    <view class="difficulty">
+        <view wx:for="{{difficulties}}" bind:tap="onDifficultyClick" wx:key="index" data-index="{{index}}" class="{{difficultySelected===index?'selected':''}}">
+            {{item}}
+        </view>
+    </view>
+</view>
+<view wx:if="{{loaded}}">
+    <view class="sudoku-wrapper">
+        <view wx:for="{{numbers}}" data-index="{{index}}" data-value="{{item}}" data-puzzle="{{item!==0}}" class="{{index===selectedIndex ? 'selected' :''}}" bind:tap="onItemClick" wx:key="index" style="{{((index<27||index>=54)&&index%9<3)||((index<27||index>=54)&&index%9>5)||((index>27&&index<54)&&(index%9>2&&index%9<6))?'background:#f2f2f2':''}}">
+            {{item===0?'':item}}
+        </view>
+    </view>
+    <view class="numbers-wrapper">
+        <view class="numbers">
+            <view wx:for="{{n}}" data-value="{{item}}" bind:tap="onSelected">{{item}}</view>
+        </view>
+    </view>
+</view>
+<view wx:else>
+    <view class="loading-wrapper">
+        <view class="spinner"></view>
+        <view>加载中...</view>
+    </view>
+</view>

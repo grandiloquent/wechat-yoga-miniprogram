@@ -1,0 +1,119 @@
+@-webkit-keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(1turn)
+    }
+}
+
+
+.loading-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 66%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 28rpx;
+    color: rgba(15, 15, 15, .6)
+}
+
+@keyframes spinner {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+
+    100% {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn)
+    }
+}
+
+.spinner {
+    display: block;
+    box-sizing: border-box;
+    margin: 12px auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #eee;
+    border-top-color: #666;
+    -webkit-animation: spinner .8s linear infinite;
+    animation: spinner .8s linear infinite
+}
+
+.sudoku-wrapper {
+    display: grid;
+    margin: 32rpx;
+    grid-template-columns: repeat(9, 1fr);
+    border: 1px solid #dadce0;
+    background-color: #dadce0;
+    gap: 2rpx;
+    font-size: 24rpx;
+    line-height: 72rpx;
+    text-align: center;
+    border-radius: 8rpx;
+    overflow: hidden;
+    color: rgba(0, 0, 0, .75);
+}
+
+.sudoku-wrapper>view {
+    background-color: #fff;
+}
+
+.selected {
+    background-color: #e8f0fe !important;
+}
+
+.numbers-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 16rpx;
+}
+
+.numbers {
+    display: flex;
+    border: 1px solid #dadce0;
+    border-right: 0;
+    font-size: 24rpx;
+    line-height: 72rpx;
+}
+
+.numbers>view {
+    background-color: #fff;
+    width: 72rpx;
+    border-right: 1px solid #dadce0;
+}
+
+.difficulty-wrapper {
+
+    display: flex;
+    justify-content: center;
+ 
+}
+.difficulty{
+    display: flex;
+    border: 1px solid #dadce0;
+    height: 64rpx;
+    font-size: 28rpx;
+    border-radius: 48rpx;
+}
+
+.difficulty>view {
+    padding: 0 24rpx;
+    height: 64rpx;
+    border-right: 1px solid #dadce0;
+    display: flex;
+    align-items: center;
+}
+.difficulty>view:last-child{
+    border-right:0
+}

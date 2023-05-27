@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/sudoku/sudoku",
     "pages/booking/booking",
     "pages/adminLessons/adminLessons",
     "pages/adminBook/adminBook",

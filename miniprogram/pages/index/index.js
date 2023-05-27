@@ -64,6 +64,7 @@ Page({
     };
   },
   onHomeActionsSubmit(evt) {
+      
     if (evt.detail === 2) {
       wx.switchTab({
         url: `/pages/booking/booking`
@@ -72,7 +73,11 @@ Page({
       wx.navigateTo({
         url: `/pages/one/one`
       })
-    } else if (evt.detail === 6) {
+    }else if (evt.detail === 5) {
+      wx.navigateTo({
+        url: `/pages/sudoku/sudoku`
+      })
+    }else if (evt.detail === 6) {
       wx.navigateTo({
         url: `/pages/market/market`
       })

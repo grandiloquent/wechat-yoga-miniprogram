@@ -20,7 +20,7 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    utils.getString(app, `v1/notice?id=${this.data.id}`, (err, data) => {
+    utils.getString(app, `yoga/notice?id=${this.data.id}`, (err, data) => {
       if (err) return;
       console.log(data);
       this.setData({

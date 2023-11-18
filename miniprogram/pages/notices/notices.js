@@ -22,7 +22,7 @@ title:'公告'
     })
   },
   async loadData() {
-    utils.getString(app, "v1/notices", (err, data) => {
+    utils.getString(app, "yoga/notices", (err, data) => {
       if (err) return;
       this.setData({
         notices: data.map(x => {

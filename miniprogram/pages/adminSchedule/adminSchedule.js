@@ -6,7 +6,7 @@ Page({
     },
     async onLoad() {
         this.setData({
-            src: `${app.globalData.host}/yoga/admin/schedule`
+            src: `${app.globalData.host}/yoga/admin/schedule?openid=${app.globalData.openid}`
         })
     },
     onShare() {

@@ -19,9 +19,8 @@ Page({
     utils.navigate(e)
   },
   async loadData() {
-    utils.getString(app, "v1/market", (err, data) => {
+    utils.getString(app, "yoga/market", (err, data) => {
       if (err) return;
-
       this.setData({
         market: data,
         timeago: utils.timeago(data.updated_time)

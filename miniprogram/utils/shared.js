@@ -78,8 +78,8 @@ function promisify(api) {
 
 async function getOpenId(app) {
   const code = await getLoginCode();
-  const url = `${app.globalData.host}/yoga/auth?code=${code}`;
-  const res = await getJson(url, code);
+  const url = `${app.globalData.host}/yoga/auth`;
+  const res = await postData(url, code);
   return res.openid;
 }
 function getNavigationBarSize() {

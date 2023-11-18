@@ -1,7 +1,6 @@
 <wxs module="utils">
-function isGuess(puzzles,index){
-    console.log("---------->puzzles",puzzles[index]===".");
-    if(puzzles[index]==='.'){
+function isGuess(puzzle,index){
+    if(puzzle[index]==='.'){
         return '';
     }
     return 'fixed'
@@ -19,7 +18,7 @@ module.exports = {
 </view>
 <view wx:if="{{loaded}}">
     <view class="sudoku-wrapper">
-        <view wx:for="{{numbers}}" data-index="{{index}}" data-value="{{item}}" data-puzzle="{{item!==0}}" class="{{index===selectedIndex ? 'selected' :''}} {{utils.isGuess(puzzle,index)}}" bind:tap="onItemClick" wx:key="index" style="{{((index<27||index>=54)&&index%9<3)||((index<27||index>=54)&&index%9>5)||((index>27&&index<54)&&(index%9>2&&index%9<6))?'background:#f2f2f2':''}}">
+        <view wx:for="{{numbers}}" data-index="{{index}}" data-value="{{item}}" class="{{index===selectedIndex ? 'selected' :''}} {{utils.isGuess(puzzle,index)}}" bind:tap="onItemClick" wx:key="index" style="{{((index<27||index>=54)&&index%9<3)||((index<27||index>=54)&&index%9>5)||((index>27&&index<54)&&(index%9>2&&index%9<6))?'background:#f2f2f2':''}}">
             {{item===0?'':item}}
         </view>
     </view>

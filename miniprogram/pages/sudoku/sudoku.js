@@ -32,7 +32,9 @@ Page({
         this.setData({ difficultySelected: difficulty });
     },
     initializePuzzle() {
-        this.data.puzzle = wx.getStorageSync('puzzle')
+        this.setData({
+            puzzle: wx.getStorageSync('puzzle')
+        });
         if (!this.data.puzzle) {
             this.createPuzzle();
         }
@@ -59,10 +61,12 @@ Page({
         });
     },
     createPuzzle() {
-        this.data.puzzle = sudoku.generate(
-            (this.data.difficultySelected === 1 && "medium") ||
-            (this.data.difficultySelected === 2 && "hard") || "easy"
-        );
+        this.setData({
+            puzzle: sudoku.generate(
+                (this.data.difficultySelected === 1 && "medium") ||
+                (this.data.difficultySelected === 2 && "hard") || "easy"
+            )
+        });
         wx.setStorageSync('puzzle', this.data.puzzle);
     },
     onDifficultyClick(e) {
@@ -124,6 +128,41 @@ Page({
         this.setData({
             n: n
         })
+    },
+    onSelected(e) {
+        const value = e.currentTarget.dataset.value;
+        if (value === '清空') {
+            this.data.numbers[this.data.selectedIndex] = 0;
+            this.setData({
+                numbers: this.data.numbers
+            });
+        } else {
+            this.data.numbers[this.data.selectedIndex] = value;
+            this.setData({
+                numbers: this.data.numbers
+            });
+            console.log(this.data.numbers.filter(
+                n => n === 0
+            ).length);
+            if (this.data.numbers.filter(
+                n => n === 0
+            ).length === 0 && sudoku.solve(this.data.puzzle)
+                === this.data.numbers.join('')) {
+                // showModal
+                // https://developers.weixin.qq.com/miniprogram/dev/api/ui/interaction/wx.showModal.html
+                wx.showModal({
+                    title: '询问',
+                    content: '恭喜您已通关!\n您要重新开始游戏吗？',
+                    success: (res) => {
+                        if (res.confirm) {
+                            this.reset();
+                        }
+                    }
+
+                });
+            }
+        }
+        this.updateCandidateNumbers();
     },
 });
 

@@ -23,12 +23,10 @@ extern "C" {
 #[wasm_bindgen]
 pub async fn query_lesson(
     page: &Page,
-    base_uri: &str,
-    id: u32,
-    openid: String,
+    base_uri: &str,obj: String
 ) -> Result<(), JsValue> {
     let json =
-        get_json(format!("{}/yoga/admin/lesson?id={}&openid={}", base_uri, id, openid).as_str())
+        post_data(format!("{}/yoga/admin/lesson",base_uri).as_str(),obj.as_str())
             .await?;
     if json.is_object() {
         let date_time = Reflect::get(&json, &"date_time".into())

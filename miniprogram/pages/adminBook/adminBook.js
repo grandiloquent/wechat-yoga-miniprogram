@@ -28,20 +28,41 @@ Page({
     },
     async loadData() {
         await lessons_and_teachers(this, app.globalData.host, this.data.id, app.globalData.openid || (await app.getOpenId()));
+        this.data.lessons.push("自定义")
         this.setData({
             weeks: "一二三四五六日".split(''),
             classTypes: ["团课", "小班", "私教"],
             startTimes: [...new Array(8).keys()].map(x => `${(540 + x * 90) / 60 | 0}:${((540 + x * 90) % 60).toString().padStart(2, '0')}`),
             endTimes: [...new Array(8).keys()].map(x => `${(600 + x * 90) / 60 | 0}:${((600 + x * 90) % 60).toString().padStart(2, '0')}`),
             peoples: [...new Array(9).keys()].map(x => (8 + x).toString()),
-            loaded: true
+            loaded: true,
+            lessons: this.data.lessons
         });
     },
     navigate(e) {
         shared.navigate(e)
     },
     onLesson(e) {
-        this.setData({ lessonSelectedIndex: e.currentTarget.dataset.index });
+        const name = this.data.lessons[e.currentTarget.dataset.index];
+        if (name === "自定义") {
+            wx.showModal({
+                title: "添加新课程",
+                editable: true,
+                success: res => {
+                    if (res.confirm) {
+                        this.data.lessons[
+                            this.data.lessons.length - 1
+                        ] = res.content;
+                        this.data.lessons.push("自定义")
+                        this.setData({
+                            lessons: this.data.lessons
+                        }); 
+                    }
+                }
+            })
+        } else {
+            this.setData({ lessonSelectedIndex: e.currentTarget.dataset.index });
+        }
     },
     onTeacher(e) {
         this.setData({ teacherSelectedIndex: e.currentTarget.dataset.index });
@@ -101,7 +122,7 @@ Page({
         });
 
         wx.switchTab({
-            url:"/pages/booking/booking"
+            url: "/pages/booking/booking"
         });
     }
 });

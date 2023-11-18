@@ -42,7 +42,7 @@ Page({
     this.loadData();
   },
   async loadData() {
-    utils.getString(app, `v1/booked/query?startTime=${this.data.startTime}&endTime=${this.data.endTime}`, (err, data) => {
+    utils.getString(app, `yoga/booked/query?startTime=${this.data.startTime}&endTime=${this.data.endTime}`, (err, data) => {
       if (err || !data) {
         this.setData({
           lessons: null

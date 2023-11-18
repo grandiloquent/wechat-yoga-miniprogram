@@ -28,3 +28,6 @@ server/FileMove
 *.exe
 target
 Cargo.lock
+yg/packages
+yg/yg/bin
+yg/yg/obj

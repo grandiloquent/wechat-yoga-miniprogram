@@ -1,6 +1,8 @@
 use js_sys::{Array, Date, Object, Reflect};
 use wasm_bindgen::prelude::*;
 
+mod utils;
+
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -21,22 +23,15 @@ extern "C" {
 // ，然后以 JSON 格式返回
 // 查询结果
 #[wasm_bindgen]
-pub async fn query_lesson(
-    page: &Page,
-    base_uri: &str,obj: String
-) -> Result<(), JsValue> {
-    let json =
-        post_data(format!("{}/yoga/admin/lesson",base_uri).as_str(),obj.as_str())
-            .await?;
+pub async fn query_lesson(page: &Page, base_uri: &str, obj: String) -> Result<(), JsValue> {
+    let json = post_data(
+        format!("{}/yoga/admin/lesson", base_uri).as_str(),
+        obj.as_str(),
+    )
+    .await?;
     if json.is_object() {
-        let date_time = Reflect::get(&json, &"date_time".into())
-            .unwrap()
-            .as_f64()
-            .unwrap();
-        let start_time = Reflect::get(&json, &"start_time".into())
-            .unwrap()
-            .as_f64()
-            .unwrap();
+        let date_time = utils::parse_f64(&json, "date_time");
+        let start_time = utils::parse_f64(&json, "start_time");
         let now = Date::new(&JsValue::from_f64((date_time) * 1000f64));
         let obj = Object::from(json);
 
@@ -84,13 +79,10 @@ pub async fn suspend_lesson(
     .await
 }
 #[wasm_bindgen]
-pub async fn delete_booked(base_uri: &str, id: u32, openid: String) -> Result<JsValue, JsValue> {
-    get_json(
-        format!(
-            "{}/yoga/admin/lesson/delete?id={}&openid={}",
-            base_uri, id, openid
-        )
-        .as_str(),
+pub async fn delete_booked(base_uri: &str, obj: String) -> Result<JsValue, JsValue> {
+    post_data(
+        format!("{}/yoga/admin/lesson/delete", base_uri).as_str(),
+        obj.as_str(),
     )
     .await
 }
@@ -146,7 +138,6 @@ pub async fn lesson_update(
 
 #[wasm_bindgen]
 pub async fn query_lessons(page: &Page, base_uri: &str, start: u32, end: u32, openid: String) {
-
     let json = match get_json(
         format!(
             "{}/yoga/admin/lessons?start={}&end={}&openid={}",

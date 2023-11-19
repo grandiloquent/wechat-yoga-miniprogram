@@ -194,7 +194,7 @@ pub async fn bind_booking(
         let array = js_sys::Array::new();
         for index in 0..values.len() {
             let item = &values[index];
-            process_lesson(item, false);
+            process_lesson(item, false, openid.as_str());
             array.push(item);
         }
 
@@ -307,7 +307,7 @@ pub async fn teacher_lessons(
         let array = js_sys::Array::new();
         for index in 0..values.len() {
             let item = &values[index];
-            process_lesson(item, true);
+            process_lesson(item, true, open_id.as_str());
             array.push(item);
         }
         Reflect::set(&json, &"lessons".into(), &array).unwrap();
@@ -316,7 +316,7 @@ pub async fn teacher_lessons(
     page.set_data(obj);
 }
 
-fn process_lesson(item: &JsValue, long_time: bool) {
+fn process_lesson(item: &JsValue, long_time: bool, open_id: &str) {
     let date_time = safe_f64(item, "date_time");
     let start_time = safe_f64(item, "start_time");
     let end_time = safe_f64(item, "end_time");
@@ -338,13 +338,37 @@ fn process_lesson(item: &JsValue, long_time: bool) {
     } else {
         let hidden = safe_f64(item, "hidden") as i8;
         let peoples = safe_f64(item, "peoples") as u8;
-        let count = safe_f64(item, "count") as u8;
+        let usersJsValue = Reflect::get(item, &"users".into()).unwrap_or_default();
+        let users = if (usersJsValue.is_null()) {
+            Array::new()
+        } else {
+            Array::from(&usersJsValue)
+        };
+        let count = users.length() as u8;
+
         if hidden == -1 {
             // 100
             Reflect::set(item, &"mode".into(), &JsValue::from(4)).unwrap();
             Reflect::set(item, &"label".into(), &"已取消".into()).unwrap();
         } else {
-            let reservation_id = safe_f64(item, "reservation_id");
+            let mut reservation_id = 0f64;
+            if (users.length() > 0) {
+                reservation_id = safe_f64(
+                    &users
+                        .iter()
+                        .filter(|x| {
+                            Reflect::get(x, &"open_id".into())
+                                .unwrap_or_default()
+                                .as_string()
+                                .unwrap()
+                                .as_str()
+                                == open_id
+                        })
+                        .next()
+                        .unwrap_or_default(),
+                    "reservation_id",
+                );
+            }
             if reservation_id == 0f64 {
                 if count >= peoples {
                     // 10
@@ -359,6 +383,9 @@ fn process_lesson(item: &JsValue, long_time: bool) {
                 // 1000000
                 Reflect::set(item, &"mode".into(), &JsValue::from(64)).unwrap();
                 Reflect::set(item, &"label".into(), &"取消预约".into()).unwrap();
+                Reflect::set(item, &"reservation_id".into(), &JsValue::from(reservation_id)).unwrap();
+
+           
             }
         }
     }

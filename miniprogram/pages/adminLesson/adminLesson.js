@@ -15,15 +15,18 @@ Page({
     // 通过 URL 查询参数获取待查
     // 询的课程标识
     async onLoad(options) {
-const id=options.id || 1323;
-       this.setData({id
-})
+        const id = options.id || 1323;
+        this.setData({
+            id
+        })
         await init();
         this.loadData();
     },
     async loadData() {
-
-        await query_lesson(this, app.globalData.host, this.data.id, app.globalData.openid || (await app.getOpenId()));
+        await query_lesson(this, app.globalData.host, JSON.stringify({
+            id: parseInt(this.data.id),
+            openid: app.globalData.openid || (await app.getOpenId())
+        }));
 
     },
     onShow() {
@@ -40,13 +43,15 @@ const id=options.id || 1323;
             success: async (res) => {
                 if (res.confirm) {
                     await delete_booked(app.globalData.host,
-                        e.currentTarget.dataset.id
-                        , app.globalData.openid || (await app.getOpenId()))
+                        JSON.stringify({
+                            id: e.currentTarget.dataset.id,
+                            openid: app.globalData.openid || (await app.getOpenId())
+                        }));
                     this.loadData();
                 }
             },
         });
-    },navigate(e) {
+    }, navigate(e) {
         shared.navigate(e)
     },
     onDeleteLesson() {

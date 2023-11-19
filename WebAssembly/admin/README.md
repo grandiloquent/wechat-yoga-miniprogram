@@ -8,5 +8,5 @@
 https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_Wasm
 
 ```ps
-$working="C:\Users\Administrator\Desktop\file\yg\WebAssembly\weixin";$dir="C:\Users\Administrator\Desktop\file\yg\miniprogram\pkg";Set-Location $working;wasm-pack build --target web --out-dir $dir
+$working="C:\Users\Administrator\Desktop\file\yg\WebAssembly\admin";$dir="C:\Users\Administrator\Desktop\file\yg\miniprogram\pkg";Set-Location $working;wasm-pack build --target web --out-dir $dir
 ```

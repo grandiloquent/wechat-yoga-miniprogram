@@ -14,7 +14,8 @@ Page({
     // 距离今天的天数，用于切换本周下周
     offset: 0,
     // 用户选定单位为秒钟的时间
-    selectedTime: 0
+    selectedTime: 0,
+    isPreviewing: false
   },
   async onLoad() {
     await init();
@@ -112,7 +113,7 @@ Page({
   async book(id) {
     let result = await checkUserAvailability(app);
     if (!result) {
-       wx.navigateTo({
+      wx.navigateTo({
         url: `/pages/login/login?return_url=${encodeURIComponent(`/pages/booking/booking`)}`
       })
       return;
@@ -147,7 +148,18 @@ Page({
       console.log(error)
     }
   },
-
+  onPreview(e) {
+    this.setData({
+      previewText:e.target.dataset.name,
+      previewImage:e.target.dataset.image,
+      isPreviewing:true
+    })
+  },
+  onClosePreview(){
+    this.setData({
+      isPreviewing:false
+    })
+  }
 }
 
 )
